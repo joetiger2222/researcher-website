@@ -1,0 +1,122 @@
+import React from "react";
+import loginImg from "./loginImg.png";
+
+import google from "./google.png";
+export default function Login() {
+  return (
+    <div
+      className="loginParent"
+      style={{
+        display: "flex",
+        width: "100%",
+        height: "100%",
+        minHeight: "100vh",
+        backgroundColor: "rgb(9,14,52)",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div
+        className="loginContainer"
+        style={{
+          width: "67%",
+          height:'724px',
+          justifyContent:'space-around',
+
+          backgroundColor: "white",
+          display: "flex",
+          borderRadius: "10px",
+          alignItems: "center",
+          padding:'10px'
+        }}
+      >
+        <div className="loginImgDiv" style={{ width: "50%" }}>
+          <img
+            className="loginImg"
+            style={{ width: "100%", borderRadius: "10px" }}
+            src={loginImg}
+            alt="login"
+          />
+        </div>
+
+        <div
+          className="loginDataDiv"
+          style={{ display: "flex", flexDirection: "column",width:'30%' }}
+        >
+          <h1>Login To Website </h1>
+          <form style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <label style={{fontSize:'18px'}}>Email:</label>
+              <input
+                style={{
+                  borderRadius: "4px",
+                  border: "0.01em solid #cbc7c7",
+                  padding: "20px 10px",
+                  margin: "5px 0 0 0",
+                  fontSize:'18px',
+                }}
+                placeholder="Enter your Email"
+              ></input>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                margin: "10px 0 0 0",
+              }}
+            >
+              <label style={{fontSize:'18px'}} >Password:</label>
+              <input
+                placeholder="Enter Password"
+                style={{
+                    border: "0.01em solid #cbc7c7",
+                  borderRadius: "4px",
+                  padding: "20px 10px",
+                  margin: "5px 0 30px 0",
+                  fontSize:'18px',
+                }}
+              ></input>
+            </div>
+            <button
+              style={{
+                color: "white",
+                backgroundColor: "rgb(48,86,209)",
+                display: "flex",
+                justifyContent: "center",
+                padding: "15px 10px",
+                borderRadius: "4px",
+                margin: "0 0 0 0",
+                border:'none',
+                fontSize:'1.1em',
+                fontWeight:'bold',
+              }}
+            >
+              Login
+            </button>
+
+            <button
+              style={{
+                width: "100%",
+                color: "##5a5959",
+                backgroundColor: "white",
+                display: "flex",
+                justifyContent: "center",
+                gap: "7px",
+                padding: "15px 10px",
+                borderRadius: "4px",
+                margin: "10px 0 20px 0",
+                border: "0.01em solid #cbc7c7",
+                fontSize:'1.1em',
+                fontWeight:'bold',
+                
+              }}
+            >
+              <img style={{ width: "20px" }} src={google} />
+              Login With Google
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
