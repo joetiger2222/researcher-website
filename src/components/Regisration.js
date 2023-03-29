@@ -3,6 +3,26 @@ import registartionImg from "../images/registerImage.png";
 import google from "../google.png";
 import "../css/Registration.css";
 const Registration = () => {
+
+  const [formData, setFormData] = useState({ firstName: "", lastName: "",userName:'',email:'',password:'' });
+  const [passwordMatch,setPasswrdMatch]=useState('');
+
+  function getRegisterData(event) {
+    setFormData(prevFormData=>{
+        return {
+            ...prevFormData,
+            [event.target.name]:event.target.value
+        }
+    })
+  }
+
+  console.log(formData)
+
+  function checkConfirmPassword(){
+    console.log(formData.password===passwordMatch);
+  }
+  
+
   return (
     <div className="parentRegistration">
       <div className="registerContainer">
@@ -13,36 +33,36 @@ const Registration = () => {
             <div className="NameAndUserName">
               <div>
                 {" "}
-                <label htmlFor="">FirstName</label>
-                <input type="text" placeholder="Enter Your Name" />
+                <label htmlFor="">First Name</label>
+                <input onChange={getRegisterData} name="firstName" type="text" placeholder="Enter Your Name" />
               </div>
               <div>
                 {" "}
-                <label htmlFor="">LastName</label>
-                <input type="text" placeholder="Enter Your Username" />
+                <label htmlFor="">Last Name</label>
+                <input onChange={getRegisterData} name="lastName" type="text" placeholder="Enter Your Username" />
               </div>
             </div>
             <div className="username">
                 {" "}
                 <label htmlFor="">Username</label>
-                <input type="text" placeholder="Enter Your Username" />
+                <input onChange={getRegisterData} name="userName" type="text" placeholder="Enter Your Username" />
               </div>
             <div className="emailForm">
               <label htmlFor="">Email</label>
-              <input type="email" placeholder="Enter Your Email" />
+              <input onChange={getRegisterData} name="email" type="email" placeholder="Enter Your Email" />
             </div>
             <div className="passwordAndConfirm">
               <div>
                 <label htmlFor="">Password</label>
-                <input type="password" placeholder="Enter Your Password" />
+                <input onChange={getRegisterData} name="password" type="password" placeholder="Enter Your Password" />
               </div>
               <div>
                 <label htmlFor="">Confirm Password</label>
-                <input type="password" placeholder="Confirm Password" />
+                <input name="confirmPassword" onChange={(e)=>setPasswrdMatch(e.target.value)} type="password" placeholder="Confirm Password" />
               </div>
             </div>
             <div className="registrationButtons">
-                <button className="createAccountbtn">
+                <button onClick={checkConfirmPassword} className="createAccountbtn">
                 
                 Create Account
             </button>
