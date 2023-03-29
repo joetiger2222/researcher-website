@@ -1,0 +1,34 @@
+.loginBtn{box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;}
+.loginBtn:hover{background-color: rgb(35 64 157) !important;}
+.loginGoogleBtn{box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);}
+.loginGoogleBtn:hover{background-color: #eee !important;}
+
+@media only screen and (max-width:1240px) {
+    .loginDataDiv>h1{font-size: 1.8em;}
+    
+}
+
+@media only screen and (max-width:1115px) {
+    .loginDataDiv>h1{font-size: 1.4em;}
+    
+}
+@media only screen and (max-width:990px) {
+    .loginContainer{flex-direction: column;height: fit-content !important;}
+    .loginDataDiv{width: 60% !important;}
+    .loginDataDiv>h1 {
+        font-size: 2.0em;
+        text-align: center;
+    }
+    .loginDataDiv>form>div>label{font-size: 22px !important;}
+    .loginBtn{font-size: 1.3em !important;}
+    .loginGoogleBtn{font-size: 1.3em !important;}
+    
+}
+
+@media only screen and (max-width:620px) {
+    .loginDataDiv{width: 90% !important;}
+    .loginDataDiv>h1{font-size: 1.5em !important;}
+    .loginBtn{font-size: 0.9em !important;}
+    .loginGoogleBtn{font-size: 0.9em !important;}
+
+}

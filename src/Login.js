@@ -1,6 +1,6 @@
 import React from "react";
 import loginImg from "./loginImg.png";
-
+import './Login.css'
 import google from "./google.png";
 export default function Login() {
   return (
@@ -19,10 +19,10 @@ export default function Login() {
       <div
         className="loginContainer"
         style={{
-          width: "67%",
-          height:'724px',
+          width: "70%",
+          height:'640px',
           justifyContent:'space-around',
-
+          maxWidth:'1240px',
           backgroundColor: "white",
           display: "flex",
           borderRadius: "10px",
@@ -30,10 +30,10 @@ export default function Login() {
           padding:'10px'
         }}
       >
-        <div className="loginImgDiv" style={{ width: "50%" }}>
+        <div className="loginImgDiv" style={{ width: "40%" }}>
           <img
             className="loginImg"
-            style={{ width: "100%", borderRadius: "10px" }}
+            style={{ width: "100%",maxWidth:'800px', borderRadius: "10px" }}
             src={loginImg}
             alt="login"
           />
@@ -41,7 +41,7 @@ export default function Login() {
 
         <div
           className="loginDataDiv"
-          style={{ display: "flex", flexDirection: "column",width:'30%' }}
+          style={{ display: "flex", flexDirection: "column",width:'40%' }}
         >
           <h1>Login To Website </h1>
           <form style={{ display: "flex", flexDirection: "column" }}>
@@ -78,6 +78,7 @@ export default function Login() {
               ></input>
             </div>
             <button
+            className="loginBtn"
               style={{
                 color: "white",
                 backgroundColor: "rgb(48,86,209)",
@@ -89,12 +90,14 @@ export default function Login() {
                 border:'none',
                 fontSize:'1.1em',
                 fontWeight:'bold',
+                cursor:'pointer',
               }}
             >
               Login
             </button>
 
             <button
+            className="loginGoogleBtn"
               style={{
                 width: "100%",
                 color: "##5a5959",
@@ -108,6 +111,7 @@ export default function Login() {
                 border: "0.01em solid #cbc7c7",
                 fontSize:'1.1em',
                 fontWeight:'bold',
+                cursor:'pointer',
                 
               }}
             >
