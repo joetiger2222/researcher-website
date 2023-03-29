@@ -2,7 +2,23 @@ import React from "react";
 import loginImg from "./loginImg.png";
 import './Login.css'
 import google from "./google.png";
+import { useState, } from "react";
+import { useNavigate } from "react-router-dom";
+
 export default function Login() {
+
+  const [formData, setFormData] = useState({ userName: "", password: "" });
+
+  function getLoginData(event) {
+    setFormData(prevFormData=>{
+        return {
+            ...prevFormData,
+            [event.target.name]:event.target.value
+        }
+    })
+  }
+console.log(formData)
+
   return (
     <div
       className="loginParent"
@@ -44,20 +60,27 @@ export default function Login() {
           style={{ display: "flex", flexDirection: "column",width:'40%' }}
         >
           <h1>Login To Website </h1>
+          
           <form style={{ display: "flex", flexDirection: "column" }}>
+
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <label style={{fontSize:'18px'}}>Email:</label>
+              <label style={{fontSize:'18px'}}>Username:</label>
               <input
-                style={{
+              name="userName"
+                type={'email'}
+                style={{    
                   borderRadius: "4px",
                   border: "0.01em solid #cbc7c7",
                   padding: "20px 10px",
                   margin: "5px 0 0 0",
                   fontSize:'18px',
                 }}
+                onChange={getLoginData}
                 placeholder="Enter your Email"
               ></input>
             </div>
+
+
             <div
               style={{
                 display: "flex",
@@ -67,15 +90,20 @@ export default function Login() {
             >
               <label style={{fontSize:'18px'}} >Password:</label>
               <input
-                placeholder="Enter Password"
+              type={'password'}
+              name="password"
+              onChange={getLoginData}
+                placeholder= "Enter Password"
                 style={{
-                    border: "0.01em solid #cbc7c7",
+
+                  border: "0.01em solid #cbc7c7",
                   borderRadius: "4px",
                   padding: "20px 10px",
                   margin: "5px 0 30px 0",
                   fontSize:'18px',
                 }}
               ></input>
+              
             </div>
             <button
             className="loginBtn"
