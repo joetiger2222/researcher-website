@@ -1,0 +1,9 @@
+.homePageContainer{
+    width: 100%;
+}
+.landingPage{
+    background-image:url('../images/homePageImg.png') ;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
