@@ -13,7 +13,8 @@
   align-items: center;
 }
 .headerLeft > h1 {
-  color: black;
+  color: white;
+  
 }
 
 .headerLeft {
@@ -30,8 +31,11 @@
 }
 .headerUl>li{
     font-size: 20px;
+    cursor: pointer;
+    opacity: .6;
     
 }
+.headerUl>li:hover{opacity: 1;}
 .headerRight {
   display: flex;
   width: 70%;
@@ -81,7 +85,10 @@
   
   li {
     float: left;
+    
+    
   }
+  button,a{cursor: pointer;}
   
   li a, .dropbtn {
     display: flex;
@@ -89,16 +96,17 @@
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+    
   }
   
   li a:hover, .dropdown:hover .dropbtn {
-    background-color: transparent;
-    border: 1px solid white;
-    margin-bottom: 5px;
+    
+    cursor: pointer;
   }
   
   li.dropdown {
     display: inline-block;
+    cursor: pointer;
   }
   
   .dropdown-content {

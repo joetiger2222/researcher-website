@@ -1,9 +1,183 @@
-.homePageContainer{
-    width: 100%;
+.homePageContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.landingPage{
-    background-image:url('../images/homePageImg.png') ;
-    height: 100vh;
-    background-repeat: no-repeat;
-    background-size: cover;
+.landingPage {
+  background: rgba(0, 0, 0, 0.5) url("../images/homePageImg.png");
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-blend-mode: darken;
+}
+
+.landingData {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  min-width: 400px;
+  margin: 50px auto 0 auto;
+  color: white;
+}
+.landingData > h3 {
+  width: 30%;
+}
+.landingData > h1 {
+  width: 30%;
+}
+.landingData > p {
+  width: 30%;
+  font-size: 20px;
+}
+
+.landingData > button {
+  height: 50px;
+  background-color: rgb(21, 46, 125);
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  outline: none;
+  border: none;
+  border-radius: 50px;
+  width: 13%;
+  min-width: 100px;
+}
+.landingData > button:hover {
+  background-color: rgb(35 64 157);
+}
+
+.quizContainer {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  align-items: center;
+  margin: 80px 0 0 0;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 8px;
+}
+.quizContainer > div > div > img {
+  width: 100%;
+  max-width: 500px;
+
+  margin: 0 0 30px 0;
+}
+.quizContainer > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.quizContainer > h3 {
+  font-size: 20px;
+  margin: 50px 0 0 0;
+}
+.quizContainer>div>div{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.quizImg {
+  filter: blur(0.1rem);
+  width: 40%;
+  max-width: 500px;
+
+  margin: 0 0 30px 0;
+}
+.quizContainer > h1 {
+  align-self: first baseline;
+  margin: 20px 0 0 50px;
+}
+.badgeDiv {
+  width: 20%;
+  background-color: rgb(21, 46, 125);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 500px;
+  border-radius: 20px;
+  padding: 30px;
+}
+.badgesDivContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  margin-top: -10%;
+}
+.badgeDiv > img {
+  width: 100px;
+}
+.badgeDiv > h1 {
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+}
+.badgeDiv > p {
+  color: white;
+  font-size: 16px;
+}
+
+.coursesContainer {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 70px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 50px 0;
+}
+.courseCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 30px;
+  width: 30%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 20px;
+}
+.courseCard > h1 {
+  color: black;
+  font-size: 24px;
+}
+.courseCard > p {
+  font-size: 16px;
+  text-align: justify;
+}
+.courseCard > button {
+  width: 100px;
+  height: 40px;
+  background-color: rgb(48, 86, 209);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 10px;
+  border: none;
+}
+
+.coursesBigDiv {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  align-items: center;
+  margin: 80px 0 80px 0;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 8px;
+}
+.coursesBigDiv > h1 {
+  font-size: 40px;
+}
+
+.earnPointsContainer {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 50px 0 0 0;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 8px;
+}
+.earnPointsContainer > img {
+  width: 200px;
 }
