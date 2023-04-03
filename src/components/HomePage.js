@@ -9,8 +9,26 @@ import quiz from '../images/quiz.png';
 import CourseCard from "./CourseCard";
 import coin from '../images/coin.png'
 import quizCartoon from '../images/quizCartoon.png';
+import Footer from "./Footer";
 
 export default function HomePage() {
+
+  // window.onload = function() {
+  //   // Get the h1 element
+  //   const heading = document.querySelector('h1');
+    
+  //   // Set the starting opacity and transform values
+  //   heading.style.opacity = 0;
+  //   heading.style.transform = 'translateY(50px)';
+    
+  //   // Animate the h1 element
+  //   setTimeout(() => {
+  //     heading.style.opacity = 1;
+  //     heading.style.transform = 'translateY(0)';
+  //   }, 3000);
+  // }
+
+
   return (
     <div className="homePageContainer">
       <div className="landingPage">
@@ -92,7 +110,7 @@ export default function HomePage() {
       </div>
       </div>
 
-
+<Footer/>
     </div>
   );
 }
