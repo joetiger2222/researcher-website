@@ -10,36 +10,29 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-blend-mode: darken;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Landing Page Styles */
 
-
- .landingData > h3 , .landingData > h1 ,.landingData > p ,.landingData >button {
-  
+.landingData > h3,
+.landingData > h1,
+.landingData > p,
+.landingData > button {
   animation-name: fadeIn;
   animation-duration: 1s;
   animation-fill-mode: forwards;
   opacity: 0;
 }
-
-
 
 p {
-  
   animation-name: fadeIn;
   animation-duration: 1s;
   animation-fill-mode: forwards;
   opacity: 0;
 }
-
-.landingData >button {
-  
-  cursor: pointer;
-  
-}
-
-
 
 /* Animation Styles */
 @keyframes fadeIn {
@@ -53,25 +46,26 @@ p {
   }
 }
 
-
-
- .landingData {
+.landingData {
   display: flex;
   flex-direction: column;
   width: 90%;
-  min-width: 400px;
+  
   margin: 50px auto 0 auto;
   color: white;
 }
 .landingData > h3 {
   width: 30%;
+ 
 }
 .landingData > h1 {
   width: 30%;
+  
 }
 .landingData > p {
   width: 30%;
   font-size: 20px;
+  
 }
 
 .landingData > button {
@@ -84,41 +78,54 @@ p {
   border: none;
   border-radius: 50px;
   width: 13%;
-  min-width: 100px;
+  min-width: 150px;
+  cursor: pointer;
 }
 .landingData > button:hover {
   background-color: rgb(35 64 157);
-} 
+}
 
 .quizContainer {
   display: flex;
   flex-direction: column;
   width: 70%;
+  padding: 20px;
+  max-width: 1000px;
   align-items: center;
   margin: 80px 0 0 0;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 8px;
 }
-.quizContainer > div > div > img {
+.quizContainer > div > div > img
+ {
   width: 100%;
-  max-width: 500px;
+  min-width: 150px;
 
   margin: 0 0 30px 0;
 }
-.quizContainer > div {
+.researchContainer > div > div > img{
+  width: 100%;
+  min-width: 170px;
+
+  margin: 0 0 30px 0;
+}
+.quizContainer > div,
+.researchContainer > div {
   display: flex;
   align-items: center;
   justify-content: space-around;
 }
-.quizContainer > h3 {
+.quizContainer > h3,
+.researchContainer > h3 {
   font-size: 20px;
   margin: 50px 0 0 0;
 }
-.quizContainer>div>div{
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.quizContainer > div > div,
+.researchContainer > div > div {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .quizImg {
@@ -128,7 +135,8 @@ p {
 
   margin: 0 0 30px 0;
 }
-.quizContainer > h1 {
+.quizContainer > h1,
+.researchContainer > h1 {
   align-self: first baseline;
   margin: 20px 0 0 50px;
 }
@@ -203,6 +211,8 @@ p {
   display: flex;
   flex-direction: column;
   width: 70%;
+  padding: 20px;
+  max-width: 1000px;
   align-items: center;
   margin: 80px 0 80px 0;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -220,7 +230,68 @@ p {
   margin: 50px 0 0 0;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 8px;
+  padding: 20px;
+  max-width: 1000px;
 }
 .earnPointsContainer > img {
   width: 200px;
+}
+
+.researchContainer {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  align-items: center;
+  margin: 0 0 50px 0;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 8px;
+  max-width: 1000px;
+  padding: 20px;
+}
+
+@media only screen and (max-width: 850px) {
+  .earnPointsContainer > h1 {
+    font-size: 1.5em;
+  }
+  .coursesContainer {
+    flex-direction: column;
+  }
+  .courseCard {
+    width: 70%;
+  }
+}
+
+@media only screen and (max-width: 705px) {
+  .badgesDivContainer {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0 0 0;
+  }
+  .badgeDiv {
+    width: 70%;
+    margin: 20px 0;
+  }
+  .landingData {
+    align-items: center;
+    justify-content: flex-end;
+    display: flex;
+    flex-direction: column;
+    height: 57%;
+
+  }
+  .landingData>h3,.landingData>p,.landingData>h1{
+    width: 90%;
+  }
+  .landingData>p{
+    display: flex;
+    text-align: justify;
+  }
+  .quizContainer>div>div>h1{font-size: 1.2em;}
+  .researchContainer>div>div>h1{font-size: 1.2em;}
+  .earnPointsContainer>h1{font-size: 1.2em;}
+  .coursesBigDiv>h1{font-size: 25px;}
+  .btnsFooter button{
+    font-size: 13px;
+  }
 }
