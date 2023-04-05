@@ -1,0 +1,159 @@
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f5f5f5;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    animation-name: fadeIn;
+    animation-duration: 1s;
+  }
+  .smallParent{
+    width: 80%;
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-1rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    width: 75%;
+    margin-top: 30px;
+    background-color: #484848;
+    gap: 30px;
+    padding: 20px;
+    border: 1px solid white;
+  }
+  .imageProrDiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .profile-image {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .profile-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .profile-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: white;
+  }
+  
+  .profile-bio {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: white;
+  }
+  
+  .social-icons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .social-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: #ffffffeb;
+    margin-right: 1rem;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .social-icons a:hover {
+    transform: scale(1.2);
+  }
+  .nameUser{
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .plan {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1.5rem;
+    animation-name: slideIn;
+    animation-duration: 1s;
+    padding: 20px;
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-1rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .plan-image {
+    width: 20rem;
+    height: 18rem;
+    object-fit: cover;
+    border-radius: 0.5rem 0 0 0.5rem;
+  }
+  
+  .plan-details {
+    padding: 1rem;
+  }
+  
+  .plan-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .plan-description {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .plan-price {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  .ParentHeadData{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    background-color: #262626;
+    min-height: 100vh;
+  }
+
+  .DataForLeftRight{
+    width: 75%;
+    height: 200px;
+  }
+  .RightBox, .leftBox{
+    border: 1px solid white;
+    width: 45%;
+
+  }
+  .leftBox{}
+  .RightBox{}

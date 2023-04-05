@@ -1,0 +1,144 @@
+.exit {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .buttonExit {
+    background-color: transparent;
+    border: none;
+    color: red;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  .headContact {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgb(0 0 0 / 50%);
+    width: 350px;
+  }
+  
+  .modal h2 {
+    margin-top: 0;
+  }
+  
+  .modal label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .modal input,
+  .modal textarea {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  textarea{
+      resize: none;
+  }
+  
+  .resetAndCancel {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 10px;
+    }
+    .cancel {
+      width: 30%;
+      padding: 5px;
+      border: none;
+      background-color: #dd2727;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+  
+    }
+    .submitForm {
+        width: 30%;
+        padding: 5px;
+        border: none;
+        background-color: #007bff;
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+      }
+  .submitForm:hover{
+      background-color:#0468d4;
+  }
+  .cancel:hover {
+    background-color: #ff0000;
+  }
+
+  .modal1 {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgb(0 0 0 / 50%);
+    width: 350px;
+    z-index: 1000;
+    background-repeat: no-repeat;
+    background-size: cover;
+ 
+  }
+  .modal1 h2 {
+    margin-top: 0;
+  }
+  
+  .modal1 label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .modal1 input,
+  .modal1 textarea {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .formAddPlan .inputPlanData{
+    width: 100%;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    background: #f2f2f2;
+    padding: 10px;
+    padding-left: 20px;
+    height: 40px;
+    font-size: 16px;
+    border-radius: 50px;
+    box-shadow: inset 0px 0px 15px #cbced1, inset 0px 0px 0px 20px white;
+    letter-spacing: 1px;
+    
+
+  }
+  .formAddPlan label{
+    font-weight: bold;
+  }
+
+ 
+  
