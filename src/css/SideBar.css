@@ -1,0 +1,13 @@
+
+@media only screen and (max-width: 1200px) {
+  .sideBar {
+    display: block !important;
+    background-color: rgb(59, 104, 147);
+  }
+  .sidebarClodeIcon {
+    display: block !important;
+    position: absolute;
+    top: 6px;
+    right: 3px;
+  }
+}

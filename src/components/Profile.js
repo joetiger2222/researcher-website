@@ -13,24 +13,20 @@ const Profile = () => {
   const [showEdit, setShowEdit] = useState(false);
   const [plannerData, setPlannerData] = useState();
 
+  const WatchedCourse = () => (
+    <div className="watchedCourse">
+      <h4>Course Name</h4>
+      <p>Category</p>
+    </div>
+  );
 
+  const BadgeName = () => (
+    <div className="badge">
+      <h4>Badge Name</h4>
+    </div>
+  );
 
-
-const WatchedCourse=()=>(
-  <div className="watchedCourse">
-    <h4>Course Name</h4>
-    <p>Category</p>
-  </div>
-)
-
-const BadgeName=()=>(
-  <div className="badge">
-    <h4>Badge Name</h4>
-  </div>
-)
-
-
-
+  const Task = () => <h4>Task</h4>;
 
   return (
     <div className="ParentHeadData">
@@ -92,43 +88,47 @@ const BadgeName=()=>(
           </div>
         </div>
       </div>
+
+      <div className="badgesAndPoints">
+        <div className="badgesContainer">
+          <h1>Badges</h1>
+          <div className="badgesDiv">
+            <BadgeName />
+            <BadgeName />
+            <BadgeName />
+            <BadgeName />
+          </div>
+        </div>
+
+        <div className="pointsContainer">
+          <h1>Points</h1>
+          <div className="pointsDiv">
+            <li className="profileBeg">Beginner (0-2) Points</li>
+            <li className="profileInter">Intermediate (2-6) Points</li>
+            <li className="profileExp">Expert (6{"<"}points)</li>
+          </div>
+        </div>
+      </div>
+
       <div className="DataForLeftRight">
         <div className="leftBox">
-            <h1>Watched Courses</h1>
-            <div>
-            <WatchedCourse/>
-            <WatchedCourse/>
-            <WatchedCourse/>
-            <WatchedCourse/>
-
-            </div>
-
-
-
+          <h1>Watched Courses</h1>
+          <div>
+            <WatchedCourse />
+            <WatchedCourse />
+            <WatchedCourse />
+            <WatchedCourse />
+          </div>
         </div>
         <div className="RightBox">
-            
-        <h1>Badges</h1>
-            <div className="badgesContainer">
-              <BadgeName/>
-              <BadgeName/>
-              <BadgeName/>
-              <BadgeName/>
-              
-            </div>
-
-            <h1>Points</h1>
-            <div className="pointsContainer">
-              <li className="profileBeg">Beginner (0-2) Points</li>
-              <li className="profileInter">Intermediate (2-6) Points</li>
-              <li className="profileExp">Expert (6{'<'}points)</li>
-              
-
-
-            </div>
-            
-
-
+          <h1>Current Idea</h1>
+          <div className="tasksDiv">
+            <Task />
+            <Task />
+            <Task />
+            <Task />
+            <Task />
+          </div>
         </div>
       </div>
     </div>

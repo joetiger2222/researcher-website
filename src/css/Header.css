@@ -131,3 +131,7 @@
   .dropdown:hover .dropdown-content {
     display: block;
   }
+
+  @media only screen and (max-width: 1200px) {
+    .headerParent{display: none;}
+  }
