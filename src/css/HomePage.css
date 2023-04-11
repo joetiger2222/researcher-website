@@ -196,7 +196,7 @@ p {
   font-size: 16px;
   text-align: justify;
 }
-.courseCard > button {
+.courseCard >div> button {
   width: 100px;
   height: 40px;
   background-color: rgb(48, 86, 209);
@@ -248,6 +248,14 @@ p {
   max-width: 1000px;
   padding: 20px;
 }
+
+.courseBtnAndPriceDiv{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
 
 @media only screen and (max-width: 850px) {
   .earnPointsContainer > h1 {

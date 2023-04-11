@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import loginImg from "./loginImg.png";
 import './Login.css'
 import google from "./google.png";
 import { useState, } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Login() {
+  const navigate=useNavigate();
 
-  const [formData, setFormData] = useState({ userName: "", password: "" });
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [loginData,setLoginData]=useState(null);
 
   function getLoginData(event) {
     setFormData(prevFormData=>{
@@ -18,6 +21,36 @@ export default function Login() {
     })
   }
 console.log(formData)
+
+
+
+function authorizeLogin(e){
+  e.preventDefault();
+  fetch("https://localhost:7187/api/Authentication/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(
+        formData
+      ),
+    })
+
+
+    .then((response) => response.json())
+    .then(data=>setLoginData(data));
+}
+
+
+useEffect(()=>{
+  if(loginData){
+    navigate(`/`, { state: { data: loginData } });
+  }
+},[loginData])
+
+
+
+
 
   return (
     <div
@@ -64,9 +97,9 @@ console.log(formData)
           <form style={{ display: "flex", flexDirection: "column" }}>
 
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <label style={{fontSize:'18px'}}>Username:</label>
+              <label style={{fontSize:'18px'}}>Email:</label>
               <input
-              name="userName"
+              name="email"
                 type={'email'}
                 style={{    
                   borderRadius: "4px",
@@ -106,6 +139,7 @@ console.log(formData)
               
             </div>
             <button
+            type='submit'
             className="loginBtn"
               style={{
                 color: "white",
@@ -120,6 +154,7 @@ console.log(formData)
                 fontWeight:'bold',
                 cursor:'pointer',
               }}
+              onClick={authorizeLogin}
             >
               Login
             </button>

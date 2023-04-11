@@ -4,7 +4,7 @@ import google from "../google.png";
 import "../css/Registration.css";
 const Registration = () => {
 
-  const [formData, setFormData] = useState({ firstName: "", lastName: "",userName:'',email:'',password:'' });
+  const [formData, setFormData] = useState({ firstname: "", lastname: "",userName:'',email:'',password:'',age:'',phoneNumber:'',gender:0 });
   const [passwordMatch,setPasswrdMatch]=useState('');
 
   function getRegisterData(event) {
@@ -18,9 +18,30 @@ const Registration = () => {
 
   console.log(formData)
 
-  function checkConfirmPassword(){
-    console.log(formData.password===passwordMatch);
+
+
+  function sendRegisterData(e){
+    e.preventDefault();
+    if(formData.password===passwordMatch){
+    fetch("https://localhost:7187/api/Authentication", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(
+        formData
+      ),
+    })
+
+
+    .then((response) => response.json())
+    .then(data=>console.log(data));
   }
+  }
+
+
+
+
   
 
   return (
@@ -34,12 +55,12 @@ const Registration = () => {
               <div>
                 {" "}
                 <label htmlFor="">First Name</label>
-                <input onChange={getRegisterData} name="firstName" type="text" placeholder="Enter Your Name" />
+                <input onChange={getRegisterData} name="firstname" type="text" placeholder="Enter Your Name" />
               </div>
               <div>
                 {" "}
                 <label htmlFor="">Last Name</label>
-                <input onChange={getRegisterData} name="lastName" type="text" placeholder="Enter Your Username" />
+                <input onChange={getRegisterData} name="lastname" type="text" placeholder="Enter Your Username" />
               </div>
             </div>
             <div className="username">
@@ -61,14 +82,41 @@ const Registration = () => {
                 <input name="confirmPassword" onChange={(e)=>setPasswrdMatch(e.target.value)} type="password" placeholder="Confirm Password" />
               </div>
             </div>
+
+
+            <div className="NameAndUserName">
+              <div>
+                {" "}
+                <label htmlFor="">Age</label>
+                <input onChange={getRegisterData} name="age" type="text" placeholder="Enter Your Age" />
+              </div>
+              <div>
+                {" "}
+                <label htmlFor="">Gender</label>
+                
+                <select className="genderSelect" name="gender" >
+                  <option selected={true} disabled={true}>Gender</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                </select>
+              </div>
+            </div>
+
+
+            <div className="username">
+                {" "}
+                <label htmlFor="">Phone Number</label>
+                <input onChange={getRegisterData} name="phoneNumber" type="text" placeholder="Enter Your Phone Number" />
+              </div>
+
             <div className="registrationButtons">
-                <button onClick={checkConfirmPassword} className="createAccountbtn">
+                <button onClick={sendRegisterData} className="createAccountbtn">
                 
                 Create Account
             </button>
                 <button className="createAccountbtnWithGoogle">
                 <img style={{ width: "20px" }} src={google} />
-                Login With Google
+                SignUp With Google
             </button>
             </div>
            

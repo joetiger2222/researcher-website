@@ -12,8 +12,11 @@ import quizCartoon from "../images/quizCartoon.png";
 import Footer from "./Footer";
 import research from "../images/research.png";
 import SideBar from "./SideBar";
+import { useLocation } from "react-router-dom";
 export default function HomePage() {
   const [sideBarVisible, setSideBarVisible] = useState(false);
+  const location=useLocation();
+  // console.log('hello from home page',location.state.data)
 
   function renderSideBar() {
     if (sideBarVisible) {
