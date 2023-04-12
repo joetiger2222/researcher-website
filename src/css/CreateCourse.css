@@ -40,7 +40,17 @@
     width: 100%;
     padding-left: 10px;
 }
-
+.textareainput{
+    height: 80px;
+    border-radius: 10px;
+    background-color: #303245;
+    color: #eee;
+    outline: 0;
+    font-size: 24px;
+    border: none;
+    width: 100%;
+    padding: 10px 0 0 10px;
+}
 .createCourseFormTwoInlineDiv{
     display: flex;
     width: 100%;
@@ -55,7 +65,7 @@
 .createCourseFormTwoInlineDiv>div>input{
     width: 100%;
     padding-left: 10px;
-    box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white;
+    /* box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white; */
 }
 
 .createCourseBtnDiv{
@@ -68,10 +78,10 @@
 .createCourseBtnDiv>button{
     background-color: #08d;
     color: white;
-    height: 60px;
-    width: 320px;
+    height: 50px;
+    width: 200px;
     border-radius: 10px;
-    font-size: 30px;
+    font-size: 26px;
     font-weight: bold;
 }
 
