@@ -16,7 +16,7 @@ import { useLocation } from "react-router-dom";
 export default function HomePage() {
   const [sideBarVisible, setSideBarVisible] = useState(false);
   const location=useLocation();
-  // console.log('hello from home page',location.state.data)
+ 
 
   function renderSideBar() {
     if (sideBarVisible) {
