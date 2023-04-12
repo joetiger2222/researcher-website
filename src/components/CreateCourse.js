@@ -16,6 +16,33 @@ export default function CreateCourse() {
             }
         })
   }
+
+
+
+
+  function sendCourseData(e){
+    e.preventDefault();
+    
+    fetch("https://localhost:7187/api/Courses", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(
+        courseData
+      ),
+    })
+
+
+    .then((response) => console.log(response))
+    .then(data=>console.log(data));
+  
+  }
+
+
+
+
+
   console.log(courseData)
 
   return (
@@ -41,21 +68,28 @@ export default function CreateCourse() {
         <div className="createCourseFormTwoInlineDiv">
           <div className="createCourseFormOneLine">
             <label>Price</label>
-            <input type="number" onChange={getCourseData} name="price" placeholder="Enter Course's Price"></input>
+            <input type="number" className="number-input" onChange={getCourseData} name="price" placeholder="Enter Course's Price"></input>
           </div>
           <div className="createCourseFormOneLine">
             <label>Hours</label>
-            <input type="number" onChange={getCourseData} name="hours" placeholder="Enter Course's Hours"></input>
+            <input className="number-input" type="number" onChange={getCourseData} name="hours" placeholder="Enter Course's Hours"></input>
           </div>
         </div>
 
+
+<div className="createCourseFormTwoInlineDiv">
         <div className="createCourseFormOneLine">
           <label>Brief</label>
           <input onChange={getCourseData} name="brief" placeholder="Enter Course's Brief"></input>
         </div>
         <div className="createCourseFormOneLine">
           <label>Skill ID</label>
-          <input type="number" onChange={getCourseData} name="skillId" placeholder="Enter Course Objectives"></input>
+          <input className="number-input" type="number" onChange={getCourseData} name="skillId" placeholder="Enter Course Objectives"></input>
+        </div>
+        </div>
+
+        <div className="createCourseBtnDiv">
+        <button onClick={sendCourseData}>Create</button>
         </div>
       </form>
     </div>
