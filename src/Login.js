@@ -4,7 +4,6 @@ import './Login.css'
 import google from "./google.png";
 import { useState, } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 export default function Login() {
   const navigate=useNavigate();
