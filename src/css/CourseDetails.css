@@ -1,0 +1,4 @@
+.courseParent{
+    display: flex;
+    flex-direction: column;
+}

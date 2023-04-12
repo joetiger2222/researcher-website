@@ -6,6 +6,7 @@ import Registration from './components/Regisration';
 import HomePage from './components/HomePage';
 import Profile from './components/Profile';
 import CreateCourse from './components/CreateCourse';
+import CourseDetails from './components/CourseDetails';
 function App() {
   return (
     <div >
@@ -16,6 +17,8 @@ function App() {
         <Route path='/registration' element={<Registration/>} />
         <Route path='/profile' element={<Profile/>} />
         <Route path='/CreateCourse' element={<CreateCourse/>}/>
+        <Route path='/CourseDetails' element={<CourseDetails/>}/>
+
         
 
         
