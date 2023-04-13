@@ -1,4 +1,34 @@
 .courseParent{
+   
+}
+
+.LeftRight{
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 60px;
+    align-items: center;
+}
+.LeftInfo{
+    width: 45%;
+}
+.RightVideo{
+    width: 35%;
+}
+.RightVideo>video{
+    width: 100%;
+}
+.headInfo{
+    font-weight: bold;
+}
+.LeftInfo>button{
+    font-size: 18px;
+    padding: 8px;
+    width: 25%;
+    background-color: #2a3393;
+    color: white;
+    border-radius: 5px;
+}
+.LeftInfo>button:hover{
+    background-color:#212876 ;
 }
