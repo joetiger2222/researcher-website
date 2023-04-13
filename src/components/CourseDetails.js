@@ -4,22 +4,21 @@ import { FaRegNewspaper } from "react-icons/fa";
 import { HiAcademicCap } from "react-icons/hi";
 import "../css/CourseDetails.css";
 import Header from "./Header.js";
+import { Link } from "react-router-dom";
+import { FaArrowCircleDown,FaArrowCircleUp } from "react-icons/fa";
 const CourseDetails = () => {
   const [videoUrl, setVideoUrl] = useState("");
-
+  
   useEffect(() => {
-    // Make the GET request to the API endpoint
     fetch(`https://localhost:7187/api/courses/Videos/1`)
       .then((response) => {
-        // Check if the response is successful
         if (!response.ok) {
           throw new Error("Failed to fetch video.");
         }
-        // Return the response as a blob
+
         return response.blob();
       })
       .then((blob) => {
-        // Convert the blob to a URL and set it as the source of the video player
         const videoUrl = URL.createObjectURL(blob);
         setVideoUrl(videoUrl);
       })
@@ -29,33 +28,62 @@ const CourseDetails = () => {
   }, []);
 
   console.log(videoUrl);
+
+
+
+const SectionCard=()=>{
+  const [activeSection,setAtiveSection]=useState(false);
+
+  return(
+    <div className="courseDetailsSectionsContainer">
+          <h3 onClick={(e)=>setAtiveSection(!activeSection)}>Section Name 
+          {!activeSection&&<FaArrowCircleDown/>}
+          {activeSection&&<FaArrowCircleUp/>}
+          </h3>
+          <div className="courseDetailsSectionVideos"  style={{display:activeSection?'flex':'none'}}>
+            {[1,2,3,4,5].map(num=>(
+              <Link>{num}</Link>
+            ))}
+          </div>
+        </div>
+  )
+}
+
+
+
+
+
+
   return (
-    
     <div className="courseParent">
-              <Header />
+      <Header />
 
       <div className="LeftRight">
         <div className="LeftInfo">
           <h1 className="NameCourse">
             The complete Course python Bootcamp From Zero To Hero
           </h1>
-          <h3 className="briefCourse">
+          <p className="briefCourse">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum
             inventore non voluptate amet obcaecati reiciendis nulla dolore a
             natus ducimus similique eaque magni quo beatae, quidem dignissimos
             nobis quisquam maxime!
-          </h3>
-          <h2>Price</h2>
+          </p>
+          <h2>Price: 20$</h2>
           <button>Buy Now</button>
         </div>
         <div className="RightVideo">
-          {videoUrl ? (
-            <video controls src={videoUrl} type="video/mp4" />
-          ) : (
-            <p>Loading video...</p>
-          )}
+
+          <div className="courseDetailesVideoDiv">
+            {videoUrl ? (
+              <video controls src={videoUrl} type="video/mp4" />
+            ) : (
+              <h1>Intro Video</h1>
+            )}
+          </div>
+
           <div className="BottomRightInfo">
-            <p className="headInfo">This Course Include:</p>
+            <h3 className="headInfo">This Course Includes:</h3>
             <p>
               <AiOutlineHourglass />
               22 hours
@@ -64,14 +92,26 @@ const CourseDetails = () => {
               <HiAcademicCap />
               Certificate Of Compiletion
             </p>
+            <div className="Objectives">Objectives</div>
+            <div className="Instructions">Instructions</div>
           </div>
         </div>
+
+        <div className="courseDetailsCourseContentDiv">
+        <h1>Course Content</h1>
+        <SectionCard/>
+        <SectionCard/>
+        
+        
       </div>
 
-      <div className="Bottom">
+      </div>
+
+      {/* <div className="Bottom">
         <div className="Objectives">Objectives</div>
         <div className="Instructions">Instructions</div>
-      </div>
+      </div> */}
+      
     </div>
   );
 };

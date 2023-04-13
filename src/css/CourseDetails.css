@@ -1,34 +1,105 @@
 .courseParent{
-   
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   width: 100%;
+   background-color: #212876;
+   color: white;
+   min-height: 100vh;
 }
 
 .LeftRight{
+    row-gap: 40px;
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
-    justify-content: space-around;
+    width: 80%;
+    max-width: 1500px;
     margin-top: 60px;
     align-items: center;
 }
 .LeftInfo{
-    width: 45%;
+    width: 90%;
+    max-width: 1000px;
+    border: 1px solid white;
+    padding: 12px;
 }
 .RightVideo{
-    width: 35%;
+    width: 90%;
+    max-width: 1000px;
+    display: flex;
+    border: 1px solid white;
+    padding: 12px;
+    justify-content: space-evenly;
 }
-.RightVideo>video{
+/* .RightVideo>video{
     width: 100%;
-}
+} */
 .headInfo{
     font-weight: bold;
 }
+.BottomRightInfo{
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+.BottomRightInfo>p{
+    margin: 0;
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+}
 .LeftInfo>button{
-    font-size: 18px;
-    padding: 8px;
-    width: 25%;
-    background-color: #2a3393;
+    font-size: 20px;
+    font-weight: bold;
+    /* padding: 8px; */
+    width: 200px;
+    height: 60px;
+    /* background-color: #2a3393; */
+    background-color: transparent;
     color: white;
+
     border-radius: 5px;
+    border: 1px solid white;
 }
 .LeftInfo>button:hover{
-    background-color:#212876 ;
+    background-color:#fff ;
+    color: black;
 }
+
+.courseDetailesVideoDiv{
+    width: 50%;
+}
+
+.courseDetailsCourseContentDiv{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 1px solid white;
+    width: 90%;
+    max-width: 1000px;
+    padding: 12px;
+    margin-bottom: 20px;
+}
+.courseDetailsSectionsContainer>h3{
+    cursor: pointer;
+}
+
+.courseDetailsSectionVideos{
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+.courseDetailsSectionVideos>a{
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    
+}
+
+.courseDetailsSectionsContainer>h3{
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+}
+
