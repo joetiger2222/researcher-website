@@ -5,10 +5,10 @@ import { HiAcademicCap } from "react-icons/hi";
 import "../css/CourseDetails.css";
 import Header from "./Header.js";
 import { Link } from "react-router-dom";
-import { FaArrowCircleDown,FaArrowCircleUp } from "react-icons/fa";
+import { FaArrowCircleDown, FaArrowCircleUp } from "react-icons/fa";
 const CourseDetails = () => {
   const [videoUrl, setVideoUrl] = useState("");
-  
+
   useEffect(() => {
     fetch(`https://localhost:7187/api/courses/Videos/1`)
       .then((response) => {
@@ -29,30 +29,34 @@ const CourseDetails = () => {
 
   console.log(videoUrl);
 
+  const SectionCard = () => {
+    const [activeSection, setAtiveSection] = useState(false);
 
-
-const SectionCard=()=>{
-  const [activeSection,setAtiveSection]=useState(false);
-
-  return(
-    <div className="courseDetailsSectionsContainer">
-          <h3 onClick={(e)=>setAtiveSection(!activeSection)}>Section Name 
-          {!activeSection&&<FaArrowCircleDown/>}
-          {activeSection&&<FaArrowCircleUp/>}
-          </h3>
-          <div className="courseDetailsSectionVideos"  style={{display:activeSection?'flex':'none'}}>
-            {[1,2,3,4,5].map(num=>(
-              <Link>{num}</Link>
-            ))}
-          </div>
+    return (
+      <div className="courseDetailsSectionsContainer">
+        <h3 onClick={(e) => setAtiveSection(!activeSection)}
+         
+        >
+          Section Name
+          { <FaArrowCircleDown style={{ transform: activeSection ? "rotate(180deg)" : "none",
+          transition:   " 0.3s ease-in-out" 
+        
+        }} />}
+         
+        </h3>
+        <div
+          className="courseDetailsSectionVideos"
+          style={{ display: activeSection ? "flex" : "none",
+          
+         }}
+        >
+          {[1, 2, 3, 4, 5].map((num) => (
+            <Link className="LinkVideoSection">{num}</Link>
+          ))}
         </div>
-  )
-}
-
-
-
-
-
+      </div>
+    );
+  };
 
   return (
     <div className="courseParent">
@@ -73,10 +77,14 @@ const SectionCard=()=>{
           <button>Buy Now</button>
         </div>
         <div className="RightVideo">
-
           <div className="courseDetailesVideoDiv">
             {videoUrl ? (
-              <video controls src={videoUrl} type="video/mp4" />
+              <video
+                className="Video"
+                controls
+                src={videoUrl}
+                type="video/mp4"
+              />
             ) : (
               <h1>Intro Video</h1>
             )}
@@ -92,26 +100,32 @@ const SectionCard=()=>{
               <HiAcademicCap />
               Certificate Of Compiletion
             </p>
-            <div className="Objectives">Objectives</div>
-            <div className="Instructions">Instructions</div>
+            
           </div>
         </div>
 
         <div className="courseDetailsCourseContentDiv">
-        <h1>Course Content</h1>
-        <SectionCard/>
-        <SectionCard/>
-        
-        
-      </div>
-
+          <h1>Course Content</h1>
+          <div className="ContSections">
+            <SectionCard />
+            <SectionCard />
+            <SectionCard />
+            <SectionCard />
+          </div>
+        </div>
+<div className="ContObjecInst"> <div className="Objectives">
+        Objectives
+        </div>
+        <div className="Instructions">
+        Instructions  
+        </div></div>
+       
       </div>
 
       {/* <div className="Bottom">
         <div className="Objectives">Objectives</div>
         <div className="Instructions">Instructions</div>
       </div> */}
-      
     </div>
   );
 };

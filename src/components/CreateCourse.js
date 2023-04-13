@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../css/CreateCourse.css";
+import axios from "axios";
 
 export default function CreateCourse() {
   const [courseData, setCourseData] = useState({
@@ -19,23 +20,35 @@ export default function CreateCourse() {
         [event.target.name]: event.target.value,
       };
     });
+        parseInt(courseData.skillId)
+
   }
 
   function sendCourseData(e) {
     e.preventDefault();
-
+    // axios.post('https://localhost:7187/api/Courses', {
+    //   courseData
+    // })
+    // .then((response) => {
+    //   console.log(response);
+    // }, (error) => {
+    //   console.log(error);
+    // });
     fetch("https://localhost:7187/api/Courses", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(courseData),
+      body: JSON.stringify(
+        courseData
+        ,
+      ),
     })
       .then((response) => console.log(response))
       .then((data) => console.log(data));
   }
 
-  console.log(courseData);
+  console.log(typeof( courseData.skillId));
 
   return (
     <div className="createCourseContainer">
@@ -84,7 +97,7 @@ export default function CreateCourse() {
             <label>Hours</label>
             <input
               className="number-input"
-              type="number"
+              type="text"
               onChange={getCourseData}
               name="hours"
               placeholder="Enter Course's Hours"
@@ -116,6 +129,7 @@ export default function CreateCourse() {
           <textarea
             onChange={getCourseData}
             className="textareainput"
+            type="text"
             name="brief"
             placeholder="Enter Course's Brief"
           ></textarea>
