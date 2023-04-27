@@ -27,7 +27,7 @@ const CourseDetails = () => {
       });
   }, []);
 
-  console.log(videoUrl);
+  console.log(videoUrl); 
 
   const SectionCard = () => {
     const [activeSection, setAtiveSection] = useState(false);
