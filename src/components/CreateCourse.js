@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../css/CreateCourse.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateCourse() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+  const[courseId,setCourseId]=useState(null);
   const [courseData, setCourseData] = useState({
     name: "",
     instructions: "",
@@ -22,31 +23,30 @@ export default function CreateCourse() {
         [event.target.name]: event.target.value,
       };
     });
-        parseInt(courseData.skillId)
-
+    parseInt(courseData.skillId);
   }
 
   function sendCourseData(e) {
     e.preventDefault();
-    
+
     fetch("https://localhost:7187/api/Courses", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(
-        courseData
-        ,
-      ),
+      body: JSON.stringify(courseData),
     })
-      .then((response) =>{
-        if(response.ok)navigate('/AdminPanel')
-        else alert('failed to create course please try again Later')
+      .then((response) => {
+        if (!response.ok)
+          alert("failed to create course please try again Later");
+          return response.json();
       })
-      .then((data) => console.log(data));
+      .then((data) =>setCourseId(data.courseId));
   }
-
-  
+  useEffect(()=>{
+    if(courseId)
+    navigate(`/CourseDetails/${courseId}`)
+  },[courseId])
 
   return (
     <div className="createCourseContainer">

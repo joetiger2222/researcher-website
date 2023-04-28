@@ -146,6 +146,7 @@ const CourseDetails = () => {
       </div>
     );
   };
+  console.log(courseSections)
 
   return (
     <div className="courseParent">
@@ -191,6 +192,7 @@ const CourseDetails = () => {
             <FaPlusCircle className="addBtn" />
           </div>
           <div className="ContSections">
+            {courseSections?.length===0&&<h3 style={{textAlign:'center'}}>Click the plus button to start adding sections</h3>}
             {courseSections?.map((section) => {
               return <SectionCard section={section} />;
             })}
