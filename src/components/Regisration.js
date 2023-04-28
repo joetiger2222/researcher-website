@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import registartionImg from "../images/registerImage.png";
 import google from "../google.png";
 import "../css/Registration.css";
+import { useNavigate } from "react-router-dom";
 const Registration = () => {
 
   const [formData, setFormData] = useState({ firstname: "", lastname: "",userName:'',email:'',password:'',age:'',phoneNumber:'',gender:0 });
   const [passwordMatch,setPasswrdMatch]=useState('');
+  const [userId,setUserId]=useState(null);
+  const navigate=useNavigate();
 
   function getRegisterData(event) {
     setFormData(prevFormData=>{
@@ -15,6 +18,13 @@ const Registration = () => {
         }
     })
   }
+
+useEffect(()=>{
+  let data=formData;
+  data.gender=data.gender*1;
+  setFormData(data);
+  
+},[formData.gender])
 
   console.log(formData)
 
@@ -36,10 +46,16 @@ const Registration = () => {
 
     .then((response) => response.json())
     .then(data=>console.log(data));
+  }else{
+    alert('Password and Confirm Password Does not Match')
   }
   }
 
-
+useEffect(()=>{
+  if(userId){
+    navigate('/',{state:{data:userId}})
+  }
+},[userId])
 
 
   
@@ -94,10 +110,10 @@ const Registration = () => {
                 {" "}
                 <label htmlFor="">Gender</label>
                 
-                <select className="genderSelect" name="gender" >
+                <select className="genderSelect" name="gender" onChange={getRegisterData}>
                   <option selected={true} disabled={true}>Gender</option>
-                  <option>Male</option>
-                  <option>Female</option>
+                  <option value={0}>Male</option>
+                  <option value={1}>Female</option>
                 </select>
               </div>
             </div>

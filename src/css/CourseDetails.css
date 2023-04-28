@@ -3,7 +3,7 @@
    flex-direction: column;
    align-items: center;
    width: 100%;
-   background-color: #212876;
+  background-color: rgb(9, 14, 52);
    color: white;
    min-height: 100vh;
 }
@@ -89,20 +89,25 @@
     cursor: pointer;
 }
 .LinkVideoSection{
+    color: white;
+    padding: 5px;
+    transition: all 0.3s ease;
 
 }
 .LinkVideoSection:hover{
-    background-color: #d1d7dc;
+    /* background-color: #d1d7dc; */
+    padding: 10px;
 }
+
 .courseDetailsSectionVideos{
     display: flex;
     flex-direction: column;
-    row-gap: 10px;
+    row-gap: 20px;
     display: flex;
     padding-left: 25px;
 }
 .courseDetailsSectionVideos>a{
-    color: black;
+    
     text-decoration: none;
     font-size: 20px;
     width: 95%;
@@ -138,8 +143,8 @@
     flex-direction: column;
     align-items: flex-start;
     border: 1px solid white;
-    width: 90%;
-    padding: 12px;
+    width: 45%;
+   padding: 12px;
     max-width: 1000px;
     margin-bottom: 20px;
 }
@@ -148,10 +153,34 @@
     flex-direction: column;
     align-items: flex-start;
     border: 1px solid white;
+    width: 45%;
+   padding: 12px;
+    max-width: 1000px;
+    margin-bottom: 20px;
+}
+
+.ContObjecInst{
+    display: flex;
+    
+    justify-content: space-between;
+    border: 1px solid white;
     width: 90%;
     padding: 12px;
     max-width: 1000px;
     margin-bottom: 20px;
+}
+
+.courseContentAndPlusButton{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.addBtn{
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
 }
 
 /* .arrow {

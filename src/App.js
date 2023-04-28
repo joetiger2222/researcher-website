@@ -7,6 +7,8 @@ import HomePage from './components/HomePage';
 import Profile from './components/Profile';
 import CreateCourse from './components/CreateCourse';
 import CourseDetails from './components/CourseDetails';
+import AdminPanel from './components/AdminPanel';
+
 function App() {
   return (
     <div >
@@ -17,7 +19,9 @@ function App() {
         <Route path='/registration' element={<Registration/>} />
         <Route path='/profile' element={<Profile/>} />
         <Route path='/CreateCourse' element={<CreateCourse/>}/>
-        <Route path='/CourseDetails' element={<CourseDetails/>}/>
+        <Route path='/CourseDetails/:id' element={<CourseDetails/>}/>
+        <Route path='/AdminPanel' element={<AdminPanel/>}/>
+      
 
         
 

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "../css/CreateCourse.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateCourse() {
+  const navigate=useNavigate();
   const [courseData, setCourseData] = useState({
     name: "",
     instructions: "",
@@ -26,14 +28,7 @@ export default function CreateCourse() {
 
   function sendCourseData(e) {
     e.preventDefault();
-    // axios.post('https://localhost:7187/api/Courses', {
-    //   courseData
-    // })
-    // .then((response) => {
-    //   console.log(response);
-    // }, (error) => {
-    //   console.log(error);
-    // });
+    
     fetch("https://localhost:7187/api/Courses", {
       method: "POST",
       headers: {
@@ -44,11 +39,14 @@ export default function CreateCourse() {
         ,
       ),
     })
-      .then((response) => console.log(response))
+      .then((response) =>{
+        if(response.ok)navigate('/AdminPanel')
+        else alert('failed to create course please try again Later')
+      })
       .then((data) => console.log(data));
   }
 
-  console.log(typeof( courseData.skillId));
+  
 
   return (
     <div className="createCourseContainer">
@@ -84,7 +82,7 @@ export default function CreateCourse() {
 
         <div className="createCourseFormTwoInlineDiv">
           <div className="createCourseFormOneLine">
-            <label>Price</label>
+            <label>Price (EGP)</label>
             <input
               type="number"
               className="number-input"

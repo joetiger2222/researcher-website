@@ -2,8 +2,11 @@ import React from "react";
 import "../css/Header.css";
 import userImg from "../images/userImg.png";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
+
 export default function Header() {
- 
+  const userData=useLocation().state?.data;
+
 
   return (
     <div className="headerParent">
@@ -29,10 +32,10 @@ export default function Header() {
 
             <li>Research</li>
           </ul>
-          <div className="headerBtnsContainer">
+          {!userData&&<div className="headerBtnsContainer">
             <button className="headerSignBtn">Login</button>
             <button className="headerSignBtn">Signup</button>
-          </div>
+          </div>}
           {/* <img src={userImg} className="userImgHeader" /> */}
 
           <li class="dropdown">
