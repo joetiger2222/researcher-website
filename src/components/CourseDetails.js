@@ -125,6 +125,7 @@ const CourseDetails = () => {
             {section?.name}
             {
               <FaArrowCircleDown
+
                 style={{
                   transform: activeSection ? "rotate(180deg)" : "none",
                   transition: " 0.2s ease-in-out",
@@ -143,6 +144,7 @@ const CourseDetails = () => {
             />*/}
 
             <FaPlusCircle
+            className="plusIcon"
               onClick={() => {setSectionId(section.id);setShowUploadVideo(true)}}
             />
           {/* </h4>  */}
@@ -177,7 +179,8 @@ const CourseDetails = () => {
               }}
               className="LinkVideoSection"
             >
-              {video?.title}
+              <span>{video?.title}</span>
+              
             </Link>
           ))}
         </div>
@@ -234,36 +237,38 @@ const CourseDetails = () => {
       }}
       >
         <div className="uploadVideoContainer">
+          <h2 style={{color:"black"}}>Upload Video</h2>
 
         {video && (
-          <div>
+          <div className="contVideoInfo">
             <video
               className="videoW"
               src={URL.createObjectURL(video)}
               controls
             />
             <input
+            className="InputUpload"
               type="text"
               placeholder="Video's Title"
               required
               name="Title"
               onChange={(e)=>setVideoTitle(e.target.value)}
             ></input>
-            <button onClick={handleVideoSubmit}>Upload Video</button>
+            <button className="btnUpload" onClick={handleVideoSubmit}>Upload Video</button>
           </div>
         )}
 
-
-        <h4>
-          <input
+<div className="ChooseAndCancel">
+<input
             type="file"
             id="video-upload"
             onChange={handleVideoUpload}
            
           />
 
-        </h4>
-        <button onClick={props.onClose}>Cancel</button>
+        <button className="cancelbtn" onClick={props.onClose}>Cancel</button>
+</div>
+         
         
         </div>
 
