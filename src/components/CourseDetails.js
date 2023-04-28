@@ -6,12 +6,14 @@ import "../css/CourseDetails.css";
 import Header from "./Header.js";
 import { Link, useParams } from "react-router-dom";
 import { FaArrowCircleDown, FaArrowCircleUp } from "react-icons/fa";
+import Footer from "./Footer";
 const CourseDetails = () => {
   const [videoUrl, setVideoUrl] = useState("");
   const [videoId, setVideoId] = useState(null);
   const [courseDetails, setCourseDetails] = useState(null);
   const [courseSections, setCourseSections] = useState(null);
   const [showVideo, setShowVideo] = useState(false);
+  const [showAddSection, setShowAddSection] = useState(false);
 
   // useEffect(() => {
   //   fetch(`https://localhost:7187/api/courses/Videos/1`)
@@ -70,6 +72,9 @@ const CourseDetails = () => {
 
     return (
       <div className="courseDetailsSectionsContainer">
+
+<div className="sectionHeader">
+
         <h3 onClick={(e) => setAtiveSection(!activeSection)}>
           {section?.name}
           {
@@ -81,6 +86,13 @@ const CourseDetails = () => {
             />
           }
         </h3>
+
+        <h4>
+          <FaPlusCircle/>
+        </h4>
+
+        </div>
+
         <div
           className="courseDetailsSectionVideos"
           style={{ display: activeSection ? "flex" : "none" }}
@@ -146,7 +158,81 @@ const CourseDetails = () => {
       </div>
     );
   };
-  console.log(courseSections)
+
+  const AddSectionCard = ({ show, onClose }) => {
+    const [sectionData, setSectionData] = useState({ courseId: id, name: "" });
+
+    function getSectionName(e){
+      setSectionData(prevFormData=>{
+        return {
+            ...prevFormData,
+            [e.target.name]:e.target.value
+        }
+    })
+    }
+
+
+
+    function addSection(){
+      let data=[]
+      data.push(sectionData)
+      fetch(`https://localhost:7187/api/Courses/Sections?courseId=${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(
+        data
+      ),
+    })
+
+
+    .then((response) => {
+        
+        if(response.ok){
+          getCourseSections();
+          onClose();
+        }else alert('Failed To Add new Section Please Try Again Later')
+         
+    })
+    .then(data=>{
+    });
+      
+    }
+
+
+    
+    if (!show) return null;
+    return (
+      <div
+        
+        style={{
+          position: "fixed",
+          left: "0",
+          top: "0",
+          right: "0",
+          bottom: "0",
+          backgroundColor: "rgba(0, 0,0,0.7)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: "100",
+        }}
+      >
+        <div className="addSectionDiv">
+          <span>Enter Section Name: </span>
+          <input onChange={getSectionName} name='name'
+          placeholder="Enter Section Name"></input>
+          <div className="addSectionBtnsDiv">
+          <button onClick={onClose} style={{backgroundColor:'#ce0808'}}>Cancel</button>
+          {sectionData.name!==''&&<button style={{backgroundColor:'green'}}onClick={addSection}>Finish</button>}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // console.log(courseSections)
 
   return (
     <div className="courseParent">
@@ -189,10 +275,14 @@ const CourseDetails = () => {
         <div className="courseDetailsCourseContentDiv">
           <div className="courseContentAndPlusButton">
             <h1>Course Content</h1>
-            <FaPlusCircle className="addBtn" />
+            <FaPlusCircle onClick={()=>setShowAddSection(true)} className="addBtn" />
           </div>
           <div className="ContSections">
-            {courseSections?.length===0&&<h3 style={{textAlign:'center'}}>Click the plus button to start adding sections</h3>}
+            {courseSections?.length === 0 && (
+              <h3 style={{ textAlign: "center" }}>
+                Click the plus button to start adding sections
+              </h3>
+            )}
             {courseSections?.map((section) => {
               return <SectionCard section={section} />;
             })}
@@ -213,6 +303,14 @@ const CourseDetails = () => {
           videoId={videoId}
         />
       )}
+
+      <AddSectionCard
+        show={showAddSection}
+        onClose={() => setShowAddSection(false)}
+        
+      />
+
+      <Footer />
     </div>
   );
 };
