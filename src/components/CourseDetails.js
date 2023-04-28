@@ -7,6 +7,7 @@ import Header from "./Header.js";
 import { Link, useParams } from "react-router-dom";
 import { FaArrowCircleDown, FaArrowCircleUp } from "react-icons/fa";
 import Footer from "./Footer";
+import axios from "axios";
 const CourseDetails = () => {
   const [videoUrl, setVideoUrl] = useState("");
   const [videoId, setVideoId] = useState(null);
@@ -70,27 +71,99 @@ const CourseDetails = () => {
       getVideosIds();
     }, []);
 
+    const [videoUpload, setVideoUpload] = useState(null);
+
+    const [video, setVideo] = useState(null);
+    const [videoTitle, setVideoTitle] = useState("");
+
+    const handleVideoUpload = (event) => {
+      const file = event.target.files[0];
+      setVideo(file);
+    };
+
+    const handleVideoSubmit = (event) => {
+      event.preventDefault();
+      const formData = new FormData();
+      formData.append("file", video);
+      formData.append('Title', videoTitle);
+
+      fetch(`https://localhost:7187/api/Courses/Videos/${section.id}`, {
+        method: "POST",
+        body: formData,
+      }).then((response) => {
+        const reader = response.body.getReader();
+        let chunks = [];
+  
+        function readStream() {
+          return reader.read().then(({ done, value }) => {
+            if (done) {
+              return chunks;
+            }
+            chunks.push(value);
+            return readStream();
+          });
+        }
+  
+        return readStream().then((chunks) => {
+          const body = new TextDecoder().decode(
+            new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+          );
+          console.log(body);
+          
+        });
+      });
+  }
+        
+
+    function getVideoTitle(e) {
+      setVideoTitle(e.target.value);
+    }
+    console.log(videosIds)
     return (
       <div className="courseDetailsSectionsContainer">
+        <div className="sectionHeader">
+          <h3 onClick={(e) => setAtiveSection(!activeSection)}>
+            {section?.name}
+            {
+              <FaArrowCircleDown
+                style={{
+                  transform: activeSection ? "rotate(180deg)" : "none",
+                  transition: " 0.2s ease-in-out",
+                }}
+              />
+            }
+          </h3>
+          {/* For Uploading Video */}
 
-<div className="sectionHeader">
-
-        <h3 onClick={(e) => setAtiveSection(!activeSection)}>
-          {section?.name}
-          {
-            <FaArrowCircleDown
-              style={{
-                transform: activeSection ? "rotate(180deg)" : "none",
-                transition: " 0.2s ease-in-out",
-              }}
+          <h4>
+            <input
+              type="file"
+              id="video-upload"
+              onChange={handleVideoUpload}
+              style={{ display: "none" }}
             />
-          }
-        </h3>
 
-        <h4>
-          <FaPlusCircle/>
-        </h4>
-
+            <FaPlusCircle
+              onClick={() => document.getElementById("video-upload").click()}
+            />
+          </h4>
+          {video && (
+            <div>
+              <video
+                className="videoW"
+                src={URL.createObjectURL(video)}
+                controls
+              />
+              <input
+                type="text"
+                placeholder="Video's Title"
+                required
+                name="Title"
+                onChange={getVideoTitle}
+              ></input>
+              <button onClick={handleVideoSubmit}>Upload Video</button>
+            </div>
+          )}
         </div>
 
         <div
@@ -162,50 +235,37 @@ const CourseDetails = () => {
   const AddSectionCard = ({ show, onClose }) => {
     const [sectionData, setSectionData] = useState({ courseId: id, name: "" });
 
-    function getSectionName(e){
-      setSectionData(prevFormData=>{
+    function getSectionName(e) {
+      setSectionData((prevFormData) => {
         return {
-            ...prevFormData,
-            [e.target.name]:e.target.value
-        }
-    })
+          ...prevFormData,
+          [e.target.name]: e.target.value,
+        };
+      });
     }
 
-
-
-    function addSection(){
-      let data=[]
-      data.push(sectionData)
+    function addSection() {
+      let data = [];
+      data.push(sectionData);
       fetch(`https://localhost:7187/api/Courses/Sections?courseId=${id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(
-        data
-      ),
-    })
-
-
-    .then((response) => {
-        
-        if(response.ok){
-          getCourseSections();
-          onClose();
-        }else alert('Failed To Add new Section Please Try Again Later')
-         
-    })
-    .then(data=>{
-    });
-      
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          if (response.ok) {
+            getCourseSections();
+            onClose();
+          } else alert("Failed To Add new Section Please Try Again Later");
+        })
+        .then((data) => {});
     }
 
-
-    
     if (!show) return null;
     return (
       <div
-        
         style={{
           position: "fixed",
           left: "0",
@@ -221,11 +281,20 @@ const CourseDetails = () => {
       >
         <div className="addSectionDiv">
           <span>Enter Section Name: </span>
-          <input onChange={getSectionName} name='name'
-          placeholder="Enter Section Name"></input>
+          <input
+            onChange={getSectionName}
+            name="name"
+            placeholder="Enter Section Name"
+          ></input>
           <div className="addSectionBtnsDiv">
-          <button onClick={onClose} style={{backgroundColor:'#ce0808'}}>Cancel</button>
-          {sectionData.name!==''&&<button style={{backgroundColor:'green'}}onClick={addSection}>Finish</button>}
+            <button onClick={onClose} style={{ backgroundColor: "#ce0808" }}>
+              Cancel
+            </button>
+            {sectionData.name !== "" && (
+              <button style={{ backgroundColor: "green" }} onClick={addSection}>
+                Finish
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -275,7 +344,10 @@ const CourseDetails = () => {
         <div className="courseDetailsCourseContentDiv">
           <div className="courseContentAndPlusButton">
             <h1>Course Content</h1>
-            <FaPlusCircle onClick={()=>setShowAddSection(true)} className="addBtn" />
+            <FaPlusCircle
+              onClick={() => setShowAddSection(true)}
+              className="addBtn"
+            />
           </div>
           <div className="ContSections">
             {courseSections?.length === 0 && (
@@ -307,7 +379,6 @@ const CourseDetails = () => {
       <AddSectionCard
         show={showAddSection}
         onClose={() => setShowAddSection(false)}
-        
       />
 
       <Footer />
