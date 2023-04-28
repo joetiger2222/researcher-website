@@ -15,7 +15,9 @@ const CourseDetails = () => {
   const [courseSections, setCourseSections] = useState(null);
   const [showVideo, setShowVideo] = useState(false);
   const [showAddSection, setShowAddSection] = useState(false);
-
+  const [sectionId,setSectionId]=useState(null);
+  const [showUploadVideo,setShowUploadVideo]=useState(false);
+  
   // useEffect(() => {
   //   fetch(`https://localhost:7187/api/courses/Videos/1`)
   //     .then((response) => {
@@ -71,54 +73,51 @@ const CourseDetails = () => {
       getVideosIds();
     }, []);
 
-    const [videoUpload, setVideoUpload] = useState(null);
-
     const [video, setVideo] = useState(null);
-    const [videoTitle, setVideoTitle] = useState("");
+    //   const [videoTitle, setVideoTitle] = useState("");
 
-    const handleVideoUpload = (event) => {
-      const file = event.target.files[0];
-      setVideo(file);
-    };
+    //   const handleVideoUpload = (event) => {
+    //     const file = event.target.files[0];
+    //     setVideo(file);
+    //   };
 
-    const handleVideoSubmit = (event) => {
-      event.preventDefault();
-      const formData = new FormData();
-      formData.append("file", video);
-      formData.append('Title', videoTitle);
+    //   const handleVideoSubmit = (event) => {
+    //     event.preventDefault();
+    //     const formData = new FormData();
+    //     formData.append("file", video);
+    //     formData.append('Title', videoTitle);
 
-      fetch(`https://localhost:7187/api/Courses/Videos/${section.id}`, {
-        method: "POST",
-        body: formData,
-      }).then((response) => {
-        const reader = response.body.getReader();
-        let chunks = [];
-  
-        function readStream() {
-          return reader.read().then(({ done, value }) => {
-            if (done) {
-              return chunks;
-            }
-            chunks.push(value);
-            return readStream();
-          });
-        }
-  
-        return readStream().then((chunks) => {
-          const body = new TextDecoder().decode(
-            new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
-          );
-          console.log(body);
-          
-        });
-      });
-  }
-        
+    //     fetch(`https://localhost:7187/api/Courses/Videos/${section.id}`, {
+    //       method: "POST",
+    //       body: formData,
+    //     }).then((response) => {
+    //       const reader = response.body.getReader();
+    //       let chunks = [];
 
-    function getVideoTitle(e) {
-      setVideoTitle(e.target.value);
-    }
-    console.log(videosIds)
+    //       function readStream() {
+    //         return reader.read().then(({ done, value }) => {
+    //           if (done) {
+    //             return chunks;
+    //           }
+    //           chunks.push(value);
+    //           return readStream();
+    //         });
+    //       }
+
+    //       return readStream().then((chunks) => {
+    //         const body = new TextDecoder().decode(
+    //           new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+    //         );
+    //         console.log(body);
+
+    //       });
+    //     });
+    // }
+
+    //   function getVideoTitle(e) {
+    //     setVideoTitle(e.target.value);
+    //   }
+
     return (
       <div className="courseDetailsSectionsContainer">
         <div className="sectionHeader">
@@ -135,19 +134,19 @@ const CourseDetails = () => {
           </h3>
           {/* For Uploading Video */}
 
-          <h4>
+          {/* <h4>
             <input
               type="file"
               id="video-upload"
               onChange={handleVideoUpload}
               style={{ display: "none" }}
-            />
+            />*/}
 
             <FaPlusCircle
-              onClick={() => document.getElementById("video-upload").click()}
+              onClick={() => {setSectionId(section.id);setShowUploadVideo(true)}}
             />
-          </h4>
-          {video && (
+          {/* </h4>  */}
+          {/* {video && (
             <div>
               <video
                 className="videoW"
@@ -163,7 +162,7 @@ const CourseDetails = () => {
               ></input>
               <button onClick={handleVideoSubmit}>Upload Video</button>
             </div>
-          )}
+          )} */}
         </div>
 
         <div
@@ -185,6 +184,94 @@ const CourseDetails = () => {
       </div>
     );
   };
+  
+  const UploadVideoCard = (props) => {
+    const [video, setVideo] = useState(null);
+    const [videoTitle, setVideoTitle] = useState("");
+    
+
+    const handleVideoUpload = (event) => {
+      const file = event.target.files[0];
+      setVideo(file);
+    };
+
+    const handleVideoSubmit = (event) => {
+      event.preventDefault();
+      const formData = new FormData();
+      formData.append("file", video);
+      formData.append("Title", videoTitle);
+
+      fetch(`https://localhost:7187/api/Courses/Videos/${sectionId}`, {
+        method: "POST",
+        body: formData,
+      }).then(res=>{
+        if(res.ok){
+          props.onClose();
+          getCourseSections();
+        }else alert('failed to add video please try again later')
+      })
+    };
+
+    // function getVideoTitle(e) {
+    //   setVideoTitle(e.target.value);
+    // }
+    // console.log(videoTitle)
+
+    if(!props.show)return null;
+    return (
+      <div
+      style={{
+        position: "fixed",
+        left: "0",
+        top: "0",
+        right: "0",
+        bottom: "0",
+        backgroundColor: "rgba(0, 0,0,0.5)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: "100",
+      }}
+      >
+        <div className="uploadVideoContainer">
+
+        {video && (
+          <div>
+            <video
+              className="videoW"
+              src={URL.createObjectURL(video)}
+              controls
+            />
+            <input
+              type="text"
+              placeholder="Video's Title"
+              required
+              name="Title"
+              onChange={(e)=>setVideoTitle(e.target.value)}
+            ></input>
+            <button onClick={handleVideoSubmit}>Upload Video</button>
+          </div>
+        )}
+
+
+        <h4>
+          <input
+            type="file"
+            id="video-upload"
+            onChange={handleVideoUpload}
+           
+          />
+
+        </h4>
+        <button onClick={props.onClose}>Cancel</button>
+        
+        </div>
+
+
+      </div>
+    );
+  };
+
   // console.log(video)
 
   const VideoCard = ({ videoId, show, onClose }) => {
@@ -301,7 +388,7 @@ const CourseDetails = () => {
     );
   };
 
-  // console.log(courseSections)
+ 
 
   return (
     <div className="courseParent">
@@ -379,6 +466,11 @@ const CourseDetails = () => {
       <AddSectionCard
         show={showAddSection}
         onClose={() => setShowAddSection(false)}
+      />
+
+    <UploadVideoCard
+        show={showUploadVideo}
+        onClose={() => setShowUploadVideo(false)}
       />
 
       <Footer />
