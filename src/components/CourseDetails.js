@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineHourglass } from "react-icons/ai";
-import { FaRegNewspaper, FaPlusCircle } from "react-icons/fa";
+import { FaRegNewspaper, FaPlusCircle, FaTrash, FaRegEdit } from "react-icons/fa";
 import { HiAcademicCap } from "react-icons/hi";
 import "../css/CourseDetails.css";
 import Header from "./Header.js";
@@ -8,7 +8,9 @@ import { Link, useParams } from "react-router-dom";
 import { FaArrowCircleDown, FaArrowCircleUp } from "react-icons/fa";
 import Footer from "./Footer";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const CourseDetails = () => {
+  const navigate=useNavigate();
   const [videoUrl, setVideoUrl] = useState("");
   const [videoId, setVideoId] = useState(null);
   const [courseDetails, setCourseDetails] = useState(null);
@@ -17,6 +19,7 @@ const CourseDetails = () => {
   const [showAddSection, setShowAddSection] = useState(false);
   const [sectionId,setSectionId]=useState(null);
   const [showUploadVideo,setShowUploadVideo]=useState(false);
+  const [showDeleteCourseModal,setShowDeleteCourseModal]=useState(false)
   
   // useEffect(() => {
   //   fetch(`https://localhost:7187/api/courses/Videos/1`)
@@ -36,10 +39,10 @@ const CourseDetails = () => {
   //     });
   // }, []);
 
-  // console.log(videoUrl);
+ 
 
   let { id } = useParams();
-  // console.log(id)
+
 
   function getCourseDetatils() {
     fetch(`https://localhost:7187/api/Courses/${id}`)
@@ -74,49 +77,7 @@ const CourseDetails = () => {
     }, []);
 
     const [video, setVideo] = useState(null);
-    //   const [videoTitle, setVideoTitle] = useState("");
-
-    //   const handleVideoUpload = (event) => {
-    //     const file = event.target.files[0];
-    //     setVideo(file);
-    //   };
-
-    //   const handleVideoSubmit = (event) => {
-    //     event.preventDefault();
-    //     const formData = new FormData();
-    //     formData.append("file", video);
-    //     formData.append('Title', videoTitle);
-
-    //     fetch(`https://localhost:7187/api/Courses/Videos/${section.id}`, {
-    //       method: "POST",
-    //       body: formData,
-    //     }).then((response) => {
-    //       const reader = response.body.getReader();
-    //       let chunks = [];
-
-    //       function readStream() {
-    //         return reader.read().then(({ done, value }) => {
-    //           if (done) {
-    //             return chunks;
-    //           }
-    //           chunks.push(value);
-    //           return readStream();
-    //         });
-    //       }
-
-    //       return readStream().then((chunks) => {
-    //         const body = new TextDecoder().decode(
-    //           new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
-    //         );
-    //         console.log(body);
-
-    //       });
-    //     });
-    // }
-
-    //   function getVideoTitle(e) {
-    //     setVideoTitle(e.target.value);
-    //   }
+    
 
     return (
       <div className="courseDetailsSectionsContainer">
@@ -133,38 +94,16 @@ const CourseDetails = () => {
               />
             }
           </h3>
-          {/* For Uploading Video */}
-
-          {/* <h4>
-            <input
-              type="file"
-              id="video-upload"
-              onChange={handleVideoUpload}
-              style={{ display: "none" }}
-            />*/}
+        
+            <div className="sectionIcons">
 
             <FaPlusCircle
             className="plusIcon"
               onClick={() => {setSectionId(section.id);setShowUploadVideo(true)}}
             />
-          {/* </h4>  */}
-          {/* {video && (
-            <div>
-              <video
-                className="videoW"
-                src={URL.createObjectURL(video)}
-                controls
-              />
-              <input
-                type="text"
-                placeholder="Video's Title"
-                required
-                name="Title"
-                onChange={getVideoTitle}
-              ></input>
-              <button onClick={handleVideoSubmit}>Upload Video</button>
+            <FaRegEdit onClick={()=>navigate(`/AddQuizToSection/${section.id}`)} className="plusIcon"/>
             </div>
-          )} */}
+         
         </div>
 
         <div
@@ -183,6 +122,7 @@ const CourseDetails = () => {
               
             </Link>
           ))}
+          
         </div>
       </div>
     );
@@ -200,9 +140,11 @@ const CourseDetails = () => {
 
     const handleVideoSubmit = (event) => {
       event.preventDefault();
+      const titleInput = document.getElementById("title");
+    const titleValue = titleInput.value;
       const formData = new FormData();
       formData.append("file", video);
-      formData.append("Title", videoTitle);
+      formData.append("Title", titleValue);
 
       fetch(`https://localhost:7187/api/Courses/Videos/${sectionId}`, {
         method: "POST",
@@ -247,12 +189,13 @@ const CourseDetails = () => {
               controls
             />
             <input
+            id='title'
             className="InputUpload"
               type="text"
               placeholder="Video's Title"
               required
               name="Title"
-              onChange={(e)=>setVideoTitle(e.target.value)}
+              
             ></input>
             <button className="btnUpload" onClick={handleVideoSubmit}>Upload Video</button>
           </div>
@@ -393,6 +336,50 @@ const CourseDetails = () => {
     );
   };
 
+
+
+  const DeleteCourseCard = ({ show, onClose }) => {
+
+    function deleteCourse(){
+      fetch(`https://localhost:7187/api/Courses/${id}`,{
+        method:"DELETE",
+      }).then(res=>{
+        if(res.ok){
+          navigate('/AdminPanel')
+        }else alert('Error Happened Please Try Again Later')
+      })
+    }
+
+
+    if (!show) return null;
+    return (
+      <div
+        style={{
+          position: "fixed",
+          left: "0",
+          top: "0",
+          right: "0",
+          bottom: "0",
+          backgroundColor: "rgba(0, 0,0,0.7)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: "100",
+        }}
+      >
+        <div className="deleteCourseDiv">
+          <h1>You Are About To Delete This Course</h1>
+          <h3>Press Confirm To Delete</h3>
+          <div>
+            <button onClick={onClose} style={{ backgroundColor: "#ce0808" }}>Cancel</button>
+            <button onClick={deleteCourse} style={{ backgroundColor: "green" }}>Confirm</button>
+          </div>
+        </div>
+        
+      </div>
+    );
+  };
+
  
 
   return (
@@ -435,11 +422,14 @@ const CourseDetails = () => {
 
         <div className="courseDetailsCourseContentDiv">
           <div className="courseContentAndPlusButton">
-            <h1>Course Content</h1>
+            <h1 style={{marginRight:'auto'}}>Course Content</h1>
+            <div style={{display:'flex',columnGap:'20px'}}>
             <FaPlusCircle
               onClick={() => setShowAddSection(true)}
               className="addBtn"
             />
+            <FaTrash onClick={()=>setShowDeleteCourseModal(true)} className="delBtn"/>
+            </div>
           </div>
           <div className="ContSections">
             {courseSections?.length === 0 && (
@@ -476,6 +466,10 @@ const CourseDetails = () => {
     <UploadVideoCard
         show={showUploadVideo}
         onClose={() => setShowUploadVideo(false)}
+      />
+      <DeleteCourseCard
+        show={showDeleteCourseModal}
+        onClose={() => setShowDeleteCourseModal(false)}
       />
 
       <Footer />

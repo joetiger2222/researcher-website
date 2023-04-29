@@ -61,10 +61,14 @@
 
   border-radius: 5px;
   border: 1px solid white;
+  transition: all .3s ease;
 }
 .LeftInfo > button:hover {
   background-color: #fff;
   color: black;
+  width: 220px;
+  font-size: 24px;
+  height: 80px;
 }
 
 .courseDetailesVideoDiv {
@@ -173,7 +177,7 @@
 
 .courseContentAndPlusButton {
   display: flex;
-  justify-content: space-between;
+  
   align-items: center;
   width: 100%;
 }
@@ -183,9 +187,25 @@
   height: 25px;
   cursor: pointer;
   transition: all 0.3s ease;
+  color: #00cc00;
 }
+
 .addBtn:hover{
-    rotate: 180deg;
+    /* rotate: 180deg; */
+     width: 35px;
+  height: 35px;
+}
+.delBtn{
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  color:#d80808;
+}
+.delBtn:hover{
+    /* rotate: 360deg; */
+    width: 35px;
+  height: 35px;
 }
 
 .addSectionDiv {
@@ -238,7 +258,7 @@
   display: flex;
   width: 100%;
   align-items: center;
-  justify-content: space-between;
+  
 }
 .sectionHeader .plusIcon{
   width: 25px;
@@ -247,7 +267,9 @@
   transition: all 0.3s ease;
 }
 .sectionHeader .plusIcon:hover{
-  rotate: 180deg;
+  /* rotate: 180deg; */
+  width: 35px;
+  height: 35px;
 }
 
 .sectionHeader > h3 {
@@ -334,4 +356,42 @@
   background-color: white;
   border-radius: 10px;
   padding: 20px ;
+}
+
+.deleteCourseDiv{
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  background-color: white;
+  border-radius: 10px;
+  color: black;
+  align-items: center;
+  padding: 20px;
+
+}
+.deleteCourseDiv>h1{
+  margin: 0;
+}
+.deleteCourseDiv>div{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.deleteCourseDiv>div>button{
+  width: 120px;
+  height: 40px;
+  font-size: 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  align-self: flex-end;
+  justify-self: flex-end;
+  color: white;
+}
+
+.sectionIcons{
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  column-gap: 20px;
 }
