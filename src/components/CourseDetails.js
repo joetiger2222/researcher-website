@@ -9,6 +9,7 @@ import { FaArrowCircleDown, FaArrowCircleUp } from "react-icons/fa";
 import Footer from "./Footer";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ModalForQuiz from "./ModalForQuiz";
 const CourseDetails = () => {
   const navigate=useNavigate();
   const [videoUrl, setVideoUrl] = useState("");
@@ -16,6 +17,8 @@ const CourseDetails = () => {
   const [courseDetails, setCourseDetails] = useState(null);
   const [courseSections, setCourseSections] = useState(null);
   const [showVideo, setShowVideo] = useState(false);
+  const [showQuiz, setShowQuiz] = useState(false);
+
   const [showAddSection, setShowAddSection] = useState(false);
   const [sectionId,setSectionId]=useState(null);
   const [showUploadVideo,setShowUploadVideo]=useState(false);
@@ -65,66 +68,118 @@ const CourseDetails = () => {
   const SectionCard = ({ section }) => {
     const [activeSection, setAtiveSection] = useState(false);
     const [videosIds, setVideosIds] = useState(null);
+    // const [sectionQuiz, setSectionQuiz] = useState(null);
 
     function getVideosIds() {
       fetch(`https://localhost:7187/api/Courses/Sections/Videos/${section.id}`)
         .then((res) => res.json())
         .then((data) => setVideosIds(data));
     }
+    // function getQuiz() {
+    //   fetch(`https://localhost:7187/api/Quizes/SectionQuiz/${section.id}`)
+    //     .then((res) => res.json())
+    //     .then((data) => setSectionQuiz(data));
+    // }
+    // console.log(sectionQuiz);
 
     useEffect(() => {
       getVideosIds();
+      // getQuiz()
     }, []);
-
+    // const QuizCard = ({ sectionId, show, onClose }) => {
+    //   const [quiz, setQuiz] = useState(null);
+  
+    //   useEffect(() => {
+    //     getQuiz()
+    //   }, []);
+  
+    //   if (!show) return null;
+    //   return (
+    //     <div
+    //       onClick={onClose}
+    //       style={{
+    //         position: "fixed",
+    //         left: "0",
+    //         top: "0",
+    //         right: "0",
+    //         bottom: "0",
+    //         backgroundColor: "rgba(0, 0,0,0.7)",
+    //         display: "flex",
+    //         alignItems: "center",
+    //         justifyContent: "center",
+    //         zIndex: "100",
+    //       }}
+    //     >
+    //       <div className="courseDetailesVideoDiv">
+    //         <h3>Quiz</h3>
+    //       </div>
+    //     </div>
+    //   );
+    // };
+  
     const [video, setVideo] = useState(null);
     
 
     return (
       <div className="courseDetailsSectionsContainer">
-        <div className="sectionHeader">
-          <h3 onClick={(e) => setAtiveSection(!activeSection)}>
-            {section?.name}
-            {
-              <FaArrowCircleDown
-
-                style={{
-                  transform: activeSection ? "rotate(180deg)" : "none",
-                  transition: " 0.2s ease-in-out",
-                }}
-              />
-            }
-          </h3>
-        
-            <div className="sectionIcons">
-
-            <FaPlusCircle
-            className="plusIcon"
-              onClick={() => {setSectionId(section.id);setShowUploadVideo(true)}}
+      <div className="sectionHeader">
+        <h3
+         onClick={() => {
+          setAtiveSection(true)
+        }}>
+          {section?.name}
+          {
+            <FaArrowCircleDown
+           
+              style={{
+                transform: activeSection ? "rotate(180deg)" : "none",
+                transition: " 0.2s ease-in-out",
+              }}
             />
-            <FaRegEdit onClick={()=>navigate(`/AddQuizToSection/${section.id}`)} className="plusIcon"/>
-            </div>
+          }
+        </h3>
+    
+        <div className="sectionIcons">
+          <FaPlusCircle
+            className="plusIcon"
+            onClick={() => {
+              setSectionId(section.id);
+              setShowUploadVideo(true);
+            }}
+          />
+          <FaRegEdit
+            onClick={() => navigate(`/AddQuizToSection/${section.id}`)}
+            className="plusIcon"
+          />
          
         </div>
-
-        <div
-          className="courseDetailsSectionVideos"
-          style={{ display: activeSection ? "flex" : "none" }}
-        >
-          {videosIds?.map((video) => (
-            <Link
-              onClick={() => {
-                setVideoId(video.id);
-                setShowVideo(true);
-              }}
-              className="LinkVideoSection"
-            >
-              <span>{video?.title}</span>
-              
-            </Link>
-          ))}
-          
-        </div>
       </div>
+    
+      <div
+        className="courseDetailsSectionVideos"
+        style={{ display: activeSection ? "flex" : "none" }}
+      >
+        {videosIds?.map((video) => (
+          <Link
+            onClick={() => {
+              setVideoId(video.id);
+              setShowVideo(true);
+            }}
+            className="LinkVideoSection"
+          >
+            <span>{video?.title}</span>
+          </Link>
+        ))}
+        <Link
+          onClick={() => setShowQuiz(true)}
+          className="LinkVideoSection"
+        >
+          {section.name} Quiz
+        </Link>
+        <ModalForQuiz onClose={() => setShowQuiz(false)} show={showQuiz} />
+      </div>
+    </div>
+
     );
   };
   
@@ -266,6 +321,9 @@ const CourseDetails = () => {
       </div>
     );
   };
+
+  
+
 
   const AddSectionCard = ({ show, onClose }) => {
     const [sectionData, setSectionData] = useState({ courseId: id, name: "" });
