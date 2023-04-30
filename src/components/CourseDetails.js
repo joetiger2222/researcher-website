@@ -24,25 +24,6 @@ const CourseDetails = () => {
   const [showUploadVideo,setShowUploadVideo]=useState(false);
   const [showDeleteCourseModal,setShowDeleteCourseModal]=useState(false)
   
-  // useEffect(() => {
-  //   fetch(`https://localhost:7187/api/courses/Videos/1`)
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch video.");
-  //       }
-
-  //       return response.blob();
-  //     })
-  //     .then((blob) => {
-  //       const videoUrl = URL.createObjectURL(blob);
-  //       setVideoUrl(videoUrl);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }, []);
-
- 
 
   let { id } = useParams();
 
@@ -86,6 +67,7 @@ const CourseDetails = () => {
       getVideosIds();
       // getQuiz()
     }, []);
+    
     // const QuizCard = ({ sectionId, show, onClose }) => {
     //   const [quiz, setQuiz] = useState(null);
   
@@ -176,7 +158,7 @@ const CourseDetails = () => {
         >
           {section.name} Quiz
         </Link>
-        <ModalForQuiz onClose={() => setShowQuiz(false)} show={showQuiz} />
+       
       </div>
     </div>
 
@@ -529,6 +511,7 @@ const CourseDetails = () => {
         show={showDeleteCourseModal}
         onClose={() => setShowDeleteCourseModal(false)}
       />
+       <ModalForQuiz onClose={() => setShowQuiz(false)} show={showQuiz} />
 
       <Footer />
     </div>

@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  background-color: rgb(9, 14, 52);
+  background-color:  #262626;
   color: white;
   min-height: 100vh;
 }
@@ -23,6 +23,7 @@
   max-width: 1000px;
   border: 1px solid white;
   padding: 12px;
+  background-color: #484848;
 }
 .RightVideo {
   width: 90%;
@@ -31,6 +32,7 @@
   border: 1px solid white;
   padding: 12px;
   justify-content: space-evenly;
+  background-color: #484848;
 }
 /* .RightVideo>video{
     width: 100%;
@@ -84,6 +86,7 @@
   padding: 12px;
   max-width: 1000px;
   margin-bottom: 20px;
+  background-color: #484848;
 }
 .courseDetailsCourseContentDiv > h1 {
   margin: 10px 0 10px 0px;
@@ -166,6 +169,7 @@
 }
 .ContObjecInst {
   display: flex;
+  background-color: #484848;
 
   justify-content: space-between;
   border: 1px solid white;
@@ -187,7 +191,7 @@
   height: 25px;
   cursor: pointer;
   transition: all 0.3s ease;
-  color: #00cc00;
+  color: #079707;
 }
 
 .addBtn:hover{
@@ -200,7 +204,7 @@
   height: 25px;
   cursor: pointer;
   transition: all 0.5s ease;
-  color:#d80808;
+  color:#a10606;
 }
 .delBtn:hover{
     /* rotate: 360deg; */
