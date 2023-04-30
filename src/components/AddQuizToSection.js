@@ -10,15 +10,24 @@ export default function AddQuizToSection() {
 
   const [courseDetails, setCourseDetails] = useState(null);
   const [sectionData, setSectionData] = useState(null);
-  
+
   const [showQuestionTemplate, setShowQuestionTemplate] = useState(false);
   const [answerCards, setAnswerCards] = useState([
     { id: 1, isCorrectAnswer: true, answerText: "" },
   ]);
   const [question, setQuestion] = useState({ name: "", score: 0, answers: [] });
   const [allQuestions, setAllQuestions] = useState([]);
-  const [quizData,setQuizData]=useState({sectionId:sectionId,timeLimit:'',maxScore:0,questions:[]})
+  const [quizData, setQuizData] = useState({
+    sectionId: sectionId,
+    timeLimit: "",
+    maxScore: 0,
+    questions: [],
+  });
+  // const [isActive, setIsActive] = useState(false);
 
+  // const handleClickSubmit = () => {
+  //   setIsActive(true);
+  // };
   function getSectionData() {
     fetch(`https://localhost:7187/api/Courses/Sections/${sectionId}`)
       .then((res) => {
@@ -125,10 +134,10 @@ export default function AddQuizToSection() {
     const updatedQuestion = { ...question, answers: answerCards };
     setQuestion(updatedQuestion);
     setAllQuestions((prev) => [...prev, updatedQuestion]);
-    setShowQuestionTemplate(false)
+    setShowQuestionTemplate(false);
   }
 
-  function getQuizData(e){
+  function getQuizData(e) {
     if (e.target.name !== "maxScore") {
       setQuizData((prevQuestData) => {
         return {
@@ -146,67 +155,58 @@ export default function AddQuizToSection() {
     }
   }
 
+  function sendQuizData() {
+    const updatedQuizData = { ...quizData, questions: allQuestions };
 
-function sendQuizData(){
-  const updatedQuizData = { ...quizData, questions: allQuestions };
- 
-  fetch(`https://localhost:7187/api/Quizes/SectionQuiz`, {
+    fetch(`https://localhost:7187/api/Quizes/SectionQuiz`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(
-        updatedQuizData
-      ),
+      body: JSON.stringify(updatedQuizData),
     })
+      .then((response) => console.log(response))
+      .then((data) => console.log(data));
+    // console.log(updatedQuizData)
+  }
+  console.log(allQuestions);
 
+  // function sendQuizData() {
+  //   const updatedQuizData = { ...quizData, questions: allQuestions };
 
-    .then((response) => console.log(response))
-    .then(data=>console.log(data));
-  // console.log(updatedQuizData)
-}
-console.log(allQuestions)
+  //   fetch(`https://localhost:7187/api/Quizes/SectionQuiz`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(updatedQuizData),
+  //   })
+  //     .then((response) => {
+  //       const reader = response.body.getReader();
+  //       let chunks = [];
 
+  //       function readStream() {
+  //         return reader.read().then(({ done, value }) => {
+  //           if (done) {
+  //             return chunks;
+  //           }
+  //           chunks.push(value);
+  //           return readStream();
+  //         });
+  //       }
 
-
-// function sendQuizData() {
-//   const updatedQuizData = { ...quizData, questions: allQuestions };
-
-//   fetch(`https://localhost:7187/api/Quizes/SectionQuiz`, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(updatedQuizData),
-//   })
-//     .then((response) => {
-//       const reader = response.body.getReader();
-//       let chunks = [];
-
-//       function readStream() {
-//         return reader.read().then(({ done, value }) => {
-//           if (done) {
-//             return chunks;
-//           }
-//           chunks.push(value);
-//           return readStream();
-//         });
-//       }
-
-//       return readStream();
-//     })
-//     .then((chunks) => {
-//       const body = new TextDecoder().decode(
-//         new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
-//       );
-//       // console.log(body);
-//     });
-//     console.log(updatedQuizData)
-// }
-
+  //       return readStream();
+  //     })
+  //     .then((chunks) => {
+  //       const body = new TextDecoder().decode(
+  //         new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+  //       );
+  //       // console.log(body);
+  //     });
+  //     console.log(updatedQuizData)
+  // }
 
   // console.log(quizData);
-
 
   return (
     <div className="AddQuizToSectionContainer">
@@ -221,70 +221,121 @@ console.log(allQuestions)
             <span>Section Name: </span>
             {sectionData?.name}
           </h2>
-          <div className="quizHeaderOneLine">
-            <span>Max Score: </span>
-            <input onChange={getQuizData} name="maxScore" placeholder="Max Score"></input>
-          </div>
-          <div className="quizHeaderOneLine">
-            <span>Time Limit: </span>
-            <input name="timeLimit" onChange={getQuizData} placeholder="Ex: 2"></input>
+          <div className="ContInputs">
+            <div className="quizHeaderOneLine">
+              <span>Max Score: </span>
+              <input
+                onChange={getQuizData}
+                name="maxScore"
+                placeholder="Max Score"
+              ></input>
+            </div>
+            <div className="quizHeaderOneLine">
+              <span>Time Limit: </span>
+              <input
+                name="timeLimit"
+                onChange={getQuizData}
+                placeholder="Ex: 2:00"
+              /></div>
+            </div>
           </div>
         </div>
-      </div>
+      
 
       <div className="quizQiestionsDiv">
-        {allQuestions.map(question=>{
-            return (
-              <div style={{backgroundColor:'#eee',padding:'20px',borderRadius:'10px'}}>
-                <h3><span>Name: </span>{question.name}</h3>
-                <h4><span>Score: </span>{question.score}</h4>
-                </div>
-            )
-          })}
-        <div
-          style={{ display: showQuestionTemplate ? "flex" : "none" }}
-          className="QestionTemplate"
-        >
-          <div className="questionInput">
-            <span>Question:</span>
-            <input onChange={getQuestion} name="name"></input>
-          </div>
-          <div className="questionInput">
-            <span style={{ marginRight: "25px" }}>Score:</span>
-            <input
-              type="number"
-              style={{ width: "40px" }}
-              onChange={getQuestion}
-              name="score"
-            ></input>
-          </div>
-          {answerCards.map((card) => {
-            return (
-              <AnswersCard
-                id={card.id}
-                delete={() => deleteAns(card.id)}
-                lastCard={card.id === answerCards.length ? true : false}
-                groupName={"test"}
-                correctAns={() => handleCorrect(card.id)}
-                setText={(text) => handleAnswerTextChange(card.id, text)}
-              />
-            );
-          })}
-
-          <button onClick={addNewAnswer}>Add Answer</button>
-          <button onClick={saveQuest}>Save Question</button>
-        </div>
-
-        <div>
-          <button
-            onClick={() => setShowQuestionTemplate(true)}
-            className="plusBtn"
+        <div> {allQuestions.map((question) => {
+          return (
+            <div
+              style={{
+                backgroundColor: "#eee",
+                padding: "20px",
+                borderRadius: "10px",
+              }}
+            >
+              <h3>
+                <span>Name: </span>
+                {question.name}
+              </h3>
+              <h4>
+                <span>Score: </span>
+                {question.score}
+              </h4>
+            </div>
+          );
+        })}</div>
+       
+        <div className="ContQuestionTempAndAddQ">
+          <div
+            style={{ display: showQuestionTemplate ? "flex" : "none" }}
+            className="QestionTemplate"
           >
-            <span>+</span>Add Question
-          </button>
+            <div className="questionInput">
+              <span>Question:</span>
+              <input onChange={getQuestion} name="name"></input>
+            </div>
+            <div className="questionInput">
+              <span style={{ marginRight: "25px" }}>Score:</span>
+              <input
+                type="number"
+                style={{ width: "40px" }}
+                onChange={getQuestion}
+                name="score"
+              ></input>
+            </div>
+            {answerCards.map((card) => {
+              return (
+                <AnswersCard
+                  id={card.id}
+                  delete={() => deleteAns(card.id)}
+                  lastCard={card.id === answerCards.length ? true : false}
+                  groupName={"test"}
+                  correctAns={() => handleCorrect(card.id)}
+                  setText={(text) => handleAnswerTextChange(card.id, text)}
+                />
+              );
+            })}
+<div> <button onClick={addNewAnswer}>Add New Answer</button>
+            <button onClick={saveQuest}>Save Question</button></div>
+           
+          </div>
 
+          <div>
+            <button
+              onClick={() => setShowQuestionTemplate(true)}
+              className="addQuestionbtn"
+            >
+              <span>+</span>Add Question
+            </button>
+          </div>
         </div>
-        <button onClick={sendQuizData}>Submit</button>
+
+        {/* <button onClick={sendQuizData}>Submit</button> */}
+        <button className="buttonbtn button-arounder" onClick={sendQuizData}>
+          Submit{" "}
+        </button>
+        {/* <div>
+        <button
+        id="btn"
+        onClick={sendQuizData}
+        className={isActive ? "btnSubmitted active" : "btnSubmitted"}
+      >
+        <p id="btnText">{isActive ? "Submitted" : "Submit"}</p>
+        <div className="check-box">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+            <path fill="transparent" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+          </svg>
+        </div>
+      </button>
+        </div> */}
+
+        {/* <button id="btn">
+            <p id="btnText">Submit</p>
+            <div class="check-box">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                    <path fill="transparent" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                </svg>
+            </div>
+        </button> */}
       </div>
     </div>
   );
