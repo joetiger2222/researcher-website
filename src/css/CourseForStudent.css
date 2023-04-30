@@ -1,0 +1,32 @@
+.courseForStudentContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    align-items: center;
+    background-color: black;
+}
+
+.courseForStudentContent{
+    display: flex;
+    width: 100%;
+
+}
+
+.courseForStudentVideoDiv{
+    width: 70%;
+    height: 500px;
+}
+
+.videosNames{
+    margin-top: 50px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 40px;
+}
+.videosNames>span{
+    font-size: 30px;
+    border-radius: 10px;
+    
+}

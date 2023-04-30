@@ -1,0 +1,54 @@
+.sectionQuizContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: black;
+    min-height: 100vh;
+    row-gap: 30px;
+}
+
+.sectionQuizHeader{
+    margin-top: 50px;
+    background-color: white;
+    width: 50%;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.questions{
+    background-color: white;
+    width: 50%;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
+.startQBtn{
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.startQBtn>button{
+    width: 100px;
+    height: 40px;
+    color: white;
+    font-weight: bold;
+    background-color: green;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+.startQBtn>button:hover{
+    width: 120px;
+    height: 50px;
+    font-size: 24px;
+}

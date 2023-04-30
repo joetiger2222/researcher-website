@@ -10,6 +10,9 @@ import Footer from "./Footer";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ModalForQuiz from "./ModalForQuiz";
+import SectionQuiz from "./SectionQuiz";
+
+
 const CourseDetails = () => {
   const navigate=useNavigate();
   const [videoUrl, setVideoUrl] = useState("");
@@ -49,56 +52,30 @@ const CourseDetails = () => {
   const SectionCard = ({ section }) => {
     const [activeSection, setAtiveSection] = useState(false);
     const [videosIds, setVideosIds] = useState(null);
-    // const [sectionQuiz, setSectionQuiz] = useState(null);
+    const [sectionQuiz, setSectionQuiz] = useState(null);
 
     function getVideosIds() {
       fetch(`https://localhost:7187/api/Courses/Sections/Videos/${section.id}`)
         .then((res) => res.json())
         .then((data) => setVideosIds(data));
     }
-    // function getQuiz() {
-    //   fetch(`https://localhost:7187/api/Quizes/SectionQuiz/${section.id}`)
-    //     .then((res) => res.json())
-    //     .then((data) => setSectionQuiz(data));
-    // }
-    // console.log(sectionQuiz);
+
+
+    function getSectionQuiz() {
+      fetch(`https://localhost:7187/api/Quizes/SectionQuiz/${section.id}`)
+        .then((res) => res.json())
+        .then((data) => setSectionQuiz(data));
+    }
+    
+
 
     useEffect(() => {
       getVideosIds();
-      // getQuiz()
+      getSectionQuiz()
     }, []);
+    console.log(sectionQuiz)
     
-    // const QuizCard = ({ sectionId, show, onClose }) => {
-    //   const [quiz, setQuiz] = useState(null);
-  
-    //   useEffect(() => {
-    //     getQuiz()
-    //   }, []);
-  
-    //   if (!show) return null;
-    //   return (
-    //     <div
-    //       onClick={onClose}
-    //       style={{
-    //         position: "fixed",
-    //         left: "0",
-    //         top: "0",
-    //         right: "0",
-    //         bottom: "0",
-    //         backgroundColor: "rgba(0, 0,0,0.7)",
-    //         display: "flex",
-    //         alignItems: "center",
-    //         justifyContent: "center",
-    //         zIndex: "100",
-    //       }}
-    //     >
-    //       <div className="courseDetailesVideoDiv">
-    //         <h3>Quiz</h3>
-    //       </div>
-    //     </div>
-    //   );
-    // };
-  
+   
     const [video, setVideo] = useState(null);
     
 
@@ -107,7 +84,7 @@ const CourseDetails = () => {
       <div className="sectionHeader">
         <h3
          onClick={() => {
-          setAtiveSection(true)
+          setAtiveSection(!activeSection)
         }}>
           {section?.name}
           {
@@ -142,22 +119,24 @@ const CourseDetails = () => {
         style={{ display: activeSection ? "flex" : "none" }}
       >
         {videosIds?.map((video) => (
-          <Link
-            onClick={() => {
-              setVideoId(video.id);
-              setShowVideo(true);
-            }}
+          <span
+            // onClick={() => {
+            //   setVideoId(video.id);
+            //   setShowVideo(true);
+            // }}
+            onClick={()=>navigate(`/CourseForStudent/${section.id}/${video.id}`)}
             className="LinkVideoSection"
           >
             <span>{video?.title}</span>
-          </Link>
+          </span>
         ))}
-        <Link
+        {/* <Link
           onClick={() => setShowQuiz(true)}
           className="LinkVideoSection"
         >
           {section.name} Quiz
-        </Link>
+        </Link> */}
+        {sectionQuiz&&<span onClick={()=>navigate(`/SectionQuiz/${section.id}`)}>{section.name} Quiz</span>}
        
       </div>
     </div>

@@ -115,7 +115,9 @@
   row-gap: 20px;
   display: flex;
   padding-left: 25px;
+  transition: all 0.3s ease;
 }
+
 .courseDetailsSectionVideos > a {
   text-decoration: none;
   font-size: 20px;

@@ -9,7 +9,8 @@ import CreateCourse from './components/CreateCourse';
 import CourseDetails from './components/CourseDetails';
 import AdminPanel from './components/AdminPanel';
 import AddQuizToSection from './components/AddQuizToSection';
-
+import SectionQuiz from './components/SectionQuiz';
+import CourseForStudent from './components/CourseForStudent';
 function App() {
   return (
     <div >
@@ -23,11 +24,11 @@ function App() {
         <Route path='/CourseDetails/:id' element={<CourseDetails/>}/>
         <Route path='/AdminPanel' element={<AdminPanel/>}/>
         <Route path='/AddQuizToSection/:sectionId' element={<AddQuizToSection/>}/>
+        <Route path='/SectionQuiz/:sectionId' element={<SectionQuiz/>}/>
+        <Route path='/CourseForStudent/:sectionId/:videoId' element={<CourseForStudent/>}/>
+
       
 
-        
-
-        
       </Routes>
     </div>
   );
