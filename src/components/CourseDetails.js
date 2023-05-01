@@ -136,7 +136,7 @@ const CourseDetails = () => {
         >
           {section.name} Quiz
         </Link> */}
-        {sectionQuiz&&<span onClick={()=>navigate(`/SectionQuiz/${section.id}`)}>{section.name} Quiz</span>}
+        {sectionQuiz&&<span className="QuizTitle" onClick={()=>navigate(`/SectionQuiz/${section.id}`)}>{section.name} Quiz</span>}
        
       </div>
     </div>
@@ -462,7 +462,10 @@ const CourseDetails = () => {
           </div>
         </div>
         <div className="ContObjecInst">
-          <div className="Objectives">Objectives</div>
+          <div className="Objectives">
+          <h5>Objectives :</h5>
+            <h3>{courseDetails?.objectives}</h3>
+          </div>
           <div className="Instructions">
             <h5>Instructions :</h5>
             <h3>{courseDetails?.instructions}</h3>

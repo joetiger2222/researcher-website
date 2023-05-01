@@ -7,72 +7,80 @@
     background-color: #262626;
 }
 
-.coursesParent{
+
+
+.coursesParent {
+    max-width: 850px;
+    width: 830px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+  }
+  .coursesParent>h1{
+    text-align: center;
+  }
+  
+  /* Styles for the courses and create new course button container */
+  .coursesAndPlusBtn {
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
-    width: 60%;
-    background-color: #d1cfcf;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 50px;
-    min-width: 900px;
-}
-
-.courseDiv{
-background-color: white;
-width: 28%;
-padding: 10px;
-border-radius: 10px;
-cursor: pointer;
-transition: all 0.3s ease;
-}
-.courseDiv:hover{
-    box-shadow: 0 0 40px rgba(0,0,0,0.5);
-    padding: 20px;
-}
-.courseDiv>h4>span{
-    font-weight: 400;
-    font-size: 14px;
-}
-
-.courseDiv>h4{
-    font-weight: bold;
-    font-size: 16px;
-}
-
-
-.coursesAndPlusBtn{
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  /* Styles for the individual course container */
+  .courseDiv {
     display: flex;
-    flex-wrap: wrap;
-    
-    gap: 30px;
-}
-
-.plusBtn{
-    width: 150px;
-    height: 150px;
-    display: flex;
+    width: calc(46% - 10px);
+    padding: 10px;
+    margin-bottom: 20px;
+    height: 200px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    background-color: rgb(20, 36, 158);
-    color: white;
-    font-weight: bold;
-    
-    row-gap: 20px;
-    padding: 3px;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    align-self: flex-end;
-}
-.plusBtn>span{
-    font-size: 40px;
-}
+  }
+  
 
-.plusBtn:hover{
+.courseDiv:hover{
     box-shadow: 0 0 40px rgba(0,0,0,0.5);
-    width: 160px;
-    height: 160px;
+    cursor: pointer;
 }
+  /* Styles for the course name */
+  .courseDiv h4:first-child {
+    margin-top: 0;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  
+  /* Styles for the course hours and brief */
+  .courseDiv h4:not(:first-child) {
+    margin: 10px 0;
+    font-size: 16px;
+  }
+  
+  /* Styles for the create new course button */
+  .plusBtn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    border: none;
+    background-color: #f44336;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Styles for the create new course button hover state */
+  .plusBtn:hover {
+    background-color: #ff6659;
+  }
+  

@@ -98,7 +98,21 @@
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  row-gap: 20px;
   margin-bottom: 20px;
+}
+.W100{
+  width: 100px;
+}
+.DeleteBtnAnswer{
+  font-size: 18px;
+  padding: 10px 20px;
+  background-color: rgb(207, 21, 21);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  margin: 10px;
+  cursor: pointer;
 }
 .addQuestionbtn{
   width: 150px;
@@ -123,8 +137,7 @@
 
 .addQuestionbtn:hover{
   box-shadow: 0 0 40px rgba(0,0,0,0.5);
-  width: 160px;
-  height: 160px;
+ 
 }
 /* .questionInput {
   display: flex;
@@ -172,27 +185,43 @@
   justify-content: center;
 }
 
-.QestionTemplate button {
+.QestionTemplate .btnG {
   font-size: 18px;
   padding: 10px 20px;
-  background-color: #4CAF50;
   color: #fff;
   border: none;
   border-radius: 5px;
   margin: 10px;
   cursor: pointer;
 }
-
-.QestionTemplate button:hover {
-  background-color: #3e8e41;
+.redBackground{
+  background-color: rgb(207, 21, 21);
+}
+.blueBackground{
+  background-color: rgb(38, 113, 243)
+}
+.greenBackground{
+  background-color: #3f9342
+}
+.QestionTemplate .greenBackground:hover {
+  background-color: #357a37;
+}
+.QestionTemplate .blueBackground:hover {
+  background-color: rgb(35, 100, 212);
+}.QestionTemplate .redBackground:hover {
+  background-color: rgb(184, 23, 23);
 }
 
-.QestionTemplate button:active {
-  transform: translateY(2px);
-  background-color: #3e8e41;
+.InputWithDelete{
+      /* padding: 8px; */
+    /* border-radius: 5px; */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    flex-grow: 1;
+    letter-spacing: 1px;
 }
-
-
 /* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 *{

@@ -71,7 +71,7 @@ export default function CreateCourse() {
             ></input>
           </div>
           <div className="createCourseFormOneLine">
-            <label>Objectives</label>
+            <label>Objectives:</label>
             <input
               onChange={getCourseData}
               name="objectives"
@@ -119,7 +119,7 @@ export default function CreateCourse() {
             type="number"
             onChange={getCourseData}
             name="skillId"
-            placeholder="Enter Course Objectives"
+            placeholder="Enter Skill Id "
           ></input>
         </div>
         <div className="createCourseFormOneLine">

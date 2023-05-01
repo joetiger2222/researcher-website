@@ -24,7 +24,77 @@
   border: 1px solid white;
   padding: 12px;
   background-color: #484848;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
+/* Styles for the left info container */
+/* .LeftInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+} */
+
+/* Styles for the course name */
+.NameCourse {
+  margin: 0;
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Styles for the brief description */
+.briefCourse {
+  margin: 10px 0;
+  font-size: 20px;
+  text-align: center;
+}
+
+/* Styles for the price */
+.LeftInfo h2 {
+  margin: 10px 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: #f44336;
+  text-align: center;
+}
+
+/* Styles for the buy now button */
+.LeftInfo button {
+  width: 25%;
+  padding: 10px;
+  margin-top: 20px;
+  border: none;
+  background-color: #f44336;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Styles for the buy now button hover state */
+.LeftInfo button:hover {
+  background-color: #ff6659;
+}
+
+
+
+
+
+
+
 .RightVideo {
   width: 90%;
   max-width: 1000px;
@@ -51,27 +121,25 @@
   align-items: center;
   column-gap: 5px;
 }
-.LeftInfo > button {
+/* .LeftInfo > button {
   font-size: 20px;
   font-weight: bold;
-  /* padding: 8px; */
   width: 200px;
   height: 60px;
-  /* background-color: #2a3393; */
   background-color: transparent;
   color: white;
 
   border-radius: 5px;
   border: 1px solid white;
   transition: all .3s ease;
-}
-.LeftInfo > button:hover {
+} */
+/* .LeftInfo > button:hover {
   background-color: #fff;
   color: black;
   width: 220px;
   font-size: 24px;
   height: 80px;
-}
+} */
 
 .courseDetailesVideoDiv {
   width: 50%;
@@ -106,8 +174,16 @@
 .LinkVideoSection span:hover {
   /* background-color: #d1d7dc; */
   padding: 10px;
+  cursor: pointer;
 }
-
+.QuizTitle{
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+.QuizTitle:hover{
+  cursor: pointer;
+}
 
 .courseDetailsSectionVideos {
   display: flex;

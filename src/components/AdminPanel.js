@@ -21,8 +21,8 @@ const CourseCard=(props)=>{
     return (
         <div onClick={()=>navigate(`/CourseDetails/${props.course.id}`)} className="courseDiv">
             <h4><span>Name: </span>{props.course.name}</h4>
-            <h4><span>Hourse: </span>{props.course.hours+" Hour"}</h4>
-            <h4><span>Instructions: </span>{props.course.instructions}</h4>
+            <h4><span>Hours: </span>{props.course.hours+" Hour"}</h4>
+            {/* <h4><span>Instructions: </span>{props.course.instructions}</h4> */}
             <h4><span>Brief: </span>{props.course.brief}</h4>
         </div>
     )

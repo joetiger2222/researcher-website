@@ -223,7 +223,7 @@ export default function AddQuizToSection() {
           </h2>
           <div className="ContInputs">
             <div className="quizHeaderOneLine">
-              <span>Max Score: </span>
+              <span>Min Score: </span>
               <input
                 onChange={getQuizData}
                 name="maxScore"
@@ -243,7 +243,7 @@ export default function AddQuizToSection() {
       
 
       <div className="quizQiestionsDiv">
-        <div> {allQuestions.map((question) => {
+        <div className="ContQuestions"> {allQuestions.map((question) => {
           return (
             <div
               style={{
@@ -269,7 +269,7 @@ export default function AddQuizToSection() {
             style={{ display: showQuestionTemplate ? "flex" : "none" }}
             className="QestionTemplate"
           >
-            <div className="questionInput">
+            <div className="questionInput W100">
               <span>Question:</span>
               <input onChange={getQuestion} name="name"></input>
             </div>
@@ -294,8 +294,8 @@ export default function AddQuizToSection() {
                 />
               );
             })}
-<div> <button onClick={addNewAnswer}>Add New Answer</button>
-            <button onClick={saveQuest}>Save Question</button></div>
+<div> <button className="btnG greenBackground" onClick={addNewAnswer}>Add New Answer</button>
+            <button className="btnG blueBackground" onClick={saveQuest}>Save Question</button></div>
            
           </div>
 

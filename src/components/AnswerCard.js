@@ -6,8 +6,8 @@ const AnswersCard = (props) => {
     return (
       <div>
         <input type="radio" name={props.groupName} onClick={props.correctAns}></input>
-        <input type="text" onChange={(e) => props.setText(e.target.value)} ></input>
-        {props.lastCard&&<button onClick={props.delete}>Delete</button>}
+        <input className="InputWithDelete" type="text" onChange={(e) => props.setText(e.target.value)} ></input>
+        {props.lastCard&&<button className="redBackground btnG" onClick={props.delete}>Delete</button>}
       </div>
     );
   }, [props.delete,]);
