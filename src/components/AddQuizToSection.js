@@ -269,11 +269,11 @@ export default function AddQuizToSection() {
             style={{ display: showQuestionTemplate ? "flex" : "none" }}
             className="QestionTemplate"
           >
-            <div className="questionInput W100">
+            <div className="questionInput ">
               <span>Question:</span>
               <input onChange={getQuestion} name="name"></input>
             </div>
-            <div className="questionInput">
+            <div className="questionInput1">
               <span style={{ marginRight: "25px" }}>Score:</span>
               <input
                 type="number"
