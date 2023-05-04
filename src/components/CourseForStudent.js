@@ -9,8 +9,9 @@ export default function CourseForStudent() {
   const [videosIds, setVideosIds] = useState(null);
   const [sectionVideo, setSectionVideo] = useState(videoId);
 
+
   function getVideo() {
-    fetch(`https://localhost:7187/api/courses/Videos/${sectionVideo}`)
+    fetch(`https://localhost:7187/api/courses/Videos/1`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch video.");
@@ -20,12 +21,53 @@ export default function CourseForStudent() {
       })
       .then((blob) => {
         const videoItself = URL.createObjectURL(blob);
+        console.log(videoItself)
         setVideo(videoItself);
       })
       .catch((error) => {
         console.error(error);
       });
   }
+
+  // function getVideo(){
+  //   fetch(`https://localhost:7187/api/courses/Videos/${sectionVideo}`)
+  //   .then(res=>res)
+  //   .then(data=>setVideo(data))
+  // }
+  // console.log(video)
+
+
+
+
+
+//   function getVideo(){
+//     fetch(`https://localhost:7187/api/courses/Videos/${sectionVideo}`)
+//     .then((response) => {
+//       const reader = response.body.getReader();
+//       let chunks = [];
+
+//       function readStream() {
+//         return reader.read().then(({ done, value }) => {
+//           if (done) {
+//             return chunks;
+//           }
+//           chunks.push(value);
+//           return readStream();
+//         });
+//       }
+
+//       return readStream();
+//     })
+//     .then((chunks) => {
+//       const body = new TextDecoder().decode(
+//         new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+//       );
+//       console.log(body);
+      
+//     })
+//     .catch((error) => console.error(error));
+// }
+  
 
   function getVideosIds() {
     fetch(`https://localhost:7187/api/Courses/Sections/Videos/${sectionId}`)
