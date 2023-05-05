@@ -11,7 +11,7 @@ export default function CourseForStudent() {
 
 
   function getVideo() {
-    fetch(`https://localhost:7187/api/courses/Videos/1`)
+    fetch(`https://localhost:7187/api/courses/Videos/${sectionVideo}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch video.");
