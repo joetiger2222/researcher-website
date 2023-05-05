@@ -44,7 +44,7 @@ export default function FinalQuiz(){
 
 
   function getFinalQuizData() {
-    fetch(`https://localhost:7187/api/Quizes/FinalQuiz/1?studentId=ffc9b4ad-d9f5-4330-b76f-6f83fa5c6cd9`)
+    fetch(`https://localhost:7187/api/Quizes/FinalQuiz/1?studentId=5471da49-1983-434f-a2b8-fa9f21cf1b00`)
       .then((res) => res.json())
       .then((data) => {
         setTimeLimit((prevData) => {
@@ -79,17 +79,38 @@ export default function FinalQuiz(){
       arr.push(ans.answerId)
     })
 
-    fetch(`https://localhost:7187/api/Quizes/FinalQuiz/Submit?QuizId=${finalQuizData?.id}&StudentId=ffc9b4ad-d9f5-4330-b76f-6f83fa5c6cd9&skillId=1`,{
+    fetch(`https://localhost:7187/api/Quizes/FinalQuiz/Submit?QuizId=${finalQuizData?.id}&StudentId=5471da49-1983-434f-a2b8-fa9f21cf1b00&skillId=1`,{
       method:"POST",
       headers:{
         "Content-Type":"application/json"
       },
       body:JSON.stringify(arr)
     })
-    .then(res=>res.json())
-    .then(data=>console.log(data))
-  }
+    .then((response) => {
+      const reader = response.body.getReader();
+      let chunks = [];
 
+      function readStream() {
+        return reader.read().then(({ done, value }) => {
+          if (done) {
+            return chunks;
+          }
+          chunks.push(value);
+          return readStream();
+        });
+      }
+
+      return readStream();
+    })
+    .then((chunks) => {
+      const body = new TextDecoder().decode(
+        new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+      );
+      console.log(body);
+     
+    })
+    .catch((error) => console.error(error));
+}
 
   return (
     <div className="sectionQuizContainer">
