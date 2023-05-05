@@ -47,8 +47,6 @@ export default function FinalQuiz(){
     fetch(`https://localhost:7187/api/Quizes/FinalQuiz/1?studentId=ffc9b4ad-d9f5-4330-b76f-6f83fa5c6cd9`)
       .then((res) => res.json())
       .then((data) => {
-        // let hours=data.timeLimit.slice(0,2)
-        // let mins=data.timeLimit.slice(3,5)
         setTimeLimit((prevData) => {
           if (data.timeLimit.slice(0, 1) * 1 === 0) {
             return {
