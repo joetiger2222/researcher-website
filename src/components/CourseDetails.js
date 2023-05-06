@@ -47,6 +47,7 @@ const CourseDetails = () => {
   useEffect(() => {
     getCourseDetatils();
     getCourseSections();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   const SectionCard = ({ section }) => {
@@ -214,6 +215,7 @@ const CourseDetails = () => {
               
             ></input>
             <button className="btnUpload" onClick={handleVideoSubmit}>Upload Video</button>
+            
           </div>
         )}
 

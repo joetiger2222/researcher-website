@@ -177,7 +177,7 @@ export default function SectionQuiz() {
       arr.push(ans.answerId)
     })
 
-    fetch(`https://localhost:7187/api/Quizes/SectionQuiz/Submit?QuizId=${sectionQuizData?.id}&StudentId=50c465bc-3d35-45f7-96f4-728da8928d4a`,{
+    fetch(`https://localhost:7187/api/Quizes/SectionQuiz/Submit?QuizId=${sectionQuizData?.id}&StudentId=5471da49-1983-434f-a2b8-fa9f21cf1b00`,{
       method:"POST",
       headers:{
         "Content-Type":"application/json"

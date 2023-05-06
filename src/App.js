@@ -13,13 +13,14 @@ import SectionQuiz from './components/SectionQuiz';
 import CourseForStudent from './components/CourseForStudent';
 import AddQuizToCourse from './components/AddQuizToCourse'
 import FinalQuiz from './components/FinalQuiz';
+import AddPaper from './components/AddPaper';
 function App() {
   return (
     <div >
       <Routes>
-        <Route path='/' element={<HomePage/>} />
         
-        <Route path='/Login' element={<Login/>} />
+        <Route path='/' element={<Login/>} />
+        <Route path='/HomePage' element={<HomePage/>} />
         <Route path='/registration' element={<Registration/>} />
         <Route path='/profile' element={<Profile/>} />
         <Route path='/CreateCourse' element={<CreateCourse/>}/>
@@ -30,7 +31,7 @@ function App() {
         <Route path='/CourseForStudent/:sectionId/:videoId' element={<CourseForStudent/>}/>
         <Route path='/AddQuizToCourse' element={<AddQuizToCourse/>}/>
         <Route path='/FinalQuiz' element={<FinalQuiz/>}/>
-
+        <Route path='/AddPaper' element={<AddPaper/>}/>
       
 
       </Routes>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./Header";
 import homePageImg from "../images/homePageImg.png";
 import "../css/HomePage.css";
@@ -15,8 +15,10 @@ import SideBar from "./SideBar";
 import { useLocation } from "react-router-dom";
 export default function HomePage() {
   const [sideBarVisible, setSideBarVisible] = useState(false);
+  const [resercherId,setResearcherId]=useState(null);
+  const [courses,setAllCourses]=useState(null);
   const userData=useLocation().state?.data;
-  
+  console.log(userData)
 
   function renderSideBar() {
     if (sideBarVisible) {
@@ -66,10 +68,31 @@ export default function HomePage() {
     }
   }
 
+  function getAllCourses(){
+    fetch(`https://localhost:7187/api/Courses`)
+    .then(res=>res.json())
+    .then(data=>setAllCourses(data))
+  }
+
+  useEffect(()=>{
+    getAllCourses();
+  },[])
+
+  function getResearcherIdByStudentId(){
+    fetch(`https://localhost:7187/api/Researchers/ResearcherId/5471da49-1983-434f-a2b8-fa9f21cf1b00`)
+    .then(res=>res.json())
+    .then(data=>setResearcherId(data.researcherId))
+}
+
+useEffect(()=>{
+  getResearcherIdByStudentId();
+},[])
+
+
   return (
     <div className="homePageContainer">
       <div className="landingPage">
-        <Header />
+        <Header userData={userData} resercherId={resercherId} />
         {renderSideBar()}
         <div
           style={{
@@ -97,14 +120,9 @@ export default function HomePage() {
         </div>
       </div>
       <div className="badgesDivContainer">
-        <div className="badgeDiv">
-          <img src={badge} />
-          <h1>Best Students</h1>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
-          </p>
-        </div>
+
+
+        
 
         <div className="badgeDiv">
           <img src={badge} />
@@ -146,10 +164,12 @@ export default function HomePage() {
         <h3>Couldn't Solve it?, No Problem. Take A Look On Our Courses</h3>
         <h1>Our Courses</h1>
         <div className="coursesContainer">
-          <CourseCard />
-          <CourseCard />
-          <CourseCard />
-          <CourseCard />
+          {courses?.map(course=>{
+            return(
+              <CourseCard course={course}/>
+            )
+          })}
+          
         </div>
       </div>
 
