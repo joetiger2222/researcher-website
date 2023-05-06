@@ -48,6 +48,7 @@ const [isQuizes,setIsQuizes] =useState(false)
   useEffect(() => {
     getCourseDetatils();
     getCourseSections();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   const SectionCard = ({ section, isQuizes }) => {
@@ -210,6 +211,7 @@ const [isQuizes,setIsQuizes] =useState(false)
               
             ></input>
             <button className="btnUpload" onClick={handleVideoSubmit}>Upload Video</button>
+            
           </div>
         )}
 

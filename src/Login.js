@@ -43,7 +43,7 @@ function authorizeLogin(e){
 
 useEffect(()=>{
   if(loginData){
-    navigate(`/`, { state: { data: loginData } });
+    navigate(`/HomePage`, { state: { data: loginData } });
   }
 },[loginData])
 

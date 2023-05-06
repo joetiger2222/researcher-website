@@ -1,18 +1,16 @@
 import React from "react";
-
-export default function CourseCard(){
+import { useNavigate } from "react-router-dom";
+export default function CourseCard({course}){
+    const navigate=useNavigate();
     return (
         <div className="courseCard">
-            <h1>Course Name</h1>
+            <h1>{course.name}</h1>
             <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book
+           {course.brief}
           </p>
           <div className="courseBtnAndPriceDiv">
-          <button>Learn More</button>
-          <h4>30$</h4>
+          <button onClick={()=>navigate(`/CourseDetails/${course.id}`)}>Learn More</button>
+          <h4>{course.price} EGP</h4>
           </div>
         </div>
     )
