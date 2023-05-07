@@ -36,7 +36,9 @@ function authorizeLogin(e){
     })
 
 
-    .then((response) => response.json())
+    .then((response) => {
+      if(response.ok)return response.json();
+    })
     .then(data=>setLoginData(data));
 }
 

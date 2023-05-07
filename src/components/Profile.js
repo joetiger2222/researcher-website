@@ -22,9 +22,9 @@ const Profile = () => {
   function getStudentData(){
     fetch(`https://localhost:7187/api/Students/${userData?.userId}`)
     .then(res=>{
-      // if(res.ok)return res.json();
-      // else alert('something is wrong')
-      console.log(res)
+      if(res.ok)return res.json();
+      else alert('something is wrong')
+      // console.log(res)
     })
     .then(data=>setStudentData(data))
 }
