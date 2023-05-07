@@ -545,7 +545,7 @@ const [isQuizes,setIsQuizes] =useState(false)
         <div className="LeftInfo">
           <h1 className="NameCourse">{courseDetails?.name}</h1>
           <p className="briefCourse">{courseDetails?.brief}</p>
-          <h2>Price: 20$</h2>
+          <h2>Price: {courseDetails?.price} EGP</h2>
           <button>Buy Now</button>
         </div>
         <div className="RightVideo">
@@ -566,7 +566,7 @@ const [isQuizes,setIsQuizes] =useState(false)
             <h3 className="headInfo">This Course Includes:</h3>
             <p>
               <AiOutlineHourglass />
-              {courseDetails?.hours}
+              {courseDetails?.hours} HRS
             </p>
             <p>
               <HiAcademicCap />

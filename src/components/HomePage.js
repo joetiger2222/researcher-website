@@ -141,6 +141,15 @@ useEffect(()=>{
             industry.
           </p>
         </div>
+        <div className="badgeDiv">
+          <img src={badge} />
+          <h1>Best Students</h1>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry.
+          </p>
+        </div>
+        
       </div>
 
       <div className="quizContainer">
