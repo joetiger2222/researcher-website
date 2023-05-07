@@ -38,6 +38,7 @@ function authorizeLogin(e){
 
     .then((response) => {
       if(response.ok)return response.json();
+      else alert('wrong username or password')
     })
     .then(data=>setLoginData(data));
 }
