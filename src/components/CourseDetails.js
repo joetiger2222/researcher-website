@@ -394,7 +394,6 @@ const CourseDetails = () => {
             <h2>Price: {courseDetails?.price} EGP</h2>
             <button className="btnBUY">Buy Now</button>
           </div>
-          <div className="overFlow">
             <div className="ContLeftDataInsObj">
               <div className="ObjectivesNew">
                 <h2>Objectives :</h2>
@@ -404,7 +403,6 @@ const CourseDetails = () => {
                 <h2>Instructions :</h2>
                 <h3>{courseDetails?.instructions}</h3>
               </div>
-            </div>
           </div>
         </div>
 
@@ -516,7 +514,7 @@ const CourseDetails = () => {
           </div>
         </div>
 
-        <div className="courseDetailsCourseContentDiv">
+        <div className="courseDetailsSectionsContainer">
           <div className="courseContentAndPlusButton">
             <h1 style={{marginRight:'auto'}}>Course Content</h1>
             <div style={{display:'flex',columnGap:'20px'}}>

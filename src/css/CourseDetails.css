@@ -1,47 +1,28 @@
+:root {
+  --orange-color: #ff702d; 
+  --green-color: #117d5d; 
+  --darkgreen-color: #007d6f; 
+  --lightgreen-color: #71b9b4; 
+  --background-color: #F8F1F1; 
+
+
+
+ 
+}
 .courseParent {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  background-color:  #262626;
-  color: white;
+  background-color:  var(--background-color);
+  color: rgb(35, 35, 35);
   min-height: 100vh;
 }
 
-.LeftRight {
-  row-gap: 40px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  width: 80%;
-  max-width: 1500px;
-  margin-top: 60px;
-  align-items: center;
-}
-.LeftInfo {
-  width: 90%;
-  max-width: 1000px;
-  border: 1px solid white;
-  padding: 12px;
-  background-color: #484848;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
-/* Styles for the left info container */
-/* .LeftInfo {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: 500px;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-} */
+
+
+
 
 /* Styles for the course name */
 .NameCourse {
@@ -49,6 +30,7 @@
   font-size: 32px;
   font-weight: bold;
   text-align: center;
+  /* color: var(--orange-color); */
 }
 
 /* Styles for the brief description */
@@ -59,35 +41,12 @@
 }
 
 /* Styles for the price */
-.LeftInfo h2 {
-  margin: 10px 0;
-  font-size: 24px;
-  font-weight: bold;
-  color: #f44336;
-  text-align: center;
-}
+
 
 /* Styles for the buy now button */
-.LeftInfo button {
-  width: 25%;
-  padding: 10px;
-  margin-top: 20px;
-  border: none;
-  background-color: #f44336;
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  text-transform: uppercase;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+
 
 /* Styles for the buy now button hover state */
-.LeftInfo button:hover {
-  background-color: #ff6659;
-}
 
 
 
@@ -95,80 +54,23 @@
 
 
 
-.RightVideo {
-  width: 90%;
-  max-width: 1000px;
-  display: flex;
-  border: 1px solid white;
-  padding: 12px;
-  justify-content: space-evenly;
-  background-color: #484848;
-}
-/* .RightVideo>video{
-    width: 100%;
-} */
+
+
 .headInfo {
   font-weight: bold;
 }
-.BottomRightInfo {
-  display: flex;
-  flex-direction: column;
-  row-gap: 20px;
-}
-.BottomRightInfo > p {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  column-gap: 5px;
-}
-/* .LeftInfo > button {
-  font-size: 20px;
-  font-weight: bold;
-  width: 200px;
-  height: 60px;
-  background-color: transparent;
-  color: white;
-
-  border-radius: 5px;
-  border: 1px solid white;
-  transition: all .3s ease;
-} */
-/* .LeftInfo > button:hover {
-  background-color: #fff;
-  color: black;
-  width: 220px;
-  font-size: 24px;
-  height: 80px;
-} */
 
 .courseDetailesVideoDiv {
   width: 50%;
 }
 
-.courseDetailsCourseContentDiv {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  border: 1px solid white;
-  width: 90%;
-  padding: 12px;
-  max-width: 1000px;
-  margin-bottom: 20px;
-  background-color: #484848;
-}
-.courseDetailsCourseContentDiv > h1 {
-  margin: 10px 0 10px 0px;
-  padding-left: 10px;
-}
-.courseDetailsSectionsContainer > h3 {
-  cursor: pointer;
-}
+
+
 .LinkVideoSection {
-  color: white;
-  padding: 10px;
+  padding: 15px;
 }
 .LinkVideoSection:hover{
-  background-color: #d1d7dc4d;
+  background-color: rgb(203, 201, 201)
   /* padding: 12px; */
 }
 .LinkVideoSection span{
@@ -181,9 +83,10 @@
   cursor: pointer;
 }
 .QuizTitle{
-  margin-bottom: 10px;
+  margin: 10px;
   font-size: 16px;
   font-weight: bold;
+  color: var(--darkgreen-color);
 }
 .QuizTitle:hover{
   cursor: pointer;
@@ -273,25 +176,26 @@
   height: 25px;
   cursor: pointer;
   transition: all 0.3s ease;
-  color: #079707;
 }
 
 .addBtn:hover{
-    /* rotate: 180deg; */
-     width: 35px;
-  height: 35px;
+    rotate: 180deg;
+    color: #079707;
+
+     /* width: 35px;
+  height: 35px; */
 }
 .delBtn{
   width: 25px;
   height: 25px;
   cursor: pointer;
   transition: all 0.5s ease;
-  color:#a10606;
 }
 .delBtn:hover{
     /* rotate: 360deg; */
-    width: 35px;
-  height: 35px;
+    color: rgb(190, 8, 8);
+    width: 28px;
+  height: 28px;
 }
 
 .addSectionDiv {
@@ -342,8 +246,8 @@
 }
 .sectionHeader {
   display: flex;
-  width: 100%;
   align-items: center;
+  border-bottom: 1px solid var(--darkgreen-color);
   
 }
 .sectionHeader .plusIcon{
@@ -363,6 +267,7 @@
   align-items: center;
   column-gap: 10px;
   cursor: pointer;
+  padding: 0px 15px;
 }
 .sectionHeader>h4{
     display: flex;
@@ -476,10 +381,15 @@
 }
 
 .sectionIcons{
+  justify-content: center;
   display: flex;
   align-items: center;
   margin-left: auto;
   column-gap: 20px;
+  width: 20%;
+}
+svg:hover{
+  color: var(--darkgreen-color);
 }
 
 
@@ -490,15 +400,18 @@
 
 
 
+/* 
+box-shadow: 15px 20px 50px 0px rgba(255, 111.99999999999986, 44.99999999999992, 0.45);
 
-
-
-
-
-
+#ff702d
+#117d5d
+#007d6f
+#71b9b4 
+#F8F1F1*/
 
 
 .AllContentContainer{
+  /* background-color:#F8F1F1 ; */
   max-width: 1440px;
   margin: 120px auto;
   display: flex;
@@ -508,34 +421,30 @@
 }
 .LeftCourseData{
   width: 23%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 
 }
 .LeftIntroData{
-  border: 1px solid white;
+  border: 1px solid var(--orange-color);
   padding: 12px;
   margin-bottom: 20px;
-  background-color: #484848;
+  background-color:white;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 .ContLeftDataInsObj{        display: flex;
   flex-direction: column;
-  background-color: #484848;
+  background-color: white;
   justify-content: space-between;
-  border: 1px solid white;
-  /* width: 100%; */
+  border: 1px solid var(--orange-color);
   padding: 12px;
-  /* max-width: 1000px; */
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   position: sticky;
   overflow: hidden auto;
-  /* height: 100%; */
-  /* padding-bottom: 16px; */
-  /* background: #fff; */
-  /* z-index: 2; */
-  /* position: sticky; */
-  /* top: 0; */}
+ }
   .overFlow{
     overflow: hidden auto;
     padding-bottom: 16px;
@@ -568,12 +477,11 @@ px
 }
 .RightVideoIntro{
   width: 100%;
-  height: 100%;
   /* max-width: 1000px; */
   display: flex;
-  border: 1px solid white;
+  border: 1px solid var(--darkgreen-color);
   justify-content: space-evenly;
-  background-color: #484848;
+  background-color: white;
   flex-direction: column;
 }
 .VideoDv{
@@ -597,19 +505,23 @@ px
   text-align: center;
 }
 .btnBUY{
+  color: var(--orange-color);
   padding: 8px 20px;
   font-size: 16px;
   background-color: transparent;
-  border: 1px solid black;
+  border: 1px solid var(--orange-color);
 }
 .btnBUY:hover{
-  background-color: #ebebeb;
+  background-color: var(--lightgreen-color);
+  border: 1px solid var(--lightgreen-color);
+  color: white;
+
+
 }
 .courseCOntAddDelSection{
   display: flex;
   align-items: center;
   width: 100%;
-  border-bottom: 1px solid white;
   margin-bottom: 20px;
   justify-content: center;
   
@@ -621,6 +533,8 @@ px
   display: flex;
   column-gap: 20px;
   align-items: center;
+  justify-content: space-between;
+  width: 80px;
 }
 .ObjectivesNew,.InstructionsNew{
   display: flex;
@@ -633,26 +547,24 @@ px
 }
 .ObjectivesNew h3,.InstructionsNew h3,.briefCourseNew{
   word-wrap: break-word;
-  font-size: 1rem;
+  font-size: 15px;
   text-align: justify;
-  color: #c9c9c9;
+  color: rgb(35, 35, 35);
 }
 
 .ObjectivesNew h2,.InstructionsNew h2{
   text-align: center;
   width: 100%;
-  color: #dfb37a;
 }
 .courseDetailsSectionVideosNew{
   display: flex;
   flex-direction: column;
-  row-gap: 15px;
+  /* row-gap: 15px; */
   display: flex;
   transition: all 0.3s ease;
 }
 .courseDetailsSectionsContainerNew{
-  padding: 10px;
-  border: 1px solid #d1d7dc;
+  border: 1px solid var(--green-color);
 }
 .ContSectionsNew{
   display: flex;
