@@ -14,7 +14,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  background-color:  var(--background-color);
+  background-color:  #ececec;
   color: rgb(35, 35, 35);
   min-height: 100vh;
 }
@@ -247,7 +247,6 @@
 .sectionHeader {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid var(--darkgreen-color);
   
 }
 .sectionHeader .plusIcon{
@@ -427,8 +426,8 @@ box-shadow: 15px 20px 50px 0px rgba(255, 111.99999999999986, 44.99999999999992, 
 
 }
 .LeftIntroData{
-  border: 1px solid var(--orange-color);
   padding: 12px;
+  border-radius: 5px;
   margin-bottom: 20px;
   background-color:white;
   display: flex;
@@ -479,8 +478,7 @@ px
   width: 100%;
   /* max-width: 1000px; */
   display: flex;
-  border: 1px solid var(--darkgreen-color);
-  justify-content: space-evenly;
+ justify-content: space-evenly;
   background-color: white;
   flex-direction: column;
 }
@@ -510,10 +508,11 @@ px
   font-size: 16px;
   background-color: transparent;
   border: 1px solid var(--orange-color);
+  border-radius: 5px;
 }
 .btnBUY:hover{
-  background-color: var(--lightgreen-color);
-  border: 1px solid var(--lightgreen-color);
+  color: white;
+  background-color: var(--orange-color);
   color: white;
 
 
@@ -538,12 +537,19 @@ px
 }
 .ObjectivesNew,.InstructionsNew{
   display: flex;
+  border-radius: 5px;
   flex-direction: column;
   align-items: flex-start;
   /* width: 45%; */
   padding: 12px;
   /* max-width: 1000px; */
   margin-bottom: 20px;
+  padding: 12px;
+  margin-bottom: 20px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .ObjectivesNew h3,.InstructionsNew h3,.briefCourseNew{
   word-wrap: break-word;
@@ -564,8 +570,7 @@ px
   transition: all 0.3s ease;
 }
 .courseDetailsSectionsContainerNew{
-  border: 1px solid var(--green-color);
-}
+border-radius: 5px;  background-color: white;}
 .ContSectionsNew{
   display: flex;
   width: 100%;

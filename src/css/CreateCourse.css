@@ -1,89 +1,103 @@
-.createCourseContainer{
-    width: 100%;
-    height: 100%;
-    min-height: 100vh;
-    background-color: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+:root {
+  --orange-color: #ff702d;
+  --green-color: #117d5d;
+  --darkgreen-color: #007d6f;
+  --lightgreen-color: #71b9b4;
+  --background-color: #f8f1f1;
+}
+.createCourseContainer {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.createCourseForm{
-    width: 500px;
-    
-    background-color: #15172b;
-    border-radius: 20px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    row-gap: 30px;
-    
+.createCourseForm {
+  width: 800px;
+  background-color: var(--background-color);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  row-gap: 30px;
 }
-.createCourseForm>h1{color: white;}
+.createCourseForm > h1 {
+    color: var(--darkgreen-color);
+    text-align: center;
+    width: 100%;
+}
 
-.createCourseFormOneLine{
-    display: flex;
-    flex-direction: column;
-    color: white;
-    width: 100%;
-    row-gap: 8px;
+.createCourseFormOneLine {
+  color: var(--darkgreen-color);
 }
-.createCourseFormOneLine>input{
-    height: 50px;
-    border-radius: 10px;
-    
-    background-color: #303245;
-    color: #eee;
-    outline: 0;
-    font-size: 24px;
+.createCourseFormOneLineTextarea  {
+   width: 100%;
+    /* box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white; */
+    /* box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white; */
+  
+}
+.textareainput {
+    width: 90%;
+    padding: 10px 10px;
+    font-size: 16px;
+    color: #243b55;
+    /* margin-bottom: 30px; */
+    /* margin-left: 0px; */
     border: none;
-    width: 100%;
-    padding-left: 10px;
+    border-bottom: 1px solid #141e30;
+    outline: none;
+    padding-left: 15px;
+    height: 13px;
+    border-right: none;
+    background: transparent;
 }
-.textareainput{
-    height: 80px;
-    border-radius: 10px;
-    background-color: #303245;
-    color: #eee;
-    outline: 0;
-    font-size: 24px;
-    border: none;
-    width: 100%;
-    padding: 10px 0 0 10px;
-}
-.createCourseFormTwoInlineDiv{
+.createCourseFormTwoInlineDiv {
     display: flex;
     width: 100%;
-    align-items: center;
+    align-items: baseline;
     column-gap: 10px;
     row-gap: 30px;
-    justify-content: space-between;
+    justify-content: space-around;
 }
-.createCourseFormTwoInlineDiv>div{
-    width: 45%;
+.createCourseFormTwoInlineDiv > div {
+  width: 45%;
 }
-.createCourseFormTwoInlineDiv>div>input{
-    width: 100%;
-    padding-left: 10px;
+.createCourseFormTwoInlineDiv > div > input {
+    width: 90%;
+    padding: 10px 10px;
+    font-size: 16px;
+    color: #243b55;
+    /* margin-bottom: 30px; */
+    /* margin-left: 0px; */
+    border: none;
+    border-bottom: 1px solid #141e30;
+    outline: none;
+    padding-left: 15px;
+    height: 13px;
+    border-right: none;
+    background: transparent;
     /* box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white; */
+  /* box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white; */
 }
 
-.createCourseBtnDiv{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+.createCourseBtnDiv {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.createCourseBtnDiv>button{
-    background-color: #08d;
-    color: white;
-    height: 50px;
-    width: 200px;
-    border-radius: 10px;
-    font-size: 26px;
-    font-weight: bold;
+.createCourseBtnDiv > button {
+  background-color: #08d;
+  color: white;
+  height: 50px;
+  width: 200px;
+  border-radius: 10px;
+  font-size: 26px;
+  font-weight: bold;
 }
 
 .number-input::-webkit-outer-spin-button,
@@ -95,3 +109,16 @@
 .number-input[type="number"] {
   -moz-appearance: textfield;
 }
+
+.select-field-skill{
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #efefef;
+    color: #555;
+    font-size: 16px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease-in-out;
+}
+.createCourseFormOneLineNew{}

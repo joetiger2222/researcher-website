@@ -394,7 +394,6 @@ const CourseDetails = () => {
             <h2>Price: {courseDetails?.price} EGP</h2>
             <button className="btnBUY">Buy Now</button>
           </div>
-            <div className="ContLeftDataInsObj">
               <div className="ObjectivesNew">
                 <h2>Objectives :</h2>
                 <h3>{courseDetails?.objectives}</h3>
@@ -403,7 +402,6 @@ const CourseDetails = () => {
                 <h2>Instructions :</h2>
                 <h3>{courseDetails?.instructions}</h3>
               </div>
-          </div>
         </div>
 
         <div className="CenterAndRighCourseData">
