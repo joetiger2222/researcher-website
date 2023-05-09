@@ -6,19 +6,22 @@ import "../css/Header.css";
 import { useState } from "react";
 import badge from "../images/badge.png";
 import quiz from "../images/quiz.png";
-import CourseCard from "./CourseCard";
+
 import coin from "../images/coin.png";
 import quizCartoon from "../images/quizCartoon.png";
 import Footer from "./Footer";
 import research from "../images/research.png";
 import SideBar from "./SideBar";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 export default function HomePage() {
   const [sideBarVisible, setSideBarVisible] = useState(false);
-  const [resercherId,setResearcherId]=useState(null);
-  const [courses,setAllCourses]=useState(null);
-  const userData=useLocation().state?.data;
-  console.log(userData)
+  const [resercherId, setResearcherId] = useState(null);
+  const [courses, setAllCourses] = useState(null);
+  const [allSkills, setAllSkills] = useState(null);
+  const [skillId, setSkillId] = useState(null);
+  const navigate = useNavigate();
+  const userData = useLocation().state?.data;
+  console.log(userData);
 
   function renderSideBar() {
     if (sideBarVisible) {
@@ -68,26 +71,96 @@ export default function HomePage() {
     }
   }
 
-  function getAllCourses(){
-    fetch(`https://localhost:7187/api/Courses`)
-    .then(res=>res.json())
-    .then(data=>setAllCourses(data))
+  function getAllCourses() {
+    fetch(`https://localhost:7187/api/Courses`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    })
+      .then((res) => res.json()) // parse the response body as JSON
+      .then((data) => setAllCourses(data))
+      .catch((error) => console.error(error));
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getAllCourses();
-  },[])
+  }, []);
 
-  function getResearcherIdByStudentId(){
-    fetch(`https://localhost:7187/api/Researchers/ResearcherId/5471da49-1983-434f-a2b8-fa9f21cf1b00`)
-    .then(res=>res.json())
-    .then(data=>setResearcherId(data.researcherId))
-}
+  function getResearcherIdByStudentId() {
+    fetch(
+      `https://localhost:7187/api/Researchers/ResearcherId/${userData.userId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      }
+    )
+      .then((res) => res.ok?res.json():null) // parse the response body as JSON
+      .then((data) => {
+        if(data){
+          userData.roles='Researcher'
+        }
+      })
+      .catch((error) => console.error(error));
+  }
 
-useEffect(()=>{
-  getResearcherIdByStudentId();
-},[])
+  function getAllSkills() {
+    fetch(`https://localhost:7187/api/Researchers/Skills`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setAllSkills(data))
+      .catch((error) => console.error(error));
+  }
 
+  function checkQuiz(){
+    fetch(`https://localhost:7187/api/Quizes/IsSuccessedFinalQuiz/${skillId}?studentId=${userData.userId}`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      }
+    })
+    .then(res=>res.ok?res.json():alert('server error'))
+    .then(data=>{
+      if(data){
+        if(data.isSuccessed)alert('you already succeded in this exam !')
+        else {
+          navigate(`/FinalQuiz/${skillId}`,{state:{data:userData}})
+        }
+      }
+    })
+  }
+
+  useEffect(() => {
+    getResearcherIdByStudentId();
+    getAllSkills();
+  }, []);
+
+  const CourseCard = ({ course }) => {
+    return (
+      <div className="courseCard">
+        <h1>{course.name}</h1>
+        <p>{course.brief}</p>
+        <div className="courseBtnAndPriceDiv">
+          <button
+            onClick={() =>
+              navigate(`/CourseDetails/${course.id}`, {
+                state: { data: userData },
+              })
+            }
+          >
+            Learn More
+          </button>
+          <h4>{course.price} EGP</h4>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="homePageContainer">
@@ -120,10 +193,6 @@ useEffect(()=>{
         </div>
       </div>
       <div className="badgesDivContainer">
-
-
-        
-
         <div className="badgeDiv">
           <img src={badge} />
           <h1>Best Students</h1>
@@ -149,18 +218,41 @@ useEffect(()=>{
             industry.
           </p>
         </div>
-        
       </div>
 
       <div className="quizContainer">
-        <div>
+        {/* <div>
           <div>
             <h1>Take A Quiz</h1>
             <img src={quizCartoon} />
           </div>
 
           <img className="quizImg" src={quiz} />
-        </div>
+        </div> */}
+        <h1>Choose Skill</h1>
+        <select
+          onChange={(e) => {
+            setSkillId(e.target.value * 1);
+          }}
+          className="SelectSkill"
+          name="skillId"
+          id="skill"
+          class="select-field-skill"
+        >
+          <option selected disabled value="">
+            Choose a Skill
+          </option>
+          {allSkills?.map((skill) => {
+            return <option value={skill.id}>{skill.name}</option>;
+          })}
+        </select>
+        {skillId && (
+          <button
+            onClick={checkQuiz}
+          >
+            Take Quiz
+          </button>
+        )}
       </div>
 
       <div className="earnPointsContainer">
@@ -173,12 +265,9 @@ useEffect(()=>{
         <h3>Couldn't Solve it?, No Problem. Take A Look On Our Courses</h3>
         <h1>Our Courses</h1>
         <div className="coursesContainer">
-          {courses?.map(course=>{
-            return(
-              <CourseCard course={course}/>
-            )
+          {courses?.map((course) => {
+            return <CourseCard course={course} />;
           })}
-          
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 import React from "react";
 import "../css/AddQuizToSection.css";
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Header from "./Header";
 import AnswersCard from "./AnswerCard";
 export default function AddQuizToSection() {
@@ -23,13 +23,19 @@ export default function AddQuizToSection() {
     maxScore: 0,
     questions: [],
   });
+  const userData=useLocation().state?.data
   // const [isActive, setIsActive] = useState(false);
 
   // const handleClickSubmit = () => {
   //   setIsActive(true);
   // };
   function getSectionData() {
-    fetch(`https://localhost:7187/api/Courses/Sections/${sectionId}`)
+    fetch(`https://localhost:7187/api/Courses/Sections/${sectionId}`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      }
+    })
       .then((res) => {
         return res.json();
       })
@@ -38,7 +44,12 @@ export default function AddQuizToSection() {
   }
 
   function getCourseDetatils() {
-    fetch(`https://localhost:7187/api/Courses/${sectionData?.courseId}`)
+    fetch(`https://localhost:7187/api/Courses/${sectionData?.courseId}`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      }
+    })
       .then((res) => res.json())
       .then((data) => setCourseDetails(data));
   }
@@ -161,13 +172,14 @@ export default function AddQuizToSection() {
     fetch(`https://localhost:7187/api/Quizes/SectionQuiz`, {
       method: "POST",
       headers: {
+        "Authorization":`Bearer ${userData.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(updatedQuizData),
     })
-      .then((response) => console.log(response))
-      .then((data) => console.log(data));
-    // console.log(updatedQuizData)
+      .then((res) => res.ok?navigate(`/CourseDetails/${courseDetails.id}`,{state:{data:userData}}):alert('failed to add quiz to section'))
+      
+    
   }
   console.log(allQuestions);
 

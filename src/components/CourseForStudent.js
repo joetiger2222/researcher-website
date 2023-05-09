@@ -8,10 +8,16 @@ export default function CourseForStudent() {
   const [video, setVideo] = useState(null);
   const [videosIds, setVideosIds] = useState(null);
   const [sectionVideo, setSectionVideo] = useState(videoId);
-
+  const userData=useLocation().state?.data;
+  console.log(userData)
 
   function getVideo() {
-    fetch(`https://localhost:7187/api/courses/Videos/${sectionVideo}`)
+    fetch(`https://localhost:7187/api/courses/Videos/${sectionVideo}`,{
+      method:"GET",
+      headers:{
+        "authorization":`Bearer ${userData.token}`
+      }
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch video.");
@@ -70,7 +76,12 @@ export default function CourseForStudent() {
   
 
   function getVideosIds() {
-    fetch(`https://localhost:7187/api/Courses/Sections/Videos/${sectionId}`)
+    fetch(`https://localhost:7187/api/Courses/Sections/Videos/${sectionId}`,{
+      method:"GET",
+      headers:{
+        "authorization":`Bearer ${userData.token}`
+      }
+    })
       .then((res) => res.json())
       .then((data) => setVideosIds(data));
   }
@@ -78,7 +89,7 @@ export default function CourseForStudent() {
   useEffect(() => {
     getVideo();
     getVideosIds();
-  }, []);
+  }, [userData]);
 
   useEffect(() => {
     getVideo();

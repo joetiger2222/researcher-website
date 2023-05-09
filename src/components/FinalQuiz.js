@@ -15,7 +15,9 @@ export default function FinalQuiz(){
     secs: "59",
   });
   const [answers, setAnswers] = useState([]);
-
+  const {skillId}=useParams();
+  const userData=useLocation().state?.data
+  const navigate=useNavigate();
   const handleUpdate = (update) => {
     const index = answers.findIndex(
       (answer) => answer.questionId === update.questionId
@@ -42,13 +44,19 @@ export default function FinalQuiz(){
     }
   };
 
-
+let counter =1;
   function getFinalQuizData() {
-    fetch(`https://localhost:7187/api/Quizes/FinalQuiz/1?studentId=5471da49-1983-434f-a2b8-fa9f21cf1b00`)
-      .then((res) => res.json())
+    if(counter === 1)
+    fetch(`https://localhost:7187/api/Quizes/FinalQuiz/${skillId}?studentId=${userData.userId}`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      }
+    })
+      .then((res) => res.ok?res.json():alert('failed to load quiz'))
       .then((data) => {
         setTimeLimit((prevData) => {
-          if (data.timeLimit.slice(0, 1) * 1 === 0) {
+          if (data?.timeLimit.slice(0, 1) * 1 === 0) {
             return {
               ...prevData,
               hours: data.timeLimit.slice(1, 2),
@@ -64,6 +72,7 @@ export default function FinalQuiz(){
 
         setFinalQuizData(data);
       });
+      counter =counter -1
   }
 
 
@@ -79,37 +88,53 @@ export default function FinalQuiz(){
       arr.push(ans.answerId)
     })
 
-    fetch(`https://localhost:7187/api/Quizes/FinalQuiz/Submit?QuizId=${finalQuizData?.id}&StudentId=5471da49-1983-434f-a2b8-fa9f21cf1b00&skillId=1`,{
+    fetch(`https://localhost:7187/api/Quizes/FinalQuiz/Submit?QuizId=${finalQuizData?.id}&StudentId=${userData.userId}&skillId=${skillId}`,{
       method:"POST",
       headers:{
+        "Authorization":`Bearer ${userData.token}`,
         "Content-Type":"application/json"
       },
       body:JSON.stringify(arr)
-    })
-    .then((response) => {
-      const reader = response.body.getReader();
-      let chunks = [];
-
-      function readStream() {
-        return reader.read().then(({ done, value }) => {
-          if (done) {
-            return chunks;
+    }).then(res=>res.ok?res.json():alert('failed to submit quiz'))
+    .then(data=>{
+    
+        // if(data)navigate(`/FinalQuizResult/${skillId}/${data.isSuccessed}`,{state:{data:userData}})
+        if(data){
+          if(data.isSuccessed){
+            userData.roles='Researcher'
+            navigate(`/FinalQuizResult/${skillId}`,{state:{data:userData}})
+          }else{
+            navigate(`/FinalQuizResult/${skillId}`,{state:{data:userData}})
           }
-          chunks.push(value);
-          return readStream();
-        });
-      }
+          
+        }
+       
+      
+    })
+    // .then((response) => {
+    //   const reader = response.body.getReader();
+    //   let chunks = [];
 
-      return readStream();
-    })
-    .then((chunks) => {
-      const body = new TextDecoder().decode(
-        new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
-      );
-      console.log(body);
+    //   function readStream() {
+    //     return reader.read().then(({ done, value }) => {
+    //       if (done) {
+    //         return chunks;
+    //       }
+    //       chunks.push(value);
+    //       return readStream();
+    //     });
+    //   }
+
+    //   return readStream();
+    // })
+    // .then((chunks) => {
+    //   const body = new TextDecoder().decode(
+    //     new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+    //   );
+    //   console.log(body);
      
-    })
-    .catch((error) => console.error(error));
+    // })
+    // .catch((error) => console.error(error));
 }
 
   return (

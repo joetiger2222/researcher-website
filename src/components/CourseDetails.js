@@ -9,7 +9,7 @@ import {
 import { HiAcademicCap } from "react-icons/hi";
 import "../css/CourseDetails.css";
 import Header from "./Header.js";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { FaArrowCircleDown, FaArrowCircleUp } from "react-icons/fa";
 import Footer from "./Footer";
 import axios from "axios";
@@ -32,17 +32,31 @@ const CourseDetails = () => {
   const [sectionId, setSectionId] = useState(null);
   const [showUploadVideo, setShowUploadVideo] = useState(false);
   const [showDeleteCourseModal, setShowDeleteCourseModal] = useState(false);
+  const userData=useLocation()?.state?.data;
 
   let { id } = useParams();
+console.log(userData)
+
+
 
   function getCourseDetatils() {
-    fetch(`https://localhost:7187/api/Courses/${id}`)
+    fetch(`https://localhost:7187/api/Courses/${id}`,{
+    method:"GET",
+    headers:{
+      "Authorization":`Bearer ${userData.token}`
+    }
+    })
       .then((res) => res.json())
       .then((data) => setCourseDetails(data));
   }
 
   function getCourseSections() {
-    fetch(`https://localhost:7187/api/Courses/SectionsToCourse?courseId=${id}`)
+    fetch(`https://localhost:7187/api/Courses/SectionsToCourse?courseId=${id}`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      }
+    })
       .then((res) => res.json())
       .then((data) => setCourseSections(data));
   }
@@ -60,14 +74,24 @@ const CourseDetails = () => {
     const [sectionQuiz, setSectionQuiz] = useState(null);
 
     function getVideosIds() {
-      fetch(`https://localhost:7187/api/Courses/Sections/Videos/${section.id}`)
+      fetch(`https://localhost:7187/api/Courses/Sections/Videos/${section.id}`,{
+        method:"GET",
+        headers:{
+          "Authorization":`Bearer ${userData.token}`
+        }
+      })
         .then((res) => res.json())
         .then((data) => setVideosIds(data));
     }
 
     function getSectionQuiz() {
-      fetch(`https://localhost:7187/api/Quizes/SectionQuiz/${section.id}`)
-        .then((res) => res.json())
+      fetch(`https://localhost:7187/api/Quizes/SectionQuiz/${section.id}`,{
+        method:"GET",
+        headers:{
+          "Authorization":`Bearer ${userData.token}`
+        }
+      })
+        .then((res) => res.ok?res.json():null)
         .then((data) => setSectionQuiz(data));
     }
 
@@ -95,7 +119,7 @@ const CourseDetails = () => {
             }
           </h3>
 
-          <div className="sectionIcons">
+          {userData.roles==='Admin'&&<div className="sectionIcons">
             <FaPlusCircle
               className="plusIcon"
               onClick={() => {
@@ -104,10 +128,10 @@ const CourseDetails = () => {
               }}
             />
             <FaRegEdit
-              onClick={() => navigate(`/AddQuizToSection/${section.id}`)}
+              onClick={() => navigate(`/AddQuizToSection/${section.id}`,{state:{data:userData}})}
               className="plusIcon"
             />
-          </div>
+          </div>}
         </div>
 
         <div
@@ -117,7 +141,7 @@ const CourseDetails = () => {
           {videosIds?.map((video) => (
             <span
               onClick={() =>
-                navigate(`/CourseForStudent/${section.id}/${video.id}`)
+                navigate(`/CourseForStudent/${section.id}/${video.id}`,{state:{data:userData}})
               }
               className="LinkVideoSection"
             >
@@ -128,7 +152,7 @@ const CourseDetails = () => {
           {sectionQuiz && (
             <span
               className="QuizTitle"
-              onClick={() => navigate(`/SectionQuiz/${section.id}`)}
+              onClick={() => navigate(`/SectionQuiz/${section.id}`,{state:{data:userData}})}
             >
               {section.name} Quiz
             </span>
@@ -157,6 +181,9 @@ const CourseDetails = () => {
 
       fetch(`https://localhost:7187/api/Courses/Videos/${sectionId}`, {
         method: "POST",
+          headers:{
+            "Authorization":`Bearer ${userData.token}`
+          },
         body: formData,
       }).then((res) => {
         if (res.ok) {
@@ -229,7 +256,12 @@ const CourseDetails = () => {
     const [video, setVideo] = useState(null);
 
     useEffect(() => {
-      fetch(`https://localhost:7187/api/courses/Videos/${videoId}`)
+      fetch(`https://localhost:7187/api/courses/Videos/${videoId}`,{
+        method:"GET",
+        headers:{
+          "Authorization":`Bearer ${userData.token}`
+        }
+      })
         .then((response) => {
           if (!response.ok) {
             throw new Error("Failed to fetch video.");
@@ -287,9 +319,10 @@ const CourseDetails = () => {
       data.push(sectionData);
       fetch(`https://localhost:7187/api/Courses/Sections?courseId=${id}`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+          headers:{
+            "Authorization":`Bearer ${userData.token}`,
+            "Content-Type": "application/json"
+          },
         body: JSON.stringify(data),
       })
         .then((response) => {
@@ -343,9 +376,12 @@ const CourseDetails = () => {
     function deleteCourse() {
       fetch(`https://localhost:7187/api/Courses/${id}`, {
         method: "DELETE",
+          headers:{
+            "Authorization":`Bearer ${userData.token}`
+          },
       }).then((res) => {
         if (res.ok) {
-          navigate("/AdminPanel");
+          navigate("/AdminPanel",{state:{data:userData}});
         } else alert("Error Happened Please Try Again Later");
       });
     }
@@ -392,7 +428,7 @@ const CourseDetails = () => {
             <h1 className="NameCourse">{courseDetails?.name}</h1>
             <p className="briefCourseNew">{courseDetails?.brief}</p>
             <h2>Price: {courseDetails?.price} EGP</h2>
-            <button className="btnBUY">Buy Now</button>
+            {userData.roles!=='Admin'&&<button className="btnBUY">Buy Now</button>}
           </div>
               <div className="ObjectivesNew">
                 <h2>Objectives :</h2>
@@ -408,7 +444,7 @@ const CourseDetails = () => {
           <div className="CourseSectionsData">
             <div className="courseCOntAddDelSection">
               <h1>Course Content</h1>
-              <div className="TrashPlus">
+             {userData.roles==='Admin'&&<div className="TrashPlus">
                 <FaPlusCircle
                   onClick={() => setShowAddSection(true)}
                   className="addBtn"
@@ -417,13 +453,18 @@ const CourseDetails = () => {
                   onClick={() => setShowDeleteCourseModal(true)}
                   className="delBtn"
                 />
-              </div>
+                
+              </div>}
             </div>
             <div className="ContSectionsNew">
               {courseSections?.length === 0 && (
-                <h3 style={{ textAlign: "center" }}>
+                userData.roles==='Admin'?<h3 style={{ textAlign: "center" }}>
                   Click the plus button to start adding sections
-                </h3>
+                </h3>:
+                <h3 style={{ textAlign: "center" }}>
+                This Course Has No Sections Yet !
+              </h3>
+                
               )}
               {courseSections?.map((section) => {
                 return <SectionCard section={section} />;

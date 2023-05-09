@@ -1,7 +1,7 @@
 import React from "react";
 import "../css/AddQuizToSection.css";
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Header from "./Header";
 import AnswersCard from "./AnswerCard";
 
@@ -12,13 +12,15 @@ export default function AddQuizToCourse (){
     ]);
     const [question, setQuestion] = useState({ name: "", score: 0, answers: [] });
     const [allQuestions, setAllQuestions] = useState([]);
+    const {skillId}=useParams();
     const [quizData, setQuizData] = useState({
-        skillId: 1,
+        skillId: skillId*1,
       timeLimit: "",
       maxScore: 0,
       questions: [],
     });
-
+    const userData=useLocation().state?.data
+    const navigate=useNavigate();
 
 
     function addNewAnswer() {
@@ -120,13 +122,13 @@ function saveQuest() {
     fetch(`https://localhost:7187/api/Quizes/FinalQuiz`, {
       method: "POST",
       headers: {
+        "Authorization":`Bearer ${userData.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(updatedQuizData),
     })
-      .then((response) => console.log(response))
-      .then((data) => console.log(data));
-    // console.log(updatedQuizData)
+      .then((res) => res.ok?navigate('AdminPanel',{state:{data:userData}}):alert('failed to add quiz'))
+      
   }
 
 
@@ -236,9 +238,9 @@ console.log(quizData)
           </div>
         </div>
 
-        <button className="buttonbtn button-arounder" onClick={sendQuizData}>
+        {allQuestions.length>0&&<button className="buttonbtn button-arounder" onClick={sendQuizData}>
           Submit
-        </button>
+        </button>}
         
       </div>
     </div>

@@ -14,6 +14,7 @@ import CourseForStudent from './components/CourseForStudent';
 import AddQuizToCourse from './components/AddQuizToCourse'
 import FinalQuiz from './components/FinalQuiz';
 import AddPaper from './components/AddPaper';
+import FinalQuizResult from './components/FinalQuizResult';
 function App() {
   return (
     <div >
@@ -29,8 +30,9 @@ function App() {
         <Route path='/AddQuizToSection/:sectionId' element={<AddQuizToSection/>}/>
         <Route path='/SectionQuiz/:sectionId' element={<SectionQuiz/>}/>
         <Route path='/CourseForStudent/:sectionId/:videoId' element={<CourseForStudent/>}/>
-        <Route path='/AddQuizToCourse' element={<AddQuizToCourse/>}/>
-        <Route path='/FinalQuiz' element={<FinalQuiz/>}/>
+        <Route path='/AddQuizToCourse/:skillId' element={<AddQuizToCourse/>}/>
+        <Route path='/FinalQuiz/:skillId' element={<FinalQuiz/>}/>
+        <Route path='/FinalQuizResult/:skillId' element={<FinalQuizResult/>}/>
         <Route path='/AddPaper' element={<AddPaper/>}/>
       
 

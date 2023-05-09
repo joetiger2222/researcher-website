@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "../css/CreateCourse.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function CreateCourse() {
   const navigate = useNavigate();
   const [courseId, setCourseId] = useState(null);
+  const userData=useLocation().state?.data
   const [courseData, setCourseData] = useState({
     name: "",
     instructions: "",
@@ -16,15 +17,51 @@ export default function CreateCourse() {
     skillId: 0,
   });
 
+  const[allSkills,setAllSkills]=useState(null);
+
+
+
   function getCourseData(event) {
+    if(event.target.name!=='skillId'){
     setCourseData((prevCourseData) => {
       return {
         ...prevCourseData,
         [event.target.name]: event.target.value,
+        
       };
     });
-    parseInt(courseData.skillId);
+  }else{
+    setCourseData((prevCourseData) => {
+      return {
+        ...prevCourseData,
+        [event.target.name]: event.target.value*1,
+        
+      };
+    });
   }
+    
+  }
+
+
+
+
+console.log(courseData)
+
+  function getAllSkills(){
+    fetch(`https://localhost:7187/api/Researchers/Skills`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      }
+    })
+    .then(res=>res.ok?res.json():null)
+    .then(data=>setAllSkills(data))
+    .catch(error=>console.error(error))
+  }
+
+  useEffect(()=>{
+    getAllSkills();
+},[])
 
   function sendCourseData(e) {
     e.preventDefault();
@@ -32,6 +69,7 @@ export default function CreateCourse() {
     fetch("https://localhost:7187/api/Courses", {
       method: "POST",
       headers: {
+        "Authorization":`Bearer ${userData.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(courseData),
@@ -44,7 +82,7 @@ export default function CreateCourse() {
       .then((data) => setCourseId(data.courseId));
   }
   useEffect(() => {
-    if (courseId) navigate(`/CourseDetails/${courseId}`);
+    if (courseId) navigate(`/CourseDetails/${courseId}`,{state:{data:userData}});
   }, [courseId]);
 
   return (
@@ -66,11 +104,13 @@ export default function CreateCourse() {
           </div>
           <div className="createCourseFormOneLine">
             {/* <label>Skill</label> */}
-            <select className="SelectSkill" name="skill" id="skill" class="select-field-skill">
-              <option value="">Choose a Skill</option>
-              <option value="user">User</option>
-              <option value="hallowner">Researcher</option>
-              <option value="planner">Hawwaya</option>
+            <select onChange={getCourseData} className="SelectSkill" name="skillId" id="skill" class="select-field-skill">
+              <option selected disabled value="">Choose a Skill</option>
+              {allSkills?.map(skill=>{
+                  return(
+                    <option value={skill.id}>{skill.name}</option>
+                  )
+                  })}
             </select>
           
           </div>

@@ -23,6 +23,36 @@ console.log(formData)
 
 
 
+
+
+function loginAdmin(e){
+  e.preventDefault();
+  fetch(`https://localhost:7187/api/Authentication/AdminLogin`,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+    },
+    body:JSON.stringify(formData)
+  }).then(res=>{
+    if(res.ok){
+      return res.json();
+    }
+  }).then(data=>{
+    if (data) {
+         
+      const admin = {
+        roles: "Admin",
+        token: data.token,
+        userId: data.userId,
+      };
+      // console.log('login data',admin)
+      navigate(`/adminPanel`, { state: { data: admin } });
+    }
+  })
+}
+
+
+
 function authorizeLogin(e){
   e.preventDefault();
   fetch("https://localhost:7187/api/Authentication/login", {
@@ -41,8 +71,20 @@ function authorizeLogin(e){
       if(response.ok)return response.json();
       else alert('wrong username or password')
     })
-    .then(data=>setLoginData(data));
+    .then(data=>{
+      setLoginData(prev=>{
+        return{
+          roles:'Student',
+          userId:data.userId,
+          token:data.token
+          
+        }
+      })
+    });
 }
+
+
+
 
 
 useEffect(()=>{
@@ -157,7 +199,7 @@ useEffect(()=>{
                 fontWeight:'bold',
                 cursor:'pointer',
               }}
-              onClick={authorizeLogin}
+              onClick={(e)=>{loginAdmin(e);authorizeLogin(e)}}
             >
               Login
             </button>

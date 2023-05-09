@@ -20,6 +20,7 @@ export default function SectionQuiz() {
   });
   const [timerStarted, setTimerStarted] = useState(false);
   const [answers, setAnswers] = useState([]);
+  const userData=useLocation().state?.data
 
   const handleUpdate = (update) => {
     const index = answers.findIndex(
@@ -108,11 +109,15 @@ export default function SectionQuiz() {
   }
 
   function getSectionQuiz() {
-    fetch(`https://localhost:7187/api/Quizes/SectionQuiz/${sectionId}`)
-      .then((res) => res.json())
+    fetch(`https://localhost:7187/api/Quizes/SectionQuiz/${sectionId}`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      }
+    })
+      .then((res) => res.ok?res.json():alert('failed to load section quiz'))
       .then((data) => {
-        // let hours=data.timeLimit.slice(0,2)
-        // let mins=data.timeLimit.slice(3,5)
+        
         setTimeLimit((prevData) => {
           if (data.timeLimit.slice(0, 1) * 1 === 0) {
             return {
@@ -177,9 +182,10 @@ export default function SectionQuiz() {
       arr.push(ans.answerId)
     })
 
-    fetch(`https://localhost:7187/api/Quizes/SectionQuiz/Submit?QuizId=${sectionQuizData?.id}&StudentId=5471da49-1983-434f-a2b8-fa9f21cf1b00`,{
+    fetch(`https://localhost:7187/api/Quizes/SectionQuiz/Submit?QuizId=${sectionQuizData?.id}&StudentId=${userData.userId}`,{
       method:"POST",
       headers:{
+        "Authorization":`Bearer ${userData.token}`,
         "Content-Type":"application/json"
       },
       body:JSON.stringify(arr)
