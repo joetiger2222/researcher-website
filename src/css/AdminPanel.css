@@ -1,3 +1,14 @@
+:root {
+  --orange-color: #ff702d; 
+  --green-color: #117d5d; 
+  --darkgreen-color: #007d6f; 
+  --lightgreen-color: #71b9b4; 
+  --background-color: #F8F1F1; 
+
+
+
+ 
+}
 .adminPanelParent{
     display: flex;
     flex-direction: column;
@@ -42,6 +53,8 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     flex-direction: column;
     justify-content: center;
+    gap: 5px;
+    align-items: center;
   }
   
 
@@ -53,15 +66,26 @@
   .courseDiv h4:first-child {
     margin-top: 0;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 22px;
   }
-  
+  .courseDiv h4 span:first-child {
+    
+    font-weight: bold;
+  }
   /* Styles for the course hours and brief */
   .courseDiv h4:not(:first-child) {
     margin: 10px 0;
     font-size: 16px;
   }
-  
+  .bold{
+    font-weight: bolder;
+  }
+  .notBold{
+    font-weight: 500;
+  }
+  .courseNamea{
+    color: var(--orange-color);
+  }
   /* Styles for the create new course button */
   .plusBtn {
     width: 100%;

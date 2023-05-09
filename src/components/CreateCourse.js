@@ -65,12 +65,12 @@ export default function CreateCourse() {
             <input onChange={getCourseData} name="name"></input>
           </div>
           <div className="createCourseFormOneLine">
-            <label>Skill</label>
-            <select name="skill" id="skill" class="select-field-skill">
+            {/* <label>Skill</label> */}
+            <select className="SelectSkill" name="skill" id="skill" class="select-field-skill">
               <option value="">Choose a Skill</option>
-              <option value="user">Client</option>
-              <option value="hallowner">Hall Owner</option>
-              <option value="planner">Wedding Planner</option>
+              <option value="user">User</option>
+              <option value="hallowner">Researcher</option>
+              <option value="planner">Hawwaya</option>
             </select>
           
           </div>
@@ -96,7 +96,7 @@ export default function CreateCourse() {
             ></input>
           </div>
         </div>
-        <div>
+        <div className="conAllTextareaCreateCourse">
         <div className="createCourseFormOneLineNew">
           <label>Instructions</label>
           <textarea

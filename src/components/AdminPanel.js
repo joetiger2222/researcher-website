@@ -20,10 +20,10 @@ const CourseCard=(props)=>{
    
     return (
         <div onClick={()=>navigate(`/CourseDetails/${props.course.id}`)} className="courseDiv">
-            <h4><span>Name: </span>{props.course.name}</h4>
-            <h4><span>Hours: </span>{props.course.hours+" Hour"}</h4>
+            <h4><span className="bold">Name: </span><span className="courseNamea">{props.course.name}</span></h4>
+            <h4><span  className="bold">Duration: </span><span className="notBold">{props.course.hours+" hour"}</span></h4>
             {/* <h4><span>Instructions: </span>{props.course.instructions}</h4> */}
-            <h4><span>Brief: </span>{props.course.brief}</h4>
+            <h4><span  className="bold">Price: </span><span className="notBold">{props.course.price}&pound;</span></h4>
         </div>
     )
 }
@@ -33,7 +33,7 @@ const CourseCard=(props)=>{
   return (
     <div className="adminPanelParent">
       <Header />
-      <h1 style={{fontWeight:'bold',color:'white'}}>Admin Panel</h1>
+      <h1 style={{fontWeight:'bold',color:'white',marginTop:'120px'}}>Admin Panel</h1>
 
       <div className="coursesParent">
         <h1>Courses</h1>
