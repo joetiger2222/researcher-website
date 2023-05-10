@@ -214,7 +214,8 @@ export default function SectionQuiz() {
         </h4>
         <div className="startQBtn">
           <button
-            style={{ display: renderQ ? "none" : "flex" }}
+
+            style={{textAlign:'center', display: renderQ ? "none" : "flex" }}
             onClick={() => {
               setTimerStarted(true);
               setRenderQ(true);
@@ -227,22 +228,25 @@ export default function SectionQuiz() {
       </div>
 
       {renderQ && (
-        <div className="questions">
-          {questions?.map((q, index) => {
-            return (
-              <QuestionCard
-                question={q}
-                id={index + 1}
-                handleAnsQ={(update) => handleUpdate(update)}
-              />
-            );
-          })}
-        </div>
+          <div className="questions">
+            {questions?.map((q, index) => {
+              return (
+                <QuestionCard
+                  question={q}
+                  id={index + 1}
+                  handleAnsQ={(update) => handleUpdate(update)}
+                />
+              );
+            })}
+            {answers?.length===questions?.length&&<div>
+            <button onClick={handleSubmit}>Submit</button>
+          </div>}
+            
+          </div>
+          
       )}
 
-      {answers?.length===questions?.length&&<div>
-        <button onClick={handleSubmit}>Submit</button>
-      </div>}
+      
     </div>
   );
 }

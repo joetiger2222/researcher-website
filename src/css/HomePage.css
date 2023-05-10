@@ -1,3 +1,11 @@
+:root {
+  --orange-color: #ff702d; 
+  --green-color: #117d5d; 
+  --darkgreen-color: #007d6f; 
+  --lightgreen-color: #71b9b4; 
+  --background-color: #F8F1F1; 
+
+}
 .homePageContainer {
   width: 100%;
   display: flex;
@@ -50,8 +58,7 @@ p {
   display: flex;
   flex-direction: column;
   width: 90%;
-  
-  margin: 50px auto 0 auto;
+  margin: 130px auto 0 auto;
   color: white;
 }
 .landingData > h3 {
@@ -137,8 +144,33 @@ p {
 }
 .quizContainer > h1,
 .researchContainer > h1 {
-  align-self: first baseline;
-  margin: 20px 0 0 50px;
+ 
+}
+.btnSkillHome{
+  padding: 8px;
+  font-size: 16px;
+  width: 130px;
+  border: 1px solid var(--darkgreen-color);
+  color: var(--darkgreen-color);
+  background-color: transparent;
+  text-align: center;
+  margin-top: 20px;
+}
+.btnSkillHome:hover{
+  background-color: var(--darkgreen-color);
+  color: var(--background-color);
+}
+.selectboxSkill{
+  width: 60%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #efefef;
+  color: var(--darkgreen-color);
+  border: 1px solid var(--darkgreen-color);
+  font-size: 16px;
+  margin-bottom: 10px;
+  transition: all 0.3s ease-in-out;
 }
 .badgeDiv {
   width: 20%;

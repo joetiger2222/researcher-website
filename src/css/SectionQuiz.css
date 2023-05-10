@@ -1,3 +1,14 @@
+:root {
+    --orange-color: #ff702d; 
+    --green-color: #117d5d; 
+    --darkgreen-color: #007d6f; 
+    --lightgreen-color: #71b9b4; 
+    --background-color: #F8F1F1; 
+  
+  
+  
+   
+  }
 .sectionQuizContainer{
     display: flex;
     flex-direction: column;
@@ -9,16 +20,36 @@
 
 .sectionQuizHeader{
     margin-top: 50px;
-    background-color: white;
+    background-color: var(--background-color);
     width: 50%;
     border-radius: 10px;
     padding: 20px;
     display: flex;
     flex-direction: column;
+    margin-top: 130px;
 }
-
+.SubmitQuizInFinalAndSectionQuiz{
+    padding: 8px;
+    font-size: 16px;
+    width: 130px;
+    border: 1px solid #1c4b94;
+    color: #1c4b94;
+    background-color: transparent;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .SubmitQuizInFinalAndSectionQuiz:hover{
+    background-color: #1c4b94;
+    color: white;
+  }
+  .btnConSubmit{
+    width: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
 .questions{
-    background-color: white;
+    background-color: var(--background-color);
     width: 50%;
     border-radius: 10px;
     padding: 20px;
@@ -30,11 +61,27 @@
 .startQBtn{
     width: 100%;
     display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
+    align-items: center;
+    justify-content: center;
 }
-
+.sectionQuizHeader{
+    text-align: center;
+}
 .startQBtn>button{
+    padding: 10px 20px;
+    font-size: 16px;
+    /* width: 130px; */
+    border: 1px solid #1c4b94;
+    color: #1c4b94;
+    background-color: transparent;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .startQBtn>button:hover{
+    background-color: #1c4b94;
+    color: white;
+  }
+/* .startQBtn>button{
     width: 100px;
     height: 40px;
     color: white;
@@ -51,4 +98,4 @@
     width: 120px;
     height: 50px;
     font-size: 24px;
-}
+} */

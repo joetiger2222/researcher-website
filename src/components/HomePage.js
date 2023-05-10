@@ -192,7 +192,7 @@ export default function HomePage() {
           <button>Join Us Now!</button>
         </div>
       </div>
-      <div className="badgesDivContainer">
+      {/* <div className="badgesDivContainer">
         <div className="badgeDiv">
           <img src={badge} />
           <h1>Best Students</h1>
@@ -218,7 +218,7 @@ export default function HomePage() {
             industry.
           </p>
         </div>
-      </div>
+      </div> */}
 
       <div className="quizContainer">
         {/* <div>
@@ -234,10 +234,9 @@ export default function HomePage() {
           onChange={(e) => {
             setSkillId(e.target.value * 1);
           }}
-          className="SelectSkill"
+          className="selectboxSkill"
           name="skillId"
           id="skill"
-          class="select-field-skill"
         >
           <option selected disabled value="">
             Choose a Skill
@@ -248,6 +247,7 @@ export default function HomePage() {
         </select>
         {skillId && (
           <button
+          className="btnSkillHome"
             onClick={checkQuiz}
           >
             Take Quiz

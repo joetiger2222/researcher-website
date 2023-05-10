@@ -171,12 +171,14 @@ let counter =1;
               />
             );
           })}
+          {answers?.length===questions?.length&&
+          <div className="btnConSubmit">
+        <button className="SubmitQuizInFinalAndSectionQuiz" onClick={handleSubmit}>Submit</button>
+      </div>}
         </div>
       )}
 
-      {answers?.length===questions?.length&&<div>
-        <button onClick={handleSubmit}>Submit</button>
-      </div>}
+      
     </div>
   );
 }

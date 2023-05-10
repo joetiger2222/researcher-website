@@ -21,12 +21,12 @@
 
 
 .coursesParent {
-    max-width: 850px;
-    width: 830px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f8f8f8;
-    border-radius: 5px;
+  max-width: 850px;
+  width: 830px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--background-color);
+  border-radius: 5px;
   }
   .coursesParent>h1{
     text-align: center;
@@ -92,7 +92,7 @@
     padding: 10px;
     margin-top: 20px;
     border: none;
-    background-color: #f44336;
+    background-color: var(--orange-color);
     color: #fff;
     font-size: 16px;
     font-weight: bold;
@@ -105,6 +105,48 @@
   
   /* Styles for the create new course button hover state */
   .plusBtn:hover {
-    background-color: #ff6659;
+    background-color: #ff702db0;
   }
   
+  .AllContCoursesAndCreateQuiz{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 50px;
+  }
+  .allSkillsDiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+    gap: 20px;
+    border: 1px solid var(--background-color);
+    padding: 20px;
+    background-color: var(--background-color);
+  }
+  .allSkillsDiv h2{
+    text-align: center;
+  }
+  .select-field-skillInAdminPanel{
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: white;
+    color: var(--orange-color);
+    font-size: 16px;
+    /* margin-bottom: 10px; */
+    transition: all 0.3s ease-in-out;
+  }
+
+  .allSkillsDiv button{
+    border: 1px solid var(--orange-color);
+    color: var(--orange-color);
+    background-color: transparent;
+    padding: 10px;
+  }
+  .allSkillsDiv button:hover{
+    background-color: var(--orange-color);
+    color: white;
+  }

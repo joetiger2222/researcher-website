@@ -12,9 +12,9 @@ export default function FinalQuizResult(){
     return(
         <div style={{minHeight:'100vh',display:'flex',alignItems:'center',width:'100%',backgroundColor:'black',justifyContent:'center'}}>
             <Header/>
-            <div style={{backgroundColor:'white',borderRadius:'10px',width:'50%',display:'flex',flexDirection:'column'}}>
-                <h1>You Failed The Exam</h1>
-                <button onClick={()=>navigate(`/FinalQuiz/${skillId}`, { state: { data: userData } })}>Retake</button>
+            <div style={{backgroundColor:'white',borderRadius:'10px',width:'50%',display:'flex',flexDirection:'column',padding:'10px',alignItems:'center'}}>
+                <h1 style={{textAlign:'center'}}>You Failed The Exam</h1>
+                <button className="SubmitQuizInFinalAndSectionQuiz" onClick={()=>navigate(`/FinalQuiz/${skillId}`, { state: { data: userData } })}>Retake</button>
             </div>
         </div>
     )

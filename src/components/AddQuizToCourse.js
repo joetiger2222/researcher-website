@@ -127,7 +127,7 @@ function saveQuest() {
       },
       body: JSON.stringify(updatedQuizData),
     })
-      .then((res) => res.ok?navigate('AdminPanel',{state:{data:userData}}):alert('failed to add quiz'))
+      .then((res) => res.ok?navigate('/AdminPanel',{state:{data:userData}}):alert('failed to add quiz'))
       
   }
 
@@ -138,110 +138,141 @@ console.log(quizData)
   return (
     <div className="AddQuizToSectionContainer">
       <Header />
-      <div className="quizHeaderAndBtn">
-        <div className="quizHeaderData">
-         
-          <div className="ContInputs">
-            <div className="quizHeaderOneLine">
-              <span>Min Score: </span>
-              <input
-                onChange={getQuizData}
-                name="maxScore"
-                placeholder="Max Score"
-              ></input>
-            </div>
-            <div className="quizHeaderOneLine">
-              <span>Time Limit: </span>
-              <input
-                name="timeLimit"
-                onChange={getQuizData}
-                placeholder="Ex: 2:00"
-              />
+      <div className="ConquizHeaderAndBtnquizQiestionsDiv">
+        <div className="quizHeaderAndBtn">
+          <div className="quizHeaderData">
+            <h2>Enter Minimum Score To Pass Quiz And Time Limit </h2>
+            <div className="ContInputs">
+              <div className="quizHeaderOneLine">
+                <span>Min Score: </span>
+                <input
+                  onChange={getQuizData}
+                  name="maxScore"
+                  placeholder="Max Score"
+                ></input>
+              </div>
+              <div className="quizHeaderOneLine">
+                <span>Time Limit: </span>
+                <input
+                  name="timeLimit"
+                  onChange={getQuizData}
+                  placeholder="Ex: 2:00"
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="quizQiestionsDiv">
-        <div className="ContQuestions">
-          {" "}
-          {allQuestions.map((question) => {
-            return (
-              <div
-                style={{
-                  backgroundColor: "#eee",
-                  padding: "20px",
-                  borderRadius: "10px",
-                }}
-              >
-                <h3>
-                  <span>Name: </span>
-                  {question.name}
-                </h3>
-                <h4>
-                  <span>Score: </span>
-                  {question.score}
-                </h4>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="ContQuestionTempAndAddQ">
-          <div
-            style={{ display: showQuestionTemplate ? "flex" : "none" }}
-            className="QestionTemplate"
-          >
-            <div className="questionInput ">
-              <span>Question:</span>
-              <input onChange={getQuestion} name="name"></input>
-            </div>
-            <div className="questionInput1">
-              <span style={{ marginRight: "25px" }}>Score:</span>
-              <input
-                type="number"
-                style={{ width: "40px" }}
-                onChange={getQuestion}
-                name="score"
-              ></input>
-            </div>
-            {answerCards.map((card) => {
+        <div className="quizQiestionsDiv">
+          <div className="ContQuestions">
+            {" "}
+            {allQuestions.map((question) => {
               return (
-                <AnswersCard
-                  id={card.id}
-                  delete={() => deleteAns(card.id)}
-                  lastCard={card.id === answerCards.length ? true : false}
-                  groupName={"test"}
-                  correctAns={() => handleCorrect(card.id)}
-                  setText={(text) => handleAnswerTextChange(card.id, text)}
-                />
+                <div
+                  style={{
+                    backgroundColor: "#eee",
+                    padding: "20px",
+                    borderRadius: "10px",
+                  }}
+                >
+                  <h3>
+                    <span>Name: </span>
+                    {question.name}
+                  </h3>
+                  <h4>
+                    <span className="ScoreInAddQuis">Score: </span>
+                    {question.score}
+                  </h4>
+                </div>
               );
             })}
-            <div>
-              {" "}
-              <button className="btnG greenBackground" onClick={addNewAnswer}>
-                Add New Answer
+          </div>
+
+          <div className="ContQuestionTempAndAddQ">
+            <div
+              style={{ display: showQuestionTemplate ? "flex" : "none" }}
+              className="QestionTemplate"
+            >
+              <div className="ContQuestionScore">
+              <div className="questionInput ">
+                <span>Question:</span>
+                <input className="InputInQuestion" onChange={getQuestion} name="name"></input>
+              </div>
+              <div className="questionInput1">
+                <span>Score:</span>
+                <input
+                className="ScoreInAddQuis"
+                  type="number"
+                  style={{ width: "40px" }}
+                  onChange={getQuestion}
+                  name="score"
+                ></input>
+              </div>
+              </div>
+              
+              {answerCards.map((card) => {
+                return (
+                  <AnswersCard
+                    id={card.id}
+                    delete={() => deleteAns(card.id)}
+                    lastCard={card.id === answerCards.length ? true : false}
+                    groupName={"test"}
+                    correctAns={() => handleCorrect(card.id)}
+                    setText={(text) => handleAnswerTextChange(card.id, text)}
+                  />
+                );
+              })}
+              <div className="AddNewAnswerSaveQuestion">
+                {" "}
+                <button className="AddNewAnswerWithHover" onClick={addNewAnswer}>
+                  Add New Answer
+                </button>
+                <button className="SaveQuestionWithHover" onClick={saveQuest}>
+                  Save Question
+                </button>
+              </div>
+            </div>
+
+            <div className="ContSubmitAndAddQues">
+              <button
+                onClick={() => setShowQuestionTemplate(true)}
+                className="addQuestionbtn button-arounder"
+              >
+               +Add Question
               </button>
-              <button className="btnG blueBackground" onClick={saveQuest}>
-                Save Question
-              </button>
+              {allQuestions.length>0 &&
+              <button className="buttonbtn button-arounder" onClick={sendQuizData}>
+            Submit{" "}
+          </button>}
             </div>
           </div>
 
-          <div>
-            <button
-              onClick={() => setShowQuestionTemplate(true)}
-              className="addQuestionbtn"
-            >
-              <span>+</span>Add Question
-            </button>
+          {/* <button onClick={sendQuizData}>Submit</button> */}
+          
+          {/* <div>
+          <button
+          id="btn"
+          onClick={sendQuizData}
+          className={isActive ? "btnSubmitted active" : "btnSubmitted"}
+        >
+          <p id="btnText">{isActive ? "Submitted" : "Submit"}</p>
+          <div className="check-box">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+              <path fill="transparent" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+            </svg>
           </div>
-        </div>
+        </button>
+          </div> */}
 
-        {allQuestions.length>0&&<button className="buttonbtn button-arounder" onClick={sendQuizData}>
-          Submit
-        </button>}
-        
+          {/* <button id="btn">
+              <p id="btnText">Submit</p>
+              <div class="check-box">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                      <path fill="transparent" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                  </svg>
+              </div>
+          </button> */}
+        </div>
       </div>
     </div>
   );

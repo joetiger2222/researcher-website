@@ -72,7 +72,7 @@ export default function AdminPanel() {
       <h1 style={{ fontWeight: "bold", color: "white", marginTop: "120px" }}>
         Admin Panel
       </h1>
-
+<div className="AllContCoursesAndCreateQuiz">
       <div className="coursesParent">
         <h1>Courses</h1>
         <div className="coursesAndPlusBtn">
@@ -91,6 +91,7 @@ export default function AdminPanel() {
       </div>
 
       <div className="allSkillsDiv">
+        <h2>Let's Choose a Skill Then Create Final Quiz </h2>
         <select
           onChange={(e) => {
             setSkillId(e.target.value * 1);
@@ -98,7 +99,7 @@ export default function AdminPanel() {
           className="SelectSkill"
           name="skillId"
           id="skill"
-          class="select-field-skill"
+          class="select-field-skillInAdminPanel"
         >
           <option selected disabled value="">
             Choose a Skill
@@ -109,6 +110,8 @@ export default function AdminPanel() {
         </select>
         {skillId && <button onClick={()=>navigate(`/AddQuizToCourse/${skillId}`,{state:{data:userData}})}>Create New Quiz</button>}
       </div>
+</div>
+      
     </div>
   );
 }

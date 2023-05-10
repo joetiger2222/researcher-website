@@ -26,7 +26,7 @@ const QuestionCard = ({ question, id,handleAnsQ }) => {
 
   const Answers = ({ a ,id,chooseAns}) => {
     return (
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex",gap:"10px" }}>
         <input onClick={chooseAns} type="radio" name={`answernum${id}`}></input>
         <p>{a?.answerText}</p>
       </div>
