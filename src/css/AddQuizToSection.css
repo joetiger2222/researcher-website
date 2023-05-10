@@ -15,7 +15,8 @@
   background-color: black;
 }
 .quizHeaderAndBtn {
-  width: 100%;
+  margin-top: 50px;
+  width: 40%;
   padding: 20px;
   background-color: var(--background-color);
   border-radius: 10px;
@@ -70,33 +71,18 @@
 }
 
 .quizQiestionsDiv {
-         /* margin-top: 50px; */
-    margin-bottom: 50px;
-    width: 100%;
-    padding: 20px;
-    background-color: var(--background-color);
-    border-radius: 10px;
-    display: flex;
-    /* column-gap: 50px; */
-    row-gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-    align-items: center;
-    /* padding: 45px 100px; */
-}
-.InputInQuestion{
-  width: 100%;
-  padding: 10px 10px;
-  font-size: 17px;
-  color: #323232;
-  margin-bottom: 30px;
-  margin-left: 10px;
-  border: none;
-  border-bottom: 1px solid black;
-  outline: none;
-  border-right: none;
-  letter-spacing: 1px;
-  background: transparent;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  width: 60%;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  column-gap: 50px;
+  flex-direction: column;
+  row-gap: 20px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 .ContQuestionTempAndAddQ{
   display: flex;
@@ -161,26 +147,21 @@
   cursor: pointer;
 }
 .addQuestionbtn{
-     /* width: 150px; */
-    /* height: 150px; */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    /* border-radius: 10px; */
-    background-color: transparent;
-    color: #182f5d;
-    font-weight: bold;
-    row-gap: 20px;
-    padding: 10px;
-    border: 1px solid #182f5d;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    align-self: flex-end;
-
-}
-.addQuestionbtn:hover{
-  color: var(--background-color);
+  width: 150px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background-color: rgb(20, 36, 158);
+  color: white;
+  font-weight: bold;
+  row-gap: 20px;
+  padding: 3px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  align-self: flex-end;
 }
 
 .addQuestionbtn>span{
@@ -454,6 +435,9 @@ svg path{
 }
 
 .button-arounder {
+  font-size: 2rem;
+  background: hsl(190deg, 30%, 15%);
+  color: hsl(190deg, 10%, 95%);
   
   box-shadow: 0 0px 0px hsla(190deg, 15%, 5%, .2);
   transform: translateY(0);
@@ -461,12 +445,19 @@ svg path{
   border-top-right-radius: 0px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
-  
   --dur: .15s;
   --delay: .15s;
   --radius: 16px;
   
-  }
+  transition:
+    border-top-left-radius var(--dur) var(--delay) ease-out,
+    border-top-right-radius var(--dur) calc(var(--delay) * 2) ease-out,
+    border-bottom-right-radius var(--dur) calc(var(--delay) * 3) ease-out,
+    border-bottom-left-radius var(--dur) calc(var(--delay) * 4) ease-out,
+    box-shadow calc(var(--dur) * 4) ease-out,
+    transform calc(var(--dur) * 4) ease-out,
+    background calc(var(--dur) * 4) steps(4, jump-end);
+}
 
 .button-arounder:hover,
 .button-arounder:focus {

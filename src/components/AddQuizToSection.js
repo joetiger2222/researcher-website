@@ -321,36 +321,33 @@ export default function AddQuizToSection() {
               </div>
             </div>
 
-            <div>
-              <button
-                onClick={() => setShowQuestionTemplate(true)}
-                className="addQuestionbtn"
-              >
-                <span>+</span>Add Question
-              </button>
-              {allQuestions.length>0 &&
-              <button className="buttonbtn button-arounder" onClick={sendQuizData}>
-            Submit{" "}
-          </button>}
-            </div>
+          <div>
+            <button
+              onClick={() => setShowQuestionTemplate(true)}
+              className="addQuestionbtn"
+            >
+              <span>+</span>Add Question
+            </button>
           </div>
 
-          {/* <button onClick={sendQuizData}>Submit</button> */}
-          
-          {/* <div>
-          <button
-          id="btn"
-          onClick={sendQuizData}
-          className={isActive ? "btnSubmitted active" : "btnSubmitted"}
-        >
-          <p id="btnText">{isActive ? "Submitted" : "Submit"}</p>
-          <div className="check-box">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
-              <path fill="transparent" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
-            </svg>
-          </div>
+        {/* <button onClick={sendQuizData}>Submit</button> */}
+        <button className="buttonbtn button-arounder" onClick={sendQuizData}>
+          Submit{" "}
         </button>
-          </div> */}
+        {/* <div>
+        <button
+        id="btn"
+        onClick={sendQuizData}
+        className={isActive ? "btnSubmitted active" : "btnSubmitted"}
+      >
+        <p id="btnText">{isActive ? "Submitted" : "Submit"}</p>
+        <div className="check-box">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+            <path fill="transparent" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+          </svg>
+        </div>
+      </button>
+        </div> */}
 
           {/* <button id="btn">
               <p id="btnText">Submit</p>
@@ -364,5 +361,7 @@ export default function AddQuizToSection() {
       </div>
 
     </div>
+    </div>
+
   );
 }
