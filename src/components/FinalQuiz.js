@@ -139,7 +139,7 @@ let counter =1;
 
   return (
     <div className="sectionQuizContainer">
-      <Header />
+      <Header userData={userData} />
       <div className="sectionQuizHeader">
         
         <h4>

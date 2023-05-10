@@ -78,9 +78,9 @@ export default function HomePage() {
         Authorization: `Bearer ${userData.token}`,
       },
     })
-      .then((res) => res.json()) // parse the response body as JSON
+      .then((res) => res.ok?res.json():alert('Failed To Load Courses'))
       .then((data) => setAllCourses(data))
-      .catch((error) => console.error(error));
+      
   }
 
   useEffect(() => {
@@ -97,10 +97,11 @@ export default function HomePage() {
         },
       }
     )
-      .then((res) => res.ok?res.json():null) // parse the response body as JSON
+      .then((res) => res.ok?res.json():null) 
       .then((data) => {
         if(data){
           userData.roles='Researcher'
+          setResearcherId(data.researcherId)
         }
       })
       .catch((error) => console.error(error));
@@ -128,10 +129,11 @@ export default function HomePage() {
     .then(res=>res.ok?res.json():alert('server error'))
     .then(data=>{
       if(data){
-        if(data.isSuccessed)alert('you already succeded in this exam !')
-        else {
+        if(data.isSuccessed)
+          alert('you already succeded in this exam !')
+        else 
           navigate(`/FinalQuiz/${skillId}`,{state:{data:userData}})
-        }
+        
       }
     })
   }
@@ -162,10 +164,12 @@ export default function HomePage() {
     );
   };
 
+  console.log(userData)
+
   return (
     <div className="homePageContainer">
       <div className="landingPage">
-        <Header userData={userData} resercherId={resercherId} />
+        <Header userData={userData} />
         {renderSideBar()}
         <div
           style={{

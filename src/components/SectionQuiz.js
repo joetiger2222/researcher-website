@@ -175,6 +175,9 @@ export default function SectionQuiz() {
   //   );
   // };
 
+
+  
+
   function handleSubmit(){
     let arr=[];
 
@@ -198,7 +201,7 @@ export default function SectionQuiz() {
 
   return (
     <div className="sectionQuizContainer">
-      <Header />
+      <Header userData={userData} />
       <div className="sectionQuizHeader">
         <h1>
           <span>Course Name : </span>
@@ -238,8 +241,9 @@ export default function SectionQuiz() {
                 />
               );
             })}
-            {answers?.length===questions?.length&&<div>
-            <button onClick={handleSubmit}>Submit</button>
+            {answers?.length===questions?.length&&
+            <div className="btnConSubmit">
+            <button className="SubmitQuizInFinalAndSectionQuiz" onClick={handleSubmit}>Submit</button>
           </div>}
             
           </div>

@@ -22,7 +22,7 @@ export default function Header({userData,resercherId}) {
 
         <div className="headerRight">
           <ul className="headerUl">
-           {resercherId&&<li>MarketPlace</li>}
+           {userData?.roles==='Researcher'&&<li>MarketPlace</li>}
             
             <li class="dropdown">
               <a href="javascript:void(0)" class="dropbtn">
@@ -37,10 +37,12 @@ export default function Header({userData,resercherId}) {
 
             <li>Research</li>
           </ul>
-          {!userData&&<div className="headerBtnsContainer">
-            <button className="headerSignBtn">Login</button>
-            <button className="headerSignBtn">Signup</button>
-          </div>}
+          <div className="headerBtnsContainer">
+            {!userData&&<button className="headerSignBtn">Login</button>}
+            {!userData&&<button className="headerSignBtn">Signup</button>}
+            {userData&&<button onClick={()=>navigate(`/`)} className="headerSignBtn">Logout</button>}
+          </div>
+          
           {/* <img src={userImg} className="userImgHeader" /> */}
 
           <li class="dropdown">

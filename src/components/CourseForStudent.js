@@ -101,7 +101,7 @@ export default function CourseForStudent() {
 
   return (
     <div className="courseForStudentContainer">
-      <Header />
+      <Header userData={userData} />
 
       <div className="courseForStudentContent">
         <div className="courseForStudentVideoDiv">

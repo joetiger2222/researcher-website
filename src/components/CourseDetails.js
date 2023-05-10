@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import ModalForQuiz from "./ModalForQuiz";
 import SectionQuiz from "./SectionQuiz";
 
-import video from "../images/001 Course Structure and Projects.mp4";
+import video from "../1.mp4";
 const CourseDetails = () => {
   const navigate = useNavigate();
   const [videoUrl, setVideoUrl] = useState("");
@@ -420,7 +420,7 @@ console.log(userData)
 
   return (
     <div className="courseParent">
-      <Header  />
+      <Header userData={userData} />
 
       <div className="AllContentContainer">
         <div className="LeftCourseData">

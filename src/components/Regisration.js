@@ -5,9 +5,10 @@ import "../css/Registration.css";
 import { useNavigate } from "react-router-dom";
 const Registration = () => {
 
-  const [formData, setFormData] = useState({ firstname: "", lastname: "",userName:'',email:'',password:'',age:'',phoneNumber:'',gender:0 });
+  const [formData, setFormData] = useState({ firstname: "", lastname: "",userName:'',email:'',password:'',age:'',phoneNumber:'',gender:0, });
   const [passwordMatch,setPasswrdMatch]=useState('');
   const [userId,setUserId]=useState(null);
+  const [loginData,setLoginData]=useState(null);
   const navigate=useNavigate();
 
   function getRegisterData(event) {
@@ -44,21 +45,42 @@ useEffect(()=>{
     })
 
 
-    .then((response) => response.json())
-    .then(data=>console.log(data));
+    .then((res) =>res.ok?authorizeLogin(e):alert('failed to register please try again later') )
+    
   }else{
     alert('Password and Confirm Password Does not Match')
   }
   }
 
-useEffect(()=>{
-  if(userId){
-    navigate('/',{state:{data:userId}})
-  }
-},[userId])
 
 
+  function authorizeLogin(e){
+    e.preventDefault();
+    fetch("https://localhost:7187/api/Authentication/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          
+        },
+        body: JSON.stringify(
+          formData
+        ),
+      })
   
+  
+      .then((response) => {
+        if(response.ok)return response.json();
+        else alert('Failed to login in try again later')
+      })
+      .then(data=>{
+        if(data){
+        const login={roles:'Student',userId:data.userId,token:data.token}
+        navigate(`/HomePage`,{state:{data:login}})
+      }
+      });
+  }
+
+
 
   return (
     <div className="parentRegistration">

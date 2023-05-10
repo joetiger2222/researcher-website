@@ -4,12 +4,13 @@ import './Login.css'
 import google from "./google.png";
 import { useState, } from "react";
 import { useNavigate } from "react-router-dom";
-
+import loader from './loader.gif'
 export default function Login() {
   const navigate=useNavigate();
 
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loginData,setLoginData]=useState(null);
+  const [load,setLoad]=useState(false)
 
   function getLoginData(event) {
     setFormData(prevFormData=>{
@@ -26,6 +27,7 @@ console.log(formData)
 
 
 function loginAdmin(e){
+  setLoad(true)
   e.preventDefault();
   fetch(`https://localhost:7187/api/Authentication/AdminLogin`,{
     method:"POST",
@@ -55,6 +57,7 @@ function loginAdmin(e){
 
 function authorizeLogin(e){
   e.preventDefault();
+  
   fetch("https://localhost:7187/api/Authentication/login", {
       method: "POST",
       headers: {
@@ -68,10 +71,12 @@ function authorizeLogin(e){
 
 
     .then((response) => {
+      setLoad(false)
       if(response.ok)return response.json();
       else alert('wrong username or password')
     })
     .then(data=>{
+      if(data){
       setLoginData(prev=>{
         return{
           roles:'Student',
@@ -80,6 +85,7 @@ function authorizeLogin(e){
           
         }
       })
+    }
     });
 }
 
@@ -94,7 +100,13 @@ useEffect(()=>{
 },[loginData])
 
 
-
+if(load){
+  return(
+    <div style={{width:'100%',minHeight:'100vh',display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'white'}}>
+      <img src={loader} />
+    </div>
+  )
+}
 
 
   return (

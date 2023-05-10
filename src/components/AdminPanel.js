@@ -68,7 +68,7 @@ export default function AdminPanel() {
 
   return (
     <div className="adminPanelParent" style={{ rowGap: "50px" }}>
-      <Header />
+      <Header userData={userData} />
       <h1 style={{ fontWeight: "bold", color: "white", marginTop: "120px" }}>
         Admin Panel
       </h1>

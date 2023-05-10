@@ -137,7 +137,7 @@ console.log(quizData)
 
   return (
     <div className="AddQuizToSectionContainer">
-      <Header />
+      <Header userData={userData} />
       <div className="ConquizHeaderAndBtnquizQiestionsDiv">
         <div className="quizHeaderAndBtn">
           <div className="quizHeaderData">
