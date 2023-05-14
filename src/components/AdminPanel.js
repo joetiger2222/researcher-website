@@ -7,6 +7,7 @@ export default function AdminPanel() {
   const [courses, setCourses] = useState(null);
   const [allSkills, setAllSkills] = useState(null);
   const [skillId, setSkillId] = useState(null);
+  const [showCreateSkill,setShowCreateSkill]=useState(false)
   const userData = useLocation().state?.data;
 
   function getCourses() {
@@ -110,6 +111,11 @@ export default function AdminPanel() {
         </select>
         {skillId && <button onClick={()=>navigate(`/AddQuizToCourse/${skillId}`,{state:{data:userData}})}>Create New Quiz</button>}
       </div>
+
+          <div>
+            <button>Create New Skill</button>
+          </div>
+
 </div>
       
     </div>

@@ -22,7 +22,7 @@ export default function Header({userData,resercherId}) {
 
         <div className="headerRight">
           <ul className="headerUl">
-           {userData?.roles==='Researcher'&&<li>MarketPlace</li>}
+           {userData?.roles==='Researcher'&&<li onClick={()=>navigate('/MarketPlace',{state:{data:userData}})}>MarketPlace</li>}
             
             <li class="dropdown">
               <a href="javascript:void(0)" class="dropbtn">

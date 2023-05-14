@@ -53,8 +53,9 @@ let counter =1;
         "Authorization":`Bearer ${userData.token}`
       }
     })
-      .then((res) => res.ok?res.json():alert('failed to load quiz'))
+      .then((res) => res.ok?res.json():null)
       .then((data) => {
+        if(data){
         setTimeLimit((prevData) => {
           if (data?.timeLimit.slice(0, 1) * 1 === 0) {
             return {
@@ -69,8 +70,10 @@ let counter =1;
             mins: data.timeLimit.slice(3, 5),
           };
         });
+      
 
         setFinalQuizData(data);
+      }
       });
       counter =counter -1
   }
@@ -97,8 +100,6 @@ let counter =1;
       body:JSON.stringify(arr)
     }).then(res=>res.ok?res.json():alert('failed to submit quiz'))
     .then(data=>{
-    
-        // if(data)navigate(`/FinalQuizResult/${skillId}/${data.isSuccessed}`,{state:{data:userData}})
         if(data){
           if(data.isSuccessed){
             userData.roles='Researcher'
@@ -111,30 +112,16 @@ let counter =1;
        
       
     })
-    // .then((response) => {
-    //   const reader = response.body.getReader();
-    //   let chunks = [];
+    
+}
 
-    //   function readStream() {
-    //     return reader.read().then(({ done, value }) => {
-    //       if (done) {
-    //         return chunks;
-    //       }
-    //       chunks.push(value);
-    //       return readStream();
-    //     });
-    //   }
 
-    //   return readStream();
-    // })
-    // .then((chunks) => {
-    //   const body = new TextDecoder().decode(
-    //     new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
-    //   );
-    //   console.log(body);
-     
-    // })
-    // .catch((error) => console.error(error));
+if(!finalQuizData){
+  return(
+    <div >
+      <h1>You Have Exceeded The Free Trials Limit You Need To Buy The Course In Order To Retake The Final Quiz</h1>
+    </div>
+  )
 }
 
   return (

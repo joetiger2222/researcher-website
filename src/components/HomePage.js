@@ -101,6 +101,7 @@ export default function HomePage() {
       .then((data) => {
         if(data){
           userData.roles='Researcher'
+          userData.resercherId=data.researcherId
           setResearcherId(data.researcherId)
         }
       })

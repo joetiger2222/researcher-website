@@ -15,6 +15,7 @@ import AddQuizToCourse from './components/AddQuizToCourse'
 import FinalQuiz from './components/FinalQuiz';
 import AddPaper from './components/AddPaper';
 import FinalQuizResult from './components/FinalQuizResult';
+import MarketPlace from './components/MarketPlace';
 function App() {
   return (
     <div >
@@ -34,6 +35,7 @@ function App() {
         <Route path='/FinalQuiz/:skillId' element={<FinalQuiz/>}/>
         <Route path='/FinalQuizResult/:skillId' element={<FinalQuizResult/>}/>
         <Route path='/AddPaper' element={<AddPaper/>}/>
+        <Route path='/MarketPlace' element={<MarketPlace/>}/>
       
 
       </Routes>
