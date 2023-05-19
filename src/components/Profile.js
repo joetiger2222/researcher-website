@@ -14,11 +14,16 @@ const Profile = () => {
   const [showEdit, setShowEdit] = useState(false);
   const [studentData, setStudentData] = useState(null);
   const [researcherData, setResearcherData] = useState(null);
-  const [resInvits,setResInvits]=useState(null);
+  const [resInvits, setResInvits] = useState(null);
+  const [resReqs,setResReqs]=useState(null);
   const [showAddPaper, setShowAddPaper] = useState(false);
+  const[showSpecCard,setShowSpecCard]=useState(false);
+  const [showEditPaper,setShowEditPaper]=useState(false);
+  const [deletePaper,setDeletePaper]=useState(false);
+  const [paperData,setPaperData]=useState(null)
   const userData = useLocation().state?.data;
   const { studentId } = useParams();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   function getStudentData() {
     fetch(`https://localhost:7187/api/Students/${studentId}`, {
@@ -45,12 +50,13 @@ const Profile = () => {
     })
       .then((res) => (res.ok ? res.json() : null))
       // .then((data) => (data ? getResearcherData(data.researcherId) : null));
-      .then(data=>{
-        if(data){
+      .then((data) => {
+        if (data) {
           getResearcherData(data.researcherId);
           getResInvitations(data.researcherId);
+          getResReqs(data.researcherId)
         }
-      })
+      });
   }
 
   function getResearcherData(resId) {
@@ -62,62 +68,74 @@ const Profile = () => {
     })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => (data ? setResearcherData(data) : null));
-      
+  }
+
+  function getResInvitations(resId) {
+    fetch(`https://localhost:7187/api/Researchers/Invitations/${resId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData?.token}`,
+      },
+    })
+      .then((res) =>
+        res.ok ? res.json() : alert("failed to load Invitations")
+      )
+      .then((data) => (data ? setResInvits(data) : null));
   }
 
 
-  function getResInvitations(resId){
-    fetch(`https://localhost:7187/api/Researchers/Invitations/${resId}`,{
+  function getResReqs(resId){
+    fetch(`https://localhost:7187/api/Researchers/Requests/${resId}`,{
       method:"GET",
       headers:{
         "Authorization":`Bearer ${userData?.token}`
       }
     })
-    .then(res=>res.ok?res.json():alert('failed to load Invitations'))
-    .then(data=>data?setResInvits(data):null)
+    .then(res=>res.ok?res.json():alert('failed to load Researcher Requests'))
+    .then(data=>data?setResReqs(data):null)
   }
 
   useEffect(() => {
     getStudentData();
   }, [studentId]);
 
-// console.log(resInvits)
+  // console.log(resReqs)
 
-function rejectInvite(i){
-  fetch(`https://localhost:7187/api/Ideas/RejectInvitation/${i.id}/${i.researcherId}`,{
-      method:"DELETE",
-      headers:{
-        "Authorization":`Bearer ${userData?.token}`,
-        
+  function rejectInvite(i) {
+    fetch(
+      `https://localhost:7187/api/Ideas/RejectInvitation/${i.id}/${i.researcherId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${userData?.token}`,
+        },
       }
-    })
-   
-    .then(res=>{
-      if(res.ok){
-        alert('rejected successfully');
-        setResInvits(resInvits.filter((res) => res.id !== i.id))
-      }else alert('failed to reject Invitations')
-    })
-    
-}
+    ).then((res) => {
+      if (res.ok) {
+        alert("rejected successfully");
+        setResInvits(resInvits.filter((res) => res.id !== i.id));
+      } else alert("failed to reject Invitations");
+    });
+  }
 
-function acceptInvitation(i){
-  fetch(`https://localhost:7187/api/Ideas/AcceptInvitations/${i.id}/${i.researcherId}`,{
-      method:"POST",
-      headers:{
-        "Authorization":`Bearer ${userData?.token}`,
-        "Content-Type":"application/json"
+  function acceptInvitation(i) {
+    fetch(
+      `https://localhost:7187/api/Ideas/AcceptInvitations/${i.id}/${i.researcherId}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${userData?.token}`,
+          "Content-Type": "application/json",
+        },
       }
-    })
-   
-    .then(res=>{
-      if(res.ok){
-        alert('Accepted successfully');
-        setResInvits(resInvits.filter((res) => res.id !== i.id))
-      }else alert('failed to accept Invitations')
-    })
-}
-// console.log(resInvits)
+    ).then((res) => {
+      if (res.ok) {
+        alert("Accepted successfully");
+        setResInvits(resInvits.filter((res) => res.id !== i.id));
+      } else alert("failed to accept Invitations");
+    });
+  }
+ 
 
   const WatchedCourse = () => (
     <div className="watchedCourse">
@@ -125,8 +143,6 @@ function acceptInvitation(i){
       <p>Category</p>
     </div>
   );
-
-  
 
   const BadgeName = ({ b }) => (
     <div className="badge">
@@ -244,8 +260,152 @@ function acceptInvitation(i){
     );
   };
 
+  const SpecCard=(props)=>{
+    const [allSpecs, setAllSpecs] = useState(null);
+    const [newSpec,setNewSpec]=useState(researcherData?.specality?.id);
+
+    function getAllSpecs() {
+      fetch(`https://localhost:7187/api/Researchers/Specialties`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      })
+        .then((res) => (res.ok ? res.json() : alert("failed to Load specs")))
+        .then((data) =>data?setAllSpecs(data):null);
+    }
+
+    useEffect(()=>{
+      getAllSpecs();
+    },[])
+
+   
 
 
+    function editSpec(){
+      fetch(`https://localhost:7187/api/Researchers/Speciality/${userData.resercherId}/${newSpec}`,{
+        method:"PUT",
+        headers:{
+          "Authorization":`Bearer ${userData?.token}`
+        }
+      })
+     
+      .then(res=>{
+        if(res.ok){
+          props.onClose();
+          getResearcherData(userData.resercherId);
+        }else alert('Failed To Update Speciality Please Try Again Later')
+      })
+    }
+
+    if (!props.show) return null;
+
+    return (
+      <div
+        style={{
+          position: "fixed",
+          left: "0",
+          top: "0",
+          right: "0",
+          bottom: "0",
+          backgroundColor: "rgba(0, 0,0,0.5)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: "100",
+        }}
+      >
+         <div
+          style={{
+            backgroundColor: "white",
+            padding: "20px",
+            borderRadius: "10px",
+          }}
+        > 
+          <h1>Choose Speciality</h1>
+          <select onChange={(e)=>setNewSpec(e.target.value*1)}>
+            <option disabled selected>Choose Specality</option>
+            {allSpecs?.map(spec=>{
+              return(
+                <option value={spec.id}>{spec.name}</option>
+              )
+            })}
+          </select>
+          <button onClick={props.onClose}>Cancel</button>
+          <button onClick={editSpec}>Confirm</button>
+        </div>
+      </div>
+    )
+  }
+
+  const EditPaper=(props)=>{
+    
+   const [paperToEdit,setPaperToEdit]=useState({name:paperData.name,citation:paperData.citation,url:paperData.url})
+  //  console.log(paperToEdit)
+
+  function getPaperDataToEdit(e){
+    setPaperToEdit(prev=>{
+      return{
+        ...prev,
+        [e.target.name]:e.target.value
+      }
+    })
+  }
+
+
+  function editPaper(){
+    fetch(``,{
+      method:"PUT",
+      headers:{
+        "Authorization":`Bearer ${userData?.token}`
+      }
+    })
+    .then(res=>res.ok?alert('Paper Edited Successfully'):alert('Failed To Edit Paper Please Try Again Later'))
+  }
+
+
+    if (!props.show) return null;
+
+    return (
+      <div
+        style={{
+          position: "fixed",
+          left: "0",
+          top: "0",
+          right: "0",
+          bottom: "0",
+          backgroundColor: "rgba(0, 0,0,0.5)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: "100",
+        }}
+      >
+         <div
+          style={{
+            backgroundColor: "white",
+            padding: "20px",
+            borderRadius: "10px",
+            color:'black'
+          }}
+        > 
+        <h1>Only Change The Fields You Want To Edit</h1>
+        <span>Paper Name :</span>
+        <input placeholder={paperData.name} name="name" onChange={getPaperDataToEdit}></input>
+        <span>Paper citation :</span>
+        <input placeholder={paperData.citation} name="citation" onChange={getPaperDataToEdit}></input>
+        <span>Paper url :</span>
+        <input placeholder={paperData.url} name="url" onChange={getPaperDataToEdit}></input>
+          <button onClick={props.onClose}>Cancel</button>
+          <button onClick={editPaper}>Confirm</button>
+        </div>
+      </div>
+    )
+  }
+
+  // console.log(researcherData)
+
+ 
 
   return (
     <div className="ParentHeadData">
@@ -253,7 +413,18 @@ function acceptInvitation(i){
       <div className="profile-header" style={{ marginTop: "130px" }}>
         <div className="imageProfDiv">
           <img src={kariem} alt="Profile" className="profile-image" />
-          {/* <p className="nameUser">Wedding Planner</p> */}
+          {researcherData&&<p className="nameUser">{researcherData?.specality?.name}</p>}
+          {userData.roles === "Researcher" &&
+            userData?.userId === studentId && (
+              <p
+              onClick={()=>setShowSpecCard(true)}
+                style={{ fontSize: "12px", color: "blue", cursor: "pointer" }}
+                className="nameUser"
+              >
+                Edit
+              </p>
+            )}
+            {showSpecCard&&<SpecCard show={showSpecCard} onClose={()=>setShowSpecCard(false)} />}
         </div>
         <div className="profile-details">
           <h1 className="profile-name">
@@ -352,15 +523,17 @@ function acceptInvitation(i){
       </div>
 
       <div className="DataForLeftRight">
-        {userData?.userId === studentId &&<div className="leftBox">
-          <h1>Enrolled Courses</h1>
-          <div>
-            <WatchedCourse />
-            <WatchedCourse />
-            <WatchedCourse />
-            <WatchedCourse />
+        {userData?.userId === studentId && (
+          <div className="leftBox">
+            <h1>Enrolled Courses</h1>
+            <div>
+              <WatchedCourse />
+              <WatchedCourse />
+              <WatchedCourse />
+              <WatchedCourse />
+            </div>
           </div>
-        </div>}
+        )}
         <div className="RightBox">
           <h1>Ideas</h1>
           <div className="tasksDiv">
@@ -392,14 +565,20 @@ function acceptInvitation(i){
                   <p>{"Paper Name : " + paper?.name}</p>
                   <p>{"Paper citation : " + paper?.citation}</p>
                   <p>{"Paper url : " + paper?.url}</p>
+                  <button onClick={()=>{
+                    setShowEditPaper(true)
+                    setPaperData(paper)
+                    }}>Edit Paper</button>
+                  <button>Delete Paper</button>
                 </div>
               );
             })}
+            {showEditPaper&&<EditPaper show={showEditPaper} onClose={()=>setShowEditPaper(false)} />}
           </div>
           {userData?.userId === studentId && (
             <button onClick={() => setShowAddPaper(true)}>Add New Paper</button>
           )}
-          {userData?.userId === studentId && (
+          {userData?.userId === studentId && showAddPaper&& (
             <AddPaperModal
               show={showAddPaper}
               onClose={() => setShowAddPaper(false)}
@@ -408,10 +587,7 @@ function acceptInvitation(i){
         </div>
       )}
 
-
-
-
-{userData.roles === "Researcher" && userData?.userId === studentId&& (
+      {userData.roles === "Researcher" && userData?.userId === studentId && (
         <div
           style={{
             color: "white",
@@ -423,22 +599,54 @@ function acceptInvitation(i){
           }}
         >
           <h1>Invitations : {resInvits?.length}</h1>
-          {resInvits?.map(i=>{
+          {resInvits?.map((i) => {
             return (
-              <div >
+              <div>
                 Invitation
-                <button onClick={()=>navigate(`/Idea/${i.ideaId}`,{state:{data:userData}})}>View Idea</button>
-              <button onClick={()=>acceptInvitation(i)}>Accept</button>
-              <button onClick={()=>rejectInvite(i)}>Reject</button>
-                </div>
-            )
+                <button
+                  onClick={() =>
+                    navigate(`/Idea/${i.ideaId}`, { state: { data: userData } })
+                  }
+                >
+                  View Idea
+                </button>
+                <button onClick={() => acceptInvitation(i)}>Accept</button>
+                <button onClick={() => rejectInvite(i)}>Reject</button>
+              </div>
+            );
           })}
         </div>
       )}
 
-
-
-
+{userData.roles === "Researcher" && userData?.userId === studentId && (
+        <div
+          style={{
+            color: "white",
+            border: "1px solid white",
+            display: "flex",
+            flexDirection: "column",
+            padding: "20px",
+            alignItems: "center",
+          }}
+        >
+          <h1>Your Requests : {resReqs?.length}</h1>
+          {resReqs?.map((r) => {
+            return (
+              <div>
+                Request
+                <button
+                  onClick={() =>
+                    navigate(`/Idea/${r.ideaId}`, { state: { data: userData } })
+                  }
+                >
+                  View Idea
+                </button>
+                
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
