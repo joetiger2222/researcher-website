@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import Header from "./Header";
 
 export default function MarketPalce() {
   const userData = useLocation().state.data;
   const [researcherIdeas, setResearcherIdeas] = useState(null);
   const [allIdeas, setAllIdeas] = useState(null);
+  const [showCreateIdeaCard, setShowIdeaCard] = useState(false);
+  const navigate=useNavigate();
 
   function getResearcherIdeas() {
     fetch(
@@ -45,43 +48,248 @@ export default function MarketPalce() {
   }, []);
 
 
-  function sendReq(ideaId){
-    fetch(`https://localhost:7187/api/Ideas/Requests/SendRequest/${userData?.resercherId}/${ideaId}`,{
+
+
+// console.log('all',allIdeas)
+
+
+
+
+function sendReq(ideaId) {
+  fetch(
+    `https://localhost:7187/api/Ideas/Requests/SendRequest/${userData?.resercherId}/${ideaId}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    }
+  )
+    .then((response) => {
+      const reader = response.body.getReader();
+      let chunks = [];
+
+      function readStream() {
+        return reader.read().then(({ done, value }) => {
+          if (done) {
+            return chunks;
+          }
+          chunks.push(value);
+          return readStream();
+        });
+      }
+
+      return readStream().then(() => {
+        if (!response.ok) {
+          const body = new TextDecoder().decode(
+            new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+          );
+          if(body.includes('joined')){
+            alert('You Already Joined This Idea')
+          }else alert(body)
+        }else alert('Request Sent Successfully')
+      });
+    })
+    .catch((error) => console.error(error));
+}
+
+
+
+  const CreateNewIdeaCard = (props) => {
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString().split("T")[0]; 
+    const [allSpecs, setAllSpecs] = useState(null);
+    const [allTopics, setAllTopics] = useState(null);
+  
+    const [ideaData, setIdeaData] = useState({
+      name: "",
+      maxParticipantsNumber: 0,
+      topicId: 0,
+      specalityId: 0,
+      deadline: formattedDate,
+    });
+    // console.log(ideaData);
+
+    function getIdeaData(e) {
+      setIdeaData((prev) => {
+        return {
+          ...prev,
+          [e.target.name]: e.target.value,
+        };
+      });
+    }
+
+
+
+    function getAllSpecs() {
+      fetch(`https://localhost:7187/api/Researchers/Specialties`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      })
+        .then((res) => (res.ok ? res.json() : alert("failed to Load specs")))
+        .then((data) => {
+          if (data) {
+            setAllSpecs(data);
+          }
+        });
+    }
+  
+    function getAllTopics() {
+      fetch(`https://localhost:7187/api/Researchers/Topics`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      })
+        .then((res) => (res.ok ? res.json() : alert("failed to Load topics")))
+        .then((data) => {
+          if (data) {
+            setAllTopics(data);
+          }
+        });
+    }
+
+    
+
+    useEffect(()=>{
+      getAllSpecs();
+      getAllTopics();
+    },[])
+
+
+    function createNewIdea(){
+      fetch(`https://localhost:7187/api/Ideas/InitiateIdea/${userData.resercherId}`,{
         method:"POST",
         headers:{
-            "Authorization":`Bearer ${userData.token}`
+          "Authorization":`Bearer ${userData.token}`,
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify(ideaData)
+      })
+      .then(res=>{
+        if(res.ok){
+          window.location.reload();
         }
-    })
-    .then(res=>res.ok?alert('request sent successfully !'):alert('Failed To Send Request'))
-  }
+        else {
+          if(res.status===400)alert("you don't have enough points to initiate idea")
+        }
+      })
+      
+    }
 
 
+    if (!props.show) return null;
+    return (
+      <div
+        style={{
+          position: "fixed",
+          left: "0",
+          top: "0",
+          right: "0",
+          bottom: "0",
+          backgroundColor: "rgba(0, 0,0,0.5)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: "100",
+        }}
+      >
+        <div
+          style={{ width: "50%", backgroundColor: "white", padding: "20px" }}
+        >
+          <span>Idea Name: </span>
+          <input onChange={getIdeaData} name="name"></input>
+          <span>Idea Name: </span>
+          <input
+            onChange={(e) =>
+              setIdeaData((prev) => {
+                return { ...prev, maxParticipantsNumber: e.target.value * 1 };
+              })
+            }
+            name="maxParticipantsNumber"
+            type="number"
+          ></input>
+          <select onChange={(e)=>setIdeaData(prev=>{return{...prev,specalityId:e.target.value*1}})}>
+            <option selected disabled value="">
+              Choose a Speciality
+            </option>
+            {allSpecs?.map((spec) => {
+              return <option value={spec.id}>{spec.name}</option>;
+            })}
+          </select>
+          <select onChange={(e)=>setIdeaData(prev=>{return{...prev,topicId:e.target.value*1}})}>
+            <option selected disabled value="">
+              Choose a Topic
+            </option>
+            {allTopics?.map((spec) => {
+              return <option value={spec.id}>{spec.name}</option>;
+            })}
+          </select>
+          <button onClick={props.onClose}>Cancel</button>
+          <button onClick={createNewIdea}>Create</button>
+        </div>
+      </div>
+    );
+  };
 
-
-  console.log(allIdeas);
+  
 
   return (
     <div>
-      <div>
+      <Header userData={userData}/>
+      <div style={{marginTop:'130px'}}>
         <h1>Your Ideas</h1>
         {researcherIdeas?.length > 0 ? (
           researcherIdeas?.map((idea) => {
             return (
-              <div>
+              <div
+              onClick={()=>navigate(`/Idea/${idea.id}`,{state:{data:userData}})}
+               style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "20px",
+                backgroundColor: "gray",
+                width: "30%",
+                color: "white",
+                cursor:'pointer',
+                margin:'40px',
+              }}>
                 <span>Name: {idea.name}</span>
+                <span>Participants Number: {idea?.participantsNumber}</span>
+                <span>
+                  max Participants Number: {idea?.maxParticipantsNumber}
+                </span>
+                <span>specality: {idea?.specalityObj.name}</span>
+                <span>
+                  deadline:{" "}
+                  {new Date(idea?.deadline).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </span>
+                <span>topic: {idea?.topicObject.name}</span>
               </div>
             );
           })
         ) : (
           <span>You Have No Ideas Yet!</span>
         )}
-        <button>Create New Idea</button>
+        <button onClick={() => setShowIdeaCard(true)}>Create New Idea</button>
+        {showCreateIdeaCard && (
+          <CreateNewIdeaCard
+            show={showCreateIdeaCard}
+            onClose={() => setShowIdeaCard(false)}
+          />
+        )}
       </div>
 
       <div>
         <h1>All Ideas</h1>
         {allIdeas?.length > 0 ? (
-          allIdeas?.map((idea) => {
+          allIdeas?.filter(idea=> !researcherIdeas?.map(idea=>idea.id).includes(idea.id)).map((idea) => {
             return (
               <div
                 style={{
@@ -107,9 +315,10 @@ export default function MarketPalce() {
                     year: "numeric",
                   })}
                 </span>
-                <span>topicObject: {idea?.topicObject.name}</span>
+                <span>topic: {idea?.topicObject.name}</span>
+                {/* <span>topic: {idea?.creatorId}</span> */}
                 {idea?.participantsNumber < idea?.maxParticipantsNumber && (
-                  <button onClick={()=>sendReq(idea.id)}>Send Request</button>
+                  <button onClick={() => sendReq(idea.id)}>Send Request</button>
                 )}
               </div>
             );

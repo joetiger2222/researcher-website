@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import kariem from "../images/userImg.png";
 import { useState } from "react";
 import "../css/Modal.css";
@@ -16,39 +16,49 @@ const Profile = () => {
   const [researcherData, setResearcherData] = useState(null);
   const [showAddPaper, setShowAddPaper] = useState(false);
   const userData = useLocation().state?.data;
+  const { studentId } = useParams();
 
   function getStudentData() {
-    fetch(`https://localhost:7187/api/Students/${userData?.userId}`,{
-      method:"GET",
-      headers:{
-        "Authorization":`Bearer ${userData?.token}`
-      }
+    fetch(`https://localhost:7187/api/Students/${studentId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData?.token}`,
+      },
     })
-      .then((res) =>res.ok?res.json():alert('Something Wrong Happened'))
-      .then((data) => data?setStudentData(data):null);
+      .then((res) => (res.ok ? res.json() : alert("Something Wrong Happened")))
+      .then((data) => {
+        if (data) {
+          setStudentData(data);
+          getResearcherId(data.id);
+        }
+      });
   }
 
-  
-
-
-
-  function getResearcherData() {
-    fetch(`https://localhost:7187/api/Researchers/${userData?.resercherId}`,{
-      method:"GET",
-      headers:{
-        "Authorization":`Bearer ${userData?.token}`
-      }
+  function getResearcherId(studentId) {
+    fetch(`https://localhost:7187/api/Researchers/ResearcherId/${studentId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData?.token}`,
+      },
     })
-      .then((res) => res.ok?res.json():null)
-      .then((data) => data?setResearcherData(data):null);
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => (data ? getResearcherData(data.researcherId) : null));
+  }
+
+  function getResearcherData(resId) {
+    fetch(`https://localhost:7187/api/Researchers/${resId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData?.token}`,
+      },
+    })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => (data ? setResearcherData(data) : null));
   }
 
   useEffect(() => {
     getStudentData();
-    getResearcherData();
-   
-  }, []);
-
+  }, [studentId]);
 
 
   const WatchedCourse = () => (
@@ -58,7 +68,7 @@ const Profile = () => {
     </div>
   );
 
-  const BadgeName = ({b}) => (
+  const BadgeName = ({ b }) => (
     <div className="badge">
       <h4>{b?.name}</h4>
     </div>
@@ -90,12 +100,14 @@ const Profile = () => {
         {
           method: "POST",
           headers: {
-            "Authorization":`Bearer ${userData?.token}`,
+            Authorization: `Bearer ${userData?.token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(peperArr),
         }
-      ).then((res) => res.ok?window.location.reload():alert('failed to add paper'));
+      ).then((res) =>
+        res.ok ? window.location.reload() : alert("failed to add paper")
+      );
     }
 
     if (!props.show) return null;
@@ -174,8 +186,8 @@ const Profile = () => {
 
   return (
     <div className="ParentHeadData">
-      <Header userData={userData}  />
-      <div className="profile-header" style={{marginTop:'130px'}}>
+      <Header userData={userData} />
+      <div className="profile-header" style={{ marginTop: "130px" }}>
         <div className="imageProfDiv">
           <img src={kariem} alt="Profile" className="profile-image" />
           {/* <p className="nameUser">Wedding Planner</p> */}
@@ -239,16 +251,14 @@ const Profile = () => {
         <div className="badgesContainer">
           <h1>Badges</h1>
           <div className="badgesDiv">
-            {researcherData?.badges.map(b=>{
-              return(
-                <BadgeName b={b}/>
-              )
+            {researcherData?.badges.map((b) => {
+              return <BadgeName b={b} />;
             })}
           </div>
         </div>
 
         <div className="pointsContainer">
-          <h1>Points</h1>
+          <h1>{`Points : ` + researcherData?.points}</h1>
           <div className="pointsDiv">
             <li
               className="profileBeg"
@@ -279,7 +289,7 @@ const Profile = () => {
       </div>
 
       <div className="DataForLeftRight">
-        <div className="leftBox">
+        {userData?.userId === studentId &&<div className="leftBox">
           <h1>Enrolled Courses</h1>
           <div>
             <WatchedCourse />
@@ -287,9 +297,9 @@ const Profile = () => {
             <WatchedCourse />
             <WatchedCourse />
           </div>
-        </div>
+        </div>}
         <div className="RightBox">
-          <h1>Current Idea</h1>
+          <h1>Ideas</h1>
           <div className="tasksDiv">
             <Task />
             <Task />
@@ -300,7 +310,7 @@ const Profile = () => {
         </div>
       </div>
 
-      {userData.roles==='Researcher' && (
+      {userData.roles === "Researcher" && (
         <div
           style={{
             color: "white",
@@ -323,11 +333,15 @@ const Profile = () => {
               );
             })}
           </div>
-          <button onClick={() => setShowAddPaper(true)}>Add New Paper</button>
-          <AddPaperModal
-            show={showAddPaper}
-            onClose={() => setShowAddPaper(false)}
-          />
+          {userData?.userId === studentId && (
+            <button onClick={() => setShowAddPaper(true)}>Add New Paper</button>
+          )}
+          {userData?.userId === studentId && (
+            <AddPaperModal
+              show={showAddPaper}
+              onClose={() => setShowAddPaper(false)}
+            />
+          )}
         </div>
       )}
     </div>

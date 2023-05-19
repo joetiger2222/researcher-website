@@ -16,6 +16,7 @@ import FinalQuiz from './components/FinalQuiz';
 import AddPaper from './components/AddPaper';
 import FinalQuizResult from './components/FinalQuizResult';
 import MarketPlace from './components/MarketPlace';
+import Idea from './components/Idea';
 function App() {
   return (
     <div >
@@ -24,7 +25,7 @@ function App() {
         <Route path='/' element={<Login/>} />
         <Route path='/HomePage' element={<HomePage/>} />
         <Route path='/registration' element={<Registration/>} />
-        <Route path='/profile' element={<Profile/>} />
+        <Route path='/profile/:studentId' element={<Profile/>} />
         <Route path='/CreateCourse' element={<CreateCourse/>}/>
         <Route path='/CourseDetails/:id' element={<CourseDetails/>}/>
         <Route path='/AdminPanel' element={<AdminPanel/>}/>
@@ -36,6 +37,7 @@ function App() {
         <Route path='/FinalQuizResult/:skillId' element={<FinalQuizResult/>}/>
         <Route path='/AddPaper' element={<AddPaper/>}/>
         <Route path='/MarketPlace' element={<MarketPlace/>}/>
+        <Route path='/Idea/:ideaId' element={<Idea/>}/>
       
 
       </Routes>

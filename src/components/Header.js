@@ -48,7 +48,7 @@ export default function Header({userData,resercherId}) {
           <li class="dropdown">
               <img src={userImg} class="dropbtn userImgHeader"/>
               <div class="dropdown-content">
-                <a onClick={()=>navigate(`/Profile`,{state:{data:userData}})}>Profile</a>
+                <a onClick={()=>navigate(`/Profile/${userData.userId}`,{state:{data:userData}})}>Profile</a>
                 <a href="#">Link 2</a>
                 <a href="#">Link 3</a>
               </div>
