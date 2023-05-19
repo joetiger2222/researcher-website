@@ -292,6 +292,7 @@ function sendReq(ideaId) {
           allIdeas?.filter(idea=> !researcherIdeas?.map(idea=>idea.id).includes(idea.id)).map((idea) => {
             return (
               <div
+              
                 style={{
                   display: "flex",
                   flexDirection: "column",
@@ -299,6 +300,7 @@ function sendReq(ideaId) {
                   backgroundColor: "gray",
                   width: "30%",
                   color: "white",
+                  cursor:'pointer',
                 }}
               >
                 <span>Name: {idea.name}</span>
@@ -320,6 +322,7 @@ function sendReq(ideaId) {
                 {idea?.participantsNumber < idea?.maxParticipantsNumber && (
                   <button onClick={() => sendReq(idea.id)}>Send Request</button>
                 )}
+                 <button onClick={()=>navigate(`/Idea/${idea.id}`,{state:{data:userData}})}>View Idea</button>
               </div>
             );
           })

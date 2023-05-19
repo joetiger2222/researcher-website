@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import kariem from "../images/userImg.png";
 import { useState } from "react";
 import "../css/Modal.css";
@@ -14,9 +14,11 @@ const Profile = () => {
   const [showEdit, setShowEdit] = useState(false);
   const [studentData, setStudentData] = useState(null);
   const [researcherData, setResearcherData] = useState(null);
+  const [resInvits,setResInvits]=useState(null);
   const [showAddPaper, setShowAddPaper] = useState(false);
   const userData = useLocation().state?.data;
   const { studentId } = useParams();
+  const navigate=useNavigate();
 
   function getStudentData() {
     fetch(`https://localhost:7187/api/Students/${studentId}`, {
@@ -42,7 +44,13 @@ const Profile = () => {
       },
     })
       .then((res) => (res.ok ? res.json() : null))
-      .then((data) => (data ? getResearcherData(data.researcherId) : null));
+      // .then((data) => (data ? getResearcherData(data.researcherId) : null));
+      .then(data=>{
+        if(data){
+          getResearcherData(data.researcherId);
+          getResInvitations(data.researcherId);
+        }
+      })
   }
 
   function getResearcherData(resId) {
@@ -54,12 +62,62 @@ const Profile = () => {
     })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => (data ? setResearcherData(data) : null));
+      
+  }
+
+
+  function getResInvitations(resId){
+    fetch(`https://localhost:7187/api/Researchers/Invitations/${resId}`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData?.token}`
+      }
+    })
+    .then(res=>res.ok?res.json():alert('failed to load Invitations'))
+    .then(data=>data?setResInvits(data):null)
   }
 
   useEffect(() => {
     getStudentData();
   }, [studentId]);
 
+// console.log(resInvits)
+
+function rejectInvite(i){
+  fetch(`https://localhost:7187/api/Ideas/RejectInvitation/${i.id}/${i.researcherId}`,{
+      method:"DELETE",
+      headers:{
+        "Authorization":`Bearer ${userData?.token}`,
+        
+      }
+    })
+   
+    .then(res=>{
+      if(res.ok){
+        alert('rejected successfully');
+        setResInvits(resInvits.filter((res) => res.id !== i.id))
+      }else alert('failed to reject Invitations')
+    })
+    
+}
+
+function acceptInvitation(i){
+  fetch(`https://localhost:7187/api/Ideas/AcceptInvitations/${i.id}/${i.researcherId}`,{
+      method:"POST",
+      headers:{
+        "Authorization":`Bearer ${userData?.token}`,
+        "Content-Type":"application/json"
+      }
+    })
+   
+    .then(res=>{
+      if(res.ok){
+        alert('Accepted successfully');
+        setResInvits(resInvits.filter((res) => res.id !== i.id))
+      }else alert('failed to accept Invitations')
+    })
+}
+// console.log(resInvits)
 
   const WatchedCourse = () => (
     <div className="watchedCourse">
@@ -67,6 +125,8 @@ const Profile = () => {
       <p>Category</p>
     </div>
   );
+
+  
 
   const BadgeName = ({ b }) => (
     <div className="badge">
@@ -183,6 +243,9 @@ const Profile = () => {
       </div>
     );
   };
+
+
+
 
   return (
     <div className="ParentHeadData">
@@ -344,6 +407,38 @@ const Profile = () => {
           )}
         </div>
       )}
+
+
+
+
+{userData.roles === "Researcher" && userData?.userId === studentId&& (
+        <div
+          style={{
+            color: "white",
+            border: "1px solid white",
+            display: "flex",
+            flexDirection: "column",
+            padding: "20px",
+            alignItems: "center",
+          }}
+        >
+          <h1>Invitations : {resInvits?.length}</h1>
+          {resInvits?.map(i=>{
+            return (
+              <div >
+                Invitation
+                <button onClick={()=>navigate(`/Idea/${i.ideaId}`,{state:{data:userData}})}>View Idea</button>
+              <button onClick={()=>acceptInvitation(i)}>Accept</button>
+              <button onClick={()=>rejectInvite(i)}>Reject</button>
+                </div>
+            )
+          })}
+        </div>
+      )}
+
+
+
+
     </div>
   );
 };
