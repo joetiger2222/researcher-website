@@ -15,12 +15,12 @@ const Profile = () => {
   const [studentData, setStudentData] = useState(null);
   const [researcherData, setResearcherData] = useState(null);
   const [resInvits, setResInvits] = useState(null);
-  const [resReqs,setResReqs]=useState(null);
+  const [resReqs, setResReqs] = useState(null);
   const [showAddPaper, setShowAddPaper] = useState(false);
-  const[showSpecCard,setShowSpecCard]=useState(false);
-  const [showEditPaper,setShowEditPaper]=useState(false);
-  const [deletePaper,setDeletePaper]=useState(false);
-  const [paperData,setPaperData]=useState(null)
+  const [showSpecCard, setShowSpecCard] = useState(false);
+  const [showEditPaper, setShowEditPaper] = useState(false);
+  const [deletePaper, setDeletePaper] = useState(false);
+  const [paperData, setPaperData] = useState(null);
   const userData = useLocation().state?.data;
   const { studentId } = useParams();
   const navigate = useNavigate();
@@ -54,7 +54,7 @@ const Profile = () => {
         if (data) {
           getResearcherData(data.researcherId);
           getResInvitations(data.researcherId);
-          getResReqs(data.researcherId)
+          getResReqs(data.researcherId);
         }
       });
   }
@@ -83,16 +83,17 @@ const Profile = () => {
       .then((data) => (data ? setResInvits(data) : null));
   }
 
-
-  function getResReqs(resId){
-    fetch(`https://localhost:7187/api/Researchers/Requests/${resId}`,{
-      method:"GET",
-      headers:{
-        "Authorization":`Bearer ${userData?.token}`
-      }
+  function getResReqs(resId) {
+    fetch(`https://localhost:7187/api/Researchers/Requests/${resId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData?.token}`,
+      },
     })
-    .then(res=>res.ok?res.json():alert('failed to load Researcher Requests'))
-    .then(data=>data?setResReqs(data):null)
+      .then((res) =>
+        res.ok ? res.json() : alert("failed to load Researcher Requests")
+      )
+      .then((data) => (data ? setResReqs(data) : null));
   }
 
   useEffect(() => {
@@ -135,7 +136,6 @@ const Profile = () => {
       } else alert("failed to accept Invitations");
     });
   }
- 
 
   const WatchedCourse = () => (
     <div className="watchedCourse">
@@ -260,9 +260,9 @@ const Profile = () => {
     );
   };
 
-  const SpecCard=(props)=>{
+  const SpecCard = (props) => {
     const [allSpecs, setAllSpecs] = useState(null);
-    const [newSpec,setNewSpec]=useState(researcherData?.specality?.id);
+    const [newSpec, setNewSpec] = useState(researcherData?.specality?.id);
 
     function getAllSpecs() {
       fetch(`https://localhost:7187/api/Researchers/Specialties`, {
@@ -272,30 +272,28 @@ const Profile = () => {
         },
       })
         .then((res) => (res.ok ? res.json() : alert("failed to Load specs")))
-        .then((data) =>data?setAllSpecs(data):null);
+        .then((data) => (data ? setAllSpecs(data) : null));
     }
 
-    useEffect(()=>{
+    useEffect(() => {
       getAllSpecs();
-    },[])
+    }, []);
 
-   
-
-
-    function editSpec(){
-      fetch(`https://localhost:7187/api/Researchers/Speciality/${userData.resercherId}/${newSpec}`,{
-        method:"PUT",
-        headers:{
-          "Authorization":`Bearer ${userData?.token}`
+    function editSpec() {
+      fetch(
+        `https://localhost:7187/api/Researchers/Speciality/${userData.resercherId}/${newSpec}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${userData?.token}`,
+          },
         }
-      })
-     
-      .then(res=>{
-        if(res.ok){
+      ).then((res) => {
+        if (res.ok) {
           props.onClose();
           getResearcherData(userData.resercherId);
-        }else alert('Failed To Update Speciality Please Try Again Later')
-      })
+        } else alert("Failed To Update Speciality Please Try Again Later");
+      });
     }
 
     if (!props.show) return null;
@@ -315,54 +313,58 @@ const Profile = () => {
           zIndex: "100",
         }}
       >
-         <div
+        <div
           style={{
             backgroundColor: "white",
             padding: "20px",
             borderRadius: "10px",
           }}
-        > 
+        >
           <h1>Choose Speciality</h1>
-          <select onChange={(e)=>setNewSpec(e.target.value*1)}>
-            <option disabled selected>Choose Specality</option>
-            {allSpecs?.map(spec=>{
-              return(
-                <option value={spec.id}>{spec.name}</option>
-              )
+          <select onChange={(e) => setNewSpec(e.target.value * 1)}>
+            <option disabled selected>
+              Choose Specality
+            </option>
+            {allSpecs?.map((spec) => {
+              return <option value={spec.id}>{spec.name}</option>;
             })}
           </select>
           <button onClick={props.onClose}>Cancel</button>
           <button onClick={editSpec}>Confirm</button>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
-  const EditPaper=(props)=>{
-    
-   const [paperToEdit,setPaperToEdit]=useState({name:paperData.name,citation:paperData.citation,url:paperData.url})
-  //  console.log(paperToEdit)
+  const EditPaper = (props) => {
+    const [paperToEdit, setPaperToEdit] = useState({
+      name: paperData.name,
+      citation: paperData.citation,
+      url: paperData.url,
+    });
+    //  console.log(paperToEdit)
 
-  function getPaperDataToEdit(e){
-    setPaperToEdit(prev=>{
-      return{
-        ...prev,
-        [e.target.name]:e.target.value
-      }
-    })
-  }
+    function getPaperDataToEdit(e) {
+      setPaperToEdit((prev) => {
+        return {
+          ...prev,
+          [e.target.name]: e.target.value,
+        };
+      });
+    }
 
-
-  function editPaper(){
-    fetch(``,{
-      method:"PUT",
-      headers:{
-        "Authorization":`Bearer ${userData?.token}`
-      }
-    })
-    .then(res=>res.ok?alert('Paper Edited Successfully'):alert('Failed To Edit Paper Please Try Again Later'))
-  }
-
+    function editPaper() {
+      fetch(``, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${userData?.token}`,
+        },
+      }).then((res) =>
+        res.ok
+          ? alert("Paper Edited Successfully")
+          : alert("Failed To Edit Paper Please Try Again Later")
+      );
+    }
 
     if (!props.show) return null;
 
@@ -381,31 +383,41 @@ const Profile = () => {
           zIndex: "100",
         }}
       >
-         <div
+        <div
           style={{
             backgroundColor: "white",
             padding: "20px",
             borderRadius: "10px",
-            color:'black'
+            color: "black",
           }}
-        > 
-        <h1>Only Change The Fields You Want To Edit</h1>
-        <span>Paper Name :</span>
-        <input placeholder={paperData.name} name="name" onChange={getPaperDataToEdit}></input>
-        <span>Paper citation :</span>
-        <input placeholder={paperData.citation} name="citation" onChange={getPaperDataToEdit}></input>
-        <span>Paper url :</span>
-        <input placeholder={paperData.url} name="url" onChange={getPaperDataToEdit}></input>
+        >
+          <h1>Only Change The Fields You Want To Edit</h1>
+          <span>Paper Name :</span>
+          <input
+            placeholder={paperData.name}
+            name="name"
+            onChange={getPaperDataToEdit}
+          ></input>
+          <span>Paper citation :</span>
+          <input
+            placeholder={paperData.citation}
+            name="citation"
+            onChange={getPaperDataToEdit}
+          ></input>
+          <span>Paper url :</span>
+          <input
+            placeholder={paperData.url}
+            name="url"
+            onChange={getPaperDataToEdit}
+          ></input>
           <button onClick={props.onClose}>Cancel</button>
           <button onClick={editPaper}>Confirm</button>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   // console.log(researcherData)
-
- 
 
   return (
     <div className="ParentHeadData">
@@ -413,18 +425,25 @@ const Profile = () => {
       <div className="profile-header" style={{ marginTop: "130px" }}>
         <div className="imageProfDiv">
           <img src={kariem} alt="Profile" className="profile-image" />
-          {researcherData&&<p className="nameUser">{researcherData?.specality?.name}</p>}
+          {researcherData && (
+            <p className="nameUser">{researcherData?.specality?.name}</p>
+          )}
           {userData.roles === "Researcher" &&
             userData?.userId === studentId && (
               <p
-              onClick={()=>setShowSpecCard(true)}
+                onClick={() => setShowSpecCard(true)}
                 style={{ fontSize: "12px", color: "blue", cursor: "pointer" }}
                 className="nameUser"
               >
                 Edit
               </p>
             )}
-            {showSpecCard&&<SpecCard show={showSpecCard} onClose={()=>setShowSpecCard(false)} />}
+          {showSpecCard && (
+            <SpecCard
+              show={showSpecCard}
+              onClose={() => setShowSpecCard(false)}
+            />
+          )}
         </div>
         <div className="profile-details">
           <h1 className="profile-name">
@@ -565,20 +584,29 @@ const Profile = () => {
                   <p>{"Paper Name : " + paper?.name}</p>
                   <p>{"Paper citation : " + paper?.citation}</p>
                   <p>{"Paper url : " + paper?.url}</p>
-                  <button onClick={()=>{
-                    setShowEditPaper(true)
-                    setPaperData(paper)
-                    }}>Edit Paper</button>
+                  <button
+                    onClick={() => {
+                      setShowEditPaper(true);
+                      setPaperData(paper);
+                    }}
+                  >
+                    Edit Paper
+                  </button>
                   <button>Delete Paper</button>
                 </div>
               );
             })}
-            {showEditPaper&&<EditPaper show={showEditPaper} onClose={()=>setShowEditPaper(false)} />}
+            {showEditPaper && (
+              <EditPaper
+                show={showEditPaper}
+                onClose={() => setShowEditPaper(false)}
+              />
+            )}
           </div>
           {userData?.userId === studentId && (
             <button onClick={() => setShowAddPaper(true)}>Add New Paper</button>
           )}
-          {userData?.userId === studentId && showAddPaper&& (
+          {userData?.userId === studentId && showAddPaper && (
             <AddPaperModal
               show={showAddPaper}
               onClose={() => setShowAddPaper(false)}
@@ -618,7 +646,7 @@ const Profile = () => {
         </div>
       )}
 
-{userData.roles === "Researcher" && userData?.userId === studentId && (
+      {userData.roles === "Researcher" && userData?.userId === studentId && (
         <div
           style={{
             color: "white",
@@ -641,7 +669,6 @@ const Profile = () => {
                 >
                   View Idea
                 </button>
-                
               </div>
             );
           })}

@@ -14,6 +14,7 @@ export default function Idea() {
   const [tasks, setTasks] = useState(null);
   const navigate = useNavigate();
   const creator = userData?.resercherId.toLowerCase() === idea?.creatorId;
+  
 
   function getIdeaData() {
     fetch(`https://localhost:7187/api/Ideas/SingleIdea/${ideaId}`, {
@@ -192,7 +193,7 @@ export default function Idea() {
       >
         <div style={{ backgroundColor: "white", width: "50%" }}>
           {ress
-            ?.filter((res) => res.id !== userData?.userId.toLowerCase())
+            ?.filter((res) => res.id !== userData?.resercherId.toLowerCase())
             .map((res) => {
               // console.log(res.id)
               return (
@@ -355,7 +356,7 @@ export default function Idea() {
           />
         )}
         <div>
-          <h1>Participants</h1>
+          <h1>Participants : {ideaPar?.length}</h1>
           {ideaPar?.map((par) => {
             return (
               <div>
