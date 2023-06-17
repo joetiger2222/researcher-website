@@ -353,8 +353,10 @@ export default function AdminPanel() {
             </button>
           </div>
         </div>
-
-        <div className="allSkillsDiv">
+       
+       <div className="ContTopicAndSpeciality">
+     
+       <div className="allSkillsDiv" >
           <h2>Let's Choose a Skill Then Create Final Quiz </h2>
           <select
             onChange={(e) => {
@@ -384,38 +386,42 @@ export default function AdminPanel() {
             </button>
           )}
         </div>
-
         {/* <div>
           <button>Create New Skill</button>
         </div> */}
 
-        <div>
-          <h1 style={{ color: "white" }}>All Specialties</h1>
+        <div className="allSkillsDiv">
+          <h1 style={{ color: "#262626" }}>All Specialties</h1>
+          <div className="ContSpecialities custom-scrollbar"> 
           {allSpecs?.map((spec) => {
             return (
-              <div style={{ color: "white" }}>
-                <h4>{spec?.name}</h4>
+              <div >
+                <p>{spec?.name}</p>
               </div>
             );
           })}
-          <button onClick={() => setShowSpec(true)}>
+          </div>
+          
+          <button className="plusBtn" onClick={() => setShowSpec(true)}>
             Create New Specality
           </button>
           <AddNewSpec show={showSpec} onClose={() => setShowSpec(false)} />
         </div>
 
-        <div>
-          <h1 style={{ color: "white" }}>All Topics</h1>
+        <div className="allSkillsDiv">
+          <h1 style={{ color: "#262626" }}>All Topics</h1>
           {allTopics?.map((topic) => {
             return (
-              <div style={{ color: "white" }}>
+              <div style={{ color: "#262626" }}>
                 <h4>{topic?.name}</h4>
               </div>
             );
           })}
-          <button onClick={() => setShowTopic(true)}>Create New Topic</button>
+          <button className="plusBtn" onClick={() => setShowTopic(true)}>Create New Topic</button>
           <AddNewTopic show={showTopic} onClose={() => setShowTopic(false)} />
         </div>
+       </div>
+
       </div>
 
       <div>

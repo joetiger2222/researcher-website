@@ -21,12 +21,12 @@
 
 
 .coursesParent {
-  max-width: 850px;
-  width: 830px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: var(--background-color);
-  border-radius: 5px;
+       /* max-width: 1104px; */
+       max-width: 1200px;
+       margin: 0px 50px;
+       padding: 20px;
+       background-color: var(--background-color);
+       border-radius: 5px;
   }
   .coursesParent>h1{
     text-align: center;
@@ -36,15 +36,16 @@
   .coursesAndPlusBtn {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin-top: 20px;
+    gap: 50px;
   }
   
   /* Styles for the individual course container */
   .courseDiv {
     display: flex;
-    width: calc(46% - 10px);
+    width: 325px;
     padding: 10px;
     margin-bottom: 20px;
     height: 200px;
@@ -52,8 +53,8 @@
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     flex-direction: column;
-    justify-content: center;
-    gap: 5px;
+    justify-content: space-evenly;
+    /* gap: 5px; */
     align-items: center;
   }
   
@@ -64,7 +65,6 @@
 }
   /* Styles for the course name */
   .courseDiv h4:first-child {
-    margin-top: 0;
     font-weight: bold;
     font-size: 22px;
   }
@@ -74,7 +74,6 @@
   }
   /* Styles for the course hours and brief */
   .courseDiv h4:not(:first-child) {
-    margin: 10px 0;
     font-size: 16px;
   }
   .bold{
@@ -90,7 +89,6 @@
   .plusBtn {
     width: 100%;
     padding: 10px;
-    margin-top: 20px;
     border: none;
     background-color: var(--orange-color);
     color: #fff;
@@ -109,25 +107,30 @@
   }
   
   .AllContCoursesAndCreateQuiz{
+    width: 100%;
     align-items: center;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 50px;
     margin-bottom: 50px;
   }
   .allSkillsDiv{
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 30%;
-    gap: 20px;
+    width: 25%;
+    height: 250px;
+    justify-content: space-between;
     border: 1px solid var(--background-color);
     padding: 20px;
     background-color: var(--background-color);
   }
   .allSkillsDiv h2{
-    text-align: center;
-  }
+    text-align: justify;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 85%;  }
   .select-field-skillInAdminPanel{
     width: 100%;
     padding: 10px;
@@ -150,3 +153,24 @@
     background-color: var(--orange-color);
     color: white;
   }
+  .ContSpecialities div p{
+    font-size: 22px;
+  }
+  .ContTopicAndSpeciality{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .ContSpecialities{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+  }
+  

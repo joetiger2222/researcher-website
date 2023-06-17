@@ -14,9 +14,16 @@
   min-height: 100vh;
   background-color: black;
 }
+.InputInQuestion{
+  border: none;
+  border-bottom: 1px solid black;
+  width: 100%;
+  padding: 5px;
+  font-size: 16px;
+}
 .quizHeaderAndBtn {
   margin-top: 50px;
-  width: 40%;
+  width: 100%;
   padding: 20px;
   background-color: var(--background-color);
   border-radius: 10px;
@@ -73,7 +80,7 @@
 .quizQiestionsDiv {
   margin-top: 50px;
   margin-bottom: 50px;
-  width: 60%;
+  width: 100%;
   padding: 20px;
   background-color: white;
   border-radius: 10px;
@@ -147,8 +154,7 @@
   cursor: pointer;
 }
 .addQuestionbtn{
-  width: 150px;
-  height: 150px;
+ 
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -158,7 +164,7 @@
   color: white;
   font-weight: bold;
   row-gap: 20px;
-  padding: 3px;
+  padding: 10px;
   font-size: 14px;
   transition: all 0.3s ease;
   align-self: flex-end;
@@ -435,7 +441,7 @@ svg path{
 }
 
 .button-arounder {
-  font-size: 2rem;
+  font-size: 1rem;
   background: hsl(190deg, 30%, 15%);
   color: hsl(190deg, 10%, 95%);
   

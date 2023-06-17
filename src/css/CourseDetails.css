@@ -67,7 +67,7 @@
 
 
 .LinkVideoSection {
-  padding: 15px;
+  padding: 15px 40px;
 }
 .LinkVideoSection:hover{
   background-color: rgb(203, 201, 201)
@@ -247,7 +247,7 @@
 .sectionHeader {
   display: flex;
   align-items: center;
-  
+  padding: 15px;
 }
 .sectionHeader .plusIcon{
   width: 25px;
@@ -433,6 +433,7 @@ box-shadow: 15px 20px 50px 0px rgba(255, 111.99999999999986, 44.99999999999992, 
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px;
 }
 .ContLeftDataInsObj{        display: flex;
   flex-direction: column;
@@ -492,6 +493,7 @@ px
   display: flex;
   flex-direction: column;
   padding: 15px;
+  gap: 20px;
 }
 .contVideoAndQuiz{
   width: 35%;
@@ -544,12 +546,13 @@ px
   padding: 12px;
   /* max-width: 1000px; */
   margin-bottom: 20px;
-  padding: 12px;
+  padding: 20px;
   margin-bottom: 20px;
   background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px;
 }
 .ObjectivesNew h3,.InstructionsNew h3,.briefCourseNew{
   word-wrap: break-word;
