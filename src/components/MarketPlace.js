@@ -19,7 +19,7 @@ export default function MarketPalce() {
         },
       }
     )
-      .then((res) => (res.ok ? res.json() : alert("failed to Load Your Ideas")))
+      .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data) {
           setResearcherIdeas(data);
@@ -46,11 +46,6 @@ export default function MarketPalce() {
     getResearcherIdeas();
     getAllIdeas();
   }, []);
-
-
-
-
-// console.log('all',allIdeas)
 
 
 
@@ -108,7 +103,7 @@ function sendReq(ideaId) {
       specalityId: 0,
       deadline: formattedDate,
     });
-    // console.log(ideaData);
+   
 
     function getIdeaData(e) {
       setIdeaData((prev) => {
@@ -201,7 +196,7 @@ function sendReq(ideaId) {
         >
           <span>Idea Name: </span>
           <input onChange={getIdeaData} name="name"></input>
-          <span>Idea Name: </span>
+          <span>Participants Number: </span>
           <input
             onChange={(e) =>
               setIdeaData((prev) => {

@@ -21,6 +21,7 @@ const Profile = () => {
   const [showEditPaper, setShowEditPaper] = useState(false);
   const [deletePaper, setDeletePaper] = useState(false);
   const [paperData, setPaperData] = useState(null);
+  const [expertReqs,setExpertReqs]=useState(null);
   const userData = useLocation().state?.data;
   const { studentId } = useParams();
   const navigate = useNavigate();
@@ -55,6 +56,7 @@ const Profile = () => {
           getResearcherData(data.researcherId);
           getResInvitations(data.researcherId);
           getResReqs(data.researcherId);
+          getExpertReqs(data.researcherId);
         }
       });
   }
@@ -96,6 +98,18 @@ const Profile = () => {
       .then((data) => (data ? setResReqs(data) : null));
   }
 
+  function getExpertReqs(resId){
+    fetch(`https://localhost:7187/api/Researchers/Ideas/ExpertRequests/${resId}`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      },
+    })
+    .then(res=>res.ok?res.json():alert('failed to load expert reqs'))
+    .then(data=>data?setExpertReqs(data):null)
+  }
+
+
   useEffect(() => {
     getStudentData();
   }, [studentId]);
@@ -119,6 +133,8 @@ const Profile = () => {
     });
   }
 
+  console.log(expertReqs)
+
   function acceptInvitation(i) {
     fetch(
       `https://localhost:7187/api/Ideas/AcceptInvitations/${i.id}/${i.researcherId}`,
@@ -137,6 +153,7 @@ const Profile = () => {
     });
   }
 
+  // console.log(userData)
   const WatchedCourse = () => (
     <div className="watchedCourse">
       <h4>Course Name</h4>
@@ -337,6 +354,7 @@ const Profile = () => {
   };
 
   const EditPaper = (props) => {
+    console.log("edit paper", paperData.id);
     const [paperToEdit, setPaperToEdit] = useState({
       name: paperData.name,
       citation: paperData.citation,
@@ -354,11 +372,12 @@ const Profile = () => {
     }
 
     function editPaper() {
-      fetch(``, {
+      fetch(`https://localhost:7187/api/Researchers/Papers/${paperData.id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${userData?.token}`,
         },
+        body: JSON.stringify(paperToEdit),
       }).then((res) =>
         res.ok
           ? alert("Paper Edited Successfully")
@@ -584,15 +603,19 @@ const Profile = () => {
                   <p>{"Paper Name : " + paper?.name}</p>
                   <p>{"Paper citation : " + paper?.citation}</p>
                   <p>{"Paper url : " + paper?.url}</p>
-                  <button
-                    onClick={() => {
-                      setShowEditPaper(true);
-                      setPaperData(paper);
-                    }}
-                  >
-                    Edit Paper
-                  </button>
-                  <button>Delete Paper</button>
+                  {userData?.userId === studentId && (
+                    <button
+                      onClick={() => {
+                        setShowEditPaper(true);
+                        setPaperData(paper);
+                      }}
+                    >
+                      Edit Paper
+                    </button>
+                  )}
+                  {userData?.userId === studentId && (
+                    <button>Delete Paper</button>
+                  )}
                 </div>
               );
             })}
@@ -671,6 +694,29 @@ const Profile = () => {
                 </button>
               </div>
             );
+          })}
+        </div>
+      )}
+
+      {userData.roles === "Researcher" && userData?.userId === studentId && (
+        <div
+        style={{
+          color: "white",
+          border: "1px solid white",
+          display: "flex",
+          flexDirection: "column",
+          padding: "20px",
+          alignItems: "center",
+        }}>
+          <h1>Your Expert Requests : {expertReqs?.length}</h1>
+          {expertReqs?.map(req=>{
+            return(
+              <div style={{display:'flex',flexDirection:'column',margin:'10px',borderBottom:'1px solid white',width:'90%'}}>
+                <span>{req.title}</span>
+                <span>{req.content}</span>
+                <button onClick={()=>navigate(`/idea/${req.ideaId}`,{state:{data:userData}})}>View Idea</button>
+                </div>
+            )
           })}
         </div>
       )}

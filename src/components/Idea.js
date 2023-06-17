@@ -12,9 +12,10 @@ export default function Idea() {
   const [showTaskCard, setShowTaskCard] = useState(false);
   const [ideaPar, setIdeaPar] = useState(null);
   const [tasks, setTasks] = useState(null);
+  const [isPart, setIsPart] = useState(false);
+  const [showExpertReqModal, setShowExpertReqModal] = useState(false);
   const navigate = useNavigate();
   const creator = userData?.resercherId.toLowerCase() === idea?.creatorId;
-  
 
   function getIdeaData() {
     fetch(`https://localhost:7187/api/Ideas/SingleIdea/${ideaId}`, {
@@ -73,7 +74,6 @@ export default function Idea() {
       );
   }
 
-  // console.log('res',userData?.resercherId)
   function acceptReq(resId) {
     const filterData = ideaReqs.find((req) => req.researcherId === resId);
 
@@ -119,8 +119,18 @@ export default function Idea() {
       },
     })
       .then((res) => (res.ok ? res.json() : alert("failed to get Partipants")))
-      .then((data) => (data ? setIdeaPar(data) : null));
+      .then((data) => {
+        if (data) {
+          setIdeaPar(data);
+          const filter = data.filter(
+            (par) => par.id === userData.resercherId.toLowerCase()
+          );
+          
+          if (filter.length > 0 && filter[0].points>3) setIsPart(true);
+        }
+      });
   }
+
 
   function getTasks() {
     fetch(`https://localhost:7187/api/Ideas/Tasks/AllTasks/${ideaId}`, {
@@ -132,8 +142,6 @@ export default function Idea() {
       .then((res) => (res.ok ? res.json() : alert("failed to load Tasks")))
       .then((data) => (data ? setTasks(data) : null));
   }
-
-  console.log(tasks);
 
   const AllResCard = (props) => {
     const [ress, setRess] = useState(null);
@@ -296,6 +304,71 @@ export default function Idea() {
     );
   };
 
+  const SendExpertReqCard = (props) => {
+
+    const [expertReqData,setExpterReqData]=useState({title:'',content:'',ideaId:ideaId,participantId:userData.resercherId})
+
+    console.log(expertReqData)
+
+    function getExpterReqData(e){
+      setExpterReqData(prev=>{
+        return{
+          ...prev,
+          [e.target.name]:e.target.value
+        }
+      })
+    }
+
+    function sendExpertReq(){
+      fetch(`https://localhost:7187/api/Researchers/Ideas/ExpertRequest`,{
+        method:'POST',
+        headers:{
+          "Content-Type":"application/json",
+          "Authorization":`Bearer ${userData.token}`
+        },
+        body:JSON.stringify(expertReqData)
+      })
+      // .then(res=>res.ok?alert('Expert Request Sent Successfully'):alert('Failed To Send Please Try Again Later'))
+      .then(res=>{
+        if(res.ok){
+          alert('Expert Request Sent Successfully')
+          props.onClose()
+        }else alert('Failed To Send Please Try Again Later')
+      })
+    }
+
+    if (!props.show) return null;
+    return (
+      <div
+        style={{
+          position: "fixed",
+          left: "0",
+          top: "0",
+          right: "0",
+          bottom: "0",
+          backgroundColor: "rgba(0, 0,0,0.5)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: "100",
+        }}
+      >
+        <div style={{ backgroundColor: "white", width: "50%" }}>
+          <span>TITLE : </span>
+          <input name="title" onChange={getExpterReqData}></input>
+
+          <span>CONTENT : </span>
+          <input name="content" onChange={getExpterReqData}></input>
+          <div>
+            {expertReqData.title&&expertReqData.content&&<button onClick={sendExpertReq}>Submit</button>}
+            <button onClick={props.onClose}>Cancel</button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+  
+
   return (
     <div>
       <Header userData={userData} />
@@ -408,6 +481,17 @@ export default function Idea() {
             />
           )}
         </div>
+        {isPart &&  (
+          <button onClick={() => setShowExpertReqModal(true)}>
+            Send Expert Request
+          </button>
+        )}
+        {showExpertReqModal && (
+          <SendExpertReqCard
+            show={showExpertReqModal}
+            onClose={() => setShowExpertReqModal(false)}
+          />
+        )}
       </div>
     </div>
   );

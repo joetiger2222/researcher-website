@@ -12,6 +12,9 @@ export default function AdminPanel() {
   const [allSpecs, setAllSpecs] = useState(null);
   const [showTopic, setShowTopic] = useState(false);
   const [allTopics, setAllTopics] = useState(null);
+  const [allIdeas, setAllIdeas] = useState(null);
+  const [expertIdea,setExpertIdea]=useState(null)
+  const [showExpertReqsModal, setShowExpertReqsModal] = useState(false);
   const userData = useLocation().state?.data;
 
   function getCourses() {
@@ -67,14 +70,28 @@ export default function AdminPanel() {
       });
   }
 
+  function getAllIdeas() {
+    fetch(`https://localhost:7187/api/Ideas`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData?.token}`,
+      },
+    })
+      .then((res) => (res.ok ? res.json() : alert("failed to Load All Ideas")))
+      .then((data) => {
+        if (data) {
+          setAllIdeas(data);
+        }
+      });
+  }
+
   useEffect(() => {
     getCourses();
     getAllSkills();
     getAllSpecs();
     getAllTopics();
+    getAllIdeas();
   }, []);
-
-  // console.log(allSpecs);
 
   const CourseCard = (props) => {
     return (
@@ -229,6 +246,90 @@ export default function AdminPanel() {
     );
   };
 
+  const ExpertReqsCard = (props) => {
+    const [expertReqForSingleIdea, setExpertReqForSingleIdea] = useState([]);
+
+   
+
+    function getExpertReqs() {
+      fetch(
+        `https://localhost:7187/api/Ideas/ExpertRequests/${props.idea.id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+        }
+      )
+        .then((res) =>
+          res.ok ? res.json() : alert("failed to load Requests for this idea")
+        )
+        .then((data) => (data ? setExpertReqForSingleIdea(data) : null));
+    }
+
+
+    function deleteExpertReq(req){
+      fetch(``,{
+        method:"DELETE",
+        headers:{
+          "Content-Type":"application/json",
+          "Authorization":`Bearer ${userData.token}`
+        },
+      })
+      .then(res=>res.ok?alert('Request Successfully deleted'):alert('Failed To Delete Request'))
+    }
+
+    useEffect(() => {
+      getExpertReqs();
+    }, []);
+
+    if (!props.show) return null;
+    return (
+      <div
+        style={{
+          position: "fixed",
+          left: "0",
+          top: "0",
+          right: "0",
+          bottom: "0",
+          backgroundColor: "rgba(0, 0,0,0.5)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: "100",
+        }}
+      >
+        <div
+          style={{
+            width: "50%",
+            backgroundColor: "white",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {expertReqForSingleIdea?.map((req) => {
+            return (
+              <div
+                style={{
+                  color: "black",
+                  display: "flex",
+                  flexDirection: "column",
+                  borderBottom: "2px solid black",
+                }}
+              >
+                <span>Title : {req.title}</span>
+                <span>Content : {req.content}</span>
+                <button onClick={()=>deleteExpertReq(req)}>Delete Expert Request</button>
+              </div>
+            );
+          })}
+
+          <button onClick={props.onClose}>Close</button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="adminPanelParent" style={{ rowGap: "50px" }}>
       <Header userData={userData} />
@@ -284,9 +385,9 @@ export default function AdminPanel() {
           )}
         </div>
 
-        <div>
+        {/* <div>
           <button>Create New Skill</button>
-        </div>
+        </div> */}
 
         <div>
           <h1 style={{ color: "white" }}>All Specialties</h1>
@@ -315,6 +416,58 @@ export default function AdminPanel() {
           <button onClick={() => setShowTopic(true)}>Create New Topic</button>
           <AddNewTopic show={showTopic} onClose={() => setShowTopic(false)} />
         </div>
+      </div>
+
+      <div>
+        <h1>All Ideas</h1>
+        {allIdeas?.length > 0 ? (
+          allIdeas?.map((idea) => {
+            return (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "20px",
+                  backgroundColor: "gray",
+                  width: "30%",
+                  color: "white",
+                  cursor: "pointer",
+                }}
+              >
+                <span>Name: {idea.name}</span>
+                <span>Participants Number: {idea?.participantsNumber}</span>
+                <span>
+                  max Participants Number: {idea?.maxParticipantsNumber}
+                </span>
+                <span>specality: {idea?.specalityObj.name}</span>
+                <span>
+                  deadline:{" "}
+                  {new Date(idea?.deadline).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </span>
+                <span>topic: {idea?.topicObject.name}</span>
+
+                <button onClick={() => {setExpertIdea(idea);setShowExpertReqsModal(true);}}>
+                  View Expert Requests
+                </button>
+                
+                {/* <button onClick={()=>navigate(`/Idea/${idea.id}`,{state:{data:userData}})}>View Idea</button> */}
+              </div>
+            );
+          })
+        ) : (
+          <span> No Ideas Yet!</span>
+        )}
+        {showExpertReqsModal && (
+                  <ExpertReqsCard
+                    show={showExpertReqsModal}
+                    onClose={() => setShowExpertReqsModal(false)}
+                    idea={expertIdea}
+                  />
+                )}
       </div>
     </div>
   );

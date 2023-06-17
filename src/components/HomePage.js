@@ -107,6 +107,7 @@ export default function HomePage() {
       })
       .catch((error) => console.error(error));
   }
+  // console.log(userData)
 
   function getAllSkills() {
     fetch(`https://localhost:7187/api/Researchers/Skills`, {

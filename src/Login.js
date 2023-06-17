@@ -238,6 +238,29 @@ if(load){
               <img style={{ width: "20px" }} src={google} />
               Login With Google
             </button>
+            <button
+            onClick={()=>navigate('/Registration')}
+            className="loginGoogleBtn"
+              style={{
+                width: "100%",
+                color: "##5a5959",
+                backgroundColor: "white",
+                display: "flex",
+                justifyContent: "center",
+                gap: "7px",
+                padding: "15px 10px",
+                borderRadius: "4px",
+                margin: "10px 0 20px 0",
+                border: "0.01em solid #cbc7c7",
+                fontSize:'1.1em',
+                fontWeight:'bold',
+                cursor:'pointer',
+                
+              }}
+            >
+              
+              Signup
+            </button>
           </form>
         </div>
       </div>

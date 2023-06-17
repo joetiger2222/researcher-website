@@ -18,6 +18,9 @@ export default function FinalQuiz(){
   const {skillId}=useParams();
   const userData=useLocation().state?.data
   const navigate=useNavigate();
+
+  console.log(finalQuizData)
+
   const handleUpdate = (update) => {
     const index = answers.findIndex(
       (answer) => answer.questionId === update.questionId
