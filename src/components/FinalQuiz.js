@@ -10,9 +10,8 @@ export default function FinalQuiz(){
   const questions = finalQuizData?.questions;
   const [renderQ, setRenderQ] = useState(false);
   const [timeLimit, setTimeLimit] = useState({
-    hours: "",
     mins: "",
-    secs: "59",
+    secs: "00",
   });
   const [answers, setAnswers] = useState([]);
   const {skillId}=useParams();
@@ -47,6 +46,8 @@ export default function FinalQuiz(){
     }
   };
 
+
+
 let counter =1;
   function getFinalQuizData() {
     if(counter === 1)
@@ -63,14 +64,14 @@ let counter =1;
           if (data?.timeLimit.slice(0, 1) * 1 === 0) {
             return {
               ...prevData,
-              hours: data.timeLimit.slice(1, 2),
-              mins: data.timeLimit.slice(3, 5),
+              // hours: data.timeLimit.slice(1, 2),
+              mins: data.timeLimit.slice(1, 2),
             };
           }
           return {
             ...prevData,
-            hours: data.timeLimit.slice(0, 2),
-            mins: data.timeLimit.slice(3, 5),
+            // hours: data.timeLimit.slice(0, 2),
+            mins: data.timeLimit.slice(0, 2),
           };
         });
       
@@ -80,7 +81,7 @@ let counter =1;
       });
       counter =counter -1
   }
-
+console.log(timeLimit)
 
   useEffect(()=>{
     getFinalQuizData();
@@ -119,6 +120,62 @@ let counter =1;
 }
 
 
+
+
+
+const [timer, setTimer] = useState(null);
+
+const startTimer = () => {
+  let totalSeconds = parseInt(timeLimit.mins) * 60 + parseInt(timeLimit.secs);
+
+  if (isNaN(totalSeconds) || totalSeconds <= 0) {
+    // Invalid input, do nothing
+    return;
+  }
+
+  setTimer(setInterval(() => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    setTimeLimit({
+      mins: String(minutes).padStart(2, "0"),
+      secs: String(seconds).padStart(2, "0"),
+    });
+
+    if (totalSeconds === 0) {
+      clearInterval(timer);
+      // Timer finished, do something
+    } else {
+      totalSeconds--;
+    }
+  }, 1000));
+};
+
+const stopTimer = () => {
+  clearInterval(timer);
+  setTimer(null);
+};
+
+useEffect(() => {
+  return () => {
+    clearInterval(timer);
+  };
+}, [timer]);
+
+
+useEffect(() => {
+  if (parseInt(timeLimit.mins) === 0 && parseInt(timeLimit.secs) === 0) {
+    
+    alert('Your Timer Has Finished !')
+    navigate('/HomePage',{state:{data:userData}})
+  }
+
+  
+}, [timer, timeLimit.mins, timeLimit.secs]);
+
+
+
+
 if(!finalQuizData){
   return(
     <div >
@@ -134,13 +191,14 @@ if(!finalQuizData){
         
         <h4>
           <span>Time Limit : </span>
-          {timeLimit?.hours + ":" + timeLimit?.mins}
+          {timeLimit?.mins + ":" + timeLimit?.secs}
         </h4>
         <div className="startQBtn">
           <button
             style={{ display: renderQ ? "none" : "flex" }}
             onClick={() => {
-            //   setTimerStarted(true);
+           
+            startTimer();
               setRenderQ(true);
             }}
           >

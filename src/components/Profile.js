@@ -139,7 +139,7 @@ const Profile = () => {
     });
   }
 
-  console.log(expertReqs);
+
 
   function acceptInvitation(i) {
     fetch(
@@ -159,7 +159,6 @@ const Profile = () => {
     });
   }
 
-  // console.log(userData)
   const WatchedCourse = () => (
     <div className="watchedCourse">
       <h4>Course Name</h4>
@@ -181,7 +180,7 @@ const Profile = () => {
       citation: "",
       url: "",
     });
-    // console.log(paperData);
+    
     function getPaperData(e) {
       setPaperData((prev) => {
         return {
@@ -381,14 +380,18 @@ const Profile = () => {
       fetch(`https://localhost:7187/api/Researchers/Papers/${paperData.id}`, {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${userData?.token}`,
+          "Content-Type":"application/json",
+          "Authorization": `Bearer ${userData?.token}`,
         },
         body: JSON.stringify(paperToEdit),
-      }).then((res) =>
-        res.ok
-          ? alert("Paper Edited Successfully")
-          : alert("Failed To Edit Paper Please Try Again Later")
-      );
+      })
+     
+      .then(res=>{
+        if(res.ok){
+          alert("Paper Edited Successfully");
+          window.location.reload();
+        }else alert("Failed To Edit Paper Please Try Again Later")
+      })
     }
 
     if (!props.show) return null;

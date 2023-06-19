@@ -112,6 +112,8 @@ export default function AdminPanel() {
       .then((data) => (data ? setProblemCategories(data) : null));
   }
 
+  console.log(studentProblems)
+
   useEffect(() => {
     getCourses();
     getAllSkills();

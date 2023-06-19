@@ -7,6 +7,9 @@ export default function MarketPalce() {
   const [researcherIdeas, setResearcherIdeas] = useState(null);
   const [allIdeas, setAllIdeas] = useState(null);
   const [showCreateIdeaCard, setShowIdeaCard] = useState(false);
+  const [allTopics, setAllTopics] = useState(null);
+  const [allSpecs, setAllSpecs] = useState(null);
+  const [ideaSearch,setIdeaSearch]=useState({SearchTerm:'',Topic:0,Specality:0})
   const navigate=useNavigate();
 
   function getResearcherIdeas() {
@@ -28,7 +31,7 @@ export default function MarketPalce() {
   }
 
   function getAllIdeas() {
-    fetch(`https://localhost:7187/api/Ideas`, {
+    fetch(`https://localhost:7187/api/Ideas?SearchTerm=${ideaSearch.SearchTerm}&Topic=${ideaSearch.Topic}&Specality=${ideaSearch.Specality}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData?.token}`,
@@ -42,10 +45,52 @@ export default function MarketPalce() {
       });
   }
 
+  
+
+  function getAllSpecs() {
+    fetch(`https://localhost:7187/api/Researchers/Specialties`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    })
+      .then((res) => (res.ok ? res.json() : alert("failed to Load specs")))
+      .then((data) => {
+        if (data) {
+          setAllSpecs(data);
+        }
+      });
+  }
+
+  function getAllTopics() {
+    fetch(`https://localhost:7187/api/Researchers/Topics`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    })
+      .then((res) => (res.ok ? res.json() : alert("failed to Load topics")))
+      .then((data) => {
+        if (data) {
+          setAllTopics(data);
+        }
+      });
+  }
+
+
+  
+
+
+
   useEffect(() => {
     getResearcherIdeas();
-    getAllIdeas();
+    getAllSpecs();
+    getAllTopics();
   }, []);
+
+  useEffect(()=>{
+    getAllIdeas();
+  },[ideaSearch])
 
 
 
@@ -283,6 +328,30 @@ function sendReq(ideaId) {
 
       <div>
         <h1>All Ideas</h1>
+        <input name='SearchTerm' onChange={(e)=>setIdeaSearch(prev=>{return{...prev,[e.target.name]:e.target.value}})} placeholder="Search Idea" type="text"></input>
+        <select onChange={(e)=>setIdeaSearch(prev=>{return{...prev,[e.target.name]:e.target.value*1}})} name="Specality">
+          <option selected value={0}>Speciality</option>
+          {allSpecs?.map(spec=>{
+            return (
+              <option value={spec.id}>{spec.name}</option>
+            )
+          })}
+          
+        </select>
+
+
+
+        <select onChange={(e)=>setIdeaSearch(prev=>{return{...prev,[e.target.name]:e.target.value*1}})} name="Topic">
+          <option selected value={0}>Topic</option>
+          {allTopics?.map(topic=>{
+            return (
+              <option value={topic.id}>{topic.name}</option>
+            )
+          })}
+
+</select>
+
+
         {allIdeas?.length > 0 ? (
           allIdeas?.filter(idea=> !researcherIdeas?.map(idea=>idea.id).includes(idea.id)).map((idea) => {
             return (
