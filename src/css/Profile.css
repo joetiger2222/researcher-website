@@ -82,7 +82,7 @@
 }
 
 .social-icons a:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 .nameUser {
   font-size: 16px;
@@ -300,3 +300,170 @@
   }
   .nameUser{font-size: 12px;}
 }
+
+.ContCardPaper{
+  width: 25%;
+  height: 350px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: 0.5s;
+}
+.ContCardPaper:hover{
+  scale: 1.1;
+}
+.ContCardPaper>div{
+  width: 100%;
+  height: 50%;
+}
+.ContCardPaper div img{
+  width: 100%;
+  height: 100%;
+}
+
+.ContCardPaper button{
+  padding: 4px;
+  font-size: 16px;
+  transition: 0.5s;
+}
+
+/* .editPaperbtn{transition: 0.5s;}
+.deletePaperbtn{transition: 0.5s;} */
+
+.editPaperbtn:hover{
+  background-color: rgb(41, 150, 41);
+}
+.deletePaperbtn:hover{
+  background-color: rgb(198, 25, 25);
+}
+.ContDataInCardPaper{
+    /* padding: 12px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;}
+
+    .Contbtns{
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      justify-content: end;
+    }
+    .AddNewPaper{
+      padding: 10px;
+      font-size: 22px;
+      background-color: var(--orange-color);
+      transition: 1s;
+      border: none;
+      color: white;
+    }
+    .AddNewPaper:hover{
+      background-color: var(--darkgreen-color);
+      border-radius: 20px;
+    }
+
+    .ContInviteAndRequest{
+      margin: 50px;
+      justify-content: center;
+      display: flex;
+      width: 100%;
+      gap: 50px;
+    }
+
+    .Invitation{
+      background-color: aliceblue;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px;
+      border-radius: 10px;
+      gap: 20px;
+    }
+    .ContExpertRequests{
+      width: 50%;
+      gap: 10px;
+      display: flex;
+      flex-direction: column;
+      
+      margin-bottom: 50px;
+    }
+    .ContTitleAndContent{
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .ContAllWithbtn{
+      display: flex;
+      flex-direction: revert;
+      gap: 20px;
+      width: 100%;
+      height: 180px;
+      align-items: center;
+      transition: 0.5s;
+    }
+    .ContAllWithbtn:hover{
+      /* border: 1px solid white; */
+      scale: 1.1;
+
+
+    }
+    .ContTitleAndContent>p:nth-child(1){
+      color: #ffffff;
+    }
+    .contentData{
+      color: #dcd6d6a6;
+    }
+    .ContAllRequests{
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      gap: 20px;
+    }
+    .ContExpertRequests h1{
+      text-align: center;
+      color: white;
+    }
+    .ContainerInfoWithbtn{
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      height: 100%;
+    }
+    .viewData{
+      border: none;
+      padding: 6px 10px;
+      transition: 0.5s;
+      background-color: var(--orange-color);
+      color: white;
+    }
+    .viewData:hover{
+      color: white;
+      background-color: var(--darkgreen-color);
+      border-radius: 8px;
+    }
+    .ContAllRequestss{
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;    }
+    .ContainerreauestWithBtn{
+      display: flex;
+      /* gap: 15px; */
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .ContainerreauestWithBtn button{
+      border: 1px solid var(--orange-color);
+      background-color: transparent;
+      color: var(--orange-color);
+      padding: 4px;
+      transition: 0.5s;
+    }
+    .ContainerreauestWithBtn button:hover{
+    background-color: var(--orange-color);
+    color: white;
+    }

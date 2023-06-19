@@ -7,8 +7,10 @@ import "../css/Modal.css";
 import "../css/Profile.css";
 import { useLocation } from "react-router-dom";
 import Header from "./Header";
-
+import paperPhoto from "../images/paper.jpg";
 import ModalEditProfile from "./ModalEditProfile";
+import PaperCardInProfile from "./Cards/PaperCardInProfile";
+import request from "../images/request.png";
 const Profile = () => {
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -21,7 +23,7 @@ const Profile = () => {
   const [showEditPaper, setShowEditPaper] = useState(false);
   const [deletePaper, setDeletePaper] = useState(false);
   const [paperData, setPaperData] = useState(null);
-  const [expertReqs,setExpertReqs]=useState(null);
+  const [expertReqs, setExpertReqs] = useState(null);
   const userData = useLocation().state?.data;
   const { studentId } = useParams();
   const navigate = useNavigate();
@@ -98,17 +100,21 @@ const Profile = () => {
       .then((data) => (data ? setResReqs(data) : null));
   }
 
-  function getExpertReqs(resId){
-    fetch(`https://localhost:7187/api/Researchers/Ideas/ExpertRequests/${resId}`,{
-      method:"GET",
-      headers:{
-        "Authorization":`Bearer ${userData.token}`
-      },
-    })
-    .then(res=>res.ok?res.json():alert('failed to load expert reqs'))
-    .then(data=>data?setExpertReqs(data):null)
+  function getExpertReqs(resId) {
+    fetch(
+      `https://localhost:7187/api/Researchers/Ideas/ExpertRequests/${resId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      }
+    )
+      .then((res) =>
+        res.ok ? res.json() : alert("failed to load expert reqs")
+      )
+      .then((data) => (data ? setExpertReqs(data) : null));
   }
-
 
   useEffect(() => {
     getStudentData();
@@ -133,7 +139,7 @@ const Profile = () => {
     });
   }
 
-  console.log(expertReqs)
+  console.log(expertReqs);
 
   function acceptInvitation(i) {
     fetch(
@@ -588,34 +594,52 @@ const Profile = () => {
         <div
           style={{
             color: "white",
-            border: "1px solid white",
             display: "flex",
             flexDirection: "column",
             padding: "20px",
             alignItems: "center",
+            gap: "40px",
           }}
         >
           <h1>Papers</h1>
-          <div style={{ display: "flex", columnGap: "40px" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "40px",
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
             {researcherData?.papers?.map((paper) => {
               return (
-                <div>
-                  <p>{"Paper Name : " + paper?.name}</p>
-                  <p>{"Paper citation : " + paper?.citation}</p>
-                  <p>{"Paper url : " + paper?.url}</p>
-                  {userData?.userId === studentId && (
-                    <button
-                      onClick={() => {
-                        setShowEditPaper(true);
-                        setPaperData(paper);
-                      }}
-                    >
-                      Edit Paper
-                    </button>
-                  )}
-                  {userData?.userId === studentId && (
-                    <button>Delete Paper</button>
-                  )}
+                <div className="ContCardPaper">
+                  {/* <PaperCardInProfile paper={paper}/> */}
+                  <div>
+                    <img src={paperPhoto} alt="paper" />
+                  </div>
+                  <div className="ContDataInCardPaper">
+                    <p>{"Paper Name : " + paper?.name}</p>
+                    <p>{"Paper citation : " + paper?.citation}</p>
+                    <p>{"Paper url : " + paper?.url}</p>
+                  </div>
+                  <div className="Contbtns">
+                    {userData?.userId === studentId && (
+                      <button
+                        className="editPaperbtn"
+                        onClick={() => {
+                          setShowEditPaper(true);
+                          setPaperData(paper);
+                        }}
+                      >
+                        Edit Paper
+                      </button>
+                    )}
+                    {userData?.userId === studentId && (
+                      <button className="deletePaperbtn">Delete Paper</button>
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -627,7 +651,12 @@ const Profile = () => {
             )}
           </div>
           {userData?.userId === studentId && (
-            <button onClick={() => setShowAddPaper(true)}>Add New Paper</button>
+            <button
+              className="AddNewPaper"
+              onClick={() => setShowAddPaper(true)}
+            >
+              Add New Paper
+            </button>
           )}
           {userData?.userId === studentId && showAddPaper && (
             <AddPaperModal
@@ -638,86 +667,90 @@ const Profile = () => {
         </div>
       )}
 
-      {userData.roles === "Researcher" && userData?.userId === studentId && (
-        <div
-          style={{
-            color: "white",
-            border: "1px solid white",
-            display: "flex",
-            flexDirection: "column",
-            padding: "20px",
-            alignItems: "center",
-          }}
-        >
-          <h1>Invitations : {resInvits?.length}</h1>
-          {resInvits?.map((i) => {
-            return (
-              <div>
-                Invitation
-                <button
-                  onClick={() =>
-                    navigate(`/Idea/${i.ideaId}`, { state: { data: userData } })
-                  }
-                >
-                  View Idea
-                </button>
-                <button onClick={() => acceptInvitation(i)}>Accept</button>
-                <button onClick={() => rejectInvite(i)}>Reject</button>
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      {userData.roles === "Researcher" && userData?.userId === studentId && (
-        <div
-          style={{
-            color: "white",
-            border: "1px solid white",
-            display: "flex",
-            flexDirection: "column",
-            padding: "20px",
-            alignItems: "center",
-          }}
-        >
-          <h1>Your Requests : {resReqs?.length}</h1>
-          {resReqs?.map((r) => {
-            return (
-              <div>
-                Request
-                <button
-                  onClick={() =>
-                    navigate(`/Idea/${r.ideaId}`, { state: { data: userData } })
-                  }
-                >
-                  View Idea
-                </button>
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      {userData.roles === "Researcher" && userData?.userId === studentId && (
-        <div
-        style={{
-          color: "white",
-          border: "1px solid white",
-          display: "flex",
-          flexDirection: "column",
-          padding: "20px",
-          alignItems: "center",
-        }}>
-          <h1>Your Expert Requests : {expertReqs?.length}</h1>
-          {expertReqs?.map(req=>{
-            return(
-              <div style={{display:'flex',flexDirection:'column',margin:'10px',borderBottom:'1px solid white',width:'90%'}}>
-                <span>{req.title}</span>
-                <span>{req.content}</span>
-                <button onClick={()=>navigate(`/idea/${req.ideaId}`,{state:{data:userData}})}>View Idea</button>
+      <div className="ContInviteAndRequest">
+        {userData.roles === "Researcher" && userData?.userId === studentId && (
+          <div className="Invitation">
+            <h1>Invitations : {resInvits?.length}</h1>
+            {resInvits?.map((i,index) => {
+              return (
+                <div className="ContainerreauestWithBtn">
+                  <p>Invitation {index+1}</p>
+                  <button
+                    onClick={() =>
+                      navigate(`/Idea/${i.ideaId}`, {
+                        state: { data: userData },
+                      })
+                    }
+                  >
+                    View Idea
+                  </button>
+                  <button onClick={() => acceptInvitation(i)}>Accept</button>
+                  <button onClick={() => rejectInvite(i)}>Reject</button>
                 </div>
-            )
+              );
+            })}
+          </div>
+        )}
+
+        {userData.roles === "Researcher" && userData?.userId === studentId && (
+          <div className="Invitation">
+            <h1>Your Requests : {resReqs?.length}</h1>
+            <div className="ContAllRequestss">
+            {resReqs?.map((r,index) => {
+              return (
+                <div className="ContainerreauestWithBtn">
+                  <p>Request {index+1}</p>
+                  <button
+                    onClick={() =>
+                      navigate(`/Idea/${r.ideaId}`, {
+                        state: { data: userData },
+                      })
+                    }
+                  >
+                    View Idea
+                  </button>
+                </div>
+              );
+            })}
+            </div>
+           
+          </div>
+        )}
+      </div>
+
+      {userData.roles === "Researcher" && userData?.userId === studentId && (
+        <div className="ContExpertRequests">
+          <h1>Your Expert Requests : {expertReqs?.length}</h1>
+          <div className="ContAllRequests">
+          {expertReqs?.map((req) => {
+            return (
+              <div className="ContAllWithbtn">
+                <div className="photoRequst">
+                  <img src={request} alt="photo" />
+                </div>
+                <div className="ContainerInfoWithbtn">
+                  <div className="ContTitleAndContent">
+                    <p>{req.title}</p>
+                    <p className="contentData">{req.content}</p>
+                  </div>
+                  <div>
+                    <button
+                    className="viewData"
+                      onClick={() =>
+                        navigate(`/idea/${req.ideaId}`, {
+                          state: { data: userData },
+                        })
+                      }
+                    >
+                      View Idea
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
           })}
+          </div>
+         
         </div>
       )}
     </div>
