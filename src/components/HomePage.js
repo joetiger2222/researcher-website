@@ -288,7 +288,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <Footer />
+      <Footer userData={userData} />
     </div>
   );
 }

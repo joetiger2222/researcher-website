@@ -17,7 +17,7 @@ export default function Header({userData,resercherId}) {
     <div className="headerParent">
       <div className="headerContainer">
         <div className="headerLeft">
-          <h1>Logo</h1>
+          <h1 onClick={()=>navigate('/HomePage',{state:{data:userData}})}>Logo</h1>
         </div>
 
         <div className="headerRight">

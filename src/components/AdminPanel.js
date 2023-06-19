@@ -13,8 +13,11 @@ export default function AdminPanel() {
   const [showTopic, setShowTopic] = useState(false);
   const [allTopics, setAllTopics] = useState(null);
   const [allIdeas, setAllIdeas] = useState(null);
-  const [expertIdea,setExpertIdea]=useState(null)
+  const [expertIdea, setExpertIdea] = useState(null);
   const [showExpertReqsModal, setShowExpertReqsModal] = useState(false);
+  const [problemCategories, setProblemCategories] = useState(null);
+  const [problemCategoryId, setProblemCategoryId] = useState(1);
+  const [studentProblems, setStudentProblems] = useState(null);
   const userData = useLocation().state?.data;
 
   function getCourses() {
@@ -85,13 +88,42 @@ export default function AdminPanel() {
       });
   }
 
+  function getStudentProblems() {
+    fetch(
+      `https://localhost:7187/api/Students/Problems?categoryId=${problemCategoryId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      }
+    )
+      .then((res) =>
+        res.ok ? res.json() : alert("failed to load student problems")
+      )
+      .then((data) => (data ? setStudentProblems(data) : null));
+  }
+
+  function getProblemCategories() {
+    fetch(`https://localhost:7187/api/Admin/ProblemCategories`)
+      .then((res) =>
+        res.ok ? res.json() : alert("failed to load problem categories")
+      )
+      .then((data) => (data ? setProblemCategories(data) : null));
+  }
+
   useEffect(() => {
     getCourses();
     getAllSkills();
     getAllSpecs();
     getAllTopics();
     getAllIdeas();
+    getProblemCategories();
   }, []);
+
+  useEffect(() => {
+    getStudentProblems();
+  }, [problemCategoryId]);
 
   const CourseCard = (props) => {
     return (
@@ -249,8 +281,6 @@ export default function AdminPanel() {
   const ExpertReqsCard = (props) => {
     const [expertReqForSingleIdea, setExpertReqForSingleIdea] = useState([]);
 
-   
-
     function getExpertReqs() {
       fetch(
         `https://localhost:7187/api/Ideas/ExpertRequests/${props.idea.id}`,
@@ -266,17 +296,23 @@ export default function AdminPanel() {
         )
         .then((data) => (data ? setExpertReqForSingleIdea(data) : null));
     }
+  
 
-
-    function deleteExpertReq(req){
-      fetch(``,{
-        method:"DELETE",
-        headers:{
-          "Content-Type":"application/json",
-          "Authorization":`Bearer ${userData.token}`
+    function deleteExpertReq(req) {
+      fetch(`https://localhost:7187/api/Admin/ExpertRequests/${req?.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userData.token}`,
         },
       })
-      .then(res=>res.ok?alert('Request Successfully deleted'):alert('Failed To Delete Request'))
+  
+      .then(res=>{
+        if(res.ok){
+          alert("Request Successfully deleted");
+          props.onClose()
+        }else alert("Failed To Delete Request")
+      })
     }
 
     useEffect(() => {
@@ -319,7 +355,9 @@ export default function AdminPanel() {
               >
                 <span>Title : {req.title}</span>
                 <span>Content : {req.content}</span>
-                <button onClick={()=>deleteExpertReq(req)}>Delete Expert Request</button>
+                <button onClick={() => deleteExpertReq(req)}>
+                  Delete Expert Request
+                </button>
               </div>
             );
           })}
@@ -353,75 +391,75 @@ export default function AdminPanel() {
             </button>
           </div>
         </div>
-       
-       <div className="ContTopicAndSpeciality">
-     
-       <div className="allSkillsDiv" >
-          <h2>Let's Choose a Skill Then Create Final Quiz </h2>
-          <select
-            onChange={(e) => {
-              setSkillId(e.target.value * 1);
-            }}
-            className="SelectSkill"
-            name="skillId"
-            id="skill"
-            class="select-field-skillInAdminPanel"
-          >
-            <option selected disabled value="">
-              Choose a Skill
-            </option>
-            {allSkills?.map((skill) => {
-              return <option value={skill.id}>{skill.name}</option>;
-            })}
-          </select>
-          {skillId && (
-            <button
-              onClick={() =>
-                navigate(`/AddQuizToCourse/${skillId}`, {
-                  state: { data: userData },
-                })
-              }
+
+        <div className="ContTopicAndSpeciality">
+          <div className="allSkillsDiv">
+            <h2>Let's Choose a Skill Then Create Final Quiz </h2>
+            <select
+              onChange={(e) => {
+                setSkillId(e.target.value * 1);
+              }}
+              className="SelectSkill"
+              name="skillId"
+              id="skill"
+              class="select-field-skillInAdminPanel"
             >
-              Create New Quiz
-            </button>
-          )}
-        </div>
-        {/* <div>
+              <option selected disabled value="">
+                Choose a Skill
+              </option>
+              {allSkills?.map((skill) => {
+                return <option value={skill.id}>{skill.name}</option>;
+              })}
+            </select>
+            {skillId && (
+              <button
+                onClick={() =>
+                  navigate(`/AddQuizToCourse/${skillId}`, {
+                    state: { data: userData },
+                  })
+                }
+              >
+                Create New Quiz
+              </button>
+            )}
+          </div>
+          {/* <div>
           <button>Create New Skill</button>
         </div> */}
 
-        <div className="allSkillsDiv">
-          <h1 style={{ color: "#262626" }}>All Specialties</h1>
-          <div className="ContSpecialities custom-scrollbar"> 
-          {allSpecs?.map((spec) => {
-            return (
-              <div >
-                <p>{spec?.name}</p>
-              </div>
-            );
-          })}
+          <div className="allSkillsDiv">
+            <h1 style={{ color: "#262626" }}>All Specialties</h1>
+            <div className="ContSpecialities custom-scrollbar">
+              {allSpecs?.map((spec) => {
+                return (
+                  <div>
+                    <p>{spec?.name}</p>
+                  </div>
+                );
+              })}
+            </div>
+
+            <button className="plusBtn" onClick={() => setShowSpec(true)}>
+              Create New Specality
+            </button>
+            <AddNewSpec show={showSpec} onClose={() => setShowSpec(false)} />
           </div>
-          
-          <button className="plusBtn" onClick={() => setShowSpec(true)}>
-            Create New Specality
-          </button>
-          <AddNewSpec show={showSpec} onClose={() => setShowSpec(false)} />
-        </div>
 
-        <div className="allSkillsDiv">
-          <h1 style={{ color: "#262626" }}>All Topics</h1>
-          {allTopics?.map((topic) => {
-            return (
-              <div style={{ color: "#262626" }}>
-                <h4>{topic?.name}</h4>
-              </div>
-            );
-          })}
-          <button className="plusBtn" onClick={() => setShowTopic(true)}>Create New Topic</button>
-          <AddNewTopic show={showTopic} onClose={() => setShowTopic(false)} />
+          <div className="allSkillsDiv">
+            <h1 style={{ color: "#262626" }}>All Topics</h1>
+            {allTopics?.map((topic) => {
+              return (
+                <div style={{ color: "#262626" }}>
+                  <h4>{topic?.name}</h4>
+                </div>
+              );
+            })}
+            <button className="plusBtn" onClick={() => setShowTopic(true)}>
+              Create New Topic
+            </button>
+            <AddNewTopic show={showTopic} onClose={() => setShowTopic(false)} />
+          </div>
         </div>
-       </div>
-
       </div>
 
       <div>
@@ -456,10 +494,15 @@ export default function AdminPanel() {
                 </span>
                 <span>topic: {idea?.topicObject.name}</span>
 
-                <button onClick={() => {setExpertIdea(idea);setShowExpertReqsModal(true);}}>
+                <button
+                  onClick={() => {
+                    setExpertIdea(idea);
+                    setShowExpertReqsModal(true);
+                  }}
+                >
                   View Expert Requests
                 </button>
-                
+
                 {/* <button onClick={()=>navigate(`/Idea/${idea.id}`,{state:{data:userData}})}>View Idea</button> */}
               </div>
             );
@@ -468,12 +511,39 @@ export default function AdminPanel() {
           <span> No Ideas Yet!</span>
         )}
         {showExpertReqsModal && (
-                  <ExpertReqsCard
-                    show={showExpertReqsModal}
-                    onClose={() => setShowExpertReqsModal(false)}
-                    idea={expertIdea}
-                  />
-                )}
+          <ExpertReqsCard
+            show={showExpertReqsModal}
+            onClose={() => setShowExpertReqsModal(false)}
+            idea={expertIdea}
+          />
+        )}
+      </div>
+
+      <div className="allSkillsDiv">
+        <h2>Choose Cateogry To See Problems </h2>
+        <select
+          onChange={(e) => {
+            setProblemCategoryId(e.target.value * 1);
+          }}
+          className="SelectSkill"
+          // name="skillId"
+          // id="skill"
+          class="select-field-skillInAdminPanel"
+        >
+          {problemCategories?.map((cat) => {
+            return <option value={cat.id}>{cat.name}</option>;
+          })}
+        </select>
+        
+        {studentProblems?.map(prob=>{
+          return(
+            <div>
+              <span>Problem Description : </span>
+              <span>{prob.description}</span>
+              <button onClick={()=>navigate(`/Profile/${prob.studentId}`,{state:{data:userData}})}>View Student Profile</button>
+              </div>
+          )
+        })}
       </div>
     </div>
   );

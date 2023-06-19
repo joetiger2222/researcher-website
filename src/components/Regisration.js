@@ -5,7 +5,7 @@ import "../css/Registration.css";
 import { useNavigate } from "react-router-dom";
 const Registration = () => {
 
-  const [formData, setFormData] = useState({ firstname: "", lastname: "",userName:'',email:'',password:'',age:'',phoneNumber:'',gender:0, });
+  const [formData, setFormData] = useState({ firstname: "", lastname: "",userName:'',email:'',password:'',age:'',phoneNumber:'',gender:0, nationalityId:1});
   const [passwordMatch,setPasswrdMatch]=useState('');
   const [userId,setUserId]=useState(null);
   const [loginData,setLoginData]=useState(null);
