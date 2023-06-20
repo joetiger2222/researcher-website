@@ -83,28 +83,49 @@
     font-weight: 500;
   }
   .courseNamea{
-    color: var(--orange-color);
+    color: var(--darkgreen-color);
   }
   /* Styles for the create new course button */
   .plusBtn {
-    width: 100%;
+    position: relative;
+    /* width: 100%; */
     padding: 10px;
     border: none;
-    background-color: var(--orange-color);
-    color: #fff;
+    background-color: transparent;
+    color: white;
     font-size: 16px;
     font-weight: bold;
     text-align: center;
-    text-transform: uppercase;
+    text-transform: capitalize;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition:transform  0.3s ;
+    background-color: var(--darkgreen-color);
+
+
   }
   
   /* Styles for the create new course button hover state */
   .plusBtn:hover {
-    background-color: #ff702db0;
+    color: white;
+    /* animation: moveUp 0.3s forwards; */
+    transform: translateY(-4px);
+    box-shadow: 0 2px 32px 0 rgb(20, 125, 20);
   }
+  
+  @keyframes moveUp {
+    0% {
+      top: 0;
+    }
+    100% {
+      top: -5px; /* Adjust this value to control the amount of upward movement */
+    }
+    
+  
+  }
+  
+  
+  
   
   .AllContCoursesAndCreateQuiz{
     width: 100%;
@@ -116,6 +137,7 @@
   }
   .allSkillsDiv{
     display: flex;
+    gap: 30px;
     flex-direction: column;
     align-items: center;
     width: 25%;
@@ -137,13 +159,13 @@
     border: none;
     border-radius: 5px;
     background-color: white;
-    color: var(--orange-color);
+    color: var(--green-color);
     font-size: 16px;
     /* margin-bottom: 10px; */
     transition: all 0.3s ease-in-out;
   }
 
-  .allSkillsDiv button{
+  /* .allSkillsDiv button{
     border: 1px solid var(--orange-color);
     color: var(--orange-color);
     background-color: transparent;
@@ -152,10 +174,11 @@
   .allSkillsDiv button:hover{
     background-color: var(--orange-color);
     color: white;
-  }
+  } */
   .ContSpecialities div p{
-    font-size: 22px;
-  }
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--darkgreen-color);  }
   .ContTopicAndSpeciality{
     display: flex;
     flex-wrap: wrap;
@@ -165,12 +188,59 @@
     max-width: 1200px;
     margin: 0 auto;
   }
+ 
   .ContSpecialities{
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     overflow: auto;
   }
   
+.ContainerAllIdeas{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+}
+  .AllIdeas{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+.CardInAllIdeas{
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: white;
+  width: 20%;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+  gap: 30px;
+  justify-content: space-between;
+  border-top: 15px solid var(--darkgreen-color) !important;
+  border: 1px solid var(--darkgreen-color);
+} 
+.CardInAllIdeas:hover{
+  transform: translateY(-10px); /* Adjust this value to control the amount of upward movement */
+  box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+.containerSpansData{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ContainerbtnData{
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.CardInAllIdeas h2{
+  width: 100%;
+  text-align: center;
+}

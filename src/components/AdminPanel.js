@@ -453,7 +453,10 @@ export default function AdminPanel() {
             {courses?.map((course) => {
               return <CourseCard course={course} />;
             })}
-            <button
+            
+          </div>
+          <div className="ContainerbtnData">
+          <button
               onClick={() =>
                 navigate("/CreateCourse", { state: { data: userData } })
               }
@@ -461,7 +464,7 @@ export default function AdminPanel() {
             >
               <span>+</span>Create New Course
             </button>
-          </div>
+            </div>
         </div>
 
         <div className="ContTopicAndSpeciality">
@@ -485,6 +488,7 @@ export default function AdminPanel() {
             </select>
             {skillId && (
               <button
+              className="plusBtn"
                 onClick={() =>
                   navigate(`/AddQuizToCourse/${skillId}`, {
                     state: { data: userData },
@@ -500,32 +504,36 @@ export default function AdminPanel() {
         </div> */}
 
           <div className="allSkillsDiv">
-            <h1 style={{ color: "#262626" }}>All Specialties</h1>
+            <h2 style={{ color: "#262626" }}>All Specialties</h2>
             <div className="ContSpecialities custom-scrollbar">
               {allSpecs?.map((spec) => {
                 return (
-                  <div>
-                    <p>{spec?.name}</p>
-                  </div>
+                  <li  style={{ color: "#007d6f",fontSize:"16px",fontWeight:"700" }}>{spec?.name}</li>
                 );
               })}
             </div>
 
-            <button className="plusBtn" onClick={() => setShowSpec(true)}>
-              Create New Specality
+            <button 
+            // className="buttonn"
+            className="plusBtn"
+            // className="button-arounder1"
+              // className="bn54"
+             onClick={() => setShowSpec(true)}>
+             Create New Specality
             </button>
             <AddNewSpec show={showSpec} onClose={() => setShowSpec(false)} />
           </div>
 
-          <div className="allSkillsDiv">
-            <h1 style={{ color: "#262626" }}>All Topics</h1>
+          <div className="allSkillsDiv ">
+            <h2 style={{ color: "#262626" }}>All Topics</h2>
+            <div className="custom-scrollbar ContSpecialities">
             {allTopics?.map((topic) => {
               return (
-                <div style={{ color: "#262626" }}>
-                  <h4>{topic?.name}</h4>
-                </div>
+                  <li  style={{ color: "#007d6f",fontSize:"16px",fontWeight:"700" }}>{topic?.name}</li>
               );
             })}
+            </div>
+          
             <button className="plusBtn" onClick={() => setShowTopic(true)}>
               Create New Topic
             </button>
@@ -534,39 +542,37 @@ export default function AdminPanel() {
         </div>
       </div>
 
-      <div>
-        <h1>All Ideas</h1>
+      <div className="ContainerAllIdeas">
+        <h1 style={{color:"white"}}>All Ideas</h1>
+        <div className="AllIdeas">
         {allIdeas?.length > 0 ? (
-          allIdeas?.map((idea) => {
+          allIdeas?.map((idea,index) => {
             return (
               <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  padding: "20px",
-                  backgroundColor: "gray",
-                  width: "30%",
-                  color: "white",
-                  cursor: "pointer",
-                }}
+               className="CardInAllIdeas"
               >
-                <span>Name: {idea.name}</span>
-                <span>Participants Number: {idea?.participantsNumber}</span>
-                <span>
-                  max Participants Number: {idea?.maxParticipantsNumber}
-                </span>
-                <span>specality: {idea?.specalityObj.name}</span>
-                <span>
+                <h2>Idea {index+1}</h2>
+                <div className="containerSpansData">
+                <span style={{borderBottom:"1px solid black",padding:"5px"}}>Name: <span style={{fontWeight:"bold",}}>{idea.name}</span></span>
+                
+                <span style={{borderBottom:"1px solid black",padding:"5px"}}>specality: <span style={{fontWeight:"bold"}}>{idea?.specalityObj.name}</span></span>
+                <span style={{borderBottom:"1px solid black",padding:"5px"}}>
                   deadline:{" "}
-                  {new Date(idea?.deadline).toLocaleDateString("en-US", {
+                  <span  style={{fontWeight:"bold"}}>{new Date(idea?.deadline).toLocaleDateString("en-US", {
                     month: "long",
                     day: "numeric",
                     year: "numeric",
-                  })}
+                  })}</span>
                 </span>
-                <span>topic: {idea?.topicObject.name}</span>
-
+                <span style={{borderBottom:"1px solid black",padding:"5px"}}>topic: <span style={{fontWeight:"bold"}}>{idea?.topicObject.name}</span></span>
+                <span style={{borderBottom:"1px solid black",padding:"5px"}}>Participants Number: <span style={{fontWeight:"bold"}}>{idea?.participantsNumber}</span></span>
+                <span style={{borderBottom:"1px solid black",padding:"5px"}}>
+                  max Participants Number: <span style={{fontWeight:"bold"}}>{idea?.maxParticipantsNumber}</span>
+                </span>
+                </div>
+                <div className="ContainerbtnData">
                 <button
+                className="button-arounder1"
                   onClick={() => {
                     setExpertIdea(idea);
                     setShowExpertReqsModal(true);
@@ -574,6 +580,8 @@ export default function AdminPanel() {
                 >
                   View Expert Requests
                 </button>
+                </div>
+                
 
                 
               </div>
@@ -582,6 +590,8 @@ export default function AdminPanel() {
         ) : (
           <span> No Ideas Yet!</span>
         )}
+        </div>
+      
         {showExpertReqsModal && (
           <ExpertReqsCard
             show={showExpertReqsModal}
@@ -609,9 +619,8 @@ export default function AdminPanel() {
         
         {studentProblems?.map(prob=>{
           return(
-            <div>
-              <span>Problem Description : </span>
-              <span>{prob.description}</span>
+            <div className="ContainerreauestWithBtn">
+              <span>Problem Description :<span style={{fontWeight:"bold"}}>{prob.description}</span> </span>
               <button onClick={()=>{setChoosenProblem(prob);setShowResponseModal(true)}}>Respond</button>
               </div>
           )

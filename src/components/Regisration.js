@@ -18,9 +18,9 @@ const Registration = () => {
   const [passwordMatch, setPasswrdMatch] = useState("");
   const [userId, setUserId] = useState(null);
   const [loginData, setLoginData] = useState(null);
-  const [allNationalities, setAllNationalities] = useState(null);
+  const [allNationalities, setAllNationalities] = useState([]);
   const navigate = useNavigate();
-
+console.log(allNationalities)
   function getRegisterData(event) {
     setFormData((prevFormData) => {
       return {
@@ -60,7 +60,7 @@ const Registration = () => {
   function getAllNationalities() {
     fetch(`https://localhost:7187/api/Students/Nationalites`)
       .then((res) =>
-        res.ok ? res.json : alert("failed to load nationalities")
+        res.ok ? res.json() : alert("failed to load nationalities")
       )
       .then((data) => (data ? setAllNationalities(data) : null));
   }
@@ -202,6 +202,7 @@ const Registration = () => {
               />
             </div>
             <select name="nationalityId"
+            className="genderSelect"
               onChange={(e)=>setFormData(prev=>{return {...prev,[e.target.name]:e.target.value*1}})}
             >
               <option selected disabled>

@@ -40,6 +40,7 @@ p {
   animation-duration: 1s;
   animation-fill-mode: forwards;
   opacity: 0;
+  overflow: auto;
 }
 
 /* Animation Styles */

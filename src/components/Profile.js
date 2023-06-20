@@ -636,9 +636,9 @@ const Profile = () => {
                     <img src={paperPhoto} alt="paper" />
                   </div>
                   <div className="ContDataInCardPaper">
-                    <p>{"Paper Name : " + paper?.name}</p>
-                    <p>{"Paper citation : " + paper?.citation}</p>
-                    <p>{"Paper url : " + paper?.url}</p>
+                    <p className="custom-scrollbar">{"Paper Name : " + paper?.name}</p>
+                    <p className="custom-scrollbar">{"Paper citation : " + paper?.citation}</p>
+                    <p className="custom-scrollbar">{"Paper url : " + paper?.url}</p>
                   </div>
                   <div className="Contbtns">
                     {userData?.userId === studentId && (
