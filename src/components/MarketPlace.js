@@ -12,6 +12,14 @@ export default function MarketPalce() {
   const [ideaSearch,setIdeaSearch]=useState({SearchTerm:'',Topic:0,Specality:0})
   const navigate=useNavigate();
 
+
+
+
+
+
+
+
+
   function getResearcherIdeas() {
     fetch(
       `https://localhost:7187/api/Researchers/Ideas/${userData?.resercherId}`,
@@ -140,15 +148,34 @@ function sendReq(ideaId) {
     const formattedDate = currentDate.toISOString().split("T")[0]; 
     const [allSpecs, setAllSpecs] = useState(null);
     const [allTopics, setAllTopics] = useState(null);
-  
+  const [date, setDate] = useState('');
     const [ideaData, setIdeaData] = useState({
       name: "",
       maxParticipantsNumber: 0,
       topicId: 0,
       specalityId: 0,
-      deadline: formattedDate,
+      deadline: date,
     });
+   console.log(ideaData)
+
+
+
+
    
+
+   const handleDateChange = (event) => {
+     const inputValue = event.target.value;
+ 
+     // Remove any existing hyphens from the input value
+     const formattedValue = inputValue.replace(/-/g, '');
+ 
+     // Add hyphens after every 4th and 7th character
+     const dateWithHyphens = formattedValue
+       .slice(0, 4) + '-' + formattedValue.slice(4, 6) + '-' + formattedValue.slice(6, 8);
+ 
+     setDate(dateWithHyphens);
+   };
+
 
     function getIdeaData(e) {
       setIdeaData((prev) => {
@@ -267,6 +294,8 @@ function sendReq(ideaId) {
               return <option value={spec.id}>{spec.name}</option>;
             })}
           </select>
+          <span>Deadline</span>
+          <input type="text" onChange={handleDateChange} value={date} placeholder="yyyy-mm-dd"></input>
           <button onClick={props.onClose}>Cancel</button>
           <button onClick={createNewIdea}>Create</button>
         </div>

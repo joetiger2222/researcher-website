@@ -235,7 +235,7 @@ export default function Idea() {
       name: "",
       participantsNumber: 0,
       description: "",
-      deadline: "2023-05-14",
+      deadline: "2023-06-19",
     });
 
     function getTaskData(e) {
@@ -253,16 +253,18 @@ export default function Idea() {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${userData?.token}`,
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${userData?.token}`,
           },
           body: JSON.stringify(taskData),
         }
-      ).then((res) =>
+      )
+      .then((res) =>
         res.ok
           ? alert("task created Successfully")
           : alert("failed to create Task")
       );
+      
     }
 
     console.log(taskData);

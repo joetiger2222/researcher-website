@@ -18,6 +18,9 @@ export default function AdminPanel() {
   const [problemCategories, setProblemCategories] = useState(null);
   const [problemCategoryId, setProblemCategoryId] = useState(1);
   const [studentProblems, setStudentProblems] = useState(null);
+  const [showResponseModal,setShowResponseModal]=useState(false);
+  const [choosenProblem,setChoosenProblem]=useState(null);
+  const [adminReponse,setAdminResponse]=useState(null);
   const userData = useLocation().state?.data;
 
   function getCourses() {
@@ -112,7 +115,19 @@ export default function AdminPanel() {
       .then((data) => (data ? setProblemCategories(data) : null));
   }
 
-  console.log(studentProblems)
+  function getAdminResponse(){
+    fetch(`https://localhost:7187/api/Students/Responses`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      },
+
+    })
+    .then(res=>res.ok?res.json():alert('failed to load responses'))
+    .then(data=>data?setAdminResponse(data):null)
+  }
+
+  
 
   useEffect(() => {
     getCourses();
@@ -121,6 +136,7 @@ export default function AdminPanel() {
     getAllTopics();
     getAllIdeas();
     getProblemCategories();
+    getAdminResponse()
   }, []);
 
   useEffect(() => {
@@ -370,6 +386,60 @@ export default function AdminPanel() {
     );
   };
 
+  const ProblemResponseCard =(props)=>{
+    const [responseData,setResponseData]=useState({message:'',studentId:props.problem.studentId,problemId:props.problem.id})
+
+    
+
+    function sendResponse(){
+      fetch(`https://localhost:7187/api/Students/Responses`,{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          "Authorization":`Bearer ${userData.token}`
+        },
+        body:JSON.stringify(responseData)
+      })
+      .then(res=>{
+        if(res.ok){
+          alert('Response Sent Successfully');
+          props.onClose();
+        }else alert("Failed To Send Response")
+      })
+    }
+
+    if (!props.show) return null;
+    return (
+      <div
+        style={{
+          position: "fixed",
+          left: "0",
+          top: "0",
+          right: "0",
+          bottom: "0",
+          backgroundColor: "rgba(0, 0,0,0.5)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: "100",
+        }}
+      >
+        <div
+          style={{
+            width: "50%",
+            backgroundColor: "white",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <input name="message" onChange={(e)=>setResponseData(prev=>{return{...prev,[e.target.name]:e.target.value}})} placeholder="Enter Response"></input>
+          {responseData.message&&<button onClick={sendResponse}>Send</button>}
+          <button onClick={props.onClose}>Cancel</button>
+        </div>
+        </div>
+        )
+  }
+
   return (
     <div className="adminPanelParent" style={{ rowGap: "50px" }}>
       <Header userData={userData} />
@@ -505,7 +575,7 @@ export default function AdminPanel() {
                   View Expert Requests
                 </button>
 
-                {/* <button onClick={()=>navigate(`/Idea/${idea.id}`,{state:{data:userData}})}>View Idea</button> */}
+                
               </div>
             );
           })
@@ -542,11 +612,26 @@ export default function AdminPanel() {
             <div>
               <span>Problem Description : </span>
               <span>{prob.description}</span>
-              <button onClick={()=>navigate(`/Profile/${prob.studentId}`,{state:{data:userData}})}>View Student Profile</button>
+              <button onClick={()=>{setChoosenProblem(prob);setShowResponseModal(true)}}>Respond</button>
               </div>
           )
         })}
+        {showResponseModal&&choosenProblem&&<ProblemResponseCard show={showResponseModal} onClose={()=>setShowResponseModal(false)} problem={choosenProblem} />}
+        
       </div>
+      <div style={{color:'white'}}>
+          <h1>All Responses</h1>
+          {adminReponse?.map(res=>{
+          return(
+            <div style={{border:'2px solid white'}}>
+              <span>Problem :</span>
+              <h5>{res.problem.description}</h5>
+              <span>Admin Response :</span>
+              <h5>{res.message}</h5>
+            </div>
+          )
+        })}
+        </div>
     </div>
   );
 }

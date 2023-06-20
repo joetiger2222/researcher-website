@@ -17,6 +17,7 @@ import AddPaper from './components/AddPaper';
 import FinalQuizResult from './components/FinalQuizResult';
 import MarketPlace from './components/MarketPlace';
 import Idea from './components/Idea';
+import Researchers from './components/Researchers';
 function App() {
   return (
     <div >
@@ -38,6 +39,7 @@ function App() {
         <Route path='/AddPaper' element={<AddPaper/>}/>
         <Route path='/MarketPlace' element={<MarketPlace/>}/>
         <Route path='/Idea/:ideaId' element={<Idea/>}/>
+        <Route path='/Researchers' element={<Researchers/>}/>
       
 
       </Routes>

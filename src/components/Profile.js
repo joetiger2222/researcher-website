@@ -24,6 +24,7 @@ const Profile = () => {
   const [deletePaper, setDeletePaper] = useState(false);
   const [paperData, setPaperData] = useState(null);
   const [expertReqs, setExpertReqs] = useState(null);
+  const [adminReponse,setAdminResponse]=useState(null);
   const userData = useLocation().state?.data;
   const { studentId } = useParams();
   const navigate = useNavigate();
@@ -116,11 +117,23 @@ const Profile = () => {
       .then((data) => (data ? setExpertReqs(data) : null));
   }
 
+  function getAdminResponse(){
+    fetch(`https://localhost:7187/api/Students/Responses/${studentId}`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      },
+    })
+    .then(res=>res.ok?res.json():alert('failed to load Admin Responses'))
+    .then(data=>data?setAdminResponse(data):null)
+  }
+
   useEffect(() => {
     getStudentData();
+    if(userData.userId===studentId)getAdminResponse();
   }, [studentId]);
 
-  // console.log(resReqs)
+  
 
   function rejectInvite(i) {
     fetch(
@@ -445,7 +458,7 @@ const Profile = () => {
     );
   };
 
-  // console.log(researcherData)
+  console.log(adminReponse)
 
   return (
     <div className="ParentHeadData">
@@ -756,6 +769,21 @@ const Profile = () => {
          
         </div>
       )}
+      {userData.userId===studentId&&
+      <div style={{color:'white'}}>
+        <h1>Admin Reponses</h1>
+        {adminReponse?.map(res=>{
+          return(
+            <div style={{border:'2px solid white'}}>
+              <span>Problem :</span>
+              <h5>{res.problem.description}</h5>
+              <span>Admin Response :</span>
+              <h5>{res.message}</h5>
+            </div>
+          )
+        })}
+      </div>
+      }
     </div>
   );
 };

@@ -35,7 +35,7 @@ export default function Header({userData,resercherId}) {
               </div>
             </li>
 
-            <li>Research</li>
+            <li onClick={()=>navigate(`/Researchers`,{state:{data:userData}})}>Researchers</li>
           </ul>
           <div className="headerBtnsContainer">
             {!userData&&<button className="headerSignBtn">Login</button>}
