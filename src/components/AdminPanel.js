@@ -35,7 +35,7 @@ export default function AdminPanel() {
   }
 
   function getAllSkills() {
-    fetch(`https://localhost:7187/api/Researchers/Skills`, {
+    fetch(`https://localhost:7187/api/Admin/Skills`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData.token}`,

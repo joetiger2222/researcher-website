@@ -6,11 +6,11 @@ export default function Researchers(){
 
     const userData=useLocation().state.data
     const [researchers,setResearchers]=useState(null);
-    const [searchData,setSearchData]=useState({SearchTerm:'',Level:0,Specality:0,PageSize:10})
+    const [searchData,setSearchData]=useState({SearchTerm:'',Level:'',Specality:0,PageSize:10})
     const [allSpecs, setAllSpecs] = useState(null);
     const navigate=useNavigate();
     
-    console.log(researchers)
+    console.log(searchData)
 
     function getAllResearchers(){
         fetch(`https://localhost:7187/api/Researchers?SearchTerm=${searchData.SearchTerm}&Level=${searchData.Level}&Specality=${searchData.Specality}&PageSize=${searchData.PageSize}`,{
@@ -61,8 +61,8 @@ useEffect(()=>{
                     )
                 })}
             </select>
-            <select name="Level" onChange={(e)=>setSearchData(prev=>{return{...prev,[e.target.name]:e.target.value*1}})}>
-                <option value={0} selected>Level</option>
+            <select name="Level" onChange={(e)=>setSearchData(prev=>{return{...prev,[e.target.name]:e.target.value}})}>
+                <option value={''} selected>Level</option>
                 {[0,1,2,3]?.map(level=>{
                     return(
                         <option value={level}>{level}</option>
