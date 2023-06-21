@@ -230,6 +230,7 @@ export default function Idea() {
     );
   };
 
+
   const CreateTaskCard = (props) => {
     
     const [taskData, setTaskData] = useState({
@@ -439,7 +440,7 @@ const AssignParticpantToTask=(props)=>{
           );
           alert(body);
         });
-      }
+      }else alert('Particpant Assigned Successfully')
     
       return readStream().then((chunks) => {
         const body = new TextDecoder().decode(

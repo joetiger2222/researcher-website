@@ -201,14 +201,46 @@ export default function MarketPalce() {
           },
           body: JSON.stringify(ideaData),
         }
-      ).then((res) => {
-        if (res.ok) {
-          window.location.reload();
-        } else {
-          if (res.status === 400)
-            alert("you don't have enough points to initiate idea");
+      )
+      // .then((res) => {
+      //   if (res.ok) {
+      //     window.location.reload();
+      //   } else {
+      //     if (res.status === 400)
+      //       alert("you don't have enough points to initiate idea");
+      //   }
+      // });
+      .then((response) => {
+        const reader = response.body.getReader();
+        let chunks = [];
+      
+        function readStream() {
+          return reader.read().then(({ done, value }) => {
+            if (done) {
+              return chunks;
+            }
+            chunks.push(value);
+            return readStream();
+          });
         }
-      });
+      
+        if (!response.ok) {
+          return readStream().then((chunks) => {
+            const body = new TextDecoder().decode(
+              new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+            );
+            alert(body);
+          });
+        }else window.location.reload();
+      
+        return readStream().then((chunks) => {
+          const body = new TextDecoder().decode(
+            new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+          );
+          console.log(body);
+        });
+      })
+      .catch((error) => console.error(error));
     }else alert('please enter a valid deadline yyyy-mm-dd')
     }
 

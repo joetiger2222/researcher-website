@@ -10,7 +10,7 @@ export default function Researchers(){
     const [allSpecs, setAllSpecs] = useState(null);
     const navigate=useNavigate();
     
-    console.log(searchData)
+    console.log(researchers)
 
     function getAllResearchers(){
         fetch(`https://localhost:7187/api/Researchers?SearchTerm=${searchData.SearchTerm}&Level=${searchData.Level}&Specality=${searchData.Specality}&PageSize=${searchData.PageSize}`,{
