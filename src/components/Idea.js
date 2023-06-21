@@ -14,6 +14,8 @@ export default function Idea() {
   const [tasks, setTasks] = useState(null);
   const [isPart, setIsPart] = useState(false);
   const [showExpertReqModal, setShowExpertReqModal] = useState(false);
+  const [showAssignParticpantToTask,setShowAssingParticpantToTask]=useState(false)
+  const [choosenTask,setChoosenTask]=useState(null);
   const navigate = useNavigate();
   const creator = userData?.resercherId.toLowerCase() === idea?.creatorId;
 
@@ -229,13 +231,12 @@ export default function Idea() {
   };
 
   const CreateTaskCard = (props) => {
-    const currentDate = new Date();
-    const formattedDate = currentDate.toISOString().split("T")[0];
+    
     const [taskData, setTaskData] = useState({
-      name: "",
+      name: '',
       participantsNumber: 0,
-      description: "",
-      deadline: "2023-06-19",
+      description: '',
+      deadline: '',
     });
 
     function getTaskData(e) {
@@ -248,6 +249,8 @@ export default function Idea() {
     }
 
     function createfTask() {
+      const val=/^\d{4}-\d{2}-\d{2}$/.test(taskData.deadline)
+      if(val){
       fetch(
         `https://localhost:7187/api/Ideas/Tasks/InitiateTask/${ideaId}/${userData.resercherId}`,
         {
@@ -259,15 +262,38 @@ export default function Idea() {
           body: JSON.stringify(taskData),
         }
       )
-      .then((res) =>
-        res.ok
-          ? alert("task created Successfully")
-          : alert("failed to create Task")
-      );
+      .then((response) => {
+        const reader = response.body.getReader();
+        let chunks = [];
+      
+        function readStream() {
+          return reader.read().then(({ done, value }) => {
+            if (done) {
+              return chunks;
+            }
+            chunks.push(value);
+            return readStream();
+          });
+        }
+      
+        if (!response.ok) {
+          return readStream().then((chunks) => {
+            const body = new TextDecoder().decode(
+              new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+            );
+            alert(body);
+          });
+        }
+      
+        else{ window.location.reload()}
+      })
+      .catch((error) => console.error(error));
+      
+      }else alert('please enter a valid deadline yyyy-mm-dd')
       
     }
 
-    console.log(taskData);
+   
 
     if (!props.show) return null;
     return (
@@ -299,6 +325,12 @@ export default function Idea() {
           ></input>
           <span>description: </span>
           <input onChange={getTaskData} name="description"></input>
+          <input
+            type="text"
+            name="deadline"
+            onChange={getTaskData}
+            placeholder="yyyy-mm-dd"
+          ></input>
           <button onClick={props.onClose}>Canel</button>
           <button onClick={createfTask}>Create</button>
         </div>
@@ -369,7 +401,103 @@ export default function Idea() {
       </div>
     );
   };
-  
+
+
+const AssignParticpantToTask=(props)=>{
+  console.log(props.task)
+
+  function assignToTask(id){
+    console.log(id)
+    let data=[];
+    data.push(id)
+    fetch(`https://localhost:7187/api/Ideas/Tasks/Participants/${props.task.id}`,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":`Bearer ${userData.token}`
+      },
+      body:JSON.stringify(data)
+    })
+    .then((response) => {
+      const reader = response.body.getReader();
+      let chunks = [];
+    
+      function readStream() {
+        return reader.read().then(({ done, value }) => {
+          if (done) {
+            return chunks;
+          }
+          chunks.push(value);
+          return readStream();
+        });
+      }
+    
+      if (!response.ok) {
+        return readStream().then((chunks) => {
+          const body = new TextDecoder().decode(
+            new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+          );
+          alert(body);
+        });
+      }
+    
+      return readStream().then((chunks) => {
+        const body = new TextDecoder().decode(
+          new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+        );
+        console.log(body);
+      });
+    })
+    .catch((error) => console.error(error));
+  }
+
+
+
+  if (!props.show) return null;
+  return (
+    <div
+      style={{
+        position: "fixed",
+        left: "0",
+        top: "0",
+        right: "0",
+        bottom: "0",
+        backgroundColor: "rgba(0, 0,0,0.5)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: "100",
+      }}
+    >
+      <div style={{ backgroundColor: "white", width: "50%" }}>
+        {ideaPar?.map(par=>{
+          return(
+            <div>
+                <span>
+                  {par?.studentObj.firstName + " " + par?.studentObj.lastName}
+                  <button
+                    onClick={() =>
+                      navigate(`/profile/${par.studentObj.id}`, {
+                        state: { data: userData },
+                      })
+                    }
+                  >
+                    View Profile
+                  </button>
+                  <button onClick={()=>assignToTask(par.id)}>Assign To Task</button>
+                </span>
+              </div>
+          )
+        })}
+        <button onClick={props.onClose}>Close</button>
+      </div>
+      </div>
+  )
+}
+
+
+
+  console.log(tasks)
 
   return (
     <div>
@@ -468,9 +596,12 @@ export default function Idea() {
                     year: "numeric",
                   })}
                 </span>
+                {creator&&<button onClick={()=>{setChoosenTask(task);setShowAssingParticpantToTask(true)}}>Assign Particpants</button>}
+                
               </div>
             );
           })}
+          {choosenTask&&showAssignParticpantToTask&&<AssignParticpantToTask show={showAssignParticpantToTask} onClose={()=>setShowAssingParticpantToTask(false)} task={choosenTask} />}
           {creator && (
             <button onClick={() => setShowTaskCard(true)}>
               Create New Task

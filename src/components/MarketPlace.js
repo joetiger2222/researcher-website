@@ -4,7 +4,7 @@ import Header from "./Header";
 import "../css/Marketplace.css";
 export default function MarketPalce() {
   const userData = useLocation().state.data;
-  const [researcherIdeas, setResearcherIdeas] = useState(null);
+  const [researcherIdeas, setResearcherIdeas] = useState([]);
   const [allIdeas, setAllIdeas] = useState(null);
   const [showCreateIdeaCard, setShowIdeaCard] = useState(false);
   const [allTopics, setAllTopics] = useState(null);
@@ -131,36 +131,18 @@ export default function MarketPalce() {
   }
 
   const CreateNewIdeaCard = (props) => {
-    const currentDate = new Date();
-    const formattedDate = currentDate.toISOString().split("T")[0];
     const [allSpecs, setAllSpecs] = useState(null);
     const [allTopics, setAllTopics] = useState(null);
-    const [date, setDate] = useState("");
     const [ideaData, setIdeaData] = useState({
       name: "",
       maxParticipantsNumber: 0,
       topicId: 0,
       specalityId: 0,
-      deadline: date,
+      deadline: '',
     });
     console.log(ideaData);
 
-    const handleDateChange = (event) => {
-      const inputValue = event.target.value;
 
-      // Remove any existing hyphens from the input value
-      const formattedValue = inputValue.replace(/-/g, "");
-
-      // Add hyphens after every 4th and 7th character
-      const dateWithHyphens =
-        formattedValue.slice(0, 4) +
-        "-" +
-        formattedValue.slice(4, 6) +
-        "-" +
-        formattedValue.slice(6, 8);
-
-      setDate(dateWithHyphens);
-    };
 
     function getIdeaData(e) {
       setIdeaData((prev) => {
@@ -207,6 +189,8 @@ export default function MarketPalce() {
     }, []);
 
     function createNewIdea() {
+      const val=/^\d{4}-\d{2}-\d{2}$/.test(ideaData.deadline)
+      if(val){
       fetch(
         `https://localhost:7187/api/Ideas/InitiateIdea/${userData.resercherId}`,
         {
@@ -225,6 +209,7 @@ export default function MarketPalce() {
             alert("you don't have enough points to initiate idea");
         }
       });
+    }else alert('please enter a valid deadline yyyy-mm-dd')
     }
 
     if (!props.show) return null;
@@ -289,8 +274,8 @@ export default function MarketPalce() {
           <span>Deadline</span>
           <input
             type="text"
-            onChange={handleDateChange}
-            value={date}
+            name="deadline"
+            onChange={getIdeaData}
             placeholder="yyyy-mm-dd"
           ></input>
           <button onClick={props.onClose}>Cancel</button>
@@ -299,6 +284,8 @@ export default function MarketPalce() {
       </div>
     );
   };
+
+  console.log(researcherIdeas)
 
   return (
     <div>
@@ -403,9 +390,9 @@ export default function MarketPalce() {
           )}
         </div>
         <div className="ContainerbtnData">
-          <button className="plusBtn" onClick={() => setShowIdeaCard(true)}>
+          { researcherIdeas?.length<2&&<button className="plusBtn" onClick={() => setShowIdeaCard(true)}>
             Create New Idea
-          </button>
+          </button>}
           {showCreateIdeaCard && (
             <CreateNewIdeaCard
               show={showCreateIdeaCard}
