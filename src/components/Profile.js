@@ -225,71 +225,54 @@ const Profile = () => {
 
     return (
       <div
-        style={{
-          position: "fixed",
-          left: "0",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          backgroundColor: "rgba(0, 0,0,0.5)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: "100",
-        }}
+        className="modal-overlay2"
       >
         <div
-          style={{
-            backgroundColor: "white",
-            padding: "20px",
-            borderRadius: "10px",
-          }}
+          className="modal2"
         >
-          <h1 style={{ color: "black" }}>Create New Paper</h1>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              backgroundColor: "white",
-            }}
-          >
-            <label>Paper Name:</label>
+          <div className="ContExitbtn">
+            <div class="outer" onClick={props.onClose}>
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">Create New Paper</h1>
+          <div className="FormModal2">
+
+            <label className="AllLabeles">Paper Name:</label>
             <input
+            required
+            className="InputModalHallDetails"
               onChange={getPaperData}
               name="name"
               placeholder="Name..."
             ></input>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              backgroundColor: "white",
-            }}
-          >
-            <label>Paper Citation:</label>
+          
+            <label className="AllLabeles">Paper Citation:</label>
             <input
+            required
+            className="InputModalHallDetails"
               onChange={getPaperData}
               name="citation"
               placeholder="Citation..."
             ></input>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              backgroundColor: "white",
-            }}
-          >
-            <label>Paper Url:</label>
+          
+            <label className="AllLabeles">Paper Url:</label>
             <input
+            required
+            className="InputModalHallDetails"
               onChange={getPaperData}
               name="url"
               placeholder="Url..."
             ></input>
-          </div>
-          <button onClick={createPaper}>Create</button>
+            <div className="buttonsOnModal">
+            <button onClick={createPaper}>Create</button>
           <button onClick={props.onClose}>Cancel</button>
+            </div>
+         
+          </div>
+
         </div>
       </div>
     );
@@ -411,48 +394,50 @@ const Profile = () => {
 
     return (
       <div
-        style={{
-          position: "fixed",
-          left: "0",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          backgroundColor: "rgba(0, 0,0,0.5)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: "100",
-        }}
+       className="modal-overlay2"
       >
         <div
-          style={{
-            backgroundColor: "white",
-            padding: "20px",
-            borderRadius: "10px",
-            color: "black",
-          }}
+         className="modal2"
         >
-          <h1>Only Change The Fields You Want To Edit</h1>
-          <span>Paper Name :</span>
+          <div className="ContExitbtn"  onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+
+          <h1 className="headContact2">Only Change The Fields You Want To Edit</h1>
+          <div className="FormModal2">
+
+          <label className="AllLabeles">Paper Name :</label>
           <input
+          className="InputModalHallDetails"
             placeholder={paperData.name}
             name="name"
             onChange={getPaperDataToEdit}
           ></input>
-          <span>Paper citation :</span>
+          <label className="AllLabeles">Paper citation :</label>
           <input
+          className="InputModalHallDetails"
             placeholder={paperData.citation}
             name="citation"
             onChange={getPaperDataToEdit}
           ></input>
-          <span>Paper url :</span>
+          <label className="AllLabeles">Paper url :</label>
           <input
+          className="InputModalHallDetails"
             placeholder={paperData.url}
             name="url"
             onChange={getPaperDataToEdit}
           ></input>
-          <button onClick={props.onClose}>Cancel</button>
+          <div className="buttonsOnModal">
           <button onClick={editPaper}>Confirm</button>
+          <button onClick={props.onClose}>Cancel</button>
+
+          </div>
+         
+          </div>
         </div>
       </div>
     );

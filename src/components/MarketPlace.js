@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import "../css/Marketplace.css";
+import "../css/Modal.css";
 export default function MarketPalce() {
   const userData = useLocation().state.data;
   const [researcherIdeas, setResearcherIdeas] = useState([]);
@@ -246,72 +247,84 @@ export default function MarketPalce() {
 
     if (!props.show) return null;
     return (
-      <div
-        style={{
-          position: "fixed",
-          left: "0",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          backgroundColor: "rgba(0, 0,0,0.5)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: "100",
-        }}
-      >
-        <div
-          style={{ width: "50%", backgroundColor: "white", padding: "20px" }}
-        >
-          <span>Idea Name: </span>
-          <input onChange={getIdeaData} name="name"></input>
-          <span>Participants Number: </span>
-          <input
-            onChange={(e) =>
-              setIdeaData((prev) => {
-                return { ...prev, maxParticipantsNumber: e.target.value * 1 };
-              })
-            }
-            name="maxParticipantsNumber"
-            type="number"
-          ></input>
-          <select
-            onChange={(e) =>
-              setIdeaData((prev) => {
-                return { ...prev, specalityId: e.target.value * 1 };
-              })
-            }
-          >
-            <option selected disabled value="">
-              Choose a Speciality
-            </option>
-            {allSpecs?.map((spec) => {
-              return <option value={spec.id}>{spec.name}</option>;
-            })}
-          </select>
-          <select
-            onChange={(e) =>
-              setIdeaData((prev) => {
-                return { ...prev, topicId: e.target.value * 1 };
-              })
-            }
-          >
-            <option selected disabled value="">
-              Choose a Topic
-            </option>
-            {allTopics?.map((spec) => {
-              return <option value={spec.id}>{spec.name}</option>;
-            })}
-          </select>
-          <span>Deadline</span>
-          <input
-            type="text"
-            name="deadline"
-            onChange={getIdeaData}
-            placeholder="yyyy-mm-dd"
-          ></input>
-          <button onClick={props.onClose}>Cancel</button>
-          <button onClick={createNewIdea}>Create</button>
+      <div className="modal-overlay2">
+        <div className="modal2">
+          <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">Create New Idea</h1>
+
+          <div className="FormModal2">
+            <label className="AllLabeles">Idea Name: </label>
+            <input
+              className="InputModalHallDetails"
+              onChange={getIdeaData}
+              name="name"
+            ></input>
+            <label className="AllLabeles">Participants Number: </label>
+            <input
+              className="InputModalHallDetails"
+              onChange={(e) =>
+                setIdeaData((prev) => {
+                  return { ...prev, maxParticipantsNumber: e.target.value * 1 };
+                })
+              }
+              name="maxParticipantsNumber"
+              type="number"
+            ></input>
+            <select
+              className="InputModalHallDetails"
+              onChange={(e) =>
+                setIdeaData((prev) => {
+                  return { ...prev, specalityId: e.target.value * 1 };
+                })
+              }
+            >
+              <option selected disabled value="">
+                Choose a Speciality
+              </option>
+              {allSpecs?.map((spec) => {
+                return <option value={spec.id}>{spec.name}</option>;
+              })}
+            </select>
+            <select
+              className="InputModalHallDetails"
+              onChange={(e) =>
+                setIdeaData((prev) => {
+                  return { ...prev, topicId: e.target.value * 1 };
+                })
+              }
+            >
+              <option selected disabled value="">
+                Choose a Topic
+              </option>
+              {allTopics?.map((spec) => {
+                return <option value={spec.id}>{spec.name}</option>;
+              })}
+            </select>
+            <label className="AllLabeles">Deadline</label>
+            <input
+              className="InputModalHallDetails"
+              type="text"
+              // onChange={handleDateChange}
+              onChange={getIdeaData}
+              // value={date}
+              placeholder="yyyy-mm-dd"
+              name="deadline"
+            ></input>
+            <div className="buttonsOnModal">
+              <button className="" onClick={createNewIdea}>
+                Create
+              </button>
+              <button className="" onClick={props.onClose}>
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -433,170 +446,171 @@ export default function MarketPalce() {
           )}
         </div>
 
-      <div className="ContainerAllIdeas">
-        <h1>All Ideas</h1>
+        <div className="ContainerAllIdeas">
+          <h1>All Ideas</h1>
 
-        <div className="AllIdeas">
-  <input
-    name="SearchTerm"
-    onChange={(e) =>
-      setIdeaSearch((prev) => {
-        return { ...prev, [e.target.name]: e.target.value };
-      })
-    }
-    placeholder="Search Idea"
-    type="text"
-    className="search-input"
-  ></input>
-  <select
-    onChange={(e) =>
-      setIdeaSearch((prev) => {
-        return { ...prev, [e.target.name]: e.target.value * 1 };
-      })
-    }
-    name="Specality"
-    className="search-select"
-  >
-    <option selected value={0}>
-      Speciality
-    </option>
-    {allSpecs?.map((spec) => {
-      return <option value={spec.id}>{spec.name}</option>;
-    })}
-  </select>
-  <select
-    onChange={(e) =>
-      setIdeaSearch((prev) => {
-        return { ...prev, [e.target.name]: e.target.value * 1 };
-      })
-    }
-    name="Topic"
-    className="search-select"
-  >
-    <option selected value={0}>
-      Topic
-    </option>
-    {allTopics?.map((topic) => {
-      return <option value={topic.id}>{topic.name}</option>;
-    })}
-  </select>
-</div>
+          <div className="AllIdeas">
+            <input
+              name="SearchTerm"
+              onChange={(e) =>
+                setIdeaSearch((prev) => {
+                  return { ...prev, [e.target.name]: e.target.value };
+                })
+              }
+              placeholder="Search Idea"
+              type="text"
+              className="search-input"
+            ></input>
+            <select
+              onChange={(e) =>
+                setIdeaSearch((prev) => {
+                  return { ...prev, [e.target.name]: e.target.value * 1 };
+                })
+              }
+              name="Specality"
+              className="search-select"
+            >
+              <option selected value={0}>
+                Speciality
+              </option>
+              {allSpecs?.map((spec) => {
+                return <option value={spec.id}>{spec.name}</option>;
+              })}
+            </select>
+            <select
+              onChange={(e) =>
+                setIdeaSearch((prev) => {
+                  return { ...prev, [e.target.name]: e.target.value * 1 };
+                })
+              }
+              name="Topic"
+              className="search-select"
+            >
+              <option selected value={0}>
+                Topic
+              </option>
+              {allTopics?.map((topic) => {
+                return <option value={topic.id}>{topic.name}</option>;
+              })}
+            </select>
+          </div>
 
-
-        <div className="AllIdeas">
-          {allIdeas?.length > 0 ? (
-            allIdeas
-              ?.filter(
-                (idea) =>
-                  !researcherIdeas?.map((idea) => idea.id).includes(idea.id)
-              )
-              .map((idea, index) => {
-                return (
-                  <div className="CardInAllIdeas">
-                    <h2>Idea: {index + 1}</h2>
-                    <div className="containerSpansData">
-                      <span
-                        style={{
-                          borderBottom: "1px solid black",
-                          padding: "5px",
-                        }}
-                      >
-                        Name:{" "}
-                        <span style={{ fontWeight: "bold" }}>{idea.name}</span>
-                      </span>
-                      <span
-                        style={{
-                          borderBottom: "1px solid black",
-                          padding: "5px",
-                        }}
-                      >
-                        specality:{" "}
-                        <span style={{ fontWeight: "bold" }}>
-                          {idea?.specalityObj.name}
+          <div className="AllIdeas">
+            {allIdeas?.length > 0 ? (
+              allIdeas
+                ?.filter(
+                  (idea) =>
+                    !researcherIdeas?.map((idea) => idea.id).includes(idea.id)
+                )
+                .map((idea, index) => {
+                  return (
+                    <div className="CardInAllIdeas">
+                      <h2>Idea: {index + 1}</h2>
+                      <div className="containerSpansData">
+                        <span
+                          style={{
+                            borderBottom: "1px solid black",
+                            padding: "5px",
+                          }}
+                        >
+                          Name:{" "}
+                          <span style={{ fontWeight: "bold" }}>
+                            {idea.name}
+                          </span>
                         </span>
-                      </span>
-                      <span
-                        style={{
-                          borderBottom: "1px solid black",
-                          padding: "5px",
-                        }}
-                      >
-                        deadline:{" "}
-                        <span style={{ fontWeight: "bold" }}>
-                          {new Date(idea?.deadline).toLocaleDateString(
-                            "en-US",
-                            {
-                              month: "long",
-                              day: "numeric",
-                              year: "numeric",
-                            }
-                          )}
+                        <span
+                          style={{
+                            borderBottom: "1px solid black",
+                            padding: "5px",
+                          }}
+                        >
+                          specality:{" "}
+                          <span style={{ fontWeight: "bold" }}>
+                            {idea?.specalityObj.name}
+                          </span>
                         </span>
-                      </span>
-                      <span
-                        style={{
-                          borderBottom: "1px solid black",
-                          padding: "5px",
-                        }}
-                      >
-                        topic:{" "}
-                        <span style={{ fontWeight: "bold" }}>
-                          {idea?.topicObject.name}
+                        <span
+                          style={{
+                            borderBottom: "1px solid black",
+                            padding: "5px",
+                          }}
+                        >
+                          deadline:{" "}
+                          <span style={{ fontWeight: "bold" }}>
+                            {new Date(idea?.deadline).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "long",
+                                day: "numeric",
+                                year: "numeric",
+                              }
+                            )}
+                          </span>
                         </span>
-                      </span>
-                      <span
-                        style={{
-                          borderBottom: "1px solid black",
-                          padding: "5px",
-                        }}
-                      >
-                        Participants Number:{" "}
-                        <span style={{ fontWeight: "bold" }}>
-                          {idea?.participantsNumber}
+                        <span
+                          style={{
+                            borderBottom: "1px solid black",
+                            padding: "5px",
+                          }}
+                        >
+                          topic:{" "}
+                          <span style={{ fontWeight: "bold" }}>
+                            {idea?.topicObject.name}
+                          </span>
                         </span>
-                      </span>
-                      <span
-                        style={{
-                          borderBottom: "1px solid black",
-                          padding: "5px",
-                        }}
-                      >
-                        max Participants Number:{" "}
-                        <span style={{ fontWeight: "bold" }}>
-                          {idea?.maxParticipantsNumber}
+                        <span
+                          style={{
+                            borderBottom: "1px solid black",
+                            padding: "5px",
+                          }}
+                        >
+                          Participants Number:{" "}
+                          <span style={{ fontWeight: "bold" }}>
+                            {idea?.participantsNumber}
+                          </span>
                         </span>
-                      </span>
-                    </div>
-                    <div className="ContainerbtnData">
-                      {idea?.participantsNumber <
-                        idea?.maxParticipantsNumber && (
+                        <span
+                          style={{
+                            borderBottom: "1px solid black",
+                            padding: "5px",
+                          }}
+                        >
+                          max Participants Number:{" "}
+                          <span style={{ fontWeight: "bold" }}>
+                            {idea?.maxParticipantsNumber}
+                          </span>
+                        </span>
+                      </div>
+                      <div className="ContainerbtnData">
+                        {idea?.participantsNumber <
+                          idea?.maxParticipantsNumber && (
+                          <button
+                            className="bn54"
+                            onClick={() => sendReq(idea.id)}
+                          >
+                            Send Request
+                          </button>
+                        )}
                         <button
-                        className="bn54"
-                        onClick={() => sendReq(idea.id)}>
-                          Send Request
+                          className="plusBtn"
+                          onClick={() =>
+                            navigate(`/Idea/${idea.id}`, {
+                              state: { data: userData },
+                            })
+                          }
+                        >
+                          View Idea
                         </button>
-                      )}
-                      <button
-                       className="plusBtn"
-                        onClick={() =>
-                          navigate(`/Idea/${idea.id}`, {
-                            state: { data: userData },
-                          })
-                        }
-                      >
-                        View Idea
-                      </button>
+                      </div>
                     </div>
-                  </div>
-                );
-              })
-          ) : (
-            <span> No Ideas Yet!</span>
-          )}
+                  );
+                })
+            ) : (
+              <span> No Ideas Yet!</span>
+            )}
+          </div>
         </div>
       </div>
-      </div>
-
     </div>
   );
 }
