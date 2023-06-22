@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineHourglass } from "react-icons/ai";
 import {
-  FaRegNewspaper,
   FaPlusCircle,
   FaTrash,
   FaRegEdit,
@@ -9,15 +8,13 @@ import {
 import { HiAcademicCap } from "react-icons/hi";
 import "../css/CourseDetails.css";
 import Header from "./Header.js";
-import { Link, useLocation, useParams } from "react-router-dom";
-import { FaArrowCircleDown, FaArrowCircleUp } from "react-icons/fa";
+import { useLocation, useParams } from "react-router-dom";
+import { FaArrowCircleDown,} from "react-icons/fa";
 import Footer from "./Footer";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ModalForQuiz from "./ModalForQuiz";
-import SectionQuiz from "./SectionQuiz";
-
 import video from "../1.mp4";
+
 const CourseDetails = () => {
   const navigate = useNavigate();
   const [videoUrl, setVideoUrl] = useState("");
@@ -32,36 +29,36 @@ const CourseDetails = () => {
   const [sectionId, setSectionId] = useState(null);
   const [showUploadVideo, setShowUploadVideo] = useState(false);
   const [showDeleteCourseModal, setShowDeleteCourseModal] = useState(false);
-  const userData=useLocation()?.state?.data;
+  const [showEditCourseDataModal, setShowEditCourseDataModal] = useState(false);
+  const userData = useLocation()?.state?.data;
 
   let { id } = useParams();
-console.log(userData)
-
-
 
   function getCourseDetatils() {
-    fetch(`https://localhost:7187/api/Courses/${id}`,{
-    method:"GET",
-    headers:{
-      "Authorization":`Bearer ${userData.token}`
-    }
+    fetch(`https://localhost:7187/api/Courses/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
     })
       .then((res) => res.json())
       .then((data) => setCourseDetails(data));
   }
 
   function getCourseSections() {
-    fetch(`https://localhost:7187/api/Courses/SectionsToCourse?courseId=${id}`,{
-      method:"GET",
-      headers:{
-        "Authorization":`Bearer ${userData.token}`
+    fetch(
+      `https://localhost:7187/api/Courses/SectionsToCourse?courseId=${id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
       }
-    })
+    )
       .then((res) => res.json())
       .then((data) => setCourseSections(data));
   }
 
-  // console.log(courseDetails);
   useEffect(() => {
     getCourseDetatils();
     getCourseSections();
@@ -74,24 +71,27 @@ console.log(userData)
     const [sectionQuiz, setSectionQuiz] = useState(null);
 
     function getVideosIds() {
-      fetch(`https://localhost:7187/api/Courses/Sections/Videos/${section.id}`,{
-        method:"GET",
-        headers:{
-          "Authorization":`Bearer ${userData.token}`
+      fetch(
+        `https://localhost:7187/api/Courses/Sections/Videos/${section.id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
         }
-      })
+      )
         .then((res) => res.json())
         .then((data) => setVideosIds(data));
     }
 
     function getSectionQuiz() {
-      fetch(`https://localhost:7187/api/Quizes/SectionQuiz/${section.id}`,{
-        method:"GET",
-        headers:{
-          "Authorization":`Bearer ${userData.token}`
-        }
+      fetch(`https://localhost:7187/api/Quizes/SectionQuiz/${section.id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
       })
-        .then((res) => res.ok?res.json():null)
+        .then((res) => (res.ok ? res.json() : null))
         .then((data) => setSectionQuiz(data));
     }
 
@@ -119,19 +119,25 @@ console.log(userData)
             }
           </h3>
 
-          {userData.roles==='Admin'&&<div className="sectionIcons">
-            <FaPlusCircle
-              className="plusIcon"
-              onClick={() => {
-                setSectionId(section.id);
-                setShowUploadVideo(true);
-              }}
-            />
-            <FaRegEdit
-              onClick={() => navigate(`/AddQuizToSection/${section.id}`,{state:{data:userData}})}
-              className="plusIcon"
-            />
-          </div>}
+          {userData.roles === "Admin" && (
+            <div className="sectionIcons">
+              <FaPlusCircle
+                className="plusIcon"
+                onClick={() => {
+                  setSectionId(section.id);
+                  setShowUploadVideo(true);
+                }}
+              />
+              <FaRegEdit
+                onClick={() =>
+                  navigate(`/AddQuizToSection/${section.id}`, {
+                    state: { data: userData },
+                  })
+                }
+                className="plusIcon"
+              />
+            </div>
+          )}
         </div>
 
         <div
@@ -141,7 +147,9 @@ console.log(userData)
           {videosIds?.map((video) => (
             <span
               onClick={() =>
-                navigate(`/CourseForStudent/${section.id}/${video.id}`,{state:{data:userData}})
+                navigate(`/CourseForStudent/${section.id}/${video.id}`, {
+                  state: { data: userData },
+                })
               }
               className="LinkVideoSection"
             >
@@ -152,7 +160,11 @@ console.log(userData)
           {sectionQuiz && (
             <span
               className="QuizTitle"
-              onClick={() => navigate(`/SectionQuiz/${section.id}`,{state:{data:userData}})}
+              onClick={() =>
+                navigate(`/SectionQuiz/${section.id}`, {
+                  state: { data: userData },
+                })
+              }
             >
               {section.name} Quiz
             </span>
@@ -181,9 +193,9 @@ console.log(userData)
 
       fetch(`https://localhost:7187/api/Courses/Videos/${sectionId}`, {
         method: "POST",
-          headers:{
-            "Authorization":`Bearer ${userData.token}`
-          },
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
         body: formData,
       }).then((res) => {
         if (res.ok) {
@@ -250,17 +262,15 @@ console.log(userData)
     );
   };
 
-  // console.log(video)
-
   const VideoCard = ({ videoId, show, onClose }) => {
     const [video, setVideo] = useState(null);
 
     useEffect(() => {
-      fetch(`https://localhost:7187/api/courses/Videos/${videoId}`,{
-        method:"GET",
-        headers:{
-          "Authorization":`Bearer ${userData.token}`
-        }
+      fetch(`https://localhost:7187/api/courses/Videos/${videoId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
       })
         .then((response) => {
           if (!response.ok) {
@@ -319,10 +329,10 @@ console.log(userData)
       data.push(sectionData);
       fetch(`https://localhost:7187/api/Courses/Sections?courseId=${id}`, {
         method: "POST",
-          headers:{
-            "Authorization":`Bearer ${userData.token}`,
-            "Content-Type": "application/json"
-          },
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(data),
       })
         .then((response) => {
@@ -376,12 +386,12 @@ console.log(userData)
     function deleteCourse() {
       fetch(`https://localhost:7187/api/Courses/${id}`, {
         method: "DELETE",
-          headers:{
-            "Authorization":`Bearer ${userData.token}`
-          },
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
       }).then((res) => {
         if (res.ok) {
-          navigate("/AdminPanel",{state:{data:userData}});
+          navigate("/AdminPanel", { state: { data: userData } });
         } else alert("Error Happened Please Try Again Later");
       });
     }
@@ -418,6 +428,83 @@ console.log(userData)
     );
   };
 
+  const EditCourseDataCard = (props) => {
+    const [editData, setEditData] = useState({
+      name: courseDetails.name,
+      instructions: courseDetails.instructions,
+      objectives: courseDetails.objectives,
+      price: courseDetails.price,
+      hours: courseDetails.hours,
+      brief: courseDetails.brief,
+      skillId: courseDetails.skillObj.id,
+    });
+    console.log(editData);
+
+    function editCourseData() {
+      fetch(`https://localhost:7187/api/Courses/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userData.token}`,
+        },
+        body: JSON.stringify(editData),
+      })
+      
+      .then(res=>{
+        if(res.ok){
+          alert("data updated successfuly");
+          props.onClose();
+          getCourseDetatils();
+        }else alert("failed")
+      })
+    }
+
+    function getEditData(e) {
+      setEditData((prev) => {
+        return {
+          ...prev,
+          [e.target.name]: e.target.value,
+        };
+      });
+    }
+
+    if (!props.show) return null;
+    return (
+      <div
+        style={{
+          position: "fixed",
+          left: "0",
+          top: "0",
+          right: "0",
+          bottom: "0",
+          backgroundColor: "rgba(0, 0,0,0.5)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: "100",
+        }}
+      >
+        <div style={{ backgroundColor: "white", width: "50%" }}>
+          <h1>Only Change The Field You Want To Modify</h1>
+          <span>Name</span>
+          <input placeholder={courseDetails.name} onChange={getEditData} name="name"></input>
+          <span>instructions</span>
+          <input placeholder={courseDetails.instructions} onChange={getEditData} name="instructions"></input>
+          <span>objectives</span>
+          <input placeholder={courseDetails.objectives} onChange={getEditData} name="objectives"></input>
+          <span>price</span>
+          <input placeholder={courseDetails.price} onChange={(e)=>setEditData(prev=>{return{...prev,[e.target.name]:e.target.value*1}})} name="price" type="number"></input>
+          <span>hours</span>
+          <input placeholder={courseDetails.hours} onChange={getEditData} name="hours" type="number"></input>
+          <span>brief</span>
+          <input placeholder={courseDetails.brief} onChange={getEditData} name="brief"></input>
+          <button onClick={editCourseData}>Edit</button>
+          <button onClick={props.onClose}>Cancel</button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="courseParent">
       <Header userData={userData} />
@@ -428,44 +515,58 @@ console.log(userData)
             <h1 className="NameCourse">{courseDetails?.name}</h1>
             <p className="briefCourseNew">{courseDetails?.brief}</p>
             <h2>Price: {courseDetails?.price} EGP</h2>
-            {userData.roles!=='Admin'&&<button className="btnBUY">Buy Now</button>}
+            {userData.roles !== "Admin" && (
+              <button className="btnBUY">Buy Now</button>
+            )}
           </div>
-              <div className="ObjectivesNew">
-                <h2>Objectives :</h2>
-                <h3>{courseDetails?.objectives}</h3>
-              </div>
-              <div className="InstructionsNew">
-                <h2>Instructions :</h2>
-                <h3>{courseDetails?.instructions}</h3>
-              </div>
+          <div className="ObjectivesNew">
+            <h2>Objectives :</h2>
+            <h3>{courseDetails?.objectives}</h3>
+          </div>
+          <div className="InstructionsNew">
+            <h2>Instructions :</h2>
+            <h3>{courseDetails?.instructions}</h3>
+          </div>
         </div>
 
         <div className="CenterAndRighCourseData">
           <div className="CourseSectionsData">
             <div className="courseCOntAddDelSection">
               <h1>Course Content</h1>
-             {userData.roles==='Admin'&&<div className="TrashPlus">
-                <FaPlusCircle
-                  onClick={() => setShowAddSection(true)}
-                  className="addBtn"
+              {userData.roles === "Admin" && (
+                <div className="TrashPlus">
+                  <FaPlusCircle
+                    onClick={() => setShowAddSection(true)}
+                    className="addBtn"
+                  />
+                  <FaRegEdit
+                    onClick={() => setShowEditCourseDataModal(true)}
+                    className="delBtn"
+                  />
+                  <FaTrash
+                    onClick={() => setShowDeleteCourseModal(true)}
+                    className="delBtn"
+                  />
+                </div>
+              )}
+              {showEditCourseDataModal && (
+                <EditCourseDataCard
+                  show={showEditCourseDataModal}
+                  onClose={() => setShowEditCourseDataModal(false)}
                 />
-                <FaTrash
-                  onClick={() => setShowDeleteCourseModal(true)}
-                  className="delBtn"
-                />
-                
-              </div>}
+              )}
             </div>
             <div className="ContSectionsNew">
-              {courseSections?.length === 0 && (
-                userData.roles==='Admin'?<h3 style={{ textAlign: "center" }}>
-                  Click the plus button to start adding sections
-                </h3>:
-                <h3 style={{ textAlign: "center" }}>
-                This Course Has No Sections Yet !
-              </h3>
-                
-              )}
+              {courseSections?.length === 0 &&
+                (userData.roles === "Admin" ? (
+                  <h3 style={{ textAlign: "center" }}>
+                    Click the plus button to start adding sections
+                  </h3>
+                ) : (
+                  <h3 style={{ textAlign: "center" }}>
+                    This Course Has No Sections Yet !
+                  </h3>
+                ))}
               {courseSections?.map((section) => {
                 return <SectionCard section={section} />;
               })}

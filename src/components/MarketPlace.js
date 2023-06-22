@@ -139,11 +139,9 @@ export default function MarketPalce() {
       maxParticipantsNumber: 0,
       topicId: 0,
       specalityId: 0,
-      deadline: '',
+      deadline: "",
     });
     console.log(ideaData);
-
-
 
     function getIdeaData(e) {
       setIdeaData((prev) => {
@@ -190,59 +188,52 @@ export default function MarketPalce() {
     }, []);
 
     function createNewIdea() {
-      const val=/^\d{4}-\d{2}-\d{2}$/.test(ideaData.deadline)
-      if(val){
-      fetch(
-        `https://localhost:7187/api/Ideas/InitiateIdea/${userData.resercherId}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${userData.token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(ideaData),
-        }
-      )
-      // .then((res) => {
-      //   if (res.ok) {
-      //     window.location.reload();
-      //   } else {
-      //     if (res.status === 400)
-      //       alert("you don't have enough points to initiate idea");
-      //   }
-      // });
-      .then((response) => {
-        const reader = response.body.getReader();
-        let chunks = [];
-      
-        function readStream() {
-          return reader.read().then(({ done, value }) => {
-            if (done) {
-              return chunks;
+      const val = /^\d{4}-\d{2}-\d{2}$/.test(ideaData.deadline);
+      if (val) {
+        fetch(
+          `https://localhost:7187/api/Ideas/InitiateIdea/${userData.resercherId}`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${userData.token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(ideaData),
+          }
+        )
+          
+          .then((response) => {
+            const reader = response.body.getReader();
+            let chunks = [];
+
+            function readStream() {
+              return reader.read().then(({ done, value }) => {
+                if (done) {
+                  return chunks;
+                }
+                chunks.push(value);
+                return readStream();
+              });
             }
-            chunks.push(value);
-            return readStream();
-          });
-        }
-      
-        if (!response.ok) {
-          return readStream().then((chunks) => {
-            const body = new TextDecoder().decode(
-              new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
-            );
-            alert(body);
-          });
-        }else window.location.reload();
-      
-        return readStream().then((chunks) => {
-          const body = new TextDecoder().decode(
-            new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
-          );
-          console.log(body);
-        });
-      })
-      .catch((error) => console.error(error));
-    }else alert('please enter a valid deadline yyyy-mm-dd')
+
+            if (!response.ok) {
+              return readStream().then((chunks) => {
+                const body = new TextDecoder().decode(
+                  new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+                );
+                alert(body);
+              });
+            } else window.location.reload();
+
+            return readStream().then((chunks) => {
+              const body = new TextDecoder().decode(
+                new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+              );
+              console.log(body);
+            });
+          })
+          .catch((error) => console.error(error));
+      } else alert("please enter a valid deadline yyyy-mm-dd");
     }
 
     if (!props.show) return null;
@@ -310,9 +301,7 @@ export default function MarketPalce() {
             <input
               className="InputModalHallDetails"
               type="text"
-              // onChange={handleDateChange}
               onChange={getIdeaData}
-              // value={date}
               placeholder="yyyy-mm-dd"
               name="deadline"
             ></input>
@@ -330,7 +319,7 @@ export default function MarketPalce() {
     );
   };
 
-  console.log(researcherIdeas)
+  console.log(researcherIdeas);
 
   return (
     <div>
@@ -435,9 +424,11 @@ export default function MarketPalce() {
           )}
         </div>
         <div className="ContainerbtnData">
-          { researcherIdeas?.length<2&&<button className="plusBtn" onClick={() => setShowIdeaCard(true)}>
-            Create New Idea
-          </button>}
+          {researcherIdeas?.length < 2 && (
+            <button className="plusBtn" onClick={() => setShowIdeaCard(true)}>
+              Create New Idea
+            </button>
+          )}
           {showCreateIdeaCard && (
             <CreateNewIdeaCard
               show={showCreateIdeaCard}

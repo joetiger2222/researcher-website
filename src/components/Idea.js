@@ -14,8 +14,9 @@ export default function Idea() {
   const [tasks, setTasks] = useState(null);
   const [isPart, setIsPart] = useState(false);
   const [showExpertReqModal, setShowExpertReqModal] = useState(false);
-  const [showAssignParticpantToTask,setShowAssingParticpantToTask]=useState(false)
+  const [showAssignParticpantToTask,setShowAssingParticpantToTask]=useState(false);
   const [choosenTask,setChoosenTask]=useState(null);
+  const [showTaskParticpants,setShowTaskParticpants]=useState(false);
   const navigate = useNavigate();
   const creator = userData?.resercherId.toLowerCase() === idea?.creatorId;
 
@@ -405,7 +406,6 @@ export default function Idea() {
 
 
 const AssignParticpantToTask=(props)=>{
-  console.log(props.task)
 
   function assignToTask(id){
     console.log(id)
@@ -453,7 +453,6 @@ const AssignParticpantToTask=(props)=>{
   }
 
 
-
   if (!props.show) return null;
   return (
     <div
@@ -496,9 +495,59 @@ const AssignParticpantToTask=(props)=>{
   )
 }
 
+const TaskParticpantsCard=(props)=>{
+  const [taskParticpants,setTaskParticpants]=useState(null)
+
+  function getTaskParticpants(){
+    fetch(`https://localhost:7187/api/Ideas/Tasks/Participants/${props.task.id}`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      }
+    })
+    .then(res=>res.ok?res.json():alert('failed to load particpants to task'))
+    .then(data=>data?setTaskParticpants(data):null)
+  }
+
+  useEffect(()=>{
+    getTaskParticpants();
+  },[])
+
+  console.log(taskParticpants)
+
+  if (!props.show) return null;
+  return (
+    <div
+      style={{
+        position: "fixed",
+        left: "0",
+        top: "0",
+        right: "0",
+        bottom: "0",
+        backgroundColor: "rgba(0, 0,0,0.5)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: "100",
+      }}
+    >
+      <div style={{ backgroundColor: "white", width: "50%" }}>
+        {taskParticpants?.map(par=>{
+          return(
+            <div>
+              <span>{par.studentObj.firstName+" "}</span>
+              <span>{par.studentObj.lastName}</span>
+              <button onClick={()=>navigate(`/Profile/${par.studentObj.id}`,{state:{data:userData}})}>View Profile</button>
+              </div>
+          )
+        })}
+        <button onClick={props.onClose}>Close</button>
+      </div>
+      </div>
+  )
+}
 
 
-  console.log(tasks)
 
   return (
     <div>
@@ -597,12 +646,14 @@ const AssignParticpantToTask=(props)=>{
                     year: "numeric",
                   })}
                 </span>
+                <button onClick={()=>{setChoosenTask(task);setShowTaskParticpants(true)}}>View Task Particpants</button>
                 {creator&&<button onClick={()=>{setChoosenTask(task);setShowAssingParticpantToTask(true)}}>Assign Particpants</button>}
                 
               </div>
             );
           })}
           {choosenTask&&showAssignParticpantToTask&&<AssignParticpantToTask show={showAssignParticpantToTask} onClose={()=>setShowAssingParticpantToTask(false)} task={choosenTask} />}
+          {choosenTask&&showTaskParticpants&&<TaskParticpantsCard show={showTaskParticpants} onClose={()=>setShowTaskParticpants(false)} task={choosenTask} />}
           {creator && (
             <button onClick={() => setShowTaskCard(true)}>
               Create New Task

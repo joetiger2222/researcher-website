@@ -11,7 +11,7 @@ export default function Researchers(){
     const [allSpecs, setAllSpecs] = useState(null);
     const navigate=useNavigate();
     
-    console.log(searchData)
+    
 
   function getAllResearchers() {
     fetch(
@@ -54,7 +54,7 @@ export default function Researchers(){
 
   return (
     <>
-      <Header />
+      <Header userData={userData} />
       <div className="AllResearchersPage">
         <h1 className="">Seacrch For Researchers</h1>
         {/* <Header userData={userData}/> */}

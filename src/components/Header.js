@@ -17,7 +17,7 @@ export default function Header({userData,resercherId}) {
     <div className="headerParent">
       <div className="headerContainer">
         <div className="headerLeft">
-          <h1 onClick={()=>navigate('/HomePage',{state:{data:userData}})}>Logo</h1>
+          <h1 onClick={()=>userData.roles==='Admin'?navigate('/AdminPanel',{state:{data:userData}}):navigate('/HomePage',{state:{data:userData}})}>Logo</h1>
         </div>
 
         <div className="headerRight">
@@ -43,12 +43,12 @@ export default function Header({userData,resercherId}) {
             {userData&&<button onClick={()=>navigate(`/`)} className="headerSignBtn">Logout</button>}
           </div>
           
-          {/* <img src={userImg} className="userImgHeader" /> */}
+          
 
           <li class="dropdown">
               <img src={userImg} class="dropbtn userImgHeader"/>
               <div class="dropdown-content">
-                <a onClick={()=>navigate(`/Profile/${userData.userId}`,{state:{data:userData}})}>Profile</a>
+                <a onClick={()=>userData.roles==='Admin'?navigate('/AdminPanel',{state:{data:userData}}):navigate(`/Profile/${userData.userId}`,{state:{data:userData}})}>Profile</a>
                 <a href="#">Link 2</a>
                 <a href="#">Link 3</a>
               </div>

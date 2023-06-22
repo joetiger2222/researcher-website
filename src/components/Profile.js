@@ -83,7 +83,7 @@ const Profile = () => {
       },
     })
       .then((res) =>
-        res.ok ? res.json() : alert("failed to load Invitations")
+        res.ok ? res.json() : null
       )
       .then((data) => (data ? setResInvits(data) : null));
   }
@@ -96,7 +96,7 @@ const Profile = () => {
       },
     })
       .then((res) =>
-        res.ok ? res.json() : alert("failed to load Researcher Requests")
+        res.ok ? res.json() : null
       )
       .then((data) => (data ? setResReqs(data) : null));
   }
@@ -112,7 +112,7 @@ const Profile = () => {
       }
     )
       .then((res) =>
-        res.ok ? res.json() : alert("failed to load expert reqs")
+        res.ok ? res.json() : null
       )
       .then((data) => (data ? setExpertReqs(data) : null));
   }
@@ -124,7 +124,7 @@ const Profile = () => {
         "Authorization":`Bearer ${userData.token}`
       },
     })
-    .then(res=>res.ok?res.json():alert('failed to load Admin Responses'))
+    .then(res=>res.ok?res.json():null)
     .then(data=>data?setAdminResponse(data):null)
   }
 
@@ -443,7 +443,7 @@ const Profile = () => {
     );
   };
 
-  console.log(adminReponse)
+
 
   return (
     <div className="ParentHeadData">
@@ -591,7 +591,7 @@ const Profile = () => {
         </div>
       </div>
 
-      {userData.roles === "Researcher" && (
+      {userData.roles === "Researcher" || userData.roles==='Admin' && (
         <div
           style={{
             color: "white",
