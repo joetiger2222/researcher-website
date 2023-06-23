@@ -6,7 +6,7 @@ import "../css/Header.css";
 import { useState } from "react";
 import badge from "../images/badge.png";
 import quiz from "../images/quiz.png";
-
+import {BsFillCircleFill} from  "react-icons/bs"
 import coin from "../images/coin.png";
 import quizCartoon from "../images/quizCartoon.png";
 import Footer from "./Footer";
@@ -21,7 +21,7 @@ export default function HomePage() {
   const [skillId, setSkillId] = useState(null);
   const navigate = useNavigate();
   const userData = useLocation().state?.data;
-  console.log(userData);
+  console.log(courses);
 
   function renderSideBar() {
     if (sideBarVisible) {
@@ -170,8 +170,9 @@ export default function HomePage() {
 
   return (
     <div className="homePageContainer">
+              <Header userData={userData} />
+
       <div className="landingPage">
-        <Header userData={userData} />
         {renderSideBar()}
         <div
           style={{
@@ -187,19 +188,68 @@ export default function HomePage() {
           {renderSideBarIcon()}
         </div>
         <div className="landingData">
-          <h3>Hello Students, Researchers</h3>
-          <h1>Welcome To Education</h1>
+          {/* <h3>Hello Students, Researchers</h3> */}
+          <h1>Education and participation</h1>
           <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book
+          Learning is something we do almost every day
           </p>
-          <button>Join Us Now!</button>
+          <button className="buttonn">Join Us Now!</button>
         </div>
       </div>
-      {/* <div className="badgesDivContainer">
-        <div className="badgeDiv">
+      <div className="badgesDivContainer">
+      <div className="badgeDiv">
+        <div className="ContNum">
+          <h2>
+            01
+          </h2>
+        </div>
+          <h3>Best Students</h3>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry.
+          </p>
+      </div>
+      
+      <div className="badgeDiv">
+        <div className="ContNum">
+          <h2>
+            02
+          </h2>
+        </div>
+          <h3>Best Students</h3>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry.
+          </p>
+      </div>
+      <div className="badgeDiv">
+        <div className="ContNum">
+          <h2>
+            03
+          </h2>
+        </div>
+          <h3>Best Students</h3>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry.
+          </p>
+      </div>
+      <div className="badgeDiv">
+        <div className="ContNum">
+          <h2>
+            04
+          </h2>
+        </div>
+          <h3>Best Students</h3>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry.
+          </p>
+      </div>
+
+
+
+        {/* <div className="badgeDiv">
           <img src={badge} />
           <h1>Best Students</h1>
           <p>
@@ -223,10 +273,10 @@ export default function HomePage() {
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry.
           </p>
-        </div>
-      </div> */}
-
-      <div className="quizContainer">
+        </div> */}
+      </div>
+<div className="ContSkillAndAchievePrize">
+<div className="quizContainer">
         {/* <div>
           <div>
             <h1>Take A Quiz</h1>
@@ -260,12 +310,15 @@ export default function HomePage() {
           </button>
         )}
       </div>
-
       <div className="earnPointsContainer">
         <h1>After Passing The Quiz You Earn Points</h1>
         <img src={coin} />
         <h3>These Points Qualify You To Be A Researcher</h3>
       </div>
+</div>
+
+
+
 
       <div className="coursesBigDiv">
         <h3>Couldn't Solve it?, No Problem. Take A Look On Our Courses</h3>

@@ -4,6 +4,7 @@
   --darkgreen-color: #007d6f; 
   --lightgreen-color: #71b9b4; 
   --background-color: #F8F1F1; 
+  --button-color:rgb(21, 46, 125);
 
 }
 .homePageContainer {
@@ -13,12 +14,14 @@
   align-items: center;
 }
 .landingPage {
-  background: rgba(0, 0, 0, 0.5) url("../images/homePageImg.png");
+    background-color: #16ccbc;
+  /* background: rgba(0, 0, 0, 0.5) url(http://localhost:3000/static/media/homePageImg.70d5afa….png); */
   height: 100vh;
   background-repeat: no-repeat;
   background-size: cover;
   background-blend-mode: darken;
-  width: 100%;
+  width: 80%;
+  clip-path: circle(50% at 50% 9%);
   display: flex;
   flex-direction: column;
 }
@@ -58,25 +61,20 @@ p {
 .landingData {
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: 100%;
   margin: 130px auto 0 auto;
   color: white;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
-.landingData > h3 {
-  width: 30%;
- 
-}
-.landingData > h1 {
-  width: 30%;
-  
-}
+
 .landingData > p {
-  width: 30%;
-  font-size: 20px;
+  font-size: 16px;
   
 }
 
-.landingData > button {
+/* .landingData > button {
   height: 50px;
   background-color: rgb(21, 46, 125);
   color: white;
@@ -91,18 +89,19 @@ p {
 }
 .landingData > button:hover {
   background-color: rgb(35 64 157);
-}
+} */
 
 .quizContainer {
   display: flex;
   flex-direction: column;
-  width: 70%;
-  padding: 20px;
-  max-width: 1000px;
+  width: 400px;
+  height: 400px;
+  background-color: #16ccbc;
+  justify-content: center;
   align-items: center;
-  margin: 80px 0 0 0;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border-radius: 8px;
+  /* clip-path: circle(50% at 50% 50%); */
+  clip-path: circle(50% at 50% 50%);
+  gap: 20px;
 }
 .quizContainer > div > div > img
  {
@@ -151,14 +150,14 @@ p {
   padding: 8px;
   font-size: 16px;
   width: 130px;
-  border: 1px solid var(--darkgreen-color);
-  color: var(--darkgreen-color);
+  border: 1px solid var(--button-color);
   background-color: transparent;
+  border-radius: 20px;
   text-align: center;
-  margin-top: 20px;
+  /* margin-top: 20px; */
 }
 .btnSkillHome:hover{
-  background-color: var(--darkgreen-color);
+  background-color: var(--button-color);
   color: var(--background-color);
 }
 .selectboxSkill{
@@ -170,25 +169,31 @@ p {
   color: var(--darkgreen-color);
   border: 1px solid var(--darkgreen-color);
   font-size: 16px;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   transition: all 0.3s ease-in-out;
 }
 .badgeDiv {
-  width: 20%;
-  background-color: rgb(21, 46, 125);
+  width: 12%;
+  background-color: #f6f6f6;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  max-width: 500px;
-  border-radius: 20px;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  /* max-width: 500px; */
+  /* border-radius: 20px; */
   padding: 30px;
+  height: 280px;
+  gap: 15px;
+  background: linear-gradient(#f6f6f6, #ececec);
 }
 .badgesDivContainer {
   display: flex;
   width: 100%;
-  justify-content: space-evenly;
-  margin-top: -10%;
+  justify-content: center;
+  margin-top: -25%;
+  z-index: 20;
+  flex-wrap: wrap;
+  gap: 30px;
 }
 .badgeDiv > img {
   width: 100px;
@@ -199,7 +204,7 @@ p {
   font-size: 20px;
 }
 .badgeDiv > p {
-  color: white;
+  color: black;
   font-size: 16px;
 }
 
@@ -207,7 +212,7 @@ p {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  gap: 70px;
+  gap: 30px;
   align-items: center;
   justify-content: center;
   margin: 0 0 50px 0;
@@ -217,9 +222,9 @@ p {
   flex-direction: column;
   align-items: flex-start;
   padding: 30px;
-  width: 30%;
+  width: 25%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border-radius: 20px;
+  /* border-radius: 20px; */
 }
 .courseCard > h1 {
   color: black;
@@ -243,28 +248,30 @@ p {
 .coursesBigDiv {
   display: flex;
   flex-direction: column;
-  width: 70%;
+  /* width: 70%; */
   padding: 20px;
-  max-width: 1000px;
+  justify-content: center;
+  /* max-width: 1000px; */
   align-items: center;
+  gap: 30px;
   margin: 80px 0 80px 0;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border-radius: 8px;
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+  /* border-radius: 8px; */
 }
 .coursesBigDiv > h1 {
   font-size: 40px;
 }
 
 .earnPointsContainer {
-  width: 70%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 50px 0 0 0;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border-radius: 8px;
-  padding: 20px;
-  max-width: 1000px;
+     /* width: 70%; */
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     margin: 50px 0 0 0;
+     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+     border-radius: 8px;
+     padding: 20px;
+     max-width: 1000px;
 }
 .earnPointsContainer > img {
   width: 200px;
@@ -335,4 +342,31 @@ p {
   .btnsFooter button{
     font-size: 13px;
   }
+}
+
+
+.ContNum{
+  clip-path: circle(50% at 50% 50%);
+  background: linear-gradient(#05b1c7, #16ccbc);
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ContNum h2{
+  font-size: 3rem;
+  font-weight: 500;
+  color: white;
+}
+
+.ContSkillAndAchievePrize{
+  margin: 100px 0;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  height: 430px;
+  flex-wrap: wrap;
 }
