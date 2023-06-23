@@ -591,7 +591,7 @@ const Profile = () => {
         </div>
       </div>
 
-      {userData.roles === "Researcher" || userData.roles==='Admin' && (
+      {(userData.roles === "Researcher" || userData.roles === 'Admin') && (
         <div
           style={{
             color: "white",
