@@ -267,7 +267,7 @@ const Profile = () => {
               placeholder="Url..."
             ></input>
             <div className="buttonsOnModal">
-            <button onClick={createPaper}>Create</button>
+            {paperData.name&&paperData.citation&&paperData.url&&<button onClick={createPaper}>Create</button>}
           <button onClick={props.onClose}>Cancel</button>
             </div>
          
