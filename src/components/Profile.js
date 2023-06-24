@@ -21,10 +21,12 @@ const Profile = () => {
   const [showAddPaper, setShowAddPaper] = useState(false);
   const [showSpecCard, setShowSpecCard] = useState(false);
   const [showEditPaper, setShowEditPaper] = useState(false);
-  const [deletePaper, setDeletePaper] = useState(false);
+  const [showDeletePaper, setShowDeletePaper] = useState(false);
   const [paperData, setPaperData] = useState(null);
   const [expertReqs, setExpertReqs] = useState(null);
   const [adminReponse,setAdminResponse]=useState(null);
+  const [researcherIdeas, setResearcherIdeas] = useState([]);
+  
   const userData = useLocation().state?.data;
   const { studentId } = useParams();
   const navigate = useNavigate();
@@ -53,13 +55,14 @@ const Profile = () => {
       },
     })
       .then((res) => (res.ok ? res.json() : null))
-      // .then((data) => (data ? getResearcherData(data.researcherId) : null));
       .then((data) => {
         if (data) {
           getResearcherData(data.researcherId);
           getResInvitations(data.researcherId);
           getResReqs(data.researcherId);
           getExpertReqs(data.researcherId);
+          getResearcherIdeas(data.researcherId);
+
         }
       });
   }
@@ -128,6 +131,25 @@ const Profile = () => {
     .then(data=>data?setAdminResponse(data):null)
   }
 
+  function getResearcherIdeas(resId) {
+    fetch(
+      `https://localhost:7187/api/Researchers/Ideas/${resId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData?.token}`,
+        },
+      }
+    )
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data) {
+          setResearcherIdeas(data);
+        }
+      });
+  }
+
+
   useEffect(() => {
     getStudentData();
     if(userData.userId===studentId)getAdminResponse();
@@ -185,7 +207,7 @@ const Profile = () => {
     </div>
   );
 
-  const Task = () => <h4>Task</h4>;
+  
 
   const AddPaperModal = (props) => {
     const [paperData, setPaperData] = useState({
@@ -443,6 +465,52 @@ const Profile = () => {
     );
   };
 
+  const DeletePaperCard=(props)=>{
+
+    function deletePaper(){
+        fetch(`https://localhost:7187/api/Researchers/Papers/${props.paper.id}`,{
+          method:"DELETE",
+          headers:{
+            "Authorization":`Bearer ${userData.token}`
+          },
+
+        })
+        .then(res=>{
+          if(res.ok){
+            alert('Paper Successfully Deleted');
+            window.location.reload()
+          }else alert('Failed To Delete Paper')
+        })
+    }
+
+
+
+
+    if (!props.show) return null;
+  return (
+    <div
+      style={{
+        position: "fixed",
+        left: "0",
+        top: "0",
+        right: "0",
+        bottom: "0",
+        backgroundColor: "rgba(0, 0,0,0.5)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: "100",
+      }}
+    >
+      <div style={{ backgroundColor: "white", width: "50%",color:'black' }}>
+        <h1>Are You Sure You Want To Delete This Paper?</h1>
+        <button onClick={deletePaper}>Delete</button>
+        <button onClick={props.onClose}>Cancel</button>
+      </div>
+      </div>
+  )
+  }
+
 
 
   return (
@@ -582,11 +650,96 @@ const Profile = () => {
         <div className="RightBox">
           <h1>Ideas</h1>
           <div className="tasksDiv">
-            <Task />
-            <Task />
-            <Task />
-            <Task />
-            <Task />
+            <div className="AllIdeas">
+          {researcherIdeas?.length > 0 ? (
+            researcherIdeas?.map((idea, index) => {
+              return (
+                <div
+                  onClick={() =>
+                    navigate(`/Idea/${idea.id}`, { state: { data: userData } })
+                  }
+                  className="CardInAllIdeas"
+                  style={{ cursor: "pointer" }}
+                >
+                  <h2>Idea: {index + 1}</h2>
+                  <div className="containerSpansData">
+                    <span
+                      style={{
+                        borderBottom: "1px solid black",
+                        padding: "5px",
+                      }}
+                    >
+                      Name:{" "}
+                      <span style={{ fontWeight: "bold" }}>{idea.name}</span>
+                    </span>
+
+                    <span
+                      style={{
+                        borderBottom: "1px solid black",
+                        padding: "5px",
+                      }}
+                    >
+                      specality:{" "}
+                      <span style={{ fontWeight: "bold" }}>
+                        {idea?.specalityObj.name}
+                      </span>
+                    </span>
+                    <span
+                      style={{
+                        borderBottom: "1px solid black",
+                        padding: "5px",
+                      }}
+                    >
+                      deadline:{" "}
+                      <span style={{ fontWeight: "bold" }}>
+                        {new Date(idea?.deadline).toLocaleDateString("en-US", {
+                          month: "long",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </span>
+                    </span>
+                    <span
+                      style={{
+                        borderBottom: "1px solid black",
+                        padding: "5px",
+                      }}
+                    >
+                      Participants Number:{" "}
+                      <span style={{ fontWeight: "bold" }}>
+                        {idea?.participantsNumber}
+                      </span>
+                    </span>
+                    <span
+                      style={{
+                        borderBottom: "1px solid black",
+                        padding: "5px",
+                      }}
+                    >
+                      max Participants Number:{" "}
+                      <span style={{ fontWeight: "bold" }}>
+                        {idea?.maxParticipantsNumber}
+                      </span>
+                    </span>
+                    <span
+                      style={{
+                        borderBottom: "1px solid black",
+                        padding: "5px",
+                      }}
+                    >
+                      topic:{" "}
+                      <span style={{ fontWeight: "bold" }}>
+                        {idea?.topicObject.name}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <span>You Have No Ideas Yet!</span>
+          )}
+        </div>
           </div>
         </div>
       </div>
@@ -638,7 +791,7 @@ const Profile = () => {
                       </button>
                     )}
                     {userData?.userId === studentId && (
-                      <button className="deletePaperbtn">Delete Paper</button>
+                      <button onClick={()=>{setPaperData(paper);setShowDeletePaper(true)}} className="deletePaperbtn">Delete Paper</button>
                     )}
                   </div>
                 </div>
@@ -650,6 +803,7 @@ const Profile = () => {
                 onClose={() => setShowEditPaper(false)}
               />
             )}
+            {showDeletePaper&&paperData&&<DeletePaperCard show={showDeletePaper} onClose={()=>setShowDeletePaper(false)} paper={paperData}  />}
           </div>
           {userData?.userId === studentId && (
             <button

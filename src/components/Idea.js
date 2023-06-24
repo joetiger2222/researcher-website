@@ -13,11 +13,13 @@ export default function Idea() {
   const [ideaPar, setIdeaPar] = useState(null);
   const [tasks, setTasks] = useState(null);
   const [isPart, setIsPart] = useState(false);
+  const [ideaChatPart,setIdeaChatPart]=useState(false)
   const [showExpertReqModal, setShowExpertReqModal] = useState(false);
   const [showAssignParticpantToTask,setShowAssingParticpantToTask]=useState(false);
   const [choosenTask,setChoosenTask]=useState(null);
   const [showTaskParticpants,setShowTaskParticpants]=useState(false);
   const [showIdeaChat,setShowIdeaChat]=useState(false)
+  const [showTaskChat,setShowTaskChat]=useState(false)
   const navigate = useNavigate();
   const creator = userData?.resercherId.toLowerCase() === idea?.creatorId;
 
@@ -131,6 +133,7 @@ export default function Idea() {
           );
           
           if (filter.length > 0 && filter[0].points>3) setIsPart(true);
+          if(filter.length>0)setIdeaChatPart(true);
         }
       });
   }
@@ -345,7 +348,7 @@ export default function Idea() {
 
     const [expertReqData,setExpterReqData]=useState({title:'',content:'',ideaId:ideaId,participantId:userData.resercherId})
 
-    console.log(expertReqData)
+    
 
     function getExpterReqData(e){
       setExpterReqData(prev=>{
@@ -510,11 +513,13 @@ const TaskParticpantsCard=(props)=>{
     .then(data=>data?setTaskParticpants(data):null)
   }
 
+
+
+
   useEffect(()=>{
     getTaskParticpants();
   },[])
 
-  console.log(taskParticpants)
 
   if (!props.show) return null;
   return (
@@ -555,8 +560,6 @@ const IdeaChat=(props)=>{
   const latestChat = useRef(null);
 
   latestChat.current = ideaMessages;
-  // console.log(messageToSend)
-
 
   function getMessages(){
     fetch(`https://localhost:7187/api/Chat/Discussion/${ideaId}`,{
@@ -596,30 +599,9 @@ const IdeaChat=(props)=>{
 
 
 
-
-
-
-
-
-
-
   useEffect(()=>{
     getMessages();
   },[])
-
-  // function sendMessage(){
-  //   fetch(`https://localhost:7187/api/Chat/Discussion/${ideaId}?researcherId=${userData.resercherId}`,{
-  //     method:"POST",
-  //     headers:{
-  //       "Content-Type":"application/json",
-  //       "Authorization":`Bearer ${userData.token}`
-  //     },
-  //     body:JSON.stringify(messageToSend)
-  //   })
-  //   .then(res=>res.json())
-  //   .then(data=>console.log(data))
-  // }
-
 
 
   const sendMessage = async () => {
@@ -640,10 +622,6 @@ const IdeaChat=(props)=>{
       }).then((response) => console.log(response));
     } catch (e) {}
   };
-
-
-
-
 
 
 
@@ -682,6 +660,119 @@ const IdeaChat=(props)=>{
 }
 
 
+const TaskChatCard=(props)=>{
+
+
+
+
+  const [messageToSend,setMessageToSend]=useState({content:'',date:new Date().toISOString()})
+  const [taskMessage,setTaskMessages]=useState([]);
+  const latestChat = useRef(null);
+
+  latestChat.current = taskMessage;
+
+  function getMessages(){
+    fetch(`https://localhost:7187/api/Chat/Task/${ideaId})?taskId=${props.task.id}`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      }
+    })
+    .then(res=>res.json())
+    .then(data=>setTaskMessages(data))
+  }
+  taskMessage.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+
+
+
+
+  useEffect(() => {
+    const connection = new HubConnectionBuilder()
+      .withUrl("https://localhost:7187/hubs/chat")
+      .withAutomaticReconnect()
+      .build();
+
+    connection
+      .start()
+      .then((result) => {
+        connection.on("ReceiveMessage", (message) => {
+          const updatedChat = [...latestChat.current];
+          updatedChat.push(message);
+
+          setTaskMessages(updatedChat);
+        });
+      })
+      .catch((e) => console.log("Connection failed: ", e));
+  }, []);
+
+
+
+  useEffect(()=>{
+    getMessages();
+  },[])
+
+
+  
+
+  const sendMessage = async () => {
+    const chatMessage = {
+      content: messageToSend.content,
+      date: new Date().toISOString(),
+      
+    };
+
+    try {
+      await fetch(`https://localhost:7187/api/Chat/Task?taskId=${props.task.id}&researcherId=${userData.resercherId}`, {
+        method: "POST",
+        body: JSON.stringify(chatMessage),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization":`Bearer ${userData.token}`
+        },
+      }).then((response) => console.log(response));
+    } catch (e) {}
+  };
+
+
+
+
+
+
+  if (!props.show) return null;
+  return (
+    <div
+      style={{
+        position: "fixed",
+        left: "0",
+        top: "0",
+        right: "0",
+        bottom: "0",
+        backgroundColor: "rgba(0, 0,0,0.5)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: "100",
+      }}
+    >
+      <div style={{ backgroundColor: "white", width: "50%" }}>
+        <div>
+          {taskMessage?.map(message=>{
+            return(
+              <div style={{display:'flex',flexDirection:'column'}}>
+              <span>{message.content}</span>
+              </div>
+            )
+          })}
+        </div>
+        <input name="content" placeholder="Enter Your Message" onChange={(e)=>setMessageToSend(prev=>{return{...prev,[e.target.name]:e.target.value}})}></input>
+        <button onClick={sendMessage}>Send</button>
+        <button onClick={props.onClose}>Close</button>
+      </div>
+      </div>
+  )
+}
+ 
 
   return (
     <div>
@@ -781,6 +872,7 @@ const IdeaChat=(props)=>{
                   })}
                 </span>
                 <button onClick={()=>{setChoosenTask(task);setShowTaskParticpants(true)}}>View Task Particpants</button>
+                <button onClick={()=>{setChoosenTask(task);setShowTaskChat(true)}}>View Task Chat</button>
                 {creator&&<button onClick={()=>{setChoosenTask(task);setShowAssingParticpantToTask(true)}}>Assign Particpants</button>}
                 
               </div>
@@ -788,6 +880,7 @@ const IdeaChat=(props)=>{
           })}
           {choosenTask&&showAssignParticpantToTask&&<AssignParticpantToTask show={showAssignParticpantToTask} onClose={()=>setShowAssingParticpantToTask(false)} task={choosenTask} />}
           {choosenTask&&showTaskParticpants&&<TaskParticpantsCard show={showTaskParticpants} onClose={()=>setShowTaskParticpants(false)} task={choosenTask} />}
+          {choosenTask&&showTaskChat&&<TaskChatCard show={showTaskChat} onClose={()=>setShowTaskChat(false)} task={choosenTask} />}
           {creator && (
             <button onClick={() => setShowTaskCard(true)}>
               Create New Task
@@ -811,8 +904,8 @@ const IdeaChat=(props)=>{
             onClose={() => setShowExpertReqModal(false)}
           />
         )}
-        <button onClick={()=>setShowIdeaChat(true)}>Chat</button>
-        <IdeaChat show={showIdeaChat} onClose={()=>setShowIdeaChat(false)} />
+        {ideaChatPart&&<button onClick={()=>setShowIdeaChat(true)}>Chat</button>}
+        {ideaChatPart&&showIdeaChat&&<IdeaChat show={showIdeaChat} onClose={()=>setShowIdeaChat(false)} />}
       </div>
     </div>
   );
