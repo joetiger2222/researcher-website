@@ -5,6 +5,7 @@
   --lightgreen-color: #71b9b4; 
   --background-color: #F8F1F1; 
   --button-color:rgb(21, 46, 125);
+  --bluesky-color:#16ccbc;
 
 }
 .homePageContainer {
@@ -12,6 +13,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 120px;
+}
+.ContainerLandingAndBadges{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .landingPage {
     background-color: #16ccbc;
@@ -101,7 +109,7 @@ p {
   align-items: center;
   /* clip-path: circle(50% at 50% 50%); */
   clip-path: circle(50% at 50% 50%);
-  gap: 20px;
+  gap: 40px;
 }
 .quizContainer > div > div > img
  {
@@ -213,28 +221,35 @@ p {
   display: flex;
   flex-wrap: wrap;
   gap: 30px;
+  position: relative;
   align-items: center;
   justify-content: center;
-  margin: 0 0 50px 0;
+  /* margin: 0 0 50px 0; */
 }
 .courseCard {
+  border: 1px solid var(--lightgreen-color);
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   padding: 30px;
-  width: 25%;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  /* border-radius: 20px; */
+  /* box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19); */
+  width: 30%;
+  height: 190px;
+  justify-content: space-around;
+  background-color: aliceblue;
+  border-radius: 5px;
 }
 .courseCard > h1 {
   color: black;
   font-size: 24px;
+  width: 100%;
+  text-align: center;
 }
 .courseCard > p {
   font-size: 16px;
   text-align: justify;
 }
-.courseCard >div> button {
+/* .courseCard >div> button {
   width: 100px;
   height: 40px;
   background-color: rgb(48, 86, 209);
@@ -243,35 +258,35 @@ p {
   font-weight: bold;
   border-radius: 10px;
   border: none;
-}
+} */
 
 .coursesBigDiv {
   display: flex;
   flex-direction: column;
-  /* width: 70%; */
-  padding: 20px;
+  width: 100%;
   justify-content: center;
-  /* max-width: 1000px; */
   align-items: center;
   gap: 30px;
-  margin: 80px 0 80px 0;
-  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
-  /* border-radius: 8px; */
+  /* margin: 80px 0 80px 0; */
 }
 .coursesBigDiv > h1 {
   font-size: 40px;
+  text-align: center;
+}
+.coursesBigDiv > h3 {
+  text-align: center;
 }
 
 .earnPointsContainer {
-     /* width: 70%; */
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     margin: 50px 0 0 0;
-     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-     border-radius: 8px;
-     padding: 20px;
-     max-width: 1000px;
+          /* width: 70%; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* margin: 50px 0 0 0; */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 8px;
+    padding: 20px;
+    gap: 20px;
 }
 .earnPointsContainer > img {
   width: 200px;
@@ -362,11 +377,56 @@ p {
 }
 
 .ContSkillAndAchievePrize{
-  margin: 100px 0;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
-  height: 430px;
+  /* height: 430px; */
   flex-wrap: wrap;
+  gap: 30px;
+}
+
+.Shape3{
+  width: 80px;
+    height: 80px;
+    margin-bottom: -20%;
+    background-color: aqua;
+    z-index: -1;
+    clip-path: polygon(100% 1%, 0 65%, 100% 100%);
+}
+.Shape2{
+  width: 80px;
+  height: 80px;
+  background-color: aqua;
+  margin-top: -20%;
+  z-index: -1;
+  clip-path: polygon(100% 1%, 0 47%, 100% 100%);
+}
+
+.ContShape2Skill{
+  display: flex;
+  flex-direction: column;
+}
+
+.ContainerCoursesShape{
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  position: relative;
+}
+
+.ShapeInCourses1{
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #16ccbc;
+  width: 100px;
+  height: 100px;
+  clip-path: polygon(0% 0%, 0% 100%, 25% 100%, 25% 25%, 75% 25%, 75% 75%, 25% 75%, 25% 100%, 100% 100%, 100% 0%);
+  z-index: -1;
+}
+
+.ShapeInCourses2{
+  
 }

@@ -3,10 +3,11 @@ import Header from "./Header";
 import homePageImg from "../images/homePageImg.png";
 import "../css/HomePage.css";
 import "../css/Header.css";
+import "../../src/App.css";
 import { useState } from "react";
 import badge from "../images/badge.png";
 import quiz from "../images/quiz.png";
-import {BsFillCircleFill} from  "react-icons/bs"
+import { BsFillCircleFill } from "react-icons/bs";
 import coin from "../images/coin.png";
 import quizCartoon from "../images/quizCartoon.png";
 import Footer from "./Footer";
@@ -78,9 +79,8 @@ export default function HomePage() {
         Authorization: `Bearer ${userData.token}`,
       },
     })
-      .then((res) => res.ok?res.json():alert('Failed To Load Courses'))
-      .then((data) => setAllCourses(data))
-      
+      .then((res) => (res.ok ? res.json() : alert("Failed To Load Courses")))
+      .then((data) => setAllCourses(data));
   }
 
   useEffect(() => {
@@ -97,12 +97,12 @@ export default function HomePage() {
         },
       }
     )
-      .then((res) => res.ok?res.json():null) 
+      .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
-        if(data){
-          userData.roles='Researcher'
-          userData.resercherId=data.researcherId
-          setResearcherId(data.researcherId)
+        if (data) {
+          userData.roles = "Researcher";
+          userData.resercherId = data.researcherId;
+          setResearcherId(data.researcherId);
         }
       })
       .catch((error) => console.error(error));
@@ -121,23 +121,23 @@ export default function HomePage() {
       .catch((error) => console.error(error));
   }
 
-  function checkQuiz(){
-    fetch(`https://localhost:7187/api/Quizes/IsSuccessedFinalQuiz/${skillId}?studentId=${userData.userId}`,{
-      method:"GET",
-      headers:{
-        "Authorization":`Bearer ${userData.token}`
+  function checkQuiz() {
+    fetch(
+      `https://localhost:7187/api/Quizes/IsSuccessedFinalQuiz/${skillId}?studentId=${userData.userId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
       }
-    })
-    .then(res=>res.ok?res.json():alert('server error'))
-    .then(data=>{
-      if(data){
-        if(data.isSuccessed)
-          alert('you already succeded in this exam !')
-        else 
-          navigate(`/FinalQuiz/${skillId}`,{state:{data:userData}})
-        
-      }
-    })
+    )
+      .then((res) => (res.ok ? res.json() : alert("server error")))
+      .then((data) => {
+        if (data) {
+          if (data.isSuccessed) alert("you already succeded in this exam !");
+          else navigate(`/FinalQuiz/${skillId}`, { state: { data: userData } });
+        }
+      });
   }
 
   useEffect(() => {
@@ -149,16 +149,20 @@ export default function HomePage() {
     return (
       <div className="courseCard">
         <h1>{course.name}</h1>
-        <p>{course.brief}</p>
+        <p>
+          <span style={{ fontWeight: "bold" }}>Skill: </span>
+          {course.skillObj.name}
+        </p>
         <div className="courseBtnAndPriceDiv">
           <button
+          className="bn54"
             onClick={() =>
               navigate(`/CourseDetails/${course.id}`, {
                 state: { data: userData },
               })
             }
           >
-            Learn More
+            Details
           </button>
           <h4>{course.price} EGP</h4>
         </div>
@@ -166,167 +170,164 @@ export default function HomePage() {
     );
   };
 
-  console.log(userData)
+  console.log(userData);
 
   return (
     <div className="homePageContainer">
-              <Header userData={userData} />
+      <Header userData={userData} />
 
-      <div className="landingPage">
-        {renderSideBar()}
-        <div
-          style={{
-            display: "none",
-            position: "fixed",
-            top: "20px",
-            right: "50px",
-            zIndex: "200",
-          }}
-          onClick={() => setSideBarVisible(!sideBarVisible)}
-          class="sidebarClodeIcon"
-        >
-          {renderSideBarIcon()}
+      <div className="ContainerLandingAndBadges">
+        <div className="landingPage">
+          {renderSideBar()}
+          <div
+            style={{
+              display: "none",
+              position: "fixed",
+              top: "20px",
+              right: "50px",
+              zIndex: "200",
+            }}
+            onClick={() => setSideBarVisible(!sideBarVisible)}
+            class="sidebarClodeIcon"
+          >
+            {renderSideBarIcon()}
+          </div>
+          <div className="landingData">
+            {/* <h3>Hello Students, Researchers</h3> */}
+            <h1>Education and participation</h1>
+            <p>Learning is something we do almost every day</p>
+            <button className="buttonn">Join Us Now!</button>
+          </div>
         </div>
-        <div className="landingData">
-          {/* <h3>Hello Students, Researchers</h3> */}
-          <h1>Education and participation</h1>
-          <p>
-          Learning is something we do almost every day
-          </p>
-          <button className="buttonn">Join Us Now!</button>
-        </div>
-      </div>
-      <div className="badgesDivContainer">
-      <div className="badgeDiv">
-        <div className="ContNum">
-          <h2>
-            01
-          </h2>
-        </div>
-          <h3>Best Students</h3>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
-          </p>
-      </div>
-      
-      <div className="badgeDiv">
-        <div className="ContNum">
-          <h2>
-            02
-          </h2>
-        </div>
-          <h3>Best Students</h3>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
-          </p>
-      </div>
-      <div className="badgeDiv">
-        <div className="ContNum">
-          <h2>
-            03
-          </h2>
-        </div>
-          <h3>Best Students</h3>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
-          </p>
-      </div>
-      <div className="badgeDiv">
-        <div className="ContNum">
-          <h2>
-            04
-          </h2>
-        </div>
-          <h3>Best Students</h3>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
-          </p>
-      </div>
-
-
-
-        {/* <div className="badgeDiv">
-          <img src={badge} />
-          <h1>Best Students</h1>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
-          </p>
-        </div>
-
-        <div className="badgeDiv">
-          <img src={badge} />
-          <h1>Best Students</h1>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
-          </p>
-        </div>
-        <div className="badgeDiv">
-          <img src={badge} />
-          <h1>Best Students</h1>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
-          </p>
-        </div> */}
-      </div>
-<div className="ContSkillAndAchievePrize">
-<div className="quizContainer">
-        {/* <div>
-          <div>
-            <h1>Take A Quiz</h1>
-            <img src={quizCartoon} />
+        <div className="badgesDivContainer">
+          <div className="badgeDiv">
+            <div className="ContNum">
+              <h2>01</h2>
+            </div>
+            <h3>Best Doctors</h3>
+            <p>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry.
+            </p>
           </div>
 
-          <img className="quizImg" src={quiz} />
+          <div className="badgeDiv">
+            <div className="ContNum">
+              <h2>02</h2>
+            </div>
+            <h3>Best Students</h3>
+            <p>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry.
+            </p>
+          </div>
+          <div className="badgeDiv">
+            <div className="ContNum">
+              <h2>03</h2>
+            </div>
+            <h3>Best Researchers</h3>
+            <p>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry.
+            </p>
+          </div>
+          <div className="badgeDiv">
+            <div className="ContNum">
+              <h2>04</h2>
+            </div>
+            <h3>Best Ideas</h3>
+            <p>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry.
+            </p>
+          </div>
+
+          {/* <div className="badgeDiv">
+          <img src={badge} />
+          <h1>Best Students</h1>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry.
+          </p>
+        </div>
+
+        <div className="badgeDiv">
+          <img src={badge} />
+          <h1>Best Students</h1>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry.
+          </p>
+        </div>
+        <div className="badgeDiv">
+          <img src={badge} />
+          <h1>Best Students</h1>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry.
+          </p>
         </div> */}
-        <h1>Choose Skill</h1>
-        <select
-          onChange={(e) => {
-            setSkillId(e.target.value * 1);
-          }}
-          className="selectboxSkill"
-          name="skillId"
-          id="skill"
-        >
-          <option selected disabled value="">
-            Choose a Skill
-          </option>
-          {allSkills?.map((skill) => {
-            return <option value={skill.id}>{skill.name}</option>;
-          })}
-        </select>
-        {skillId && (
-          <button
-          className="btnSkillHome"
-            onClick={checkQuiz}
-          >
-            Take Quiz
-          </button>
-        )}
+        </div>
       </div>
-      <div className="earnPointsContainer">
-        <h1>After Passing The Quiz You Earn Points</h1>
-        <img src={coin} />
-        <h3>These Points Qualify You To Be A Researcher</h3>
+
+      <div className="ContSkillAndAchievePrize">
+        <div className="ContShape2Skill">
+          <div className="Shape3"></div>
+
+          <div className="quizContainer">
+            {/* <div>
+            <div>
+              <h1>Take A Quiz</h1>
+              <img src={quizCartoon} />
+            </div>
+
+            <img className="quizImg" src={quiz} />
+          </div> */}
+            <h1>Choose Skill</h1>
+            <select
+              onChange={(e) => {
+                setSkillId(e.target.value * 1);
+              }}
+              className="selectboxSkill"
+              name="skillId"
+              id="skill"
+            >
+              <option selected disabled value="">
+                Choose a Skill
+              </option>
+              {allSkills?.map((skill) => {
+                return <option value={skill.id}>{skill.name}</option>;
+              })}
+            </select>
+            {skillId && (
+              <button className="btnSkillHome" onClick={checkQuiz}>
+                Take Quiz
+              </button>
+            )}
+          </div>
+          <div className="Shape2"></div>
+        </div>
+
+        <div className="earnPointsContainer">
+          <h1>After Passing The Quiz You Earn Points</h1>
+          <img src={coin} />
+          <h3>These Points Qualify You To Be A Researcher</h3>
+        </div>
       </div>
-</div>
 
+      <div className="ContainerCoursesShape">
+        <div className="coursesBigDiv">
+          <h3>Couldn't Solve it?, No Problem. Take A Look On Our Courses</h3>
+          <h1>Our Courses</h1>
+          <div className="coursesContainer">
+            {courses?.map((course) => {
+              return (
+                  <CourseCard course={course} />
+              );
+            })}
+          </div>
+          <span className="ShapeInCourses1"></span>
 
-
-
-      <div className="coursesBigDiv">
-        <h3>Couldn't Solve it?, No Problem. Take A Look On Our Courses</h3>
-        <h1>Our Courses</h1>
-        <div className="coursesContainer">
-          {courses?.map((course) => {
-            return <CourseCard course={course} />;
-          })}
         </div>
       </div>
 

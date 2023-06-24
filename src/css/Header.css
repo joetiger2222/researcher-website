@@ -74,7 +74,7 @@
   font-weight: bold;
 }
 .headerBtnsContainer > button:hover {
-  background-color: var(--orange-color);
+  background-color: var(--bluesky-color);
   cursor: pointer;
 
   transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out,

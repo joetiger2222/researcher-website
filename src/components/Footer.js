@@ -128,7 +128,9 @@ const Footer = ({ userData }) => {
         <p>&#169; All Rights Are Reserved For Teamwork</p>
       </div>
       <div>
-        <button onClick={() => setShowProblemCard(true)}>
+        <button
+        className="bn54"
+        onClick={() => setShowProblemCard(true)}>
           Send You Problem To Admin
         </button>
         {showProblemCard && (
