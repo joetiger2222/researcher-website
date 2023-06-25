@@ -543,7 +543,7 @@ console.log(studentData)
         <div className="profile-details">
           <h1 className="profile-name">
             {studentData?.firstName + " " + studentData?.lastName}
-            <FaCheckCircle/>
+            {studentData?.isMentor&&<FaCheckCircle/>}
           </h1>
           <p className="profile-bio">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis

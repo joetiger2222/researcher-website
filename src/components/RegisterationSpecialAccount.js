@@ -171,7 +171,7 @@ export default function RegisterationSpecialAccount(){
     //   }
 
 
-
+if(userData.roles==='Admin'){
     
       return (
         <div className="parentRegistration">
@@ -368,4 +368,12 @@ export default function RegisterationSpecialAccount(){
           </div>
         </div>
       );
+}
+else {
+    return(
+        <div style={{display:'flex',justifyContent:'center',alignItems:'center',minHeight:'100vh'}}>
+            <h1>You Are Not Allowed In This Page</h1>
+        </div>
+    )
+}
 }
