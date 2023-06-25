@@ -5,6 +5,8 @@ import "../css/Paper.css";
 import "../css/Idea.css";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import { BiChat } from "react-icons/bi";
+import { FaPaperPlane } from "react-icons/fa";
+
 export default function Idea() {
   const userData = useLocation()?.state.data;
   const { ideaId } = useParams();
@@ -628,7 +630,8 @@ export default function Idea() {
       getMessages();
     }, []);
 
-    const sendMessage = async () => {
+    const sendMessage = async (e) => {
+      e.preventDefault();
       const chatMessage = {
         content: messageToSend.content,
         date: new Date().toISOString(),
@@ -649,33 +652,48 @@ export default function Idea() {
       } catch (e) {}
     };
 
+    
+
     if (!props.show) return null;
     return (
       <div
-        style={{
-          position: "fixed",
-          left: "0",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          backgroundColor: "rgba(0, 0,0,0.5)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: "100",
-        }}
+       className="modal-overlay2"
       >
-        <div style={{ backgroundColor: "white", width: "50%" }}>
-          <div>
+        <div className="modal2">
+        <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+<div className="ContAllDataWithInput">
+  <div className="custom-scrollbar" style={{alignItems:"flex-start",width:"80%",padding:"20px",gap:"20px",height:"240px",overflow:"auto",display:"flex",flexDirection:"column"}}>
             {ideaMessages?.map((message) => {
               return (
                 <div style={{ display: "flex", flexDirection: "column" }}>
-                  <span>{message.content}</span>
+                  <p className="spanChat">{message.content}</p>
                 </div>
               );
             })}
           </div>
+        <div style={{width:"100%",display:"flex",
+      justifyContent:"center",alignItems:"center"}}>
+        <form
+        style={{
+          display: "flex",
+          alignItems: "center",
+          width: "80%",
+          border: "2px solid var(--darkgreen-color)",
+          alignSelf: "center",
+          // margin: " 1px 0 20px 0",
+          columnGap: "7px",
+          borderRadius: "20px",
+        }}
+        onSubmit={sendMessage}
+      >
           <input
+         className="InputChat"
             name="content"
             placeholder="Enter Your Message"
             onChange={(e) =>
@@ -684,8 +702,27 @@ export default function Idea() {
               })
             }
           ></input>
-          <button onClick={sendMessage}>Send</button>
-          <button onClick={props.onClose}>Close</button>
+          <div className="DivContChatIcon">
+          <button  style={{ backgroundColor: "transparent",border:"none" }}>
+          <FaPaperPlane
+            className="sendIcon"
+            style={{
+              width: "20px",
+              height: "20px",
+              color: "var(--darkgreen-color)",
+              cursor: "pointer",
+            }}
+          />
+        </button>
+          </div>
+          
+        </form>
+        </div>
+
+</div>
+          
+          {/* <butto>n onClick={sendMessage}>Send</butto> */}
+          {/* <button onClick={props.onClose}>Close</button> */}
         </div>
       </div>
     );
@@ -739,7 +776,8 @@ export default function Idea() {
       getMessages();
     }, []);
 
-    const sendMessage = async () => {
+    const sendMessage = async (e) => {
+      e.preventDefault();
       const chatMessage = {
         content: messageToSend.content,
         date: new Date().toISOString(),
@@ -763,30 +801,43 @@ export default function Idea() {
     if (!props.show) return null;
     return (
       <div
-        style={{
-          position: "fixed",
-          left: "0",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          backgroundColor: "rgba(0, 0,0,0.5)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: "100",
-        }}
+      className="modal-overlay2"
       >
-        <div style={{ backgroundColor: "white", width: "50%" }}>
-          <div>
+        <div className="modal2">
+        <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <div className="ContAllDataWithInput">
+          <div className="custom-scrollbar" style={{width:"80%",padding:"20px",gap:"20px",height:"240px",overflow:"auto",display:"flex",flexDirection:"column",alignItems:"flex-start"}}>
             {taskMessage?.map((message) => {
               return (
                 <div style={{ display: "flex", flexDirection: "column" }}>
-                  <span>{message.content}</span>
+                  <p>{message.content}</p>
                 </div>
               );
             })}
           </div>
+          <div style={{width:"100%",display:"flex",
+      justifyContent:"center",alignItems:"center"}}>
+        <form
+        style={{
+          display: "flex",
+          alignItems: "center",
+          width: "80%",
+          border: "2px solid var(--darkgreen-color)",
+          alignSelf: "center",
+          // margin: " 1px 0 20px 0",
+          columnGap: "7px",
+          borderRadius: "20px",
+        }}
+        onSubmit={sendMessage}
+      >
           <input
+          className="InputChat"
             name="content"
             placeholder="Enter Your Message"
             onChange={(e) =>
@@ -795,8 +846,23 @@ export default function Idea() {
               })
             }
           ></input>
-          <button onClick={sendMessage}>Send</button>
-          <button onClick={props.onClose}>Close</button>
+          <div className="DivContChatIcon">
+          <button  style={{ backgroundColor: "transparent",border:"none" }} onClick={sendMessage}>
+          <FaPaperPlane
+            className="sendIcon"
+            style={{
+              width: "20px",
+              height: "20px",
+              color: "var(--darkgreen-color)",
+              cursor: "pointer",
+            }}
+          />
+          </button>
+          </div>
+          </form>
+          </div>
+          {/* <button onClick={props.onClose}>Close</button> */}
+          </div>
         </div>
       </div>
     );
@@ -807,23 +873,25 @@ export default function Idea() {
       <Header userData={userData} />
       <h1 style={{ margin: "120px 0 30px", textAlign: "center" }}>
         Data For Idea
-      </h1>
+      </h1>  
       <div className="AllIdeas">
         <div className="CardInAllIdeasInIdea">
+        <div className="shape5"></div>
+
           <div className="containerSpansData">
-            <span>Name: {idea?.name}</span>
-            <span>Participants Number: {idea?.participantsNumber}</span>
-            <span>max Participants Number: {idea?.maxParticipantsNumber}</span>
-            <span>specality: {idea?.specalityObj.name}</span>
+            <span><span style={{fontWeight:"bold"}}>Name:</span> {idea?.name}</span>
+            <span><span style={{fontWeight:"bold"}}>Participants Number: </span>{idea?.participantsNumber}</span>
+            <span><span style={{fontWeight:"bold"}}>Max Participants Number:</span> {idea?.maxParticipantsNumber}</span>
+            <span><span style={{fontWeight:"bold"}}>Specality:</span> {idea?.specalityObj.name}</span>
             <span>
-              deadline:{" "}
+              <span style={{fontWeight:"bold"}}>Deadline:</span>{" "}
               {new Date(idea?.deadline).toLocaleDateString("en-US", {
                 month: "long",
                 day: "numeric",
                 year: "numeric",
               })}
             </span>
-            <span>topic: {idea?.topicObject.name}</span>
+            <span><span style={{fontWeight:"bold"}}>Topic:</span> {idea?.topicObject.name}</span>
             {creator && (
               <h2 style={{ textAlign: "center" }}>
                 Requests : {resReqsData?.length}
@@ -945,6 +1013,7 @@ export default function Idea() {
             </div>
           </div>
         </div>
+
       </div>
 
       <div>
@@ -954,12 +1023,12 @@ export default function Idea() {
           return (
             <div className="CardInAllIdeasInIdea">
               <div className="containerSpansData">
-              <span>Name : {task.name}</span>
-              <span>description : {task.description}</span>
-              <span>participantsNumber : {task.participantsNumber}</span>
-              <span>progress : {task.progress}</span>
+              <span><span style={{fontWeight:"bold"}}>Name :</span> {task.name}</span>
+              <span><span style={{fontWeight:"bold"}}>Description :</span> {task.description}</span>
+              <span><span style={{fontWeight:"bold"}}>ParticipantsNumber :</span> {task.participantsNumber}</span>
+              <span><span style={{fontWeight:"bold"}}>Progress :</span> {task.progress}</span>
               <span>
-                deadline:{" "}
+                <span style={{fontWeight:"bold"}}>Deadline:</span>{" "}
                 {new Date(task?.deadline).toLocaleDateString("en-US", {
                   month: "long",
                   day: "numeric",
