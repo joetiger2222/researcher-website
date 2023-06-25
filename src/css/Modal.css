@@ -83,8 +83,85 @@
   }
 
   
- 
-  
+  /*   <div className="modal-overlay2">
+        <div className="modal2">
+          <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">Create New Idea</h1>
+
+          <div className="FormModal2">
+            <label className="AllLabeles">Idea Name: </label>
+            <input
+              className="InputModalHallDetails"
+              onChange={getIdeaData}
+              name="name"
+            ></input>
+            <label className="AllLabeles">Participants Number: </label>
+            <input
+              className="InputModalHallDetails"
+              onChange={(e) =>
+                setIdeaData((prev) => {
+                  return { ...prev, maxParticipantsNumber: e.target.value * 1 };
+                })
+              }
+              name="maxParticipantsNumber"
+              type="number"
+            ></input>
+            <select
+              className="InputModalHallDetails"
+              onChange={(e) =>
+                setIdeaData((prev) => {
+                  return { ...prev, specalityId: e.target.value * 1 };
+                })
+              }
+            >
+              <option selected disabled value="">
+                Choose a Speciality
+              </option>
+              {allSpecs?.map((spec) => {
+                return <option value={spec.id}>{spec.name}</option>;
+              })}
+            </select>
+            <select
+              className="InputModalHallDetails"
+              onChange={(e) =>
+                setIdeaData((prev) => {
+                  return { ...prev, topicId: e.target.value * 1 };
+                })
+              }
+            >
+              <option selected disabled value="">
+                Choose a Topic
+              </option>
+              {allTopics?.map((spec) => {
+                return <option value={spec.id}>{spec.name}</option>;
+              })}
+            </select>
+            <label className="AllLabeles">Deadline</label>
+            <input
+              className="InputModalHallDetails"
+              type="text"
+              onChange={getIdeaData}
+              placeholder="yyyy-mm-dd"
+              name="deadline"
+            ></input>
+            <div className="buttonsOnModal">
+              <button className="" onClick={createNewIdea}>
+                Create
+              </button>
+              <button className="" onClick={props.onClose}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+   */
  
   /* Modal Overlay */
 .modal-overlay2 {
@@ -146,6 +223,7 @@
   margin-bottom: 20px;
   font-size: 1rem;
   color: #424242;
+  letter-spacing: 1px;
 }
 
 /* Modal Form Textarea */
@@ -202,11 +280,18 @@
 .buttonExit2 {
   background-color: transparent;
   border: none;
-  color: #424242;
-  font-size: 1.5rem;
+  color: red;
+  font-size: 18px;
   cursor: pointer;
+  border: 1px  solid red;
+  transition: 0.5s;
+  padding: 5px 10px;
 }
-
+.buttonExit2:hover{
+  background-color: red;
+  color: white;
+  /* border: none; */
+}
 
 
 

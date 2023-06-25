@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import "../css/Researchers.css";
+import { BiChat } from 'react-icons/bi';
+
+// import PiChatCircleTextBold from "react-icons/"
 import user from "../images/imageUser.png"
 export default function Researchers(){
 
@@ -61,7 +64,7 @@ export default function Researchers(){
         <div className="AllIdeas ">
           <input
             className="search-input"
-            placeholder="Search for Reaserches"
+            placeholder="Search By Name"
             name="SearchTerm"
             onChange={(e) =>
               setSearchData((prev) => {
@@ -101,18 +104,7 @@ export default function Researchers(){
               return <option value={level}>{level}</option>;
             })}
           </select>
-          <div>
-            <button
-            className="plusBtn"
-              onClick={() =>
-                setSearchData((prev) => {
-                  return { ...prev, PageSize: searchData.PageSize + 10 };
-                })
-              }
-            >
-              View More
-            </button>
-          </div>
+
         </div>
         <div className="AllIdeas">
           {researchers?.map((res) => {
@@ -145,6 +137,13 @@ export default function Researchers(){
                 >
                   View Profile
                 </button>
+                <button
+            className="plusBtn"            
+            >
+              Chat
+              <BiChat/>
+              {/* <PiChatCircleTextBold/> */}
+            </button>
                 </div>
                 </div>
                
@@ -152,6 +151,19 @@ export default function Researchers(){
             );
           })}
         </div>
+        <div className="">
+            <button
+            className="plusBtn"
+              onClick={() =>
+                setSearchData((prev) => {
+                  return { ...prev, PageSize: searchData.PageSize + 10 };
+                })
+              }
+            >
+              View More
+            </button>
+           
+          </div>
       </div>
     </>
   );

@@ -60,30 +60,23 @@ const Footer = ({ userData }) => {
     if (!props.show) return null;
     return (
       <div
-        style={{
-          position: "fixed",
-          left: "0",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          backgroundColor: "rgba(0, 0,0,0.5)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: "100",
-        }}
+        className="modal-overlay2"
       >
         <div
-          style={{
-            width: "50%",
-            backgroundColor: "white",
-            display: "flex",
-            flexDirection: "column",
-          }}
+          className="modal2"
         >
-          <span>Enter Problem Description : </span>
-          <input name="description" onChange={getProblemData}></input>
-          <select
+          <div className="ContExitbtn" >
+          <div className="outer" onClick={props.onClose}>
+            <div className="inner">
+            <label className="label2">Exit</label>
+            </div>
+          </div>
+          </div>
+          
+          <h2 className="headContact">Send Request</h2>
+          <div className="FormModal2">
+         <select
+          className="InputModalHallDetails"
             name="problemCategoryId"
             onChange={(e) =>
               setProblem((prev) => {
@@ -98,8 +91,16 @@ const Footer = ({ userData }) => {
               return <option value={cat.id}>{cat.name}</option>;
             })}
           </select>
-          <button onClick={sendProblem}>Send</button>
-          <button onClick={props.onClose}>Cancel</button>
+          <label className="AllLabeles">Enter Problem Description : </label>
+          <input className="InputModalHallDetails" name="description" onChange={getProblemData}></input>
+          
+          <div className="buttonsOnModal">
+          <button  onClick={sendProblem}>Send</button>
+          <button  onClick={props.onClose}>Cancel</button>
+          
+          </div>
+          </div>
+          
         </div>
       </div>
     );

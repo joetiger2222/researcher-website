@@ -99,8 +99,11 @@
     text-transform: capitalize;
     border-radius: 5px;
     cursor: pointer;
-    transition:transform  0.3s ;
+    transition: transform 0.3s;
     background-color: var(--darkgreen-color);
+    align-items: center;
+    display: flex;
+column-gap: 3px;
 
 
   }
@@ -112,7 +115,9 @@
     transform: translateY(-4px);
     box-shadow: 0 2px 32px 0 rgb(20, 125, 20);
   }
-  
+  .plusBtn:hover svg{
+    color: white;
+  }
   @keyframes moveUp {
     0% {
       top: 0;
@@ -137,7 +142,7 @@
   }
   .allSkillsDiv{
     display: flex;
-    gap: 30px;
+    gap: 20px;
     flex-direction: column;
     align-items: center;
     width: 25%;
@@ -211,6 +216,7 @@
     justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
+    margin-bottom: 50px;
   }
 .CardInAllIdeas{
   display: flex;
@@ -225,6 +231,12 @@
   border-top: 15px solid var(--darkgreen-color) !important;
   border: 1px solid var(--darkgreen-color);
 } 
+.CardInAllIdeas .spanForScroll{
+  max-height: 60px;
+  overflow: auto;
+  word-break: break-word;
+
+}
 .CardInAllIdeas:hover{
   transform: translateY(-10px); /* Adjust this value to control the amount of upward movement */
   box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.2);
@@ -234,6 +246,10 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+  background-color: white;
+  border-radius: 25px 25px 0 0px;
+  height: 60%;
+  color: black;
 }
 .ContainerbtnData{
   display: flex;

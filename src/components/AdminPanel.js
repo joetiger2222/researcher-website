@@ -411,30 +411,27 @@ export default function AdminPanel() {
     if (!props.show) return null;
     return (
       <div
-        style={{
-          position: "fixed",
-          left: "0",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          backgroundColor: "rgba(0, 0,0,0.5)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: "100",
-        }}
+        className="modal-overlay2"
       >
         <div
-          style={{
-            width: "50%",
-            backgroundColor: "white",
-            display: "flex",
-            flexDirection: "column",
-          }}
+          className="modal2"
         >
-          <input name="message" onChange={(e)=>setResponseData(prev=>{return{...prev,[e.target.name]:e.target.value}})} placeholder="Enter Response"></input>
+          <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">Create New Idea</h1>
+          <div className="FormModal2">
+          <label className="AllLabeles">Message: </label>
+          <input className="InputModalHallDetails" name="message" onChange={(e)=>setResponseData(prev=>{return{...prev,[e.target.name]:e.target.value}})} placeholder="Enter Response"></input>
+          <div className="buttonsOnModal">
           {responseData.message&&<button onClick={sendResponse}>Send</button>}
-          <button onClick={props.onClose}>Cancel</button>
+          <button  onClick={props.onClose}>Cancel</button>
+          </div>
+          </div>
         </div>
         </div>
         )
@@ -617,29 +614,40 @@ export default function AdminPanel() {
           })}
         </select>
         
+        <div className="custom-scrollbar" style={{display:"flex",flexDirection:"column",overflow:"auto"}}>
         {studentProblems?.map(prob=>{
           return(
             <div className="ContainerreauestWithBtn">
-              <span>Problem Description :<span style={{fontWeight:"bold"}}>{prob.description}</span> </span>
+              <span style={{fontWeight:"bold",padding:"10px"}}>Problem Description:<p style={{padding:"5px",fontWeight:"normal"}} >{prob.description}</p> </span>
               <button onClick={()=>{setChoosenProblem(prob);setShowResponseModal(true)}}>Respond</button>
               </div>
           )
         })}
         {showResponseModal&&choosenProblem&&<ProblemResponseCard show={showResponseModal} onClose={()=>setShowResponseModal(false)} problem={choosenProblem} />}
         
+        </div>
+        
       </div>
-      <div style={{color:'white'}}>
-          <h1>All Responses</h1>
+      <div className="ContainerAllIdeas" >
+          <h1 style={{color:"white"}}>All Responses</h1>
+          <div className="AllIdeas">
           {adminReponse?.map(res=>{
           return(
-            <div style={{border:'2px solid white'}}>
-              <span>Problem :</span>
-              <h5>{res.problem.description}</h5>
-              <span>Admin Response :</span>
-              <h5>{res.message}</h5>
+            <div
+            //  style={{border:'2px solid white'}}
+             className="CardInAllIdeas"
+             >
+              
+              <span className="spanForScroll custom-scrollbar "><span style={{fontWeight:"bold"}}>Problem Description :</span> {res.problem.description}</span>
+              <span className="spanForScroll custom-scrollbar"><span style={{fontWeight:"bold"}}>Admin Response :</span> {res.message}</span>
+              <span className="custom-scrollbar"><span style={{fontWeight:"bold"}}>Problem Category :</span> {res.problem.problemCategory.name}</span>
+
+
             </div>
           )
         })}
+          </div>
+         
         </div>
     </div>
   );

@@ -77,7 +77,7 @@ const Profile = () => {
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => (data ? setResearcherData(data) : null));
   }
-
+console.log(adminReponse);
   function getResInvitations(resId) {
     fetch(`https://localhost:7187/api/Researchers/Invitations/${resId}`, {
       method: "GET",
@@ -647,9 +647,11 @@ const Profile = () => {
             </div>
           </div>
         )}
-        <div className="RightBox">
-          <h1>Ideas</h1>
-          <div className="tasksDiv">
+        
+      </div>
+      <div className="ContainerAllIdeas">
+      <h1 style={{color:"white"}}>Ideas</h1>
+
             <div className="AllIdeas">
           {researcherIdeas?.length > 0 ? (
             researcherIdeas?.map((idea, index) => {
@@ -739,20 +741,20 @@ const Profile = () => {
           ) : (
             <span>You Have No Ideas Yet!</span>
           )}
-        </div>
           </div>
         </div>
-      </div>
-
+     
       {(userData.roles === "Researcher" || userData.roles === 'Admin') && (
         <div
           style={{
             color: "white",
             display: "flex",
             flexDirection: "column",
-            padding: "20px",
+            // padding: "20px",
             alignItems: "center",
             gap: "40px",
+            width:"100%",
+            
           }}
         >
           <h1>Papers</h1>
@@ -909,18 +911,27 @@ const Profile = () => {
         </div>
       )}
       {userData.userId===studentId&&
-      <div style={{color:'white'}}>
-        <h1>Admin Reponses</h1>
+
+      <div className="ContainerAllIdeas">
+        <h1 style={{color:"white"}} >Admin Reponses</h1>
+        <div className="AllIdeas">
         {adminReponse?.map(res=>{
           return(
-            <div style={{border:'2px solid white'}}>
-              <span>Problem :</span>
-              <h5>{res.problem.description}</h5>
-              <span>Admin Response :</span>
-              <h5>{res.message}</h5>
-            </div>
+            <div
+            //  style={{border:'2px solid white'}}
+            className="CardInAllIdeas"
+
+             >
+              <span className="custom-scrollbar"><span style={{fontWeight:"bold"}}>Problem Description :</span> {res.problem.description}</span>
+              <span className="spanForScroll custom-scrollbar " ><span style={{fontWeight:"bold"}}>Admin Response :</span> {res.message}</span>
+              <span className="custom-scrollbar"><span style={{fontWeight:"bold"}}>Problem Category :</span> {res.problem.problemCategory.name}</span>
+
+              
+          </div>
           )
         })}
+        </div>
+        
       </div>
       }
     </div>

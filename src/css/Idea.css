@@ -1,0 +1,43 @@
+.CardInAllIdeasInIdea{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    gap: 30px;
+    border-top: 15px solid var(--darkgreen-color) !important;
+    border: 1px solid var(--darkgreen-color);
+}
+
+.rejectReq{
+
+}
+.rejectReq{
+    border: 1px solid red;
+    background-color: transparent;
+    color: red;
+    padding: 4px;
+    transition: 0.5s;
+  }
+  .rejectReq:hover{
+  background-color: red;
+  color: white;
+  }
+  .acceptReq{
+    border: 1px solid var(--darkgreen-color);
+    background-color: transparent;
+    color: var(--darkgreen-color);
+    padding: 4px;
+    transition: 0.5s;
+  }
+  .acceptReq:hover{
+  background-color: var(--darkgreen-color);
+  color: white;
+  }
+
+  .contButtonsInIdea{
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }

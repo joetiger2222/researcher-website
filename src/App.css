@@ -184,11 +184,9 @@ top: -5px;
   --c: goldenrod;
   color: var(--c);
   font-size: 16px;
-  border: 0.3em solid var(--c);
+  border: 0.2em solid var(--c);
   border-radius: 0.5em;
-  /* width: 12em;
-  height: 3em; */
-  width: 100%;
+  /* width: 100%; */
   padding: 10px;
   text-transform: uppercase;
   font-weight: bold;
@@ -200,7 +198,7 @@ top: -5px;
   /* overflow: hidden; */
   z-index: 1;
   transition: 0.5s;
-  margin: 1em;
+  /* margin: 1em; */
 }
 
 .span5 {
