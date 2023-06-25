@@ -10,6 +10,7 @@ import Header from "./Header";
 import paperPhoto from "../images/paper.jpg";
 import ModalEditProfile from "./ModalEditProfile";
 import PaperCardInProfile from "./Cards/PaperCardInProfile";
+import { FaCheckCircle } from 'react-icons/fa';
 import request from "../images/request.png";
 const Profile = () => {
   const [show, setShow] = useState(false);
@@ -149,7 +150,7 @@ console.log(adminReponse);
       });
   }
 
-
+console.log(studentData)
   useEffect(() => {
     getStudentData();
     if(userData.userId===studentId)getAdminResponse();
@@ -520,7 +521,7 @@ console.log(adminReponse);
         <div className="imageProfDiv">
           <img src={kariem} alt="Profile" className="profile-image" />
           {researcherData && (
-            <p className="nameUser">{researcherData?.specality?.name}</p>
+            <p className="nameUser">{researcherData?.specality?.name} </p>
           )}
           {userData.roles === "Researcher" &&
             userData?.userId === studentId && (
@@ -542,6 +543,7 @@ console.log(adminReponse);
         <div className="profile-details">
           <h1 className="profile-name">
             {studentData?.firstName + " " + studentData?.lastName}
+            <FaCheckCircle/>
           </h1>
           <p className="profile-bio">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis

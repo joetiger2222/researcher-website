@@ -649,6 +649,9 @@ export default function AdminPanel() {
           </div>
          
         </div>
+        <div>
+          <button onClick={()=>navigate('/RegisterationSpecialAccount',{state:{data:userData}})}>Create Special Account</button>
+        </div>
     </div>
   );
 }
