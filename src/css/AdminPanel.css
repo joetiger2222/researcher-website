@@ -17,8 +17,27 @@
     align-items: center;
     background-color: #262626;
 }
-
-
+.AllExpertReq{
+  display: flex;
+  flex-direction: column;
+  max-height: 400px;
+  overflow: auto;
+}
+.ContExpertReqAdmin{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid black;
+  padding: 10px;
+  height: 150px;
+}
+.contTitleAndContnentReq{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 300px;
+}
 
 .coursesParent {
        /* max-width: 1104px; */
@@ -146,11 +165,57 @@ column-gap: 3px;
     flex-direction: column;
     align-items: center;
     width: 25%;
-    height: 250px;
+    height: 300px;
     justify-content: space-between;
     border: 1px solid var(--background-color);
     padding: 20px;
     background-color: var(--background-color);
+  }
+  .allSkillsDivForProblems{
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    height: 370px;
+    /* justify-content: space-between; */
+    border: 1px solid var(--background-color);
+    padding: 20px;
+    background-color: var(--background-color);
+  }
+  .ContainerreauestWithBtnForProblems{
+    background-color: white;
+    display: flex;
+    gap: 15px;
+    width: 370px;
+    height: 210px;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid white;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  .ContAllProblemsCards{
+    display: flex;
+    flex-direction: row;
+    overflow: auto;
+    flex-wrap: wrap;
+    width: 97%;
+    justify-content: center;
+    gap: 20px;
+  }
+  .SelectSkillForProblems{
+    width: 20%;
+    /* text-align: center; */
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #efefef;
+    color: var(--darkgreen-color);
+    font-size: 16px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease-in-out;
+    letter-spacing: 1px;
   }
   .allSkillsDiv h2{
     text-align: justify;

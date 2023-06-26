@@ -185,7 +185,8 @@
   position: relative;
   overflow: auto;
   background-color: white;
-  margin-top: 100px;
+  margin-top: 65px;
+  /* top: 50%; */
   border-top: 20px solid var(--darkgreen-color);
   min-width: 500px;
 

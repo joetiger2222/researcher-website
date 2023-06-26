@@ -12,6 +12,7 @@ import ModalEditProfile from "./ModalEditProfile";
 import PaperCardInProfile from "./Cards/PaperCardInProfile";
 import { FaCheckCircle } from "react-icons/fa";
 import request from "../images/request.png";
+import Swal from "sweetalert2";
 const Profile = () => {
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -436,18 +437,30 @@ const Profile = () => {
 
   const DeletePaperCard = (props) => {
     function deletePaper() {
-      fetch(`https://localhost:7187/api/Researchers/Papers/${props.paper.id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${userData.token}`,
-        },
-      }).then((res) => {
-        if (res.ok) {
-          alert("Paper Successfully Deleted");
-          window.location.reload();
-        } else alert("Failed To Delete Paper");
+      Swal.fire({
+        title: "Are You Sure To Delete The Course",
+        showCancelButton: true,
+      }).then((data) => {
+        if (data.isConfirmed) {
+          fetch(`https://localhost:7187/api/Researchers/Papers/${props.paper.id}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${userData.token}`,
+            },
+          })
+            .then((res) => {
+              if (res.ok) {
+                alert("Paper Successfully Deleted");
+                window.location.reload();
+              } else {
+                alert("Failed To Delete Paper");
+              }
+            });
+        }
       });
     }
+  
+  
 
     if (!props.show) return null;
     return (
@@ -646,7 +659,7 @@ const Profile = () => {
         </div>
         <div className="badgesContainer">
           <h1>Enrolled Courses</h1>
-          <div className="pointsDiv">
+          <div className="pointsDiv custom-scrollbar">
             <div className="watchedCourse">
               <h4>Course Name</h4>
               <p>Category</p>
@@ -783,14 +796,7 @@ const Profile = () => {
         >
           <h1>Papers</h1>
           <div
-            style={{
-              display: "flex",
-              gap: "40px",
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-              flexWrap: "wrap",
-            }}
+            className="PapersContainer custom-scrollbar"
           >
             {researcherData?.papers?.map((paper) => {
               return (
@@ -896,7 +902,7 @@ const Profile = () => {
         {userData.roles === "Researcher" && userData?.userId === studentId && (
           <div className="Invitation">
             <h1>Your Requests : {resReqs?.length}</h1>
-            <div className="ContAllRequestss">
+            <div className="ContAllRequestss custom-scrollbar" >
               {resReqs?.map((r, index) => {
                 return (
                   <div className="ContainerreauestWithBtn">
@@ -921,7 +927,7 @@ const Profile = () => {
       {userData.roles === "Researcher" && userData?.userId === studentId && (
         <div className="ContExpertRequests">
           <h1>Your Expert Requests : {expertReqs?.length}</h1>
-          <div className="ContAllRequests">
+          <div className="ContAllRequests custom-scrollbar">
             {expertReqs?.map((req) => {
               return (
                 <div className="ContAllWithbtn">
@@ -931,7 +937,7 @@ const Profile = () => {
                   <div className="ContainerInfoWithbtn">
                     <div className="ContTitleAndContent">
                       <p>{req.title}</p>
-                      <p className="contentData">{req.content}</p>
+                      <p className="contentData custom-scrollbar">{req.content}</p>
                     </div>
                     <div>
                       <button

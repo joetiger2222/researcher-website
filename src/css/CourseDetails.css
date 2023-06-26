@@ -535,7 +535,7 @@ px
   column-gap: 20px;
   align-items: center;
   justify-content: space-between;
-  width: 80px;
+  /* width: 80px; */
 }
 .ObjectivesNew,.InstructionsNew{
   display: flex;

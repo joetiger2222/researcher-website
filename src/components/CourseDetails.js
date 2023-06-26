@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineHourglass } from "react-icons/ai";
-import {
-  FaPlusCircle,
-  FaTrash,
-  FaRegEdit,
-} from "react-icons/fa";
+import { FaPlusCircle, FaTrash, FaRegEdit } from "react-icons/fa";
 import { HiAcademicCap } from "react-icons/hi";
 import "../css/CourseDetails.css";
 import Header from "./Header.js";
 import { useLocation, useParams } from "react-router-dom";
-import { FaArrowCircleDown,} from "react-icons/fa";
+import { FaArrowCircleDown } from "react-icons/fa";
 import Footer from "./Footer";
 import { useNavigate } from "react-router-dom";
 import ModalForQuiz from "./ModalForQuiz";
 import video from "../1.mp4";
+import Swal from "sweetalert2";
 
 const CourseDetails = () => {
   const navigate = useNavigate();
@@ -346,36 +343,31 @@ const CourseDetails = () => {
 
     if (!show) return null;
     return (
-      <div
-        style={{
-          position: "fixed",
-          left: "0",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          backgroundColor: "rgba(0, 0,0,0.7)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: "100",
-        }}
-      >
-        <div className="addSectionDiv">
-          <span>Enter Section Name: </span>
-          <input
-            onChange={getSectionName}
-            name="name"
-            placeholder="Enter Section Name"
-          ></input>
-          <div className="addSectionBtnsDiv">
-            <button onClick={onClose} style={{ backgroundColor: "#ce0808" }}>
-              Cancel
-            </button>
-            {sectionData.name !== "" && (
-              <button style={{ backgroundColor: "green" }} onClick={addSection}>
-                Finish
-              </button>
-            )}
+      <div className="modal-overlay2">
+        <div className="modal2">
+          <div className="ContExitbtn" onClick={onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">Add Section</h1>
+
+          <div className="FormModal2">
+            <label className="AllLabeles">Enter Section Name: </label>
+            <input
+              className="InputModalHallDetails"
+              onChange={getSectionName}
+              name="name"
+              placeholder="Enter Section Name"
+            ></input>
+            <div className="buttonsOnModal">
+              {sectionData.name !== "" && (
+                <button onClick={addSection}>Finish</button>
+              )}
+              <button onClick={onClose}>Cancel</button>
+            </div>
           </div>
         </div>
       </div>
@@ -384,44 +376,44 @@ const CourseDetails = () => {
 
   const DeleteCourseCard = ({ show, onClose }) => {
     function deleteCourse() {
-      fetch(`https://localhost:7187/api/Courses/${id}`, {
+      Swal.fire({
+        title: `Are You Syre To Delete The Course`,
+        showCancelButton: true,
+      }).then((data) => {
+        if (data.isConfirmed) {
+          fetch(`https://localhost:7187/api/Courses/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${userData.token}`,
         },
-      }).then((res) => {
+      })
+      .then((res) => {
         if (res.ok) {
           navigate("/AdminPanel", { state: { data: userData } });
         } else alert("Error Happened Please Try Again Later");
       });
+        }
+      });
+      
     }
 
     if (!show) return null;
     return (
-      <div
-        style={{
-          position: "fixed",
-          left: "0",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          backgroundColor: "rgba(0, 0,0,0.7)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: "100",
-        }}
-      >
-        <div className="deleteCourseDiv">
-          <h1>You Are About To Delete This Course</h1>
-          <h3>Press Confirm To Delete</h3>
-          <div>
-            <button onClick={onClose} style={{ backgroundColor: "#ce0808" }}>
-              Cancel
-            </button>
-            <button onClick={deleteCourse} style={{ backgroundColor: "green" }}>
-              Confirm
-            </button>
+      <div className="modal-overlay2">
+        <div className="modal2">
+          <div className="ContExitbtn" onClick={onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2"> You Are About To Delete This Course</h1>
+          <h3 className="headContact2">Press Confirm To Delete</h3>
+
+          <div className="buttonsOnModal">
+            <button onClick={deleteCourse }>Delete</button>
+            <button onClick={onClose}>Cancel</button>
           </div>
         </div>
       </div>
@@ -448,15 +440,13 @@ const CourseDetails = () => {
           Authorization: `Bearer ${userData.token}`,
         },
         body: JSON.stringify(editData),
-      })
-      
-      .then(res=>{
-        if(res.ok){
+      }).then((res) => {
+        if (res.ok) {
           alert("data updated successfuly");
           props.onClose();
           getCourseDetatils();
-        }else alert("failed")
-      })
+        } else alert("failed");
+      });
     }
 
     function getEditData(e) {
@@ -470,36 +460,75 @@ const CourseDetails = () => {
 
     if (!props.show) return null;
     return (
-      <div
-        style={{
-          position: "fixed",
-          left: "0",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          backgroundColor: "rgba(0, 0,0,0.5)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: "100",
-        }}
-      >
-        <div style={{ backgroundColor: "white", width: "50%" }}>
-          <h1>Only Change The Field You Want To Modify</h1>
-          <span>Name</span>
-          <input placeholder={courseDetails.name} onChange={getEditData} name="name"></input>
-          <span>instructions</span>
-          <input placeholder={courseDetails.instructions} onChange={getEditData} name="instructions"></input>
-          <span>objectives</span>
-          <input placeholder={courseDetails.objectives} onChange={getEditData} name="objectives"></input>
-          <span>price</span>
-          <input placeholder={courseDetails.price} onChange={(e)=>setEditData(prev=>{return{...prev,[e.target.name]:e.target.value*1}})} name="price" type="number"></input>
-          <span>hours</span>
-          <input placeholder={courseDetails.hours} onChange={getEditData} name="hours" type="number"></input>
-          <span>brief</span>
-          <input placeholder={courseDetails.brief} onChange={getEditData} name="brief"></input>
-          <button onClick={editCourseData}>Edit</button>
-          <button onClick={props.onClose}>Cancel</button>
+      <div className="modal-overlay2">
+        <div className="modal2">
+          <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">Edit Course Data</h1>
+          <div
+            className="custom-scrollbar"
+            style={{ overflow: "auto", maxHeight: "420px" }}
+          >
+            <div className="FormModal2">
+              <label className="AllLabeles">Name</label>
+              <input
+                className="InputModalHallDetails"
+                placeholder={courseDetails.name}
+                onChange={getEditData}
+                name="name"
+              ></input>
+              <label className="AllLabeles">instructions</label>
+              <input
+                className="InputModalHallDetails"
+                placeholder={courseDetails.instructions}
+                onChange={getEditData}
+                name="instructions"
+              ></input>
+              <label className="AllLabeles">objectives</label>
+              <input
+                className="InputModalHallDetails"
+                placeholder={courseDetails.objectives}
+                onChange={getEditData}
+                name="objectives"
+              ></input>
+              <label className="AllLabeles">price</label>
+              <input
+                className="InputModalHallDetails"
+                placeholder={courseDetails.price}
+                onChange={(e) =>
+                  setEditData((prev) => {
+                    return { ...prev, [e.target.name]: e.target.value * 1 };
+                  })
+                }
+                name="price"
+                type="number"
+              ></input>
+              <label className="AllLabeles">hours</label>
+              <input
+                className="InputModalHallDetails"
+                placeholder={courseDetails.hours}
+                onChange={getEditData}
+                name="hours"
+                type="number"
+              ></input>
+              <label className="AllLabeles">brief</label>
+              <input
+                className="InputModalHallDetails"
+                placeholder={courseDetails.brief}
+                onChange={getEditData}
+                name="brief"
+              ></input>
+              <div className="buttonsOnModal">
+                <button onClick={editCourseData}>Edit</button>
+                <button onClick={props.onClose}>Cancel</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );

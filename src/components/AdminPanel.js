@@ -18,9 +18,9 @@ export default function AdminPanel() {
   const [problemCategories, setProblemCategories] = useState(null);
   const [problemCategoryId, setProblemCategoryId] = useState(1);
   const [studentProblems, setStudentProblems] = useState(null);
-  const [showResponseModal,setShowResponseModal]=useState(false);
-  const [choosenProblem,setChoosenProblem]=useState(null);
-  const [adminReponse,setAdminResponse]=useState(null);
+  const [showResponseModal, setShowResponseModal] = useState(false);
+  const [choosenProblem, setChoosenProblem] = useState(null);
+  const [adminReponse, setAdminResponse] = useState(null);
   const userData = useLocation().state?.data;
 
   function getCourses() {
@@ -115,19 +115,16 @@ export default function AdminPanel() {
       .then((data) => (data ? setProblemCategories(data) : null));
   }
 
-  function getAdminResponse(){
-    fetch(`https://localhost:7187/api/Students/Responses`,{
-      method:"GET",
-      headers:{
-        "Authorization":`Bearer ${userData.token}`
+  function getAdminResponse() {
+    fetch(`https://localhost:7187/api/Students/Responses`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
       },
-
     })
-    .then(res=>res.ok?res.json():alert('failed to load responses'))
-    .then(data=>data?setAdminResponse(data):null)
+      .then((res) => (res.ok ? res.json() : alert("failed to load responses")))
+      .then((data) => (data ? setAdminResponse(data) : null));
   }
-
-  
 
   useEffect(() => {
     getCourses();
@@ -136,7 +133,7 @@ export default function AdminPanel() {
     getAllTopics();
     getAllIdeas();
     getProblemCategories();
-    getAdminResponse()
+    getAdminResponse();
   }, []);
 
   useEffect(() => {
@@ -314,7 +311,6 @@ export default function AdminPanel() {
         )
         .then((data) => (data ? setExpertReqForSingleIdea(data) : null));
     }
-  
 
     function deleteExpertReq(req) {
       fetch(`https://localhost:7187/api/Admin/ExpertRequests/${req?.id}`, {
@@ -323,14 +319,12 @@ export default function AdminPanel() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userData.token}`,
         },
-      })
-  
-      .then(res=>{
-        if(res.ok){
+      }).then((res) => {
+        if (res.ok) {
           alert("Request Successfully deleted");
-          props.onClose()
-        }else alert("Failed To Delete Request")
-      })
+          props.onClose();
+        } else alert("Failed To Delete Request");
+      });
     }
 
     useEffect(() => {
@@ -339,83 +333,90 @@ export default function AdminPanel() {
 
     if (!props.show) return null;
     return (
-      <div
-        style={{
-          position: "fixed",
-          left: "0",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          backgroundColor: "rgba(0, 0,0,0.5)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: "100",
-        }}
-      >
-        <div
-          style={{
-            width: "50%",
-            backgroundColor: "white",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          {expertReqForSingleIdea?.map((req) => {
-            return (
-              <div
-                style={{
-                  color: "black",
-                  display: "flex",
-                  flexDirection: "column",
-                  borderBottom: "2px solid black",
-                }}
-              >
-                <span>Title : {req.title}</span>
-                <span>Content : {req.content}</span>
-                <button onClick={() => deleteExpertReq(req)}>
-                  Delete Expert Request
-                </button>
+      <div className="modal-overlay2">
+        <div className="modal2">
+          <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
               </div>
-            );
-          })}
+            </div>
+          </div>
+          <h1 className="headContact2">Expert Req For Idea</h1>
 
-          <button onClick={props.onClose}>Close</button>
+          <div className="FormModal2">
+            <div className="AllExpertReq custom-scrollbar">
+              {expertReqForSingleIdea.length > 0 ? (
+                expertReqForSingleIdea?.map((req) => {
+                  return (
+                    <div className="ContExpertReqAdmin">
+                      <div className="contTitleAndContnentReq">
+                        <span>
+                          <span style={{ fontWeight: "bold" }}>Title : </span>
+                          {req.title}
+                        </span>
+                        <span
+                          className="custom-scrollbar"
+                          style={{ overflow: "auto", maxHeight: "100px" }}
+                        >
+                          <span style={{ fontWeight: "bold" }}>Content : </span>
+                          {req.content}
+                        </span>
+                      </div>
+                      <div>
+                        <button
+                          className="buttonExit2"
+                          onClick={() => deleteExpertReq(req)}
+                        >
+                          Delete Expert Request
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div style={{textAlign:"center"}}>No Expert Reqs</div>
+              )}
+            </div>
+
+            <div className="resetAndCancel2">
+              <button className="buttonExit2" onClick={props.onClose}>
+                Close
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
   };
 
-  const ProblemResponseCard =(props)=>{
-    const [responseData,setResponseData]=useState({message:'',studentId:props.problem.studentId,problemId:props.problem.id})
+  const ProblemResponseCard = (props) => {
+    const [responseData, setResponseData] = useState({
+      message: "",
+      studentId: props.problem.studentId,
+      problemId: props.problem.id,
+    });
 
-    
-
-    function sendResponse(){
-      fetch(`https://localhost:7187/api/Students/Responses`,{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json",
-          "Authorization":`Bearer ${userData.token}`
+    function sendResponse() {
+      fetch(`https://localhost:7187/api/Students/Responses`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userData.token}`,
         },
-        body:JSON.stringify(responseData)
-      })
-      .then(res=>{
-        if(res.ok){
-          alert('Response Sent Successfully');
+        body: JSON.stringify(responseData),
+      }).then((res) => {
+        if (res.ok) {
+          alert("Response Sent Successfully");
           props.onClose();
-        }else alert("Failed To Send Response")
-      })
+        } else alert("Failed To Send Response");
+      });
     }
 
     if (!props.show) return null;
     return (
-      <div
-        className="modal-overlay2"
-      >
-        <div
-          className="modal2"
-        >
+      <div className="modal-overlay2">
+        <div className="modal2">
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
@@ -425,17 +426,28 @@ export default function AdminPanel() {
           </div>
           <h1 className="headContact2">Create New Idea</h1>
           <div className="FormModal2">
-          <label className="AllLabeles">Message: </label>
-          <input className="InputModalHallDetails" name="message" onChange={(e)=>setResponseData(prev=>{return{...prev,[e.target.name]:e.target.value}})} placeholder="Enter Response"></input>
-          <div className="buttonsOnModal">
-          {responseData.message&&<button onClick={sendResponse}>Send</button>}
-          <button  onClick={props.onClose}>Cancel</button>
-          </div>
+            <label className="AllLabeles">Message: </label>
+            <input
+              className="InputModalHallDetails"
+              name="message"
+              onChange={(e) =>
+                setResponseData((prev) => {
+                  return { ...prev, [e.target.name]: e.target.value };
+                })
+              }
+              placeholder="Enter Response"
+            ></input>
+            <div className="buttonsOnModal">
+              {responseData.message && (
+                <button onClick={sendResponse}>Send</button>
+              )}
+              <button onClick={props.onClose}>Cancel</button>
+            </div>
           </div>
         </div>
-        </div>
-        )
-  }
+      </div>
+    );
+  };
 
   return (
     <div className="adminPanelParent" style={{ rowGap: "50px" }}>
@@ -450,10 +462,9 @@ export default function AdminPanel() {
             {courses?.map((course) => {
               return <CourseCard course={course} />;
             })}
-            
           </div>
           <div className="ContainerbtnData">
-          <button
+            <button
               onClick={() =>
                 navigate("/CreateCourse", { state: { data: userData } })
               }
@@ -461,7 +472,7 @@ export default function AdminPanel() {
             >
               <span>+</span>Create New Course
             </button>
-            </div>
+          </div>
         </div>
 
         <div className="ContTopicAndSpeciality">
@@ -485,7 +496,7 @@ export default function AdminPanel() {
             </select>
             {skillId && (
               <button
-              className="plusBtn"
+                className="plusBtn"
                 onClick={() =>
                   navigate(`/AddQuizToCourse/${skillId}`, {
                     state: { data: userData },
@@ -505,18 +516,27 @@ export default function AdminPanel() {
             <div className="ContSpecialities custom-scrollbar">
               {allSpecs?.map((spec) => {
                 return (
-                  <li  style={{ color: "#007d6f",fontSize:"16px",fontWeight:"700" }}>{spec?.name}</li>
+                  <li
+                    style={{
+                      color: "#007d6f",
+                      fontSize: "16px",
+                      fontWeight: "700",
+                    }}
+                  >
+                    {spec?.name}
+                  </li>
                 );
               })}
             </div>
 
-            <button 
-            // className="buttonn"
-            className="plusBtn"
-            // className="button-arounder1"
+            <button
+              // className="buttonn"
+              className="plusBtn"
+              // className="button-arounder1"
               // className="bn54"
-             onClick={() => setShowSpec(true)}>
-             Create New Specality
+              onClick={() => setShowSpec(true)}
+            >
+              Create New Specality
             </button>
             <AddNewSpec show={showSpec} onClose={() => setShowSpec(false)} />
           </div>
@@ -524,13 +544,21 @@ export default function AdminPanel() {
           <div className="allSkillsDiv ">
             <h2 style={{ color: "#262626" }}>All Topics</h2>
             <div className="custom-scrollbar ContSpecialities">
-            {allTopics?.map((topic) => {
-              return (
-                  <li  style={{ color: "#007d6f",fontSize:"16px",fontWeight:"700" }}>{topic?.name}</li>
-              );
-            })}
+              {allTopics?.map((topic) => {
+                return (
+                  <li
+                    style={{
+                      color: "#007d6f",
+                      fontSize: "16px",
+                      fontWeight: "700",
+                    }}
+                  >
+                    {topic?.name}
+                  </li>
+                );
+              })}
             </div>
-          
+
             <button className="plusBtn" onClick={() => setShowTopic(true)}>
               Create New Topic
             </button>
@@ -540,55 +568,103 @@ export default function AdminPanel() {
       </div>
 
       <div className="ContainerAllIdeas">
-        <h1 style={{color:"white"}}>All Ideas</h1>
+        <h1 style={{ color: "white" }}>All Ideas</h1>
         <div className="AllIdeas">
-        {allIdeas?.length > 0 ? (
-          allIdeas?.map((idea,index) => {
-            return (
-              <div
-               className="CardInAllIdeas"
-              >
-                <h2>Idea {index+1}</h2>
-                <div className="containerSpansData">
-                <span style={{borderBottom:"1px solid black",padding:"5px"}}>Name: <span style={{fontWeight:"bold",}}>{idea.name}</span></span>
-                
-                <span style={{borderBottom:"1px solid black",padding:"5px"}}>specality: <span style={{fontWeight:"bold"}}>{idea?.specalityObj.name}</span></span>
-                <span style={{borderBottom:"1px solid black",padding:"5px"}}>
-                  deadline:{" "}
-                  <span  style={{fontWeight:"bold"}}>{new Date(idea?.deadline).toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                  })}</span>
-                </span>
-                <span style={{borderBottom:"1px solid black",padding:"5px"}}>topic: <span style={{fontWeight:"bold"}}>{idea?.topicObject.name}</span></span>
-                <span style={{borderBottom:"1px solid black",padding:"5px"}}>Participants Number: <span style={{fontWeight:"bold"}}>{idea?.participantsNumber}</span></span>
-                <span style={{borderBottom:"1px solid black",padding:"5px"}}>
-                  max Participants Number: <span style={{fontWeight:"bold"}}>{idea?.maxParticipantsNumber}</span>
-                </span>
-                </div>
-                <div className="ContainerbtnData">
-                <button
-                className="button-arounder1"
-                  onClick={() => {
-                    setExpertIdea(idea);
-                    setShowExpertReqsModal(true);
-                  }}
-                >
-                  View Expert Requests
-                </button>
-                </div>
-                
+          {allIdeas?.length > 0 ? (
+            allIdeas?.map((idea, index) => {
+              return (
+                <div className="CardInAllIdeas">
+                  <h2>Idea {index + 1}</h2>
+                  <div className="containerSpansData">
+                    <span
+                      style={{
+                        borderBottom: "1px solid black",
+                        padding: "5px",
+                      }}
+                    >
+                      Name:{" "}
+                      <span style={{ fontWeight: "bold" }}>{idea.name}</span>
+                    </span>
 
-                
-              </div>
-            );
-          })
-        ) : (
-          <span> No Ideas Yet!</span>
-        )}
+                    <span
+                      style={{
+                        borderBottom: "1px solid black",
+                        padding: "5px",
+                      }}
+                    >
+                      specality:{" "}
+                      <span style={{ fontWeight: "bold" }}>
+                        {idea?.specalityObj.name}
+                      </span>
+                    </span>
+                    <span
+                      style={{
+                        borderBottom: "1px solid black",
+                        padding: "5px",
+                      }}
+                    >
+                      deadline:{" "}
+                      <span style={{ fontWeight: "bold" }}>
+                        {new Date(idea?.deadline).toLocaleDateString("en-US", {
+                          month: "long",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </span>
+                    </span>
+                    <span
+                      style={{
+                        borderBottom: "1px solid black",
+                        padding: "5px",
+                      }}
+                    >
+                      topic:{" "}
+                      <span style={{ fontWeight: "bold" }}>
+                        {idea?.topicObject.name}
+                      </span>
+                    </span>
+                    <span
+                      style={{
+                        borderBottom: "1px solid black",
+                        padding: "5px",
+                      }}
+                    >
+                      Participants Number:{" "}
+                      <span style={{ fontWeight: "bold" }}>
+                        {idea?.participantsNumber}
+                      </span>
+                    </span>
+                    <span
+                      style={{
+                        borderBottom: "1px solid black",
+                        padding: "5px",
+                      }}
+                    >
+                      max Participants Number:{" "}
+                      <span style={{ fontWeight: "bold" }}>
+                        {idea?.maxParticipantsNumber}
+                      </span>
+                    </span>
+                  </div>
+                  <div className="ContainerbtnData">
+                    <button
+                      className="button-arounder1"
+                      onClick={() => {
+                        setExpertIdea(idea);
+                        setShowExpertReqsModal(true);
+                      }}
+                    >
+                      View Expert Requests
+                    </button>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <span> No Ideas Yet!</span>
+          )}
         </div>
-      
+
         {showExpertReqsModal && (
           <ExpertReqsCard
             show={showExpertReqsModal}
@@ -598,60 +674,96 @@ export default function AdminPanel() {
         )}
       </div>
 
-      <div className="allSkillsDiv">
+      <div className="allSkillsDivForProblems">
         <h2>Choose Cateogry To See Problems </h2>
         <select
           onChange={(e) => {
             setProblemCategoryId(e.target.value * 1);
           }}
-          className="SelectSkill"
+          className="SelectSkillForProblems"
+          // className="SelectSkill"
           // name="skillId"
           // id="skill"
-          class="select-field-skillInAdminPanel"
+          // class="select-field-skillInAdminPanel"
         >
           {problemCategories?.map((cat) => {
             return <option value={cat.id}>{cat.name}</option>;
           })}
         </select>
-        
-        <div className="custom-scrollbar" style={{display:"flex",flexDirection:"column",overflow:"auto"}}>
-        {studentProblems?.map(prob=>{
-          return(
-            <div className="ContainerreauestWithBtn">
-              <span style={{fontWeight:"bold",padding:"10px"}}>Problem Description:<p style={{padding:"5px",fontWeight:"normal"}} >{prob.description}</p> </span>
-              <button onClick={()=>{setChoosenProblem(prob);setShowResponseModal(true)}}>Respond</button>
+
+        <div
+          className="custom-scrollbar ContAllProblemsCards"
+        >
+          {studentProblems?.map((prob) => {
+            return (
+              <div className="ContainerreauestWithBtnForProblems">
+                <span style={{ fontWeight: "bold", padding: "10px" }}>
+                  Problem Description:
+                  <p className="custom-scrollbar" style={{ padding: "10px", fontWeight: "normal",maxHeight:"145px",overflow:"auto" }}>
+                    {prob.description}
+                  </p>{" "}
+                </span>
+                <button
+                className="hoverBtn"
+                  onClick={() => {
+                    setChoosenProblem(prob);
+                    setShowResponseModal(true);
+                  }}
+                >
+                  Respond
+                </button>
               </div>
-          )
-        })}
-        {showResponseModal&&choosenProblem&&<ProblemResponseCard show={showResponseModal} onClose={()=>setShowResponseModal(false)} problem={choosenProblem} />}
-        
+            );
+          })}
+          {showResponseModal && choosenProblem && (
+            <ProblemResponseCard
+              show={showResponseModal}
+              onClose={() => setShowResponseModal(false)}
+              problem={choosenProblem}
+            />
+          )}
         </div>
-        
       </div>
-      <div className="ContainerAllIdeas" >
-          <h1 style={{color:"white"}}>All Responses</h1>
-          <div className="AllIdeas">
-          {adminReponse?.map(res=>{
-          return(
-            <div
-            //  style={{border:'2px solid white'}}
-             className="CardInAllIdeas"
-             >
-              
-              <span className="spanForScroll custom-scrollbar "><span style={{fontWeight:"bold"}}>Problem Description :</span> {res.problem.description}</span>
-              <span className="spanForScroll custom-scrollbar"><span style={{fontWeight:"bold"}}>Admin Response :</span> {res.message}</span>
-              <span className="custom-scrollbar"><span style={{fontWeight:"bold"}}>Problem Category :</span> {res.problem.problemCategory.name}</span>
-
-
-            </div>
-          )
-        })}
-          </div>
-         
+      <div className="ContainerAllIdeas">
+        <h1 style={{ color: "white" }}>All Responses</h1>
+        <div className="AllIdeas">
+          {adminReponse?.map((res) => {
+            return (
+              <div
+                //  style={{border:'2px solid white'}}
+                className="CardInAllIdeas"
+              >
+                <span className="spanForScroll custom-scrollbar ">
+                  <span style={{ fontWeight: "bold" }}>
+                    Problem Description :
+                  </span>{" "}
+                  {res.problem.description}
+                </span>
+                <span className="spanForScroll custom-scrollbar">
+                  <span style={{ fontWeight: "bold" }}>Admin Response :</span>{" "}
+                  {res.message}
+                </span>
+                <span className="custom-scrollbar">
+                  <span style={{ fontWeight: "bold" }}>Problem Category :</span>{" "}
+                  {res.problem.problemCategory.name}
+                </span>
+              </div>
+            );
+          })}
         </div>
-        <div>
-          <button onClick={()=>navigate('/RegisterationSpecialAccount',{state:{data:userData}})}>Create Special Account</button>
-        </div>
+      </div>
+      <div>
+        <button
+        className="AddNewPaper"
+          onClick={() =>
+            navigate("/RegisterationSpecialAccount", {
+              state: { data: userData },
+            })
+          }
+        >
+          Create Special Account
+        </button>
+      </div>
     </div>
   );
 }

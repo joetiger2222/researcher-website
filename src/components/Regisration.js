@@ -20,7 +20,7 @@ const Registration = () => {
   const [loginData, setLoginData] = useState(null);
   const [allNationalities, setAllNationalities] = useState([]);
   const navigate = useNavigate();
-console.log(allNationalities)
+  console.log(allNationalities);
   function getRegisterData(event) {
     setFormData((prevFormData) => {
       return {
@@ -65,9 +65,9 @@ console.log(allNationalities)
       .then((data) => (data ? setAllNationalities(data) : null));
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getAllNationalities();
-  },[])
+  }, []);
 
   function authorizeLogin(e) {
     e.preventDefault();
@@ -100,7 +100,7 @@ console.log(allNationalities)
         <div className="left">
           <h1 className="h1ForRegistration">Sign Up</h1>
 
-          <form className="registrationForm">
+          <form className="registrationForm custom-scrollbar">
             <div className="NameAndUserName">
               <div>
                 {" "}
@@ -201,17 +201,26 @@ console.log(allNationalities)
                 placeholder="Enter Your Phone Number"
               />
             </div>
-            <select name="nationalityId"
-            className="genderSelect"
-              onChange={(e)=>setFormData(prev=>{return {...prev,[e.target.name]:e.target.value*1}})}
-            >
-              <option selected disabled>
-                Nationality
-              </option>
-              {allNationalities?.map((nat) => {
-                return <option value={nat.id}>{nat.name}</option>;
-              })}
-            </select>
+            <div className="username">
+              <label htmlFor="">Nationality</label>
+
+              <select
+                name="nationalityId"
+                className="genderSelect"
+                onChange={(e) =>
+                  setFormData((prev) => {
+                    return { ...prev, [e.target.name]: e.target.value * 1 };
+                  })
+                }
+              >
+                <option selected disabled>
+                  Nationality
+                </option>
+                {allNationalities?.map((nat) => {
+                  return <option value={nat.id}>{nat.name}</option>;
+                })}
+              </select>
+            </div>
 
             <div className="registrationButtons">
               <button onClick={sendRegisterData} className="createAccountbtn">
