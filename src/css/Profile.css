@@ -223,19 +223,20 @@
 }
 .badgesAndPoints{
   display: flex;
-  width: 77%;
+  width: 80%;
   padding: 20px;
-  justify-content: space-between;
+  justify-content: center;
   gap: 20px;
+  flex-wrap: wrap;
 }
 .badgesContainer {
   display: flex;
-  width: 48%;
+  width: 46%;
   flex-direction: column;
   align-items: center;
-  column-gap: 30px;
+  min-height: 250px;
+  gap: 20px;
   flex-wrap: wrap;
-  cursor: pointer;
   color: white;
   border: 1px solid white;
   background-color: brown;
@@ -251,8 +252,13 @@
   align-items: center;
   column-gap: 30px;
   flex-wrap: wrap;
+  cursor: pointer;
   color: white;
   border: 1px solid white;
+  background-color: brown;
+  border-radius: 50%;
+  justify-content: center;
+  padding: 10px;
 }
 .badgesDiv{
   display: flex;
@@ -270,14 +276,17 @@
 }
 
 .pointsDiv {
-  display: flex;
   flex-wrap: wrap;
-  column-gap: 20px;
-  margin: 0 0 30px 0;
+    justify-content: center;
+    display: flex;
+    gap: 10px;
+    overflow: auto;
+    max-height: 100px;
+    padding: 10px;
 }
 .pointsDiv > li {
-  padding: 20px;
-  font-size: 1.2em;
+  padding: 10px;
+  font-size: 1.1em;
 }
 .tasksDiv{
   display: flex;
@@ -296,6 +305,14 @@
   color: red;
 }
 
+.AllIdeasWidth80{
+  display: flex;
+  width: 80%;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
+}
 @media only screen and (max-width: 800px) {
   .badgesAndPoints{
     flex-direction: column;

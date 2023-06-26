@@ -10,7 +10,7 @@ import Header from "./Header";
 import paperPhoto from "../images/paper.jpg";
 import ModalEditProfile from "./ModalEditProfile";
 import PaperCardInProfile from "./Cards/PaperCardInProfile";
-import { FaCheckCircle } from 'react-icons/fa';
+import { FaCheckCircle } from "react-icons/fa";
 import request from "../images/request.png";
 const Profile = () => {
   const [show, setShow] = useState(false);
@@ -25,9 +25,9 @@ const Profile = () => {
   const [showDeletePaper, setShowDeletePaper] = useState(false);
   const [paperData, setPaperData] = useState(null);
   const [expertReqs, setExpertReqs] = useState(null);
-  const [adminReponse,setAdminResponse]=useState(null);
+  const [adminReponse, setAdminResponse] = useState(null);
   const [researcherIdeas, setResearcherIdeas] = useState([]);
-  
+
   const userData = useLocation().state?.data;
   const { studentId } = useParams();
   const navigate = useNavigate();
@@ -63,7 +63,6 @@ const Profile = () => {
           getResReqs(data.researcherId);
           getExpertReqs(data.researcherId);
           getResearcherIdeas(data.researcherId);
-
         }
       });
   }
@@ -78,7 +77,7 @@ const Profile = () => {
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => (data ? setResearcherData(data) : null));
   }
-console.log(adminReponse);
+  console.log(adminReponse);
   function getResInvitations(resId) {
     fetch(`https://localhost:7187/api/Researchers/Invitations/${resId}`, {
       method: "GET",
@@ -86,9 +85,7 @@ console.log(adminReponse);
         Authorization: `Bearer ${userData?.token}`,
       },
     })
-      .then((res) =>
-        res.ok ? res.json() : null
-      )
+      .then((res) => (res.ok ? res.json() : null))
       .then((data) => (data ? setResInvits(data) : null));
   }
 
@@ -99,9 +96,7 @@ console.log(adminReponse);
         Authorization: `Bearer ${userData?.token}`,
       },
     })
-      .then((res) =>
-        res.ok ? res.json() : null
-      )
+      .then((res) => (res.ok ? res.json() : null))
       .then((data) => (data ? setResReqs(data) : null));
   }
 
@@ -115,33 +110,28 @@ console.log(adminReponse);
         },
       }
     )
-      .then((res) =>
-        res.ok ? res.json() : null
-      )
+      .then((res) => (res.ok ? res.json() : null))
       .then((data) => (data ? setExpertReqs(data) : null));
   }
 
-  function getAdminResponse(){
-    fetch(`https://localhost:7187/api/Students/Responses/${studentId}`,{
-      method:"GET",
-      headers:{
-        "Authorization":`Bearer ${userData.token}`
+  function getAdminResponse() {
+    fetch(`https://localhost:7187/api/Students/Responses/${studentId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
       },
     })
-    .then(res=>res.ok?res.json():null)
-    .then(data=>data?setAdminResponse(data):null)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => (data ? setAdminResponse(data) : null));
   }
 
   function getResearcherIdeas(resId) {
-    fetch(
-      `https://localhost:7187/api/Researchers/Ideas/${resId}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${userData?.token}`,
-        },
-      }
-    )
+    fetch(`https://localhost:7187/api/Researchers/Ideas/${resId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData?.token}`,
+      },
+    })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data) {
@@ -150,13 +140,11 @@ console.log(adminReponse);
       });
   }
 
-console.log(studentData)
+  console.log(studentData);
   useEffect(() => {
     getStudentData();
-    if(userData.userId===studentId)getAdminResponse();
+    if (userData.userId === studentId) getAdminResponse();
   }, [studentId]);
-
-  
 
   function rejectInvite(i) {
     fetch(
@@ -174,8 +162,6 @@ console.log(studentData)
       } else alert("failed to reject Invitations");
     });
   }
-
-
 
   function acceptInvitation(i) {
     fetch(
@@ -208,15 +194,13 @@ console.log(studentData)
     </div>
   );
 
-  
-
   const AddPaperModal = (props) => {
     const [paperData, setPaperData] = useState({
       name: "",
       citation: "",
       url: "",
     });
-    
+
     function getPaperData(e) {
       setPaperData((prev) => {
         return {
@@ -247,12 +231,8 @@ console.log(studentData)
     if (!props.show) return null;
 
     return (
-      <div
-        className="modal-overlay2"
-      >
-        <div
-          className="modal2"
-        >
+      <div className="modal-overlay2">
+        <div className="modal2">
           <div className="ContExitbtn">
             <div class="outer" onClick={props.onClose}>
               <div class="inner">
@@ -262,40 +242,39 @@ console.log(studentData)
           </div>
           <h1 className="headContact2">Create New Paper</h1>
           <div className="FormModal2">
-
             <label className="AllLabeles">Paper Name:</label>
             <input
-            required
-            className="InputModalHallDetails"
+              required
+              className="InputModalHallDetails"
               onChange={getPaperData}
               name="name"
               placeholder="Name..."
             ></input>
-          
+
             <label className="AllLabeles">Paper Citation:</label>
             <input
-            required
-            className="InputModalHallDetails"
+              required
+              className="InputModalHallDetails"
               onChange={getPaperData}
               name="citation"
               placeholder="Citation..."
             ></input>
-          
+
             <label className="AllLabeles">Paper Url:</label>
             <input
-            required
-            className="InputModalHallDetails"
+              required
+              className="InputModalHallDetails"
               onChange={getPaperData}
               name="url"
               placeholder="Url..."
             ></input>
             <div className="buttonsOnModal">
-            {paperData.name&&paperData.citation&&paperData.url&&<button onClick={createPaper}>Create</button>}
-          <button onClick={props.onClose}>Cancel</button>
+              {paperData.name && paperData.citation && paperData.url && (
+                <button onClick={createPaper}>Create</button>
+              )}
+              <button onClick={props.onClose}>Cancel</button>
             </div>
-         
           </div>
-
         </div>
       </div>
     );
@@ -326,14 +305,13 @@ console.log(studentData)
         {
           method: "PUT",
           headers: {
-            "Authorization": `Bearer ${userData?.token}`,
+            Authorization: `Bearer ${userData?.token}`,
           },
         }
       ).then((res) => {
         if (res.ok) {
           props.onClose();
           getResearcherData(userData.resercherId);
-         
         } else alert("Failed To Update Speciality Please Try Again Later");
       });
     }
@@ -342,28 +320,21 @@ console.log(studentData)
 
     return (
       <div
-        style={{
-          position: "fixed",
-          left: "0",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          backgroundColor: "rgba(0, 0,0,0.5)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: "100",
-        }}
+       className="modal-overlay2"
       >
         <div
-          style={{
-            backgroundColor: "white",
-            padding: "20px",
-            borderRadius: "10px",
-          }}
+          className="modal2"
         >
-          <h1>Choose Speciality</h1>
-          <select onChange={(e) => setNewSpec(e.target.value * 1)}>
+           <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">Choose Speciality</h1>
+          <div className="FormModal2">
+          <select className="InputModalHallDetails" onChange={(e) => setNewSpec(e.target.value * 1)}>
             <option disabled selected>
               Choose Specality
             </option>
@@ -371,8 +342,11 @@ console.log(studentData)
               return <option value={spec.id}>{spec.name}</option>;
             })}
           </select>
-          <button onClick={props.onClose}>Cancel</button>
+          <div className="buttonsOnModal">
           <button onClick={editSpec}>Confirm</button>
+          <button onClick={props.onClose}>Cancel</button>
+          </div>
+          </div>
         </div>
       </div>
     );
@@ -400,30 +374,24 @@ console.log(studentData)
       fetch(`https://localhost:7187/api/Researchers/Papers/${paperData.id}`, {
         method: "PUT",
         headers: {
-          "Content-Type":"application/json",
-          "Authorization": `Bearer ${userData?.token}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userData?.token}`,
         },
         body: JSON.stringify(paperToEdit),
-      })
-     
-      .then(res=>{
-        if(res.ok){
+      }).then((res) => {
+        if (res.ok) {
           alert("Paper Edited Successfully");
           window.location.reload();
-        }else alert("Failed To Edit Paper Please Try Again Later")
-      })
+        } else alert("Failed To Edit Paper Please Try Again Later");
+      });
     }
 
     if (!props.show) return null;
 
     return (
-      <div
-       className="modal-overlay2"
-      >
-        <div
-         className="modal2"
-        >
-          <div className="ContExitbtn"  onClick={props.onClose}>
+      <div className="modal-overlay2">
+        <div className="modal2">
+          <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
                 <label className="label2">Exit</label>
@@ -431,143 +399,156 @@ console.log(studentData)
             </div>
           </div>
 
-          <h1 className="headContact2">Only Change The Fields You Want To Edit</h1>
+          <h1 className="headContact2">
+            Only Change The Fields You Want To Edit
+          </h1>
           <div className="FormModal2">
-
-          <label className="AllLabeles">Paper Name :</label>
-          <input
-          className="InputModalHallDetails"
-            placeholder={paperData.name}
-            name="name"
-            onChange={getPaperDataToEdit}
-          ></input>
-          <label className="AllLabeles">Paper citation :</label>
-          <input
-          className="InputModalHallDetails"
-            placeholder={paperData.citation}
-            name="citation"
-            onChange={getPaperDataToEdit}
-          ></input>
-          <label className="AllLabeles">Paper url :</label>
-          <input
-          className="InputModalHallDetails"
-            placeholder={paperData.url}
-            name="url"
-            onChange={getPaperDataToEdit}
-          ></input>
-          <div className="buttonsOnModal">
-          <button onClick={editPaper}>Confirm</button>
-          <button onClick={props.onClose}>Cancel</button>
-
-          </div>
-         
+            <label className="AllLabeles">Paper Name :</label>
+            <input
+              className="InputModalHallDetails"
+              placeholder={paperData.name}
+              name="name"
+              onChange={getPaperDataToEdit}
+            ></input>
+            <label className="AllLabeles">Paper citation :</label>
+            <input
+              className="InputModalHallDetails"
+              placeholder={paperData.citation}
+              name="citation"
+              onChange={getPaperDataToEdit}
+            ></input>
+            <label className="AllLabeles">Paper url :</label>
+            <input
+              className="InputModalHallDetails"
+              placeholder={paperData.url}
+              name="url"
+              onChange={getPaperDataToEdit}
+            ></input>
+            <div className="buttonsOnModal">
+              <button onClick={editPaper}>Confirm</button>
+              <button onClick={props.onClose}>Cancel</button>
+            </div>
           </div>
         </div>
       </div>
     );
   };
 
-  const DeletePaperCard=(props)=>{
-
-    function deletePaper(){
-        fetch(`https://localhost:7187/api/Researchers/Papers/${props.paper.id}`,{
-          method:"DELETE",
-          headers:{
-            "Authorization":`Bearer ${userData.token}`
-          },
-
-        })
-        .then(res=>{
-          if(res.ok){
-            alert('Paper Successfully Deleted');
-            window.location.reload()
-          }else alert('Failed To Delete Paper')
-        })
-    }
-
-
-
-
-    if (!props.show) return null;
-  return (
-    <div
-      style={{
-        position: "fixed",
-        left: "0",
-        top: "0",
-        right: "0",
-        bottom: "0",
-        backgroundColor: "rgba(0, 0,0,0.5)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: "100",
-      }}
-    >
-      <div style={{ backgroundColor: "white", width: "50%",color:'black' }}>
-        <h1>Are You Sure You Want To Delete This Paper?</h1>
-        <button onClick={deletePaper}>Delete</button>
-        <button onClick={props.onClose}>Cancel</button>
-      </div>
-      </div>
-  )
-  }
-
-
-  const EditData=(props)=>{
-    const [editData,setEditData]=useState({firstname:studentData.firstName,lastname:studentData.lastName,gender:studentData.gender,age:studentData.age,nationalityId:studentData.nationality.id,type:0,googleSchoolerLink:''});
-
-    function getEditData(e){
-      setEditData(prev=>{return{...prev,[e.target.name]:e.target.value}});
+  const DeletePaperCard = (props) => {
+    function deletePaper() {
+      fetch(`https://localhost:7187/api/Researchers/Papers/${props.paper.id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      }).then((res) => {
+        if (res.ok) {
+          alert("Paper Successfully Deleted");
+          window.location.reload();
+        } else alert("Failed To Delete Paper");
+      });
     }
 
     if (!props.show) return null;
-  return (
-    <div
-      style={{
-        position: "fixed",
-        left: "0",
-        top: "0",
-        right: "0",
-        bottom: "0",
-        backgroundColor: "rgba(0, 0,0,0.5)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: "100",
-      }}
-    >
-      <div style={{ backgroundColor: "white", width: "50%",color:'black' }}>
-        <span>First Name</span>
-        <input name="firstname" onChange={getEditData}></input>
-        <span>Last Name</span>
-        <input name="lastname" onChange={getEditData}></input>
-        <span>Gender</span>
-        <select name="gender" onChange={(e)=>setEditData(prev=>{return{...prev,[e.target.name]:e.target.value*1}})}>
-          
-        </select>
-        <span>Nationality</span>
-        <select name="" onChange={(e)=>setEditData(prev=>{return{...prev,[e.target.name]:e.target.value*1}})}>
-          <option></option>
-
-        </select>
-        <span>Type</span>
-        <select name="" onChange={(e)=>setEditData(prev=>{return{...prev,[e.target.name]:e.target.value*1}})}>
-          <option></option>
-
-        </select>
-        <span>Google Schooler Link</span>
-        <select name="" onChange={getEditData}>
-          <option></option>
-
-        </select>
-        
+    return (
+      <div className="modal-overlay2">
+        <div className="modal2">
+          <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">
+            Are You Sure You Want To Delete This Paper?
+          </h1>
+          <div className="buttonsOnModal">
+            <button onClick={deletePaper}>Delete</button>
+            <button onClick={props.onClose}>Cancel</button>
+          </div>
+        </div>
       </div>
+    );
+  };
+
+  const EditData = (props) => {
+    const [editData, setEditData] = useState({
+      firstname: studentData.firstName,
+      lastname: studentData.lastName,
+      gender: studentData.gender,
+      age: studentData.age,
+      nationalityId: studentData.nationality.id,
+      type: 0,
+      googleSchoolerLink: "",
+    });
+
+    function getEditData(e) {
+      setEditData((prev) => {
+        return { ...prev, [e.target.name]: e.target.value };
+      });
+    }
+
+    if (!props.show) return null;
+    return (
+      <div
+        style={{
+          position: "fixed",
+          left: "0",
+          top: "0",
+          right: "0",
+          bottom: "0",
+          backgroundColor: "rgba(0, 0,0,0.5)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: "100",
+        }}
+      >
+        <div style={{ backgroundColor: "white", width: "50%", color: "black" }}>
+          <span>First Name</span>
+          <input name="firstname" onChange={getEditData}></input>
+          <span>Last Name</span>
+          <input name="lastname" onChange={getEditData}></input>
+          <span>Gender</span>
+          <select
+            name="gender"
+            onChange={(e) =>
+              setEditData((prev) => {
+                return { ...prev, [e.target.name]: e.target.value * 1 };
+              })
+            }
+          ></select>
+          <span>Nationality</span>
+          <select
+            name=""
+            onChange={(e) =>
+              setEditData((prev) => {
+                return { ...prev, [e.target.name]: e.target.value * 1 };
+              })
+            }
+          >
+            <option></option>
+          </select>
+          <span>Type</span>
+          <select
+            name=""
+            onChange={(e) =>
+              setEditData((prev) => {
+                return { ...prev, [e.target.name]: e.target.value * 1 };
+              })
+            }
+          >
+            <option></option>
+          </select>
+          <span>Google Schooler Link</span>
+          <select name="" onChange={getEditData}>
+            <option></option>
+          </select>
+        </div>
       </div>
-  )
-  }
-
-
+    );
+  };
 
   return (
     <div className="ParentHeadData">
@@ -576,36 +557,35 @@ console.log(studentData)
         <div className="imageProfDiv">
           <img src={kariem} alt="Profile" className="profile-image" />
           <div className="ContEditProfile">
-          {researcherData && (
-            <p className="nameUser">{researcherData?.specality?.name} </p>
-          )}
-          {userData.roles === "Researcher" &&
-            userData?.userId === studentId && (
-              <p
-                onClick={() => setShowSpecCard(true)}
-                className="editBtnprofile"
-              >
-                Edit
-              </p>
+            {researcherData && (
+              <p className="nameUser">{researcherData?.specality?.name} </p>
             )}
-          {showSpecCard && (
-            <SpecCard
-              show={showSpecCard}
-              onClose={() => setShowSpecCard(false)}
-            />
-          )}
+            {userData.roles === "Researcher" &&
+              userData?.userId === studentId && (
+                <p
+                  onClick={() => setShowSpecCard(true)}
+                  className="editBtnprofile"
+                >
+                  Edit
+                </p>
+              )}
+            {showSpecCard && (
+              <SpecCard
+                show={showSpecCard}
+                onClose={() => setShowSpecCard(false)}
+              />
+            )}
           </div>
         </div>
         <div className="profile-details">
           <h1 className="profile-name">
             {studentData?.firstName + " " + studentData?.lastName}
-            {studentData?.isMentor&&<FaCheckCircle/>}
+            {studentData?.isMentor && <FaCheckCircle />}
           </h1>
           <p className="profile-bio">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis
             beatae non rerum ab es.
           </p>
-         
         </div>
         <div className="btnsPlannerProf">
           <div className="planner-prof-btn-div">
@@ -646,153 +626,150 @@ console.log(studentData)
         <div className="badgesContainer">
           <h1>Badges</h1>
           <div className="badgesDiv custom-scrollbar">
-            {researcherData?.badges.map((b) => {
-              return <BadgeName b={b} />;
-            })}
-          </div>
-        </div>
-
-        <div className="pointsContainer">
-          <h1>{`Points : ` + researcherData?.points}</h1>
-          <div className="pointsDiv">
-            <li
-              className="profileBeg"
-              style={{
-                backgroundColor: researcherData?.level === 0 ? "gray" : "",
-              }}
-            >
-              Beginner (0-2) Points
-            </li>
-            <li
-              className="profileInter"
-              style={{
-                backgroundColor: researcherData?.level === 1 ? "gray" : "",
-              }}
-            >
-              Intermediate (2-6) Points
-            </li>
-            <li
-              className="profileExp"
-              style={{
-                backgroundColor: researcherData?.level >= 2 ? "gray" : "",
-              }}
-            >
-              Expert (6{"<"}points)
-            </li>
-          </div>
-        </div>
-      </div>
-
-      <div className="DataForLeftRight">
-        {userData?.userId === studentId && (
-          <div className="leftBox">
-            <h1>Enrolled Courses</h1>
-            <div>
-              <WatchedCourse />
-              <WatchedCourse />
-              <WatchedCourse />
-              <WatchedCourse />
+            <div className="badge">
+              <h4>Medical Coding</h4>
+            </div>
+            <div className="badge">
+              <h4>Medical Coding</h4>
             </div>
           </div>
-        )}
-        
-      </div>
-     {researcherIdeas>0&&<div className="ContainerAllIdeas">
-      <h1 style={{color:"white"}}>Ideas</h1>
-
-            <div className="AllIdeas">
-          {researcherIdeas?.length > 0 ? (
-            researcherIdeas?.map((idea, index) => {
-              return (
-                <div
-                  onClick={() =>
-                    navigate(`/Idea/${idea.id}`, { state: { data: userData } })
-                  }
-                  className="CardInAllIdeas"
-                  style={{ cursor: "pointer" }}
-                >
-                  <h2>Idea: {index + 1}</h2>
-                  <div className="containerSpansData">
-                    <span
-                      style={{
-                        borderBottom: "1px solid black",
-                        padding: "5px",
-                      }}
-                    >
-                      Name:{" "}
-                      <span style={{ fontWeight: "bold" }}>{idea.name}</span>
-                    </span>
-
-                    <span
-                      style={{
-                        borderBottom: "1px solid black",
-                        padding: "5px",
-                      }}
-                    >
-                      specality:{" "}
-                      <span style={{ fontWeight: "bold" }}>
-                        {idea?.specalityObj.name}
-                      </span>
-                    </span>
-                    <span
-                      style={{
-                        borderBottom: "1px solid black",
-                        padding: "5px",
-                      }}
-                    >
-                      deadline:{" "}
-                      <span style={{ fontWeight: "bold" }}>
-                        {new Date(idea?.deadline).toLocaleDateString("en-US", {
-                          month: "long",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
-                      </span>
-                    </span>
-                    <span
-                      style={{
-                        borderBottom: "1px solid black",
-                        padding: "5px",
-                      }}
-                    >
-                      Participants Number:{" "}
-                      <span style={{ fontWeight: "bold" }}>
-                        {idea?.participantsNumber}
-                      </span>
-                    </span>
-                    <span
-                      style={{
-                        borderBottom: "1px solid black",
-                        padding: "5px",
-                      }}
-                    >
-                      max Participants Number:{" "}
-                      <span style={{ fontWeight: "bold" }}>
-                        {idea?.maxParticipantsNumber}
-                      </span>
-                    </span>
-                    <span
-                      style={{
-                        borderBottom: "1px solid black",
-                        padding: "5px",
-                      }}
-                    >
-                      topic:{" "}
-                      <span style={{ fontWeight: "bold" }}>
-                        {idea?.topicObject.name}
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              );
-            })
-          ) : (
-            <span>You Have No Ideas Yet!</span>
-          )}
+        </div>
+        <div className="badgesContainer">
+          <h1>Points : 6</h1>
+          <div className="pointsDiv">
+            <li className="profileBeg">Beginner (0-2) Points</li>
+            <li className="profileInter" style={{backgroundColor: "#80808075"}}>
+              Intermediate (2-6) Points
+            </li>
+            <li className="profileExp">Expert (6&lt;points)</li>
           </div>
-        </div>}
-     
-      {(userData.roles === "Researcher" || userData.roles === 'Admin') && (
+        </div>
+        <div className="badgesContainer">
+          <h1>Enrolled Courses</h1>
+          <div className="pointsDiv">
+            <div className="watchedCourse">
+              <h4>Course Name</h4>
+              <p>Category</p>
+            </div>
+            <div className="watchedCourse">
+              <h4>Course Name</h4>
+              <p>Category</p>
+            </div>
+            <div className="watchedCourse">
+              <h4>Course Name</h4>
+              <p>Category</p>
+            </div>
+            <div className="watchedCourse">
+              <h4>Course Name</h4>
+              <p>Category</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {researcherIdeas > 0 && (
+        <div className="ContainerAllIdeas">
+          <h1 style={{ color: "white" }}>Ideas</h1>
+
+          <div className="AllIdeas">
+            {researcherIdeas?.length > 0 ? (
+              researcherIdeas?.map((idea, index) => {
+                return (
+                  <div
+                    onClick={() =>
+                      navigate(`/Idea/${idea.id}`, {
+                        state: { data: userData },
+                      })
+                    }
+                    className="CardInAllIdeas"
+                    style={{ cursor: "pointer" }}
+                  >
+                    <h2>Idea: {index + 1}</h2>
+                    <div className="containerSpansData">
+                      <span
+                        style={{
+                          borderBottom: "1px solid black",
+                          padding: "5px",
+                        }}
+                      >
+                        Name:{" "}
+                        <span style={{ fontWeight: "bold" }}>{idea.name}</span>
+                      </span>
+
+                      <span
+                        style={{
+                          borderBottom: "1px solid black",
+                          padding: "5px",
+                        }}
+                      >
+                        specality:{" "}
+                        <span style={{ fontWeight: "bold" }}>
+                          {idea?.specalityObj.name}
+                        </span>
+                      </span>
+                      <span
+                        style={{
+                          borderBottom: "1px solid black",
+                          padding: "5px",
+                        }}
+                      >
+                        deadline:{" "}
+                        <span style={{ fontWeight: "bold" }}>
+                          {new Date(idea?.deadline).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "long",
+                              day: "numeric",
+                              year: "numeric",
+                            }
+                          )}
+                        </span>
+                      </span>
+                      <span
+                        style={{
+                          borderBottom: "1px solid black",
+                          padding: "5px",
+                        }}
+                      >
+                        Participants Number:{" "}
+                        <span style={{ fontWeight: "bold" }}>
+                          {idea?.participantsNumber}
+                        </span>
+                      </span>
+                      <span
+                        style={{
+                          borderBottom: "1px solid black",
+                          padding: "5px",
+                        }}
+                      >
+                        max Participants Number:{" "}
+                        <span style={{ fontWeight: "bold" }}>
+                          {idea?.maxParticipantsNumber}
+                        </span>
+                      </span>
+                      <span
+                        style={{
+                          borderBottom: "1px solid black",
+                          padding: "5px",
+                        }}
+                      >
+                        topic:{" "}
+                        <span style={{ fontWeight: "bold" }}>
+                          {idea?.topicObject.name}
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <span>You Have No Ideas Yet!</span>
+            )}
+          </div>
+        </div>
+      )}
+
+      {(userData.roles === "Researcher" || userData.roles === "Admin") && (
         <div
           style={{
             color: "white",
@@ -801,8 +778,7 @@ console.log(studentData)
             // padding: "20px",
             alignItems: "center",
             gap: "40px",
-            width:"100%",
-            
+            width: "100%",
           }}
         >
           <h1>Papers</h1>
@@ -824,9 +800,15 @@ console.log(studentData)
                     <img src={paperPhoto} alt="paper" />
                   </div>
                   <div className="ContDataInCardPaper">
-                    <p className="custom-scrollbar">{"Paper Name : " + paper?.name}</p>
-                    <p className="custom-scrollbar">{"Paper citation : " + paper?.citation}</p>
-                    <p className="custom-scrollbar">{"Paper url : " + paper?.url}</p>
+                    <p className="custom-scrollbar">
+                      {"Paper Name : " + paper?.name}
+                    </p>
+                    <p className="custom-scrollbar">
+                      {"Paper citation : " + paper?.citation}
+                    </p>
+                    <p className="custom-scrollbar">
+                      {"Paper url : " + paper?.url}
+                    </p>
                   </div>
                   <div className="Contbtns">
                     {userData?.userId === studentId && (
@@ -841,7 +823,15 @@ console.log(studentData)
                       </button>
                     )}
                     {userData?.userId === studentId && (
-                      <button onClick={()=>{setPaperData(paper);setShowDeletePaper(true)}} className="deletePaperbtn">Delete Paper</button>
+                      <button
+                        onClick={() => {
+                          setPaperData(paper);
+                          setShowDeletePaper(true);
+                        }}
+                        className="deletePaperbtn"
+                      >
+                        Delete Paper
+                      </button>
                     )}
                   </div>
                 </div>
@@ -853,7 +843,13 @@ console.log(studentData)
                 onClose={() => setShowEditPaper(false)}
               />
             )}
-            {showDeletePaper&&paperData&&<DeletePaperCard show={showDeletePaper} onClose={()=>setShowDeletePaper(false)} paper={paperData}  />}
+            {showDeletePaper && paperData && (
+              <DeletePaperCard
+                show={showDeletePaper}
+                onClose={() => setShowDeletePaper(false)}
+                paper={paperData}
+              />
+            )}
           </div>
           {userData?.userId === studentId && (
             <button
@@ -876,10 +872,10 @@ console.log(studentData)
         {userData.roles === "Researcher" && userData?.userId === studentId && (
           <div className="Invitation">
             <h1>Invitations : {resInvits?.length}</h1>
-            {resInvits?.map((i,index) => {
+            {resInvits?.map((i, index) => {
               return (
                 <div className="ContainerreauestWithBtn">
-                  <p>Invitation {index+1}</p>
+                  <p>Invitation {index + 1}</p>
                   <button
                     onClick={() =>
                       navigate(`/Idea/${i.ideaId}`, {
@@ -901,24 +897,23 @@ console.log(studentData)
           <div className="Invitation">
             <h1>Your Requests : {resReqs?.length}</h1>
             <div className="ContAllRequestss">
-            {resReqs?.map((r,index) => {
-              return (
-                <div className="ContainerreauestWithBtn">
-                  <p>Request {index+1}</p>
-                  <button
-                    onClick={() =>
-                      navigate(`/Idea/${r.ideaId}`, {
-                        state: { data: userData },
-                      })
-                    }
-                  >
-                    View Idea
-                  </button>
-                </div>
-              );
-            })}
+              {resReqs?.map((r, index) => {
+                return (
+                  <div className="ContainerreauestWithBtn">
+                    <p>Request {index + 1}</p>
+                    <button
+                      onClick={() =>
+                        navigate(`/Idea/${r.ideaId}`, {
+                          state: { data: userData },
+                        })
+                      }
+                    >
+                      View Idea
+                    </button>
+                  </div>
+                );
+              })}
             </div>
-           
           </div>
         )}
       </div>
@@ -927,61 +922,71 @@ console.log(studentData)
         <div className="ContExpertRequests">
           <h1>Your Expert Requests : {expertReqs?.length}</h1>
           <div className="ContAllRequests">
-          {expertReqs?.map((req) => {
-            return (
-              <div className="ContAllWithbtn">
-                <div className="photoRequst">
-                  <img src={request} alt="photo" />
-                </div>
-                <div className="ContainerInfoWithbtn">
-                  <div className="ContTitleAndContent">
-                    <p>{req.title}</p>
-                    <p className="contentData">{req.content}</p>
+            {expertReqs?.map((req) => {
+              return (
+                <div className="ContAllWithbtn">
+                  <div className="photoRequst">
+                    <img src={request} alt="photo" />
                   </div>
-                  <div>
-                    <button
-                    className="viewData"
-                      onClick={() =>
-                        navigate(`/idea/${req.ideaId}`, {
-                          state: { data: userData },
-                        })
-                      }
-                    >
-                      View Idea
-                    </button>
+                  <div className="ContainerInfoWithbtn">
+                    <div className="ContTitleAndContent">
+                      <p>{req.title}</p>
+                      <p className="contentData">{req.content}</p>
+                    </div>
+                    <div>
+                      <button
+                        className="viewData"
+                        onClick={() =>
+                          navigate(`/idea/${req.ideaId}`, {
+                            state: { data: userData },
+                          })
+                        }
+                      >
+                        View Idea
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
           </div>
-         
         </div>
       )}
 
-      {userData.userId===studentId&&
-      <div className="ContainerAllIdeas">
-        {adminReponse?.length>0&&<h1 style={{color:"white"}} >Admin Reponses</h1>}
-        <div className="AllIdeas">
-        {adminReponse?.map(res=>{
-          return(
-            <div
-            //  style={{border:'2px solid white'}}
-            className="CardInAllIdeas"
-
-             >
-              <span className="custom-scrollbar"><span style={{fontWeight:"bold"}}>Problem Description :</span> {res.problem.description}</span>
-              <span className="spanForScroll custom-scrollbar " ><span style={{fontWeight:"bold"}}>Admin Response :</span> {res.message}</span>
-              <span className="custom-scrollbar"><span style={{fontWeight:"bold"}}>Problem Category :</span> {res.problem.problemCategory.name}</span>
-
-              
+      {userData.userId === studentId && (
+        <div className="ContainerAllIdeas">
+          {adminReponse?.length > 0 && (
+            <h1 style={{ color: "white" }}>Admin Reponses</h1>
+          )}
+          <div className="AllIdeasWidth80">
+            {adminReponse?.map((res) => {
+              return (
+                <div
+                  //  style={{border:'2px solid white'}}
+                  className="CardInAllIdeas"
+                >
+                  <span className="custom-scrollbar">
+                    <span style={{ fontWeight: "bold" }}>
+                      Problem Description :
+                    </span>{" "}
+                    {res.problem.description}
+                  </span>
+                  <span className="spanForScroll custom-scrollbar ">
+                    <span style={{ fontWeight: "bold" }}>Admin Response :</span>{" "}
+                    {res.message}
+                  </span>
+                  <span className="custom-scrollbar">
+                    <span style={{ fontWeight: "bold" }}>
+                      Problem Category :
+                    </span>{" "}
+                    {res.problem.problemCategory.name}
+                  </span>
+                </div>
+              );
+            })}
           </div>
-          )
-        })}
         </div>
-        
-      </div>
-      }
+      )}
     </div>
   );
 };
