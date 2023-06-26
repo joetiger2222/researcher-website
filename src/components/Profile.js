@@ -607,7 +607,7 @@ console.log(studentData)
         </div>
 
         <div className="pointsContainer">
-          <h1>{`Points : ` + researcherData?.points}</h1>
+        <h1>{`Points : ${researcherData?.points ?? 0}`}</h1>
           <div className="pointsDiv">
             <li
               className="profileBeg"
@@ -651,7 +651,7 @@ console.log(studentData)
         )}
         
       </div>
-      <div className="ContainerAllIdeas">
+     {researcherIdeas>0&&<div className="ContainerAllIdeas">
       <h1 style={{color:"white"}}>Ideas</h1>
 
             <div className="AllIdeas">
@@ -744,7 +744,7 @@ console.log(studentData)
             <span>You Have No Ideas Yet!</span>
           )}
           </div>
-        </div>
+        </div>}
      
       {(userData.roles === "Researcher" || userData.roles === 'Admin') && (
         <div
@@ -912,10 +912,10 @@ console.log(studentData)
          
         </div>
       )}
-      {userData.userId===studentId&&
 
+      {userData.userId===studentId&&
       <div className="ContainerAllIdeas">
-        <h1 style={{color:"white"}} >Admin Reponses</h1>
+        {adminReponse?.length>0&&<h1 style={{color:"white"}} >Admin Reponses</h1>}
         <div className="AllIdeas">
         {adminReponse?.map(res=>{
           return(

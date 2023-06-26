@@ -15,10 +15,11 @@ export default function FinalQuiz(){
   });
   const [answers, setAnswers] = useState([]);
   const {skillId}=useParams();
-  const userData=useLocation().state?.data
+  const userData=useLocation().state?.data;
+  const[researcherId,setResearcherId]=useState('');
   const navigate=useNavigate();
 
-  console.log(finalQuizData)
+  // console.log(finalQuizData)
 
   const handleUpdate = (update) => {
     const index = answers.findIndex(
@@ -88,6 +89,30 @@ console.log(timeLimit)
   },[])
 
 
+
+
+  function getResearcherIdByStudentId() {
+    fetch(
+      `https://localhost:7187/api/Researchers/ResearcherId/${userData.userId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      }
+    )
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data) {
+          userData.roles = "Researcher";
+          userData.resercherId = data.researcherId;
+          setResearcherId(data.researcherId);
+        }
+      })
+      .catch((error) => console.error(error));
+  }
+
+
   function handleSubmit(){
     let arr=[];
 
@@ -106,10 +131,11 @@ console.log(timeLimit)
     .then(data=>{
         if(data){
           if(data.isSuccessed){
-            userData.roles='Researcher'
-            navigate(`/FinalQuizResult/${skillId}`,{state:{data:userData}})
+            getResearcherIdByStudentId();
+            userData.roles='Researcher';
+            navigate(`/SuccededFianlQuiz`,{state:{data:userData}})
           }else{
-            navigate(`/FinalQuizResult/${skillId}`,{state:{data:userData}})
+            navigate(`/FailedFinalQuiz/${skillId}`,{state:{data:userData}})
           }
           
         }
