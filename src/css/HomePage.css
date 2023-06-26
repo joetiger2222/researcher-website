@@ -152,7 +152,8 @@ p {
 }
 .quizContainer > h1,
 .researchContainer > h1 {
- 
+  text-align: center;
+  width: 80%;
 }
 .btnSkillHome{
   padding: 8px;

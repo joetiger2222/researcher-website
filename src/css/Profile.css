@@ -357,7 +357,7 @@
       padding: 10px;
       font-size: 22px;
       background-color: var(--orange-color);
-      transition: 1s;
+      transition: .5s;
       border: none;
       color: white;
     }

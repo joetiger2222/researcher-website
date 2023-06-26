@@ -283,7 +283,7 @@ export default function HomePage() {
 
             <img className="quizImg" src={quiz} />
           </div> */}
-            <h1>Choose Skill</h1>
+            <h1>Choose Skill Then Take a Quiz</h1>
             <select
               onChange={(e) => {
                 setSkillId(e.target.value * 1);
