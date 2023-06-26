@@ -326,13 +326,14 @@ console.log(studentData)
         {
           method: "PUT",
           headers: {
-            Authorization: `Bearer ${userData?.token}`,
+            "Authorization": `Bearer ${userData?.token}`,
           },
         }
       ).then((res) => {
         if (res.ok) {
           props.onClose();
           getResearcherData(userData.resercherId);
+         
         } else alert("Failed To Update Speciality Please Try Again Later");
       });
     }
@@ -507,6 +508,60 @@ console.log(studentData)
         <h1>Are You Sure You Want To Delete This Paper?</h1>
         <button onClick={deletePaper}>Delete</button>
         <button onClick={props.onClose}>Cancel</button>
+      </div>
+      </div>
+  )
+  }
+
+
+  const EditData=(props)=>{
+    const [editData,setEditData]=useState({firstname:studentData.firstName,lastname:studentData.lastName,gender:studentData.gender,age:studentData.age,nationalityId:studentData.nationality.id,type:0,googleSchoolerLink:''});
+
+    function getEditData(e){
+      setEditData(prev=>{return{...prev,[e.target.name]:e.target.value}});
+    }
+
+    if (!props.show) return null;
+  return (
+    <div
+      style={{
+        position: "fixed",
+        left: "0",
+        top: "0",
+        right: "0",
+        bottom: "0",
+        backgroundColor: "rgba(0, 0,0,0.5)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: "100",
+      }}
+    >
+      <div style={{ backgroundColor: "white", width: "50%",color:'black' }}>
+        <span>First Name</span>
+        <input name="firstname" onChange={getEditData}></input>
+        <span>Last Name</span>
+        <input name="lastname" onChange={getEditData}></input>
+        <span>Gender</span>
+        <select name="gender" onChange={(e)=>setEditData(prev=>{return{...prev,[e.target.name]:e.target.value*1}})}>
+          
+        </select>
+        <span>Nationality</span>
+        <select name="" onChange={(e)=>setEditData(prev=>{return{...prev,[e.target.name]:e.target.value*1}})}>
+          <option></option>
+
+        </select>
+        <span>Type</span>
+        <select name="" onChange={(e)=>setEditData(prev=>{return{...prev,[e.target.name]:e.target.value*1}})}>
+          <option></option>
+
+        </select>
+        <span>Google Schooler Link</span>
+        <select name="" onChange={getEditData}>
+          <option></option>
+
+        </select>
+        
       </div>
       </div>
   )
