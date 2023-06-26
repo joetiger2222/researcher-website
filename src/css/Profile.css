@@ -32,7 +32,8 @@
   background-color: #484848;
   gap: 30px;
   padding: 20px;
-  border: 1px solid white;
+  /* border: 1px solid white; */
+  border-radius: 10px;
 }
 .imageProrDiv {
   display: flex;
@@ -60,7 +61,25 @@
   align-items: center;
   column-gap: 5px;
 }
-
+.ContEditProfile{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.editBtnprofile{
+  font-size: 15px;
+  color: var(--darkgreen-color);
+  cursor: pointer;
+  border: 1px solid var(--darkgreen-color);
+  padding: 3px 7px;
+  border-radius: 3px;
+}
+.editBtnprofile:hover{
+  color: white;
+  background-color: var(--darkgreen-color);
+  cursor: pointer;
+}
 .profile-bio {
   font-size: 1rem;
   margin-bottom: 1rem;
@@ -207,6 +226,7 @@
   width: 77%;
   padding: 20px;
   justify-content: space-between;
+  gap: 20px;
 }
 .badgesContainer {
   display: flex;
@@ -218,6 +238,10 @@
   cursor: pointer;
   color: white;
   border: 1px solid white;
+  background-color: brown;
+  border-radius: 50%;
+  justify-content: center;
+  padding: 10px;
 }
 
 .pointsContainer{
@@ -232,6 +256,10 @@
 }
 .badgesDiv{
   display: flex;
+  gap: 10px;
+  overflow: auto;
+  max-height: 100px;
+  padding: 10px;
 }
 .badge {
   padding: 10px;

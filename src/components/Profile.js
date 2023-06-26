@@ -520,6 +520,7 @@ console.log(studentData)
       <div className="profile-header" style={{ marginTop: "130px" }}>
         <div className="imageProfDiv">
           <img src={kariem} alt="Profile" className="profile-image" />
+          <div className="ContEditProfile">
           {researcherData && (
             <p className="nameUser">{researcherData?.specality?.name} </p>
           )}
@@ -527,8 +528,7 @@ console.log(studentData)
             userData?.userId === studentId && (
               <p
                 onClick={() => setShowSpecCard(true)}
-                style={{ fontSize: "12px", color: "blue", cursor: "pointer" }}
-                className="nameUser"
+                className="editBtnprofile"
               >
                 Edit
               </p>
@@ -539,6 +539,7 @@ console.log(studentData)
               onClose={() => setShowSpecCard(false)}
             />
           )}
+          </div>
         </div>
         <div className="profile-details">
           <h1 className="profile-name">
@@ -549,17 +550,7 @@ console.log(studentData)
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis
             beatae non rerum ab es.
           </p>
-          <div className="social-icons">
-            <a href="#">
-              <FaInstagram />
-            </a>
-            <a href="#">
-              <FaFacebook />
-            </a>
-            <a href="#">
-              <FaTwitter />
-            </a>
-          </div>
+         
         </div>
         <div className="btnsPlannerProf">
           <div className="planner-prof-btn-div">
@@ -599,7 +590,7 @@ console.log(studentData)
       <div className="badgesAndPoints">
         <div className="badgesContainer">
           <h1>Badges</h1>
-          <div className="badgesDiv">
+          <div className="badgesDiv custom-scrollbar">
             {researcherData?.badges.map((b) => {
               return <BadgeName b={b} />;
             })}
@@ -607,7 +598,7 @@ console.log(studentData)
         </div>
 
         <div className="pointsContainer">
-        <h1>{`Points : ${researcherData?.points ?? 0}`}</h1>
+          <h1>{`Points : ` + researcherData?.points}</h1>
           <div className="pointsDiv">
             <li
               className="profileBeg"
