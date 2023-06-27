@@ -312,11 +312,9 @@ export default function Idea() {
 
     if (!props.show) return null;
     return (
-      <div
-        className="modal-overlay2"
-      >
+      <div className="modal-overlay2">
         <div className="modal2">
-        <div className="ContExitbtn" onClick={props.onClose}>
+          <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
                 <label className="label2">Exit</label>
@@ -326,33 +324,40 @@ export default function Idea() {
           <h1 className="headContact2">Create New Task</h1>
 
           <div className="FormModal2">
-          <label className="AllLabeles">Task Name: </label>
-          <input className="InputModalHallDetails" onChange={getTaskData} name="name"></input>
-          <label className="AllLabeles">participants Number: </label>
-          <input
-          className="InputModalHallDetails"
-            onChange={(e) =>
-              setTaskData((prev) => {
-                return { ...prev, participantsNumber: e.target.value * 1 };
-              })
-            }
-            name="participantsNumber"
-          ></input>
-          <label className="AllLabeles">description: </label>
-          <input className="InputModalHallDetails" onChange={getTaskData} name="description"></input>
-          <label className="AllLabeles">deadline</label>
-          <input
-          className="InputModalHallDetails"
-            type="text"
-            name="deadline"
-            onChange={getTaskData}
-            placeholder="yyyy-mm-dd"
-          ></input>
-          <div className="buttonsOnModal">
-          <button onClick={createfTask}>Create</button>
-          <button onClick={props.onClose}>Cancel</button>
-
-          </div>
+            <label className="AllLabeles">Task Name: </label>
+            <input
+              className="InputModalHallDetails"
+              onChange={getTaskData}
+              name="name"
+            ></input>
+            <label className="AllLabeles">participants Number: </label>
+            <input
+              className="InputModalHallDetails"
+              onChange={(e) =>
+                setTaskData((prev) => {
+                  return { ...prev, participantsNumber: e.target.value * 1 };
+                })
+              }
+              name="participantsNumber"
+            ></input>
+            <label className="AllLabeles">description: </label>
+            <input
+              className="InputModalHallDetails"
+              onChange={getTaskData}
+              name="description"
+            ></input>
+            <label className="AllLabeles">deadline</label>
+            <input
+              className="InputModalHallDetails"
+              type="text"
+              name="deadline"
+              onChange={getTaskData}
+              placeholder="yyyy-mm-dd"
+            ></input>
+            <div className="buttonsOnModal">
+              <button onClick={createfTask}>Create</button>
+              <button onClick={props.onClose}>Cancel</button>
+            </div>
           </div>
         </div>
       </div>
@@ -483,22 +488,25 @@ export default function Idea() {
 
     if (!props.show) return null;
     return (
-      <div
-        className="modal-overlay2"
-      >
+      <div className="modal-overlay2">
         <div className="modal2">
-        <div class="ContExitbtn"><div className="outer" onClick={props.onClose}><div className="inner"><label className="label2">Exit</label></div></div></div>
-        <h1 class="headContact2">Assign Participants</h1>
+          <div class="ContExitbtn">
+            <div className="outer" onClick={props.onClose}>
+              <div className="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 class="headContact2">Assign Participants</h1>
           <div className="ContInviteResearchers custom-scrollbar">
-          {ideaPar?.map((par) => {
-            return (
-              <div className="DivContResearchers">
-                <span style={{fontWeight:"bold",fontSize:"18px"}}>
-                  {par?.studentObj.firstName + " " + par?.studentObj.lastName}
-                  
-                </span>
-                <button
-                  className="plusBtn"
+            {ideaPar?.map((par) => {
+              return (
+                <div className="DivContResearchers">
+                  <span style={{ fontWeight: "bold", fontSize: "18px" }}>
+                    {par?.studentObj.firstName + " " + par?.studentObj.lastName}
+                  </span>
+                  <button
+                    className="plusBtn"
                     onClick={() =>
                       navigate(`/profile/${par.studentObj.id}`, {
                         state: { data: userData },
@@ -510,12 +518,13 @@ export default function Idea() {
                   <button className="bn54" onClick={() => assignToTask(par.id)}>
                     Assign To Task
                   </button>
-              </div>
-            );
-          })}
-          <button className="buttonExit2" onClick={props.onClose}>Close</button>
+                </div>
+              );
+            })}
+            <button className="buttonExit2" onClick={props.onClose}>
+              Close
+            </button>
           </div>
-          
         </div>
       </div>
     );
@@ -546,11 +555,9 @@ export default function Idea() {
 
     if (!props.show) return null;
     return (
-      <div
-        className="modal-overlay2"
-      >
+      <div className="modal-overlay2">
         <div className="modal2">
-        <div className="ContExitbtn" onClick={props.onClose}>
+          <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
                 <label className="label2">Exit</label>
@@ -559,26 +566,31 @@ export default function Idea() {
           </div>
           <h1 className="headContact2">Task Participants</h1>
           <div className="ContInviteResearchers custom-scrollbar">
-
-          {taskParticpants?.map((par) => {
-            return (
-              <div className="DivContResearchers">
-                <span style={{fontWeight:"bold",fontSize:"18px"}}>{par.studentObj.firstName + " "}</span>
-                <span style={{fontWeight:"bold",fontSize:"18px"}}>{par.studentObj.lastName}</span>
-                <button
-                className="plusBtn"
-                  onClick={() =>
-                    navigate(`/Profile/${par.studentObj.id}`, {
-                      state: { data: userData },
-                    })
-                  }
-                >
-                  View Profile
-                </button>
-              </div>
-            );
-          })}
-          <button className="buttonExit2" onClick={props.onClose}>Close</button>
+            {taskParticpants?.map((par) => {
+              return (
+                <div className="DivContResearchers">
+                  <span style={{ fontWeight: "bold", fontSize: "18px" }}>
+                    {par.studentObj.firstName + " "}
+                  </span>
+                  <span style={{ fontWeight: "bold", fontSize: "18px" }}>
+                    {par.studentObj.lastName}
+                  </span>
+                  <button
+                    className="plusBtn"
+                    onClick={() =>
+                      navigate(`/Profile/${par.studentObj.id}`, {
+                        state: { data: userData },
+                      })
+                    }
+                  >
+                    View Profile
+                  </button>
+                </div>
+              );
+            })}
+            <button className="buttonExit2" onClick={props.onClose}>
+              Close
+            </button>
           </div>
         </div>
       </div>
@@ -595,16 +607,21 @@ export default function Idea() {
 
     latestChat.current = ideaMessages;
 
+    let counter = 1;
     function getMessages() {
-      fetch(`https://localhost:7187/api/Chat/Discussion/${ideaId}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${userData.token}`,
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => setIdeaMessages(data));
+      if (counter === 1) {
+        fetch(`https://localhost:7187/api/Chat/Discussion/${ideaId}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => setIdeaMessages(data));
+      }
+      counter = 0;
     }
+
     ideaMessages.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     useEffect(() => {
@@ -630,6 +647,16 @@ export default function Idea() {
       getMessages();
     }, []);
 
+    const chatWindowRef = useRef(null);
+
+    function scrollToBottom() {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+    }
+
+    useEffect(() => {
+      scrollToBottom();
+    }, [ideaMessages]);
+
     const sendMessage = async (e) => {
       e.preventDefault();
       const chatMessage = {
@@ -648,81 +675,100 @@ export default function Idea() {
               Authorization: `Bearer ${userData.token}`,
             },
           }
-        ).then((response) => console.log(response));
+        ).then((response) =>
+          setMessageToSend((prev) => {
+            return { ...prev, content: "" };
+          })
+        );
       } catch (e) {}
     };
 
-    
+    console.log(messageToSend);
 
     if (!props.show) return null;
     return (
-      <div
-       className="modal-overlay2"
-      >
+      <div className="modal-overlay2">
         <div className="modal2">
-        <div className="ContExitbtn" onClick={props.onClose}>
+          <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
                 <label className="label2">Exit</label>
               </div>
             </div>
           </div>
-<div className="ContAllDataWithInput">
-  <div className="custom-scrollbar" style={{alignItems:"flex-start",width:"80%",padding:"20px",gap:"20px",height:"240px",overflow:"auto",display:"flex",flexDirection:"column"}}>
-            {ideaMessages?.map((message) => {
-              return (
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  <p className="spanChat">{message.content}</p>
+          <div className="ContAllDataWithInput">
+            <div
+              ref={chatWindowRef}
+              className="custom-scrollbar"
+              style={{
+                alignItems: "flex-start",
+                width: "80%",
+                padding: "20px",
+                gap: "20px",
+                height: "240px",
+                overflow: "auto",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              {ideaMessages?.map((message) => {
+                return (
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <p className="spanChat">{message.content}</p>
+                  </div>
+                );
+              })}
+            </div>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <form
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: "80%",
+                  border: "2px solid var(--darkgreen-color)",
+                  alignSelf: "center",
+                  // margin: " 1px 0 20px 0",
+                  columnGap: "7px",
+                  borderRadius: "20px",
+                }}
+                onSubmit={sendMessage}
+              >
+                <input
+                  className="InputChat"
+                  name="content"
+                  placeholder="Enter Your Message"
+                  value={messageToSend.content}
+                  onChange={(e) =>
+                    setMessageToSend((prev) => {
+                      return { ...prev, [e.target.name]: e.target.value };
+                    })
+                  }
+                ></input>
+                <div className="DivContChatIcon">
+                  <button
+                    style={{ backgroundColor: "transparent", border: "none" }}
+                  >
+                    <FaPaperPlane
+                      className="sendIcon"
+                      style={{
+                        width: "20px",
+                        height: "20px",
+                        color: "var(--darkgreen-color)",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </button>
                 </div>
-              );
-            })}
+              </form>
+            </div>
           </div>
-        <div style={{width:"100%",display:"flex",
-      justifyContent:"center",alignItems:"center"}}>
-        <form
-        style={{
-          display: "flex",
-          alignItems: "center",
-          width: "80%",
-          border: "2px solid var(--darkgreen-color)",
-          alignSelf: "center",
-          // margin: " 1px 0 20px 0",
-          columnGap: "7px",
-          borderRadius: "20px",
-        }}
-        onSubmit={sendMessage}
-      >
-          <input
-         className="InputChat"
-            name="content"
-            placeholder="Enter Your Message"
-            onChange={(e) =>
-              setMessageToSend((prev) => {
-                return { ...prev, [e.target.name]: e.target.value };
-              })
-            }
-          ></input>
-          <div className="DivContChatIcon">
-          <button  style={{ backgroundColor: "transparent",border:"none" }}>
-          <FaPaperPlane
-            className="sendIcon"
-            style={{
-              width: "20px",
-              height: "20px",
-              color: "var(--darkgreen-color)",
-              cursor: "pointer",
-            }}
-          />
-        </button>
-          </div>
-          
-        </form>
-        </div>
-
-</div>
-          
-          {/* <butto>n onClick={sendMessage}>Send</butto> */}
-          {/* <button onClick={props.onClose}>Close</button> */}
         </div>
       </div>
     );
@@ -737,19 +783,22 @@ export default function Idea() {
     const latestChat = useRef(null);
 
     latestChat.current = taskMessage;
-
+    let counter = 1;
     function getMessages() {
-      fetch(
-        `https://localhost:7187/api/Chat/Task/${ideaId})?taskId=${props.task.id}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${userData.token}`,
-          },
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => setTaskMessages(data));
+      if (counter === 1) {
+        fetch(
+          `https://localhost:7187/api/Chat/Task/${ideaId})?taskId=${props.task.id}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${userData.token}`,
+            },
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => setTaskMessages(data));
+      }
+      counter = 0;
     }
     taskMessage.sort((a, b) => new Date(a.date) - new Date(b.date));
 
@@ -776,6 +825,16 @@ export default function Idea() {
       getMessages();
     }, []);
 
+    const chatWindowRef = useRef(null);
+
+    function scrollToBottom() {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+    }
+
+    useEffect(() => {
+      scrollToBottom();
+    }, [taskMessage]);
+
     const sendMessage = async (e) => {
       e.preventDefault();
       const chatMessage = {
@@ -794,17 +853,19 @@ export default function Idea() {
               Authorization: `Bearer ${userData.token}`,
             },
           }
-        ).then((response) => console.log(response));
+        ).then((response) =>
+          setMessageToSend((prev) => {
+            return { ...prev, content: "" };
+          })
+        );
       } catch (e) {}
     };
 
     if (!props.show) return null;
     return (
-      <div
-      className="modal-overlay2"
-      >
+      <div className="modal-overlay2">
         <div className="modal2">
-        <div className="ContExitbtn" onClick={props.onClose}>
+          <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
                 <label className="label2">Exit</label>
@@ -812,57 +873,173 @@ export default function Idea() {
             </div>
           </div>
           <div className="ContAllDataWithInput">
-          <div className="custom-scrollbar" style={{width:"80%",padding:"20px",gap:"20px",height:"240px",overflow:"auto",display:"flex",flexDirection:"column",alignItems:"flex-start"}}>
-            {taskMessage?.map((message) => {
-              return (
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  <p>{message.content}</p>
+            <div
+              ref={chatWindowRef}
+              className="custom-scrollbar"
+              style={{
+                width: "80%",
+                padding: "20px",
+                gap: "20px",
+                height: "240px",
+                overflow: "auto",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+              }}
+            >
+              {taskMessage?.map((message) => {
+                return (
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <p>{message.content}</p>
+                  </div>
+                );
+              })}
+            </div>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <form
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: "80%",
+                  border: "2px solid var(--darkgreen-color)",
+                  alignSelf: "center",
+                  // margin: " 1px 0 20px 0",
+                  columnGap: "7px",
+                  borderRadius: "20px",
+                }}
+                onSubmit={sendMessage}
+              >
+                <input
+                  className="InputChat"
+                  name="content"
+                  placeholder="Enter Your Message"
+                  value={messageToSend.content}
+                  onChange={(e) =>
+                    setMessageToSend((prev) => {
+                      return { ...prev, [e.target.name]: e.target.value };
+                    })
+                  }
+                ></input>
+                <div className="DivContChatIcon">
+                  <button
+                    style={{ backgroundColor: "transparent", border: "none" }}
+                    onClick={sendMessage}
+                  >
+                    <FaPaperPlane
+                      className="sendIcon"
+                      style={{
+                        width: "20px",
+                        height: "20px",
+                        color: "var(--darkgreen-color)",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </button>
                 </div>
-              );
+              </form>
+            </div>
+            {/* <button onClick={props.onClose}>Close</button> */}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const TaskCard = ({ task }) => {
+    const [isTaskPart, setIsTaskPart] = useState(false);
+
+    const [taskParticpants, setTaskParticpants] = useState(null);
+
+    function getTaskParticpants() {
+      fetch(`https://localhost:7187/api/Ideas/Tasks/Participants/${task.id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      })
+        .then((res) =>
+          res.ok ? res.json() : alert("failed to load particpants to task")
+        )
+        .then((data) => (data ? setTaskParticpants(data) : null));
+    }
+
+    useEffect(() => {
+      getTaskParticpants();
+    }, []);
+
+    useEffect(() => {
+      const arr = taskParticpants?.filter(
+        (obj) => obj.id === userData.resercherId.toLowerCase()
+      );
+      if (arr?.length > 0) setIsTaskPart(true);
+    }, [taskParticpants]);
+
+    return (
+      <div className="CardInAllIdeasInIdea">
+        <div className="containerSpansData">
+          <span>
+            <span style={{ fontWeight: "bold" }}>Name :</span> {task.name}
+          </span>
+          <span>
+            <span style={{ fontWeight: "bold" }}>Description :</span>{" "}
+            {task.description}
+          </span>
+          <span>
+            <span style={{ fontWeight: "bold" }}>ParticipantsNumber :</span>{" "}
+            {task.participantsNumber}
+          </span>
+          <span>
+            <span style={{ fontWeight: "bold" }}>Progress :</span>{" "}
+            {task.progress}
+          </span>
+          <span>
+            <span style={{ fontWeight: "bold" }}>Deadline:</span>{" "}
+            {new Date(task?.deadline).toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
             })}
-          </div>
-          <div style={{width:"100%",display:"flex",
-      justifyContent:"center",alignItems:"center"}}>
-        <form
-        style={{
-          display: "flex",
-          alignItems: "center",
-          width: "80%",
-          border: "2px solid var(--darkgreen-color)",
-          alignSelf: "center",
-          // margin: " 1px 0 20px 0",
-          columnGap: "7px",
-          borderRadius: "20px",
-        }}
-        onSubmit={sendMessage}
-      >
-          <input
-          className="InputChat"
-            name="content"
-            placeholder="Enter Your Message"
-            onChange={(e) =>
-              setMessageToSend((prev) => {
-                return { ...prev, [e.target.name]: e.target.value };
-              })
-            }
-          ></input>
-          <div className="DivContChatIcon">
-          <button  style={{ backgroundColor: "transparent",border:"none" }} onClick={sendMessage}>
-          <FaPaperPlane
-            className="sendIcon"
-            style={{
-              width: "20px",
-              height: "20px",
-              color: "var(--darkgreen-color)",
-              cursor: "pointer",
+          </span>
+        </div>
+        <div className="contButtonsInIdea">
+          <button
+            className="hoverBtn"
+            onClick={() => {
+              setChoosenTask(task);
+              setShowTaskParticpants(true);
             }}
-          />
+          >
+            View Task Particpants
           </button>
-          </div>
-          </form>
-          </div>
-          {/* <button onClick={props.onClose}>Close</button> */}
-          </div>
+          {isTaskPart && (
+            <button
+              className="hoverBtn"
+              onClick={() => {
+                setChoosenTask(task);
+                setShowTaskChat(true);
+              }}
+            >
+              View Task Chat
+            </button>
+          )}
+          {creator && (
+            <button
+              className="hoverBtn"
+              onClick={() => {
+                setChoosenTask(task);
+                setShowAssingParticpantToTask(true);
+              }}
+            >
+              Assign Particpants
+            </button>
+          )}
         </div>
       </div>
     );
@@ -873,25 +1050,41 @@ export default function Idea() {
       <Header userData={userData} />
       <h1 style={{ margin: "120px 0 30px", textAlign: "center" }}>
         Data For Idea
-      </h1>  
+      </h1>
       <div className="AllIdeas">
         <div className="CardInAllIdeasInIdea">
-        <div className="shape5"></div>
+          <div className="shape5"></div>
 
           <div className="containerSpansData">
-            <span><span style={{fontWeight:"bold"}}>Name:</span> {idea?.name}</span>
-            <span><span style={{fontWeight:"bold"}}>Participants Number: </span>{idea?.participantsNumber}</span>
-            <span><span style={{fontWeight:"bold"}}>Max Participants Number:</span> {idea?.maxParticipantsNumber}</span>
-            <span><span style={{fontWeight:"bold"}}>Specality:</span> {idea?.specalityObj.name}</span>
             <span>
-              <span style={{fontWeight:"bold"}}>Deadline:</span>{" "}
+              <span style={{ fontWeight: "bold" }}>Name:</span> {idea?.name}
+            </span>
+            <span>
+              <span style={{ fontWeight: "bold" }}>Participants Number: </span>
+              {idea?.participantsNumber}
+            </span>
+            <span>
+              <span style={{ fontWeight: "bold" }}>
+                Max Participants Number:
+              </span>{" "}
+              {idea?.maxParticipantsNumber}
+            </span>
+            <span>
+              <span style={{ fontWeight: "bold" }}>Specality:</span>{" "}
+              {idea?.specalityObj.name}
+            </span>
+            <span>
+              <span style={{ fontWeight: "bold" }}>Deadline:</span>{" "}
               {new Date(idea?.deadline).toLocaleDateString("en-US", {
                 month: "long",
                 day: "numeric",
                 year: "numeric",
               })}
             </span>
-            <span><span style={{fontWeight:"bold"}}>Topic:</span> {idea?.topicObject.name}</span>
+            <span>
+              <span style={{ fontWeight: "bold" }}>Topic:</span>{" "}
+              {idea?.topicObject.name}
+            </span>
             {creator && (
               <h2 style={{ textAlign: "center" }}>
                 Requests : {resReqsData?.length}
@@ -1013,88 +1206,38 @@ export default function Idea() {
             </div>
           </div>
         </div>
-
       </div>
 
       <div>
-        <h1 style={{textAlign:"center",margin:"50px 0"}}>Tasks : {tasks?.length}</h1>
+        <h1 style={{ textAlign: "center", margin: "50px 0" }}>
+          Tasks : {tasks?.length}
+        </h1>
         <div className="AllIdeas">
-        {tasks?.map((task) => {
-          return (
-            <div className="CardInAllIdeasInIdea">
-              <div className="containerSpansData">
-              <span><span style={{fontWeight:"bold"}}>Name :</span> {task.name}</span>
-              <span><span style={{fontWeight:"bold"}}>Description :</span> {task.description}</span>
-              <span><span style={{fontWeight:"bold"}}>ParticipantsNumber :</span> {task.participantsNumber}</span>
-              <span><span style={{fontWeight:"bold"}}>Progress :</span> {task.progress}</span>
-              <span>
-                <span style={{fontWeight:"bold"}}>Deadline:</span>{" "}
-                {new Date(task?.deadline).toLocaleDateString("en-US", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </span>
-
-              </div>
-              <div className="contButtonsInIdea">
-              <button
-              className="hoverBtn"
-                onClick={() => {
-                  setChoosenTask(task);
-                  setShowTaskParticpants(true);
-                }}
-              >
-                View Task Particpants
-              </button>
-              <button
-              className="hoverBtn"
-                onClick={() => {
-                  setChoosenTask(task);
-                  setShowTaskChat(true);
-                }}
-              >
-                View Task Chat
-              </button>
-              {creator && (
-                <button
-                className="hoverBtn"
-                  onClick={() => {
-                    setChoosenTask(task);
-                    setShowAssingParticpantToTask(true);
-                  }}
-                >
-                  Assign Particpants
-                </button>
-              )}
-              </div>
-              
-            </div>
-          );
-        })}
-        {choosenTask && showAssignParticpantToTask && (
-          <AssignParticpantToTask
-            show={showAssignParticpantToTask}
-            onClose={() => setShowAssingParticpantToTask(false)}
-            task={choosenTask}
-          />
-        )}
-        {choosenTask && showTaskParticpants && (
-          <TaskParticpantsCard
-            show={showTaskParticpants}
-            onClose={() => setShowTaskParticpants(false)}
-            task={choosenTask}
-          />
-        )}
-        {choosenTask && showTaskChat && (
-          <TaskChatCard
-            show={showTaskChat}
-            onClose={() => setShowTaskChat(false)}
-            task={choosenTask}
-          />
-        )}
+          {tasks?.map((task) => {
+            return <TaskCard task={task} />;
+          })}
+          {choosenTask && showAssignParticpantToTask && (
+            <AssignParticpantToTask
+              show={showAssignParticpantToTask}
+              onClose={() => setShowAssingParticpantToTask(false)}
+              task={choosenTask}
+            />
+          )}
+          {choosenTask && showTaskParticpants && (
+            <TaskParticpantsCard
+              show={showTaskParticpants}
+              onClose={() => setShowTaskParticpants(false)}
+              task={choosenTask}
+            />
+          )}
+          {choosenTask && showTaskChat && (
+            <TaskChatCard
+              show={showTaskChat}
+              onClose={() => setShowTaskChat(false)}
+              task={choosenTask}
+            />
+          )}
         </div>
-        
       </div>
     </div>
   );

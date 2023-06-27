@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useRef} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import "../css/Researchers.css";
 import { BiChat } from 'react-icons/bi';
+import { FaPaperPlane } from "react-icons/fa";
+import { HubConnectionBuilder } from "@microsoft/signalr";
 
-// import PiChatCircleTextBold from "react-icons/"
 import user from "../images/imageUser.png"
 export default function Researchers(){
 
@@ -12,6 +13,8 @@ export default function Researchers(){
     const [researchers,setResearchers]=useState(null);
     const [searchData,setSearchData]=useState({SearchTerm:'',Level:'',Specality:0,PageSize:10})
     const [allSpecs, setAllSpecs] = useState(null);
+    const [choosenRes,setChoosenRes]=useState(null);
+    const [showChatModal,setShowChatModal]=useState(false);
     const navigate=useNavigate();
     
     
@@ -54,6 +57,200 @@ export default function Researchers(){
   useEffect(() => {
     getAllResearchers();
   }, [searchData]);
+
+
+
+
+  const PrivateChatCard = (props) => {
+    const [messageToSend, setMessageToSend] = useState({
+      content: "",
+      date: new Date().toISOString(),
+      senderId:userData.userId,
+      reciverId:props.researcherId,
+    });
+    const [AllMessages, setAllMessages] = useState([]);
+    const latestChat = useRef(null);
+
+    latestChat.current = AllMessages;
+
+
+let counter=1;
+    function getMessages() {
+      if(counter===1){
+      fetch(`https://localhost:7187/api/Chat/Private?senderId=${userData.userId}&reciverId=${props.researcherId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => setAllMessages(data)); 
+        
+    }
+    counter=0;
+    }
+
+
+
+    AllMessages.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    useEffect(() => {
+      const connection = new HubConnectionBuilder()
+        .withUrl("https://localhost:7187/hubs/Privatechat")
+        .withAutomaticReconnect()
+        .build();
+
+      connection
+        .start()
+        .then((result) => {
+          connection.on("ReceiveMessage", (message) => {
+            const updatedChat = [...latestChat.current];
+            updatedChat.push(message);
+
+            setAllMessages(updatedChat);
+          });
+        })
+        .catch((e) => console.log("Connection failed: ", e));
+    }, []);
+
+    useEffect(() => {
+      getMessages();
+    }, []);
+
+
+
+    const chatWindowRef = useRef(null);
+
+    // function scrollToBottom() {
+    //   chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+    // }
+
+    // useEffect(() => {
+    //   scrollToBottom();
+    // }, [AllMessages]);
+
+
+
+    const sendMessage = async (e) => {
+      e.preventDefault();
+      const chatMessage = {
+        content: messageToSend.content,
+        date: new Date().toISOString(),
+        senderId:userData.userId,
+        reciverId:props.researcherId,
+      };
+      
+
+      try {
+        await fetch(
+          `https://localhost:7187/api/Chat/Private`,
+          {
+            method: "POST",
+            body: JSON.stringify(chatMessage),
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${userData.token}`,
+            },
+          }
+        ).then((response) => setMessageToSend(prev=>{return {...prev,content:''}}));
+      } catch (e) {}
+    };
+
+
+console.log(messageToSend)
+
+    if (!props.show) return null;
+    return (
+      <div className="modal-overlay2">
+        <div className="modal2">
+          <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <div className="ContAllDataWithInput">
+            <div
+            ref={chatWindowRef}
+              className="custom-scrollbar"
+              style={{
+                alignItems: "flex-start",
+                width: "80%",
+                padding: "20px",
+                gap: "20px",
+                height: "240px",
+                overflow: "auto",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              {AllMessages?.map((message) => {
+                return (
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <p className="spanChat">{message.content}</p>
+                  </div>
+                );
+              })}
+            </div>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <form
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: "80%",
+                  border: "2px solid var(--darkgreen-color)",
+                  alignSelf: "center",
+                  // margin: " 1px 0 20px 0",
+                  columnGap: "7px",
+                  borderRadius: "20px",
+                }}
+                onSubmit={sendMessage}
+              >
+                <input
+                  className="InputChat"
+                  name="content"
+                  placeholder="Enter Your Message"
+                  value={messageToSend.content}
+                  onChange={(e) =>
+                    setMessageToSend((prev) => {
+                      return { ...prev, [e.target.name]: e.target.value };
+                    })
+                  }
+                ></input>
+                <div className="DivContChatIcon">
+                  <button
+                    style={{ backgroundColor: "transparent", border: "none" }}
+                  >
+                    <FaPaperPlane
+                      className="sendIcon"
+                      style={{
+                        width: "20px",
+                        height: "20px",
+                        color: "var(--darkgreen-color)",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+
+
+
 
   return (
     <>
@@ -138,6 +335,7 @@ export default function Researchers(){
                   View Profile
                 </button>
                 <button
+                onClick={()=>{setChoosenRes(res.studentObj.id);setShowChatModal(true)}}
             className="plusBtn"            
             >
               Chat
@@ -150,6 +348,7 @@ export default function Researchers(){
               </div>
             );
           })}
+          <PrivateChatCard researcherId={choosenRes} show={showChatModal} onClose={()=>setShowChatModal(false)} />
         </div>
         <div className="">
             <button

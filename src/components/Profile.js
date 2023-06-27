@@ -78,7 +78,7 @@ const Profile = () => {
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => (data ? setResearcherData(data) : null));
   }
-  console.log(adminReponse);
+  console.log(researcherData);
   function getResInvitations(resId) {
     fetch(`https://localhost:7187/api/Researchers/Invitations/${resId}`, {
       method: "GET",
@@ -141,7 +141,7 @@ const Profile = () => {
       });
   }
 
-  console.log(studentData);
+  console.log(userData);
   useEffect(() => {
     getStudentData();
     if (userData.userId === studentId) getAdminResponse();
@@ -306,7 +306,7 @@ const Profile = () => {
         {
           method: "PUT",
           headers: {
-            Authorization: `Bearer ${userData?.token}`,
+            "Authorization": `Bearer ${userData?.token}`,
           },
         }
       ).then((res) => {
@@ -485,6 +485,8 @@ const Profile = () => {
     );
   };
 
+
+
   const EditData = (props) => {
     const [editData, setEditData] = useState({
       firstname: studentData.firstName,
@@ -648,10 +650,10 @@ const Profile = () => {
           </div>
         </div>
         <div className="badgesContainer">
-          <h1>Points : 6</h1>
+          <h1>Points : {researcherData?.points}</h1>
           <div className="pointsDiv">
             <li className="profileBeg">Beginner (0-2) Points</li>
-            <li className="profileInter" style={{backgroundColor: "#80808075"}}>
+            <li className="profileInter" >
               Intermediate (2-6) Points
             </li>
             <li className="profileExp">Expert (6&lt;points)</li>
