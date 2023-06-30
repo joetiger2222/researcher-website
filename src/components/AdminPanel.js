@@ -764,6 +764,18 @@ export default function AdminPanel() {
           Create Special Account
         </button>
       </div>
+      <div>
+        <button
+        className="AddNewPaper"
+          onClick={() =>
+            navigate("/AssignStudentToCourse", {
+              state: { data: userData },
+            })
+          }
+        >
+          Assign Student To Course
+        </button>
+      </div>
     </div>
   );
 }

@@ -66,7 +66,7 @@ export default function Researchers(){
       content: "",
       date: new Date().toISOString(),
       senderId:userData.userId,
-      reciverId:props.researcherId,
+      reciverId:props.otherPersonId,
     });
     const [AllMessages, setAllMessages] = useState([]);
     const latestChat = useRef(null);
@@ -77,7 +77,7 @@ export default function Researchers(){
 let counter=1;
     function getMessages() {
       if(counter===1){
-      fetch(`https://localhost:7187/api/Chat/Private?senderId=${userData.userId}&reciverId=${props.researcherId}`, {
+      fetch(`https://localhost:7187/api/Chat/Private?senderId=${userData.userId}&reciverId=${props.otherPersonId}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${userData.token}`,
@@ -103,10 +103,10 @@ let counter=1;
       connection
         .start()
         .then((result) => {
-          connection.on("ReceiveMessage", (message) => {
+          connection.on("ReceivePrivate", (message) => {
+            
             const updatedChat = [...latestChat.current];
             updatedChat.push(message);
-
             setAllMessages(updatedChat);
           });
         })
@@ -121,23 +121,23 @@ let counter=1;
 
     const chatWindowRef = useRef(null);
 
-    // function scrollToBottom() {
-    //   chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
-    // }
+    function scrollToBottom() {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+    }
 
-    // useEffect(() => {
-    //   scrollToBottom();
-    // }, [AllMessages]);
+    useEffect(() => {
+      scrollToBottom();
+    }, [AllMessages]);
 
 
-
+console.log(messageToSend)
     const sendMessage = async (e) => {
       e.preventDefault();
       const chatMessage = {
         content: messageToSend.content,
         date: new Date().toISOString(),
         senderId:userData.userId,
-        reciverId:props.researcherId,
+        reciverId:props.otherPersonId,
       };
       
 
@@ -149,7 +149,7 @@ let counter=1;
             body: JSON.stringify(chatMessage),
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${userData.token}`,
+              Authorization: `Bearer ${userData.token}`,
             },
           }
         ).then((response) => setMessageToSend(prev=>{return {...prev,content:''}}));
@@ -157,7 +157,7 @@ let counter=1;
     };
 
 
-console.log(messageToSend)
+
 
     if (!props.show) return null;
     return (
@@ -187,7 +187,7 @@ console.log(messageToSend)
             >
               {AllMessages?.map((message) => {
                 return (
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div style={{ display: "flex", flexDirection: "column",alignSelf:message.senderId===userData.userId?'flex-end':null }}>
                     <p className="spanChat">{message.content}</p>
                   </div>
                 );
@@ -251,7 +251,6 @@ console.log(messageToSend)
 
 
 
-
   return (
     <>
       <Header userData={userData} />
@@ -304,7 +303,7 @@ console.log(messageToSend)
 
         </div>
         <div className="AllIdeas">
-          {researchers?.map((res) => {
+          {researchers?.filter(res=>res.id!==userData.resercherId.toLowerCase()).map((res) => {
             return (
               <div className="ContCarduserInfo">
                 <div className="photoUserCard">
@@ -348,7 +347,7 @@ console.log(messageToSend)
               </div>
             );
           })}
-          <PrivateChatCard researcherId={choosenRes} show={showChatModal} onClose={()=>setShowChatModal(false)} />
+          {choosenRes&&showChatModal&&<PrivateChatCard otherPersonId={choosenRes} show={showChatModal} onClose={()=>setShowChatModal(false)} />}
         </div>
         <div className="">
             <button

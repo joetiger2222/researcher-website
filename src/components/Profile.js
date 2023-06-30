@@ -24,6 +24,7 @@ const Profile = () => {
   const [showSpecCard, setShowSpecCard] = useState(false);
   const [showEditPaper, setShowEditPaper] = useState(false);
   const [showDeletePaper, setShowDeletePaper] = useState(false);
+  const [showEditAllData,setShowEditAllData]=useState(false);
   const [paperData, setPaperData] = useState(null);
   const [expertReqs, setExpertReqs] = useState(null);
   const [adminReponse, setAdminResponse] = useState(null);
@@ -78,7 +79,7 @@ const Profile = () => {
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => (data ? setResearcherData(data) : null));
   }
-  console.log(researcherData);
+  
   function getResInvitations(resId) {
     fetch(`https://localhost:7187/api/Researchers/Invitations/${resId}`, {
       method: "GET",
@@ -141,7 +142,7 @@ const Profile = () => {
       });
   }
 
-  console.log(userData);
+  
   useEffect(() => {
     getStudentData();
     if (userData.userId === studentId) getAdminResponse();
@@ -488,22 +489,61 @@ const Profile = () => {
 
 
 
+
+
   const EditData = (props) => {
     const [editData, setEditData] = useState({
       firstname: studentData.firstName,
       lastname: studentData.lastName,
       gender: studentData.gender,
+      email:studentData.email,
       age: studentData.age,
       nationalityId: studentData.nationality.id,
       type: 0,
       googleSchoolerLink: "",
     });
 
+    const [allNationalities, setAllNationalities] = useState([]);
+
+    console.log(editData);
+
     function getEditData(e) {
       setEditData((prev) => {
         return { ...prev, [e.target.name]: e.target.value };
       });
     }
+
+
+    function getAllNationalities() {
+      fetch(`https://localhost:7187/api/Students/Nationalites`)
+        .then((res) =>
+          res.ok ? res.json() : alert("failed to load nationalities")
+        )
+        .then((data) => (data ? setAllNationalities(data) : null));
+    }
+  
+    useEffect(() => {
+      getAllNationalities();
+    }, []);
+
+
+    function sendEditData(){
+      fetch(`https://localhost:7187/api/Students/studentId?studentId=${studentId}`,{
+        method:"PUT",
+        headers:{
+          "Content-Type":"application/json",
+          "Authorization":`Bearer ${userData.token}`
+        },
+        body:JSON.stringify(editData)
+      })
+      .then(res=>{
+        if(res.ok){
+          alert('Data Successfully Updated');
+          window.location.reload();
+        }else alert('Failed To Update Data Please Try Again Later')
+      })
+    }
+
 
     if (!props.show) return null;
     return (
@@ -522,10 +562,11 @@ const Profile = () => {
         }}
       >
         <div style={{ backgroundColor: "white", width: "50%", color: "black" }}>
+          <h4>Only Change The Field You Want To Modify</h4>
           <span>First Name</span>
-          <input name="firstname" onChange={getEditData}></input>
+          <input placeholder={studentData?.firstName} name="firstname" onChange={getEditData}></input>
           <span>Last Name</span>
-          <input name="lastname" onChange={getEditData}></input>
+          <input placeholder={studentData?.lastName} name="lastname" onChange={getEditData}></input>
           <span>Gender</span>
           <select
             name="gender"
@@ -534,37 +575,63 @@ const Profile = () => {
                 return { ...prev, [e.target.name]: e.target.value * 1 };
               })
             }
-          ></select>
+          >
+            <option selected disabled>{studentData.gender===0?'Male':'Female'}</option>
+            <option value={0}>Male</option>
+            <option value={1}>Female</option>
+          </select>
+          <span>Email</span>
+          <input placeholder={studentData?.email} name="email" onChange={getEditData}></input>
+          <span>Age</span>
+          <input placeholder={studentData?.age} type="number" name="age" onChange={(e)=>setEditData(prev=>{return{...prev,[e.target.name]:e.target.value*1}})}></input>
           <span>Nationality</span>
           <select
-            name=""
+            name="nationalityId"
             onChange={(e) =>
               setEditData((prev) => {
                 return { ...prev, [e.target.name]: e.target.value * 1 };
               })
             }
           >
-            <option></option>
+            <option selected disabled>{studentData?.nationality.name}</option>
+            {allNationalities?.map(nat=>{
+              return(
+                <option value={nat.id}>{nat.name}</option>
+              )
+            })}
           </select>
           <span>Type</span>
           <select
-            name=""
+            name="type"
             onChange={(e) =>
               setEditData((prev) => {
                 return { ...prev, [e.target.name]: e.target.value * 1 };
               })
             }
           >
-            <option></option>
+            <option value={0}>Student</option>
+            <option value={1}>Graduate</option>
+            <option value={2}>Doctor / Specialist</option>
+            <option value={3}>Other</option>
           </select>
           <span>Google Schooler Link</span>
-          <select name="" onChange={getEditData}>
-            <option></option>
-          </select>
+          <input placeholder={studentData?.googleSchoolerLink} name="googleSchoolerLink" onChange={getEditData}></input>
+          <button onClick={props.onClose}>Cancel</button>
+          <button onClick={sendEditData}>Submit</button>
         </div>
       </div>
     );
   };
+
+
+
+
+
+
+
+
+
+
 
   return (
     <div className="ParentHeadData">
@@ -585,12 +652,19 @@ const Profile = () => {
                   Edit
                 </p>
               )}
+              {userData?.userId===studentId&&<p
+                  onClick={() => setShowEditAllData(true)}
+                  className="editBtnprofile"
+                >
+                  Edit Student Data
+                </p>}
             {showSpecCard && (
               <SpecCard
                 show={showSpecCard}
                 onClose={() => setShowSpecCard(false)}
               />
             )}
+            {showEditAllData&&<EditData show={showEditAllData} onClose={()=>setShowEditAllData(false)} />}
           </div>
         </div>
         <div className="profile-details">
@@ -602,6 +676,7 @@ const Profile = () => {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis
             beatae non rerum ab es.
           </p>
+          {userData.roles==='Researcher'&&<span style={{color:'white'}}>{`Rate : ${researcherData?.overallRate}`}</span>}
         </div>
         <div className="btnsPlannerProf">
           <div className="planner-prof-btn-div">

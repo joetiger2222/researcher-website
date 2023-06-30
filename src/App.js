@@ -20,6 +20,7 @@ import Idea from './components/Idea';
 import Researchers from './components/Researchers';
 import RegisterationSpecialAccount from './components/RegisterationSpecialAccount';
 import SuccededFinalQuiz from './components/SuccededFinalQuiz';
+import AssignStudentToCourse from './components/AssignStudentToCourse';
 function App() {
   return (
     <div >
@@ -44,6 +45,7 @@ function App() {
         <Route path='/Idea/:ideaId' element={<Idea/>}/>
         <Route path='/Researchers' element={<Researchers/>}/>
         <Route path='/RegisterationSpecialAccount' element={<RegisterationSpecialAccount/>}/>
+        <Route path='/AssignStudentToCourse' element={<AssignStudentToCourse/>}/>
       
 
       </Routes>
