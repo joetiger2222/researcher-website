@@ -173,7 +173,7 @@ const CourseDetails = () => {
 
   const UploadVideoCard = (props) => {
     const [video, setVideo] = useState(null);
-    const [videoTitle, setVideoTitle] = useState("");
+    
 
     const handleVideoUpload = (event) => {
       const file = event.target.files[0];
@@ -202,10 +202,7 @@ const CourseDetails = () => {
       });
     };
 
-    // function getVideoTitle(e) {
-    //   setVideoTitle(e.target.value);
-    // }
-    // console.log(videoTitle)
+    
 
     if (!props.show) return null;
     return (

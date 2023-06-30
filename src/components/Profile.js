@@ -567,7 +567,7 @@ const Profile = () => {
           <input placeholder={studentData?.firstName} name="firstname" onChange={getEditData}></input>
           <span>Last Name</span>
           <input placeholder={studentData?.lastName} name="lastname" onChange={getEditData}></input>
-          <span>Gender</span>
+          {/* <span>Gender</span>
           <select
             name="gender"
             onChange={(e) =>
@@ -579,9 +579,9 @@ const Profile = () => {
             <option selected disabled>{studentData.gender===0?'Male':'Female'}</option>
             <option value={0}>Male</option>
             <option value={1}>Female</option>
-          </select>
-          <span>Email</span>
-          <input placeholder={studentData?.email} name="email" onChange={getEditData}></input>
+          </select> */}
+          {/* <span>Email</span>
+          <input placeholder={studentData?.email} name="email" onChange={getEditData}></input> */}
           <span>Age</span>
           <input placeholder={studentData?.age} type="number" name="age" onChange={(e)=>setEditData(prev=>{return{...prev,[e.target.name]:e.target.value*1}})}></input>
           <span>Nationality</span>
@@ -628,7 +628,7 @@ const Profile = () => {
 
 
 
-
+console.log(researcherData)
 
 
 
@@ -728,11 +728,14 @@ const Profile = () => {
         <div className="badgesContainer">
           <h1>Points : {researcherData?.points}</h1>
           <div className="pointsDiv">
-            <li className="profileBeg">Beginner (0-2) Points</li>
-            <li className="profileInter" >
-              Intermediate (2-6) Points
+            <li className="profileBeg" style={{backgroundColor:researcherData?.level===0?'gray':'transparent'}}>Beginner (1-3) Points</li>
+            <li className="profileInter" style={{backgroundColor:researcherData?.level===1?'gray':'transparent'}}>
+              Intermediate (4-6) Points
             </li>
-            <li className="profileExp">Expert (6&lt;points)</li>
+            <li className="profileInter" style={{backgroundColor:researcherData?.level===2?'gray':'transparent'}}>
+            Professional (7-8) Points
+            </li>
+            <li className="profileExp"style={{backgroundColor:researcherData?.level>2?'gray':'transparent'}}>Expert (8&lt;points)</li>
           </div>
         </div>
         <div className="badgesContainer">

@@ -51,7 +51,27 @@ export default function RateIdeaResearchers(){
 
 
 
-console.log(ideaPar)
+console.log(rates)
+
+
+
+const updateRate = (researcherId, rate) => {
+  
+  const updatedData = [...rates];
+  
+  const objectToUpdate = updatedData.find(obj => obj.researcherId === researcherId);
+
+  if (objectToUpdate) {
+    
+    objectToUpdate.rate = rate;
+  } else {
+    updatedData.push({ researcherId, rate });
+  }
+  
+  setRates(updatedData);
+};
+
+
 
 
 if(creator){
@@ -65,17 +85,19 @@ if(creator){
                         <span>{'Level : '+par.level}</span>
                         <span>{par.studentObj.gender===0?'Gender : Female':'Gender : Male'}</span>
                         <span>{'Speciality : '+par.specalityObject.name}</span>
-                        <select>
+                        <select
+                        onChange={(e)=>updateRate(par.id,e.target.value*1)}>
                             <option selected disabled>Rate</option>
                             {[1,2,3,4,5,6,7,8,9,10].map(num=>{
                                 return(
-                                    <option>{num}</option>
+                                    <option value={num*1}>{num}</option>
                                 )
                             })}
                         </select>
                     </div>
                 )
             })}
+            {rates?.length===ideaPar?.length-1&&<button>Submit</button>}
         </div>
     )
 }else{
