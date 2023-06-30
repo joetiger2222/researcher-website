@@ -1,6 +1,7 @@
 import React from "react";
 import { useState ,useEffect} from "react";
 import { useLocation, useParams } from "react-router-dom";
+import Header from "./Header";
 
 export default function RateIdeaResearchers(){
     const userData=useLocation().state.data;
@@ -77,6 +78,7 @@ const updateRate = (researcherId, rate) => {
 if(creator){
     return (
         <div>
+          <Header userData={userData} />
             {ideaPar?.filter(par=>par.id!==userData.resercherId.toLowerCase()).map(par=>{
                 return (
                     <div style={{display:'flex',flexDirection:'column',margin:'20px',backgroundColor:'gray'}}>
