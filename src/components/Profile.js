@@ -863,7 +863,7 @@ console.log(researcherData)
         </div>
       )}
 
-      {(userData.roles === "Researcher" || userData.roles === "Admin") && (
+      {(userData.roles === "Researcher" || userData.roles === "Admin") && researcherData?.papers?.length>0&&(
         <div
           style={{
             color: "white",

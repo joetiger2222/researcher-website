@@ -159,6 +159,8 @@ export default function Idea() {
       .then((data) => (data ? setTasks(data) : null));
   }
 
+
+
   const AllResCard = (props) => {
     const [ress, setRess] = useState(null);
 
@@ -177,7 +179,7 @@ export default function Idea() {
     useEffect(() => {
       getAllRess();
     }, []);
-    // console.log(ress)
+    
 
     function sendInvitation(resId) {
       let invits = [];
@@ -213,10 +215,10 @@ export default function Idea() {
           <h1 className="headContact2">All Researchers</h1>
 
           <div className="ContInviteResearchers custom-scrollbar">
-            {ress
-              ?.filter((res) => res.id !== userData?.resercherId.toLowerCase())
-              .map((res) => {
-                // console.log(res.id)
+          {ress
+  ?.filter((res) => !ideaPar.some(par => par.id === res.id))
+  .map((res) => {
+                
                 return (
                   <div className="DivContResearchers">
                     <span style={{ fontWeight: "bold", fontSize: "18px" }}>
@@ -996,7 +998,7 @@ export default function Idea() {
             {task.description}
           </span>
           <span>
-            <span style={{ fontWeight: "bold" }}>ParticipantsNumber :</span>{" "}
+            <span style={{ fontWeight: "bold" }}>Max Participants Number :</span>{" "}
             {task.participantsNumber}
           </span>
           <span>
@@ -1074,11 +1076,6 @@ export default function Idea() {
 
 
 
-
-
-
-
-
   const UploadFileCard = (props) => {
     const titleRef = useRef(null);
 
@@ -1140,7 +1137,6 @@ export default function Idea() {
       </div>
     );
   };
-
 
 
   const IdeaFilesCard = (props) => {
@@ -1283,9 +1279,6 @@ const TaskUploadDocument=(props)=>{
   };
 
 
-
-
-
 const TaskFilesCard = (props) => {
     
     const [documents, setDocuments] = useState(null);
@@ -1363,8 +1356,6 @@ function downloadDoc(fileId) {
       </div>
     );
   };
-
-
 
 
   return (
