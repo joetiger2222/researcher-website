@@ -1169,6 +1169,14 @@ export default function Idea() {
                   Create New Task
                 </button>
               )}
+              {creator && (
+                <button
+                  className="buttonn"
+                  onClick={() => navigate(`/RateIdeaResearchers/${ideaId}`,{state:{data:userData}})}
+                >
+                  Submit Idea
+                </button>
+              )}
               {creator && showTaskCard && (
                 <CreateTaskCard
                   show={showTaskCard}

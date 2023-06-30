@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import Header from "./Header";
 
 export default function AssignStudentToCourse(){
     const userData=useLocation().state.data;
@@ -99,6 +100,7 @@ const CoursesCard=(props)=>{
     if(userData.roles==='Admin'){
     return(
         <div>
+            <Header userData={userData} />
             <input onChange={(e)=>setSearchTerm(e.target.value)} placeholder="Enter Email..."></input>
             {allStudents?.map(student=>{
                 return(

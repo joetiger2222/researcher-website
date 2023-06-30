@@ -21,6 +21,7 @@ import Researchers from './components/Researchers';
 import RegisterationSpecialAccount from './components/RegisterationSpecialAccount';
 import SuccededFinalQuiz from './components/SuccededFinalQuiz';
 import AssignStudentToCourse from './components/AssignStudentToCourse';
+import RateIdeaResearchers from './components/RateIdeaResearchers';
 function App() {
   return (
     <div >
@@ -46,6 +47,7 @@ function App() {
         <Route path='/Researchers' element={<Researchers/>}/>
         <Route path='/RegisterationSpecialAccount' element={<RegisterationSpecialAccount/>}/>
         <Route path='/AssignStudentToCourse' element={<AssignStudentToCourse/>}/>
+        <Route path='/RateIdeaResearchers/:ideaId' element={<RateIdeaResearchers/>}/>
       
 
       </Routes>
