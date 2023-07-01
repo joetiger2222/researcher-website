@@ -31,7 +31,7 @@ const Profile = () => {
   const [expertReqs, setExpertReqs] = useState(null);
   const [adminReponse, setAdminResponse] = useState(null);
   const [researcherIdeas, setResearcherIdeas] = useState([]);
-  const[studentImage,setStudentImage]=useState(null);
+  const[studentImage,setStudentImage]=useState({url:kariem});
   const userData = useLocation().state?.data;
   const { studentId } = useParams();
   const navigate = useNavigate();
@@ -151,7 +151,7 @@ const Profile = () => {
         "Authorization":`Bearer ${userData.token}`
       }
     })
-    .then(res=>res.ok?setStudentImage(res):alert('failed to load image'))
+    .then(res=>res.ok?setStudentImage(res):null)
     
   }
   

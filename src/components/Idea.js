@@ -713,30 +713,7 @@ export default function Idea() {
             >
               {ideaMessages?.map((message) => {
                 return (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignSelf:
-                        message.researcherId ===
-                        userData.resercherId.toLowerCase()
-                          ? "flex-end"
-                          : "flex-start",
-                    }}
-                  >
-                    <p style={{
-                      borderTop:
-                       message.researcherId ===
-                       userData.resercherId.toLowerCase()
-                         ? "10px solid red"
-                         : "10px solid blue",
-                    }} className={ message.researcherId ===
-                      userData.resercherId.toLowerCase()
-                        ? "spanChat1"
-                        : "spanChat"}
-                    
-                    >{message.content}</p>
-                  </div>
+                  <IdeaMessageCard message={message} />
                 );
               })}
             </div>
@@ -794,6 +771,40 @@ export default function Idea() {
       </div>
     );
   };
+
+
+  const IdeaMessageCard=(props)=>{
+    
+    const resData=ideaPar.filter(res=>res.id===props.message.researcherId)
+    console.log('resData',resData)
+    return (
+      <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignSelf:
+                        props.message.researcherId ===
+                        userData.resercherId.toLowerCase()
+                          ? "flex-end"
+                          : "flex-start",
+                    }}
+                  >
+                    <p>{resData[0].studentObj.firstName+" "+resData[0].studentObj.lastName}</p>
+                    <p style={{
+                      borderTop:
+                      props.message.researcherId ===
+                       userData.resercherId.toLowerCase()
+                         ? "10px solid red"
+                         : "10px solid blue",
+                    }} className={ props.message.researcherId ===
+                      userData.resercherId.toLowerCase()
+                        ? "spanChat1"
+                        : "spanChat"}
+                    
+                    >{props.message.content}</p>
+                  </div>
+    )
+  }
 
   const TaskChatCard = (props) => {
     const [messageToSend, setMessageToSend] = useState({
@@ -913,32 +924,7 @@ export default function Idea() {
             >
               {taskMessage?.map((message) => {
                 return (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignSelf:
-                        message.researcherId ===
-                        userData.resercherId.toLowerCase()
-                          ? "flex-end"
-                          : "flex-start",
-                    }}
-                  >
-                    <p 
-                    style={{
-                      borderTop:
-                       message.researcherId ===
-                       userData.resercherId.toLowerCase()
-                         ? "10px solid red"
-                         : "10px solid blue",
-                    }}
-                     className= { message.researcherId ===
-                      userData.resercherId.toLowerCase()
-                        ? "spanChat1"
-                        : "spanChat"}
-                    
-                     >{message.content}</p>
-                  </div>
+                  <TaskMessageCard message={message} />
                 );
               })}
             </div>
@@ -998,6 +984,66 @@ export default function Idea() {
       </div>
     );
   };
+
+
+  const TaskMessageCard=(props)=>{
+
+    const [resData,setResData]=useState(null);
+    // console.log('task message',props.message);
+
+    function getResearcherData() {
+      if(props.message.researcherId!==userData.resercherId.toLowerCase()){
+      fetch(`https://localhost:7187/api/Researchers/${props.message.researcherId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData?.token}`,
+        },
+      })
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => (data ? setResData(data) : null));
+    }
+    }
+    useEffect(()=>{
+      getResearcherData();
+    },[])
+
+    console.log('res task data',resData)
+
+    return (
+      <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignSelf:
+                      props.message.researcherId ===
+                        userData.resercherId.toLowerCase()
+                          ? "flex-end"
+                          : "flex-start",
+                    }}
+                  >
+                    <p>
+                      {
+                      props.message.researcherId===userData.resercherId.toLowerCase()?'':
+                      resData?.firstName+" "+resData?.lastName
+                      }
+                    </p>
+                    <p 
+                    style={{
+                      borderTop:
+                      props.message.researcherId ===
+                       userData.resercherId.toLowerCase()
+                         ? "10px solid red"
+                         : "10px solid blue",
+                    }}
+                     className= { props.message.researcherId ===
+                      userData.resercherId.toLowerCase()
+                        ? "spanChat1"
+                        : "spanChat"}
+                    
+                     >{props.message.content}</p>
+                  </div>
+    )
+  }
 
   const TaskCard = ({ task }) => {
     const [isTaskPart, setIsTaskPart] = useState(false);

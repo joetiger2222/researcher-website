@@ -69,13 +69,16 @@ export default function Researchers(){
       reciverId:props.otherPersonId,
     });
     const [AllMessages, setAllMessages] = useState([]);
+    const otherPersonData=researchers.filter(res=>res.studentObj.id===props.otherPersonId)
+    console.log('other person data',otherPersonData);
+    
     const latestChat = useRef(null);
 
     latestChat.current = AllMessages;
 
 
 let counter=1;
-    function getMessages() {
+    function getMyMessages() {
       if(counter===1){
       fetch(`https://localhost:7187/api/Chat/Private?senderId=${userData.userId}&reciverId=${props.otherPersonId}`, {
         method: "GET",
@@ -83,11 +86,36 @@ let counter=1;
           Authorization: `Bearer ${userData.token}`,
         },
       })
-        .then((res) => res.json())
-        .then((data) => setAllMessages(data)); 
+        .then((res) => res.ok?res.json():alert('failed to load your messages'))
+
+        .then(data=>{
+          
+          setAllMessages(prev => [...prev, ...data]);
+        })
         
     }
     counter=0;
+    }
+
+
+    let otherCounter=1;
+    function getOtherMessages() {
+      if(otherCounter===1){
+      fetch(`https://localhost:7187/api/Chat/Private?senderId=${props.otherPersonId}&reciverId=${userData.userId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      })
+        .then((res) => res.ok?res.json():alert('failed to load your messages'))
+
+        .then(data=>{
+
+          setAllMessages(prev => [...prev, ...data]);
+        })
+        
+    }
+    otherCounter=0;
     }
 
 
@@ -114,7 +142,8 @@ let counter=1;
     }, []);
 
     useEffect(() => {
-      getMessages();
+      getMyMessages();
+      getOtherMessages();
     }, []);
 
 
@@ -130,7 +159,7 @@ let counter=1;
     }, [AllMessages]);
 
 
-console.log(messageToSend)
+
     const sendMessage = async (e) => {
       e.preventDefault();
       const chatMessage = {
@@ -166,6 +195,7 @@ console.log(messageToSend)
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
+                <span>{otherPersonData[0].studentObj.firstName+" "+ otherPersonData[0].studentObj.lastName}</span>
                 <label className="label2">Exit</label>
               </div>
             </div>
