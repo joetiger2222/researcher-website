@@ -13,6 +13,7 @@ import PaperCardInProfile from "./Cards/PaperCardInProfile";
 import { FaCheckCircle } from "react-icons/fa";
 import request from "../images/request.png";
 import Swal from "sweetalert2";
+import user from '../images/useer.png'
 const Profile = () => {
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -25,11 +26,12 @@ const Profile = () => {
   const [showEditPaper, setShowEditPaper] = useState(false);
   const [showDeletePaper, setShowDeletePaper] = useState(false);
   const [showEditAllData,setShowEditAllData]=useState(false);
+  const[showImageCard,setShowImageCard]=useState(false);
   const [paperData, setPaperData] = useState(null);
   const [expertReqs, setExpertReqs] = useState(null);
   const [adminReponse, setAdminResponse] = useState(null);
   const [researcherIdeas, setResearcherIdeas] = useState([]);
-
+  const[studentImage,setStudentImage]=useState(null);
   const userData = useLocation().state?.data;
   const { studentId } = useParams();
   const navigate = useNavigate();
@@ -142,9 +144,21 @@ const Profile = () => {
       });
   }
 
+  function getStudentImage(){
+    fetch(`https://localhost:7187/api/Students/Image/${studentId}`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      }
+    })
+    .then(res=>res.ok?setStudentImage(res):alert('failed to load image'))
+    
+  }
+  
   
   useEffect(() => {
     getStudentData();
+    getStudentImage();
     if (userData.userId === studentId) getAdminResponse();
   }, [studentId]);
 
@@ -183,18 +197,7 @@ const Profile = () => {
     });
   }
 
-  const WatchedCourse = () => (
-    <div className="watchedCourse">
-      <h4>Course Name</h4>
-      <p>Category</p>
-    </div>
-  );
-
-  const BadgeName = ({ b }) => (
-    <div className="badge">
-      <h4>{b?.name}</h4>
-    </div>
-  );
+  
 
   const AddPaperModal = (props) => {
     const [paperData, setPaperData] = useState({
@@ -488,9 +491,6 @@ const Profile = () => {
   };
 
 
-
-
-
   const EditData = (props) => {
     const [editData, setEditData] = useState({
       firstname: studentData.firstName,
@@ -624,12 +624,72 @@ const Profile = () => {
   };
 
 
+  const EditImageCard=(props)=>{
+
+    const [photo,setPhoto]=useState(null);
+
+    function editPhoto(){
+      const formData = new FormData();
+        formData.append('file', photo, photo.name);
+
+      fetch(`https://localhost:7187/api/Students/UploadImage?userId=${userData.userId}`,{
+        method:"POST",
+        headers:{
+          "Authorization":`Bearer ${userData.token}`
+        },
+        body:formData
+      })
+      .then(res=>{
+        if(res.ok){
+          window.location.reload();
+        }else alert('failed to update photo')
+      })
+    }
 
 
 
-
-console.log(researcherData)
-
+    if (!props.show) return null;
+    return (
+      <div
+        style={{
+          position: "fixed",
+          left: "0",
+          top: "0",
+          right: "0",
+          bottom: "0",
+          backgroundColor: "rgba(0, 0,0,0.5)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: "100",
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: "white",
+            width: "60%",
+            borderRadius: "15px",
+            minWidth: "350px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            maxWidth:'1000px'
+          }}
+        >
+          <p className="Upload_profile_photo">Upload profile photo</p>
+          <img id="user" src={user} style={{ width: "150px",margin:'0 0 20px 0' }} />
+  
+          <input id="img" type="file" onChange={(e)=>setPhoto(e.target.files[0])} style={{width:'30%',minWidth:'200px'}} />
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-evenly',width:'100%'}}>
+          {photo&&<button onClick={editPhoto} style={{width:'30%',padding:'5px',maxWidth:'200px'}} >Finish</button>}
+          <button onClick={props.onClose} style={{width:'30%',padding:'5px',maxWidth:'200px',backgroundColor:'#d91111'}} id="Next_Step">Cancel</button>
+          
+          </div>
+        </div>
+      </div>
+    );
+  }
 
 
 
@@ -638,7 +698,7 @@ console.log(researcherData)
       <Header userData={userData} />
       <div className="profile-header" style={{ marginTop: "130px" }}>
         <div className="imageProfDiv">
-          <img src={kariem} alt="Profile" className="profile-image" />
+          <img src={studentImage?.url} alt="Profile" className="profile-image" />
           <div className="ContEditProfile">
             {researcherData && (
               <p className="nameUser">{researcherData?.specality?.name} </p>
@@ -649,7 +709,7 @@ console.log(researcherData)
                   onClick={() => setShowSpecCard(true)}
                   className="editBtnprofile"
                 >
-                  Edit
+                  Edit Speciality
                 </p>
               )}
               {userData?.userId===studentId&&<p
@@ -658,10 +718,22 @@ console.log(researcherData)
                 >
                   Edit Student Data
                 </p>}
+                {userData?.userId===studentId&&<p
+                  onClick={() => setShowImageCard(true)}
+                  className="editBtnprofile"
+                >
+                  Edit Student Picture
+                </p>}
             {showSpecCard && (
               <SpecCard
                 show={showSpecCard}
                 onClose={() => setShowSpecCard(false)}
+              />
+            )}
+            {showImageCard && (
+              <EditImageCard
+                show={showImageCard}
+                onClose={() => setShowImageCard(false)}
               />
             )}
             {showEditAllData&&<EditData show={showEditAllData} onClose={()=>setShowEditAllData(false)} />}

@@ -26,10 +26,10 @@ export default function Idea() {
   const [showTaskParticpants, setShowTaskParticpants] = useState(false);
   const [showIdeaChat, setShowIdeaChat] = useState(false);
   const [showTaskChat, setShowTaskChat] = useState(false);
-  const [showUploadFile,setShowUploadFile]=useState(false);
-  const [showIdeaFiles,setShowIdeaFiles]=useState(false);
-  const [showTaskUploadDocument,setShowTaskUploadDocuemnt]=useState(false);
-  const [showTaskDocuments,setShowTaskDocuments]=useState(false)
+  const [showUploadFile, setShowUploadFile] = useState(false);
+  const [showIdeaFiles, setShowIdeaFiles] = useState(false);
+  const [showTaskUploadDocument, setShowTaskUploadDocuemnt] = useState(false);
+  const [showTaskDocuments, setShowTaskDocuments] = useState(false);
   const navigate = useNavigate();
   const creator = userData?.resercherId.toLowerCase() === idea?.creatorId;
 
@@ -159,8 +159,6 @@ export default function Idea() {
       .then((data) => (data ? setTasks(data) : null));
   }
 
-
-
   const AllResCard = (props) => {
     const [ress, setRess] = useState(null);
 
@@ -179,7 +177,6 @@ export default function Idea() {
     useEffect(() => {
       getAllRess();
     }, []);
-    
 
     function sendInvitation(resId) {
       let invits = [];
@@ -215,10 +212,9 @@ export default function Idea() {
           <h1 className="headContact2">All Researchers</h1>
 
           <div className="ContInviteResearchers custom-scrollbar">
-          {ress
-  ?.filter((res) => !ideaPar.some(par => par.id === res.id))
-  .map((res) => {
-                
+            {ress
+              ?.filter((res) => !ideaPar.some((par) => par.id === res.id))
+              .map((res) => {
                 return (
                   <div className="DivContResearchers">
                     <span style={{ fontWeight: "bold", fontSize: "18px" }}>
@@ -607,6 +603,7 @@ export default function Idea() {
     const [messageToSend, setMessageToSend] = useState({
       content: "",
       date: new Date().toISOString(),
+      researcherId: userData.resercherId,
     });
     const [ideaMessages, setIdeaMessages] = useState([]);
     const latestChat = useRef(null);
@@ -668,6 +665,7 @@ export default function Idea() {
       const chatMessage = {
         content: messageToSend.content,
         date: new Date().toISOString(),
+        researcherId: userData.resercherId,
       };
 
       try {
@@ -688,8 +686,6 @@ export default function Idea() {
         );
       } catch (e) {}
     };
-
-    console.log(messageToSend);
 
     if (!props.show) return null;
     return (
@@ -719,7 +715,17 @@ export default function Idea() {
             >
               {ideaMessages?.map((message) => {
                 return (
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignSelf:
+                        message.researcherId ===
+                        userData.resercherId.toLowerCase()
+                          ? "flex-end"
+                          : "flex-start",
+                    }}
+                  >
                     <p className="spanChat">{message.content}</p>
                   </div>
                 );
@@ -784,6 +790,7 @@ export default function Idea() {
     const [messageToSend, setMessageToSend] = useState({
       content: "",
       date: new Date().toISOString(),
+      researcherId: userData.resercherId,
     });
     const [taskMessage, setTaskMessages] = useState([]);
     const latestChat = useRef(null);
@@ -806,6 +813,7 @@ export default function Idea() {
       }
       counter = 0;
     }
+
     taskMessage.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     useEffect(() => {
@@ -846,6 +854,7 @@ export default function Idea() {
       const chatMessage = {
         content: messageToSend.content,
         date: new Date().toISOString(),
+        researcherId: userData.resercherId,
       };
 
       try {
@@ -895,8 +904,18 @@ export default function Idea() {
             >
               {taskMessage?.map((message) => {
                 return (
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <p>{message.content}</p>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignSelf:
+                        message.researcherId ===
+                        userData.resercherId.toLowerCase()
+                          ? "flex-end"
+                          : "flex-start",
+                    }}
+                  >
+                    <p className="spanChat">{message.content}</p>
                   </div>
                 );
               })}
@@ -998,7 +1017,9 @@ export default function Idea() {
             {task.description}
           </span>
           <span>
-            <span style={{ fontWeight: "bold" }}>Max Participants Number :</span>{" "}
+            <span style={{ fontWeight: "bold" }}>
+              Max Participants Number :
+            </span>{" "}
             {task.participantsNumber}
           </span>
           <span>
@@ -1073,9 +1094,6 @@ export default function Idea() {
     );
   };
 
-
-
-
   const UploadFileCard = (props) => {
     const titleRef = useRef(null);
 
@@ -1086,7 +1104,6 @@ export default function Idea() {
       setDocument(file);
     };
 
-
     const handleDocumentSubmit = (event) => {
       event.preventDefault();
       const titleValue = titleRef.current.value;
@@ -1095,131 +1112,128 @@ export default function Idea() {
       formData.append("file", document);
       formData.append("Name", titleValue);
 
-      fetch(`https://localhost:7187/api/Ideas/IdeaFile?ideaId=${ideaId}&researcherId=${userData.resercherId}`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${userData.token}`,
-        },
-        body: formData,
-      }).then((res) => {
+      fetch(
+        `https://localhost:7187/api/Ideas/IdeaFile?ideaId=${ideaId}&researcherId=${userData.resercherId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+          body: formData,
+        }
+      ).then((res) => {
         if (res.ok) {
-         alert('File Uploaded Successfully');
-         props.onClose();
+          alert("File Uploaded Successfully");
+          props.onClose();
         } else alert("failed to add video please try again later");
       });
     };
-    
-
-    
 
     if (!props.show) return null;
     return (
       <div className="modal-overlay2">
         <div className="modal2">
-        <input type="file"  onChange={handleDocumentUpload}/>
-        {document&&
-        <input
-                id="title"
-                className="InputUpload"
-                type="text"
-                placeholder="file name"
-                required
-                name="Title"
-                ref={titleRef}
-              ></input>}
-        {document&&<button className="btnUpload" onClick={handleDocumentSubmit}>
-                Upload Document
-              </button>}
-        <button className="cancelbtn" onClick={props.onClose}>
-              Cancel
+          <input type="file" onChange={handleDocumentUpload} />
+          {document && (
+            <input
+              id="title"
+              className="InputUpload"
+              type="text"
+              placeholder="file name"
+              required
+              name="Title"
+              ref={titleRef}
+            ></input>
+          )}
+          {document && (
+            <button className="btnUpload" onClick={handleDocumentSubmit}>
+              Upload Document
             </button>
+          )}
+          <button className="cancelbtn" onClick={props.onClose}>
+            Cancel
+          </button>
         </div>
       </div>
     );
   };
-
 
   const IdeaFilesCard = (props) => {
-    
     const [documents, setDocuments] = useState(null);
 
-    function getIdeaFiles(){
-      fetch(`https://localhost:7187/api/Ideas/IdeaFile/${ideaId}`,{
-        method:"GET",
-        headers:{
-          "Authorization":`Bearer ${userData.token}`
-        }
+    function getIdeaFiles() {
+      fetch(`https://localhost:7187/api/Ideas/IdeaFile/${ideaId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
       })
-      .then(res=>res.ok?res.json():alert('failed to load documents'))
-      .then(data=>data?setDocuments(data):null)
+        .then((res) =>
+          res.ok ? res.json() : alert("failed to load documents")
+        )
+        .then((data) => (data ? setDocuments(data) : null));
     }
 
-    
-useEffect(()=>{
-  getIdeaFiles();
-},[])
+    useEffect(() => {
+      getIdeaFiles();
+    }, []);
 
+    function downloadDoc(fileId) {
+      fetch(`https://localhost:7187/api/Ideas/IdeaFileStream/${fileId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      })
+        .then((res) => {
+          if (res.ok) {
+            return res.blob(); // Convert the response to a Blob object
+          } else {
+            throw new Error("Failed to load documents");
+          }
+        })
+        .then((blob) => {
+          // Create a temporary URL for the blob object
+          const url = URL.createObjectURL(blob);
 
-function downloadDoc(fileId) {
-  fetch(`https://localhost:7187/api/Ideas/IdeaFileStream/${fileId}`, {
-    method: "GET",
-    headers: {
-      "Authorization": `Bearer ${userData.token}`
+          // Create an anchor element
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = `document.pdf`; // Specify the desired file name
+
+          // Programmatically trigger the download
+          link.click();
+
+          // Clean up by revoking the temporary URL
+          URL.revokeObjectURL(url);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
-  })
-    .then(res => {
-      if (res.ok) {
-        return res.blob(); // Convert the response to a Blob object
-      } else {
-        throw new Error('Failed to load documents');
-      }
-    })
-    .then(blob => {
-      // Create a temporary URL for the blob object
-      const url = URL.createObjectURL(blob);
-
-      // Create an anchor element
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `document.pdf`; // Specify the desired file name
-
-      // Programmatically trigger the download
-      link.click();
-
-      // Clean up by revoking the temporary URL
-      URL.revokeObjectURL(url);
-    })
-    .catch(error => {
-      console.error(error);
-    });
-}
-
-
 
     if (!props.show) return null;
     return (
       <div className="modal-overlay2">
         <div className="modal2">
-        
-        {documents?.map(doc=>{
-          return(
-            <div style={{margin:'20px'}}>
-              <span>{doc.title}</span>
-              <button onClick={()=>downloadDoc(doc.id)}>Download</button>
-            </div>
-          )
-        })}
-        <button className="cancelbtn" onClick={props.onClose}>
-              Cancel
-            </button>
+          {documents?.map((doc) => {
+            return (
+              <div style={{ margin: "20px" }}>
+                <span>{doc.title}</span>
+                <button onClick={() => downloadDoc(doc.id)}>Download</button>
+              </div>
+            );
+          })}
+          <button className="cancelbtn" onClick={props.onClose}>
+            Cancel
+          </button>
         </div>
       </div>
     );
   };
 
-
-const TaskUploadDocument=(props)=>{
-  const titleRef = useRef(null);
+  const TaskUploadDocument = (props) => {
+    const titleRef = useRef(null);
 
     const [document, setDocument] = useState(null);
 
@@ -1228,7 +1242,6 @@ const TaskUploadDocument=(props)=>{
       setDocument(file);
     };
 
-
     const handleDocumentSubmit = (event) => {
       event.preventDefault();
       const titleValue = titleRef.current.value;
@@ -1237,126 +1250,125 @@ const TaskUploadDocument=(props)=>{
       formData.append("file", document);
       formData.append("Name", titleValue);
 
-      fetch(`https://localhost:7187/api/Ideas/TaskFile?taskId=${props.task.id}&researcherId=${userData.resercherId}`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${userData.token}`,
-        },
-        body: formData,
-      }).then((res) => {
+      fetch(
+        `https://localhost:7187/api/Ideas/TaskFile?taskId=${props.task.id}&researcherId=${userData.resercherId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+          body: formData,
+        }
+      ).then((res) => {
         if (res.ok) {
-         alert('File Uploaded Successfully');
-         props.onClose();
+          alert("File Uploaded Successfully");
+          props.onClose();
         } else alert("failed to add video please try again later");
       });
     };
-    
 
     if (!props.show) return null;
     return (
       <div className="modal-overlay2">
         <div className="modal2">
-        <input type="file"  onChange={handleDocumentUpload}/>
-        {document&&
-        <input
-                id="title"
-                className="InputUpload"
-                type="text"
-                placeholder="file name"
-                required
-                name="Title"
-                ref={titleRef}
-              ></input>}
-        {document&&<button className="btnUpload" onClick={handleDocumentSubmit}>
-                Upload Document
-              </button>}
-        <button className="cancelbtn" onClick={props.onClose}>
-              Cancel
+          <input type="file" onChange={handleDocumentUpload} />
+          {document && (
+            <input
+              id="title"
+              className="InputUpload"
+              type="text"
+              placeholder="file name"
+              required
+              name="Title"
+              ref={titleRef}
+            ></input>
+          )}
+          {document && (
+            <button className="btnUpload" onClick={handleDocumentSubmit}>
+              Upload Document
             </button>
+          )}
+          <button className="cancelbtn" onClick={props.onClose}>
+            Cancel
+          </button>
         </div>
       </div>
     );
   };
 
-
-const TaskFilesCard = (props) => {
-    
+  const TaskFilesCard = (props) => {
     const [documents, setDocuments] = useState(null);
 
-    function getIdeaFiles(){
-      fetch(`https://localhost:7187/api/Ideas/TaskFile/${props.task.id}`,{
-        method:"GET",
-        headers:{
-          "Authorization":`Bearer ${userData.token}`
-        }
+    function getIdeaFiles() {
+      fetch(`https://localhost:7187/api/Ideas/TaskFile/${props.task.id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
       })
-      .then(res=>res.ok?res.json():alert('failed to load documents'))
-      .then(data=>data?setDocuments(data):null)
+        .then((res) =>
+          res.ok ? res.json() : alert("failed to load documents")
+        )
+        .then((data) => (data ? setDocuments(data) : null));
     }
 
-    
-useEffect(()=>{
-  getIdeaFiles();
-},[])
+    useEffect(() => {
+      getIdeaFiles();
+    }, []);
 
+    function downloadDoc(fileId) {
+      fetch(`https://localhost:7187/api/Ideas/TaskFileStream/${fileId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      })
+        .then((res) => {
+          if (res.ok) {
+            return res.blob(); // Convert the response to a Blob object
+          } else {
+            throw new Error("Failed to load documents");
+          }
+        })
+        .then((blob) => {
+          // Create a temporary URL for the blob object
+          const url = URL.createObjectURL(blob);
 
-function downloadDoc(fileId) {
-  fetch(`https://localhost:7187/api/Ideas/TaskFileStream/${fileId}`, {
-    method: "GET",
-    headers: {
-      "Authorization": `Bearer ${userData.token}`
+          // Create an anchor element
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = `document.pdf`; // Specify the desired file name
+
+          // Programmatically trigger the download
+          link.click();
+
+          // Clean up by revoking the temporary URL
+          URL.revokeObjectURL(url);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
-  })
-    .then(res => {
-      if (res.ok) {
-        return res.blob(); // Convert the response to a Blob object
-      } else {
-        throw new Error('Failed to load documents');
-      }
-    })
-    .then(blob => {
-      // Create a temporary URL for the blob object
-      const url = URL.createObjectURL(blob);
-
-      // Create an anchor element
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `document.pdf`; // Specify the desired file name
-
-      // Programmatically trigger the download
-      link.click();
-
-      // Clean up by revoking the temporary URL
-      URL.revokeObjectURL(url);
-    })
-    .catch(error => {
-      console.error(error);
-    });
-}
-
-
 
     if (!props.show) return null;
     return (
       <div className="modal-overlay2">
         <div className="modal2">
-        
-        {documents?.map(doc=>{
-          return(
-            <div style={{margin:'20px'}}>
-              <span>{doc.title}</span>
-              <button onClick={()=>downloadDoc(doc.id)}>Download</button>
-            </div>
-          )
-        })}
-        <button className="cancelbtn" onClick={props.onClose}>
-              Cancel
-            </button>
+          {documents?.map((doc) => {
+            return (
+              <div style={{ margin: "20px" }}>
+                <span>{doc.title}</span>
+                <button onClick={() => downloadDoc(doc.id)}>Download</button>
+              </div>
+            );
+          })}
+          <button className="cancelbtn" onClick={props.onClose}>
+            Cancel
+          </button>
         </div>
       </div>
     );
   };
-
 
   return (
     <div>
@@ -1485,7 +1497,11 @@ function downloadDoc(fileId) {
               {creator && (
                 <button
                   className="buttonn"
-                  onClick={() => navigate(`/RateIdeaResearchers/${ideaId}`,{state:{data:userData}})}
+                  onClick={() =>
+                    navigate(`/RateIdeaResearchers/${ideaId}`, {
+                      state: { data: userData },
+                    })
+                  }
                 >
                   Submit Idea
                 </button>
