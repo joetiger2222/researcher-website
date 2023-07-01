@@ -74,11 +74,19 @@
     justify-content: space-between;}
 
     .spanChat{
-        background-color: var(--darkgreen-color);
-        padding: 15px;
-        border-radius: 20px 20px 20px 0px;
-        max-width: 300px;
-        font-size: 18px;
+      background-color: var(--darkgreen-color);
+      padding: 12px;
+      border-radius: 5px 5px 15px 0px;
+      max-width: 300px;
+      font-size: 18px;
+    }
+    .spanChat1{
+      background-color: var(--darkgreen-color);
+      padding: 12px;
+      border-radius: 5px 5px 0px 15px;
+      max-width: 300px;
+      font-size: 18px;
+      
     }
 
     .shape5{

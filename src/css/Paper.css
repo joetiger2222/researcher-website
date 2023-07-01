@@ -14,3 +14,13 @@
     display: flex;
     gap: 20px;
     align-items: center;}
+    
+
+    .DivContResearchers1{
+        justify-content: space-between;
+        width: 100%;
+        display: flex;
+        gap: 20px;
+        align-items: center;}
+        
+    

@@ -570,13 +570,11 @@ export default function Idea() {
           <div className="ContInviteResearchers custom-scrollbar">
             {taskParticpants?.map((par) => {
               return (
-                <div className="DivContResearchers">
+                <div className="DivContResearchers1">
                   <span style={{ fontWeight: "bold", fontSize: "18px" }}>
-                    {par.studentObj.firstName + " "}
+                    {par.studentObj.firstName + " "}{par.studentObj.lastName}
                   </span>
-                  <span style={{ fontWeight: "bold", fontSize: "18px" }}>
-                    {par.studentObj.lastName}
-                  </span>
+                  
                   <button
                     className="plusBtn"
                     onClick={() =>
@@ -726,7 +724,18 @@ export default function Idea() {
                           : "flex-start",
                     }}
                   >
-                    <p className="spanChat">{message.content}</p>
+                    <p style={{
+                      borderTop:
+                       message.researcherId ===
+                       userData.resercherId.toLowerCase()
+                         ? "10px solid red"
+                         : "10px solid blue",
+                    }} className={ message.researcherId ===
+                      userData.resercherId.toLowerCase()
+                        ? "spanChat1"
+                        : "spanChat"}
+                    
+                    >{message.content}</p>
                   </div>
                 );
               })}
@@ -915,7 +924,20 @@ export default function Idea() {
                           : "flex-start",
                     }}
                   >
-                    <p className="spanChat">{message.content}</p>
+                    <p 
+                    style={{
+                      borderTop:
+                       message.researcherId ===
+                       userData.resercherId.toLowerCase()
+                         ? "10px solid red"
+                         : "10px solid blue",
+                    }}
+                     className= { message.researcherId ===
+                      userData.resercherId.toLowerCase()
+                        ? "spanChat1"
+                        : "spanChat"}
+                    
+                     >{message.content}</p>
                   </div>
                 );
               })}
@@ -1012,9 +1034,9 @@ export default function Idea() {
           <span>
             <span style={{ fontWeight: "bold" }}>Name :</span> {task.name}
           </span>
-          <span>
-            <span style={{ fontWeight: "bold" }}>Description :</span>{" "}
-            {task.description}
+          <span className="custom-scrollbar" style={{overflow:"auto",maxHeight:"80px",maxWidth:"560px"}}>
+            <span  style={{ fontWeight: "bold" }}>Description :</span>{" "}
+            <span>{task.description}</span>
           </span>
           <span>
             <span style={{ fontWeight: "bold" }}>
@@ -1133,11 +1155,20 @@ export default function Idea() {
     return (
       <div className="modal-overlay2">
         <div className="modal2">
-          <input type="file" onChange={handleDocumentUpload} />
+        <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">Upload File</h1>
+          <div className="FormModal2">
+          <input className="InputModalHallDetails" type="file" onChange={handleDocumentUpload} />
           {document && (
             <input
               id="title"
-              className="InputUpload"
+              className="InputModalHallDetails"
               type="text"
               placeholder="file name"
               required
@@ -1145,14 +1176,20 @@ export default function Idea() {
               ref={titleRef}
             ></input>
           )}
-          {document && (
-            <button className="btnUpload" onClick={handleDocumentSubmit}>
+          
+           <div className="buttonsOnModal">
+           {document && (
+            <button className="" onClick={handleDocumentSubmit}>
               Upload Document
             </button>
           )}
-          <button className="cancelbtn" onClick={props.onClose}>
+           <button className="" onClick={props.onClose}>
             Cancel
           </button>
+          </div>
+          
+           </div>
+         
         </div>
       </div>
     );
@@ -1216,17 +1253,27 @@ export default function Idea() {
     return (
       <div className="modal-overlay2">
         <div className="modal2">
+        <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">All Files</h1>
+          <div className="ContInviteResearchers custom-scrollbar">  
           {documents?.map((doc) => {
             return (
-              <div style={{ margin: "20px" }}>
-                <span>{doc.title}</span>
-                <button onClick={() => downloadDoc(doc.id)}>Download</button>
+              <div className="DivContResearchers1">
+                <span style={{fontWeight:"bold",fontSize:"18px"}}>{doc.title}</span>
+                <button className="plusBtn" onClick={() => downloadDoc(doc.id)}>Download</button>
               </div>
             );
           })}
-          <button className="cancelbtn" onClick={props.onClose}>
+          <button className="buttonExit2" onClick={props.onClose}>
             Cancel
           </button>
+          </div>
         </div>
       </div>
     );
@@ -1271,11 +1318,20 @@ export default function Idea() {
     return (
       <div className="modal-overlay2">
         <div className="modal2">
-          <input type="file" onChange={handleDocumentUpload} />
+        <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">Upload Document</h1>
+          <div className="FormModal2">
+          <input className="InputModalHallDetails" type="file" onChange={handleDocumentUpload} />
           {document && (
             <input
               id="title"
-              className="InputUpload"
+              className="InputModalHallDetails"
               type="text"
               placeholder="file name"
               required
@@ -1283,14 +1339,19 @@ export default function Idea() {
               ref={titleRef}
             ></input>
           )}
+          <div className="buttonsOnModal">
           {document && (
-            <button className="btnUpload" onClick={handleDocumentSubmit}>
+            <button className="" onClick={handleDocumentSubmit}>
               Upload Document
             </button>
           )}
-          <button className="cancelbtn" onClick={props.onClose}>
+          <button className="" onClick={props.onClose}>
             Cancel
           </button>
+          </div>
+         
+          </div>
+          
         </div>
       </div>
     );
@@ -1354,17 +1415,33 @@ export default function Idea() {
     return (
       <div className="modal-overlay2">
         <div className="modal2">
+        <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">All Files</h1>
+          <div className="FormModal2">
+            <div className="DivContResearchers">
           {documents?.map((doc) => {
             return (
-              <div style={{ margin: "20px" }}>
-                <span>{doc.title}</span>
-                <button onClick={() => downloadDoc(doc.id)}>Download</button>
+              <div className="DivContResearchers1">
+                <span style={{fontWeight:"bold",fontSize:"18px"}}>{doc.title}</span>
+                <button className="plusBtn" onClick={() => downloadDoc(doc.id)}>Download</button>
               </div>
             );
           })}
-          <button className="cancelbtn" onClick={props.onClose}>
+          
+          </div>
+          <div className="resetAndCancel2">
+          <button className="buttonExit2" onClick={props.onClose}>
             Cancel
           </button>
+          </div>
+        
+          </div>
         </div>
       </div>
     );
