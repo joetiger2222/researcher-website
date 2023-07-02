@@ -6,7 +6,7 @@ import "../css/Idea.css";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import { BiChat } from "react-icons/bi";
 import { FaPaperPlane } from "react-icons/fa";
-
+import { FaCrown } from 'react-icons/fa';
 export default function Idea() {
   const userData = useLocation()?.state.data;
   const { ideaId } = useParams();
@@ -30,6 +30,7 @@ export default function Idea() {
   const [showIdeaFiles, setShowIdeaFiles] = useState(false);
   const [showTaskUploadDocument, setShowTaskUploadDocuemnt] = useState(false);
   const [showTaskDocuments, setShowTaskDocuments] = useState(false);
+  const[showUpdateProgress,setShowUpdateProgress]=useState(false);
   const navigate = useNavigate();
   const creator = userData?.resercherId.toLowerCase() === idea?.creatorId;
 
@@ -1092,7 +1093,7 @@ export default function Idea() {
           </span>
           <span>
             <span style={{ fontWeight: "bold" }}>Progress :</span>{" "}
-            {task.progress}
+            {task.progress===0 ?'Assigned':task.progress===1?'In Progress':task.progress===2?'Completed':tasks.progress===3?'Closed':null}
           </span>
           <span>
             <span style={{ fontWeight: "bold" }}>Deadline:</span>{" "}
@@ -1124,7 +1125,7 @@ export default function Idea() {
               View Task Chat
             </button>
           )}
-          {isTaskPart && (
+          {isTaskPart && !idea.isCompleted && (
             <button
               className="hoverBtn"
               onClick={() => {
@@ -1145,8 +1146,35 @@ export default function Idea() {
             >
               View All Files
             </button>
+
+
+
           )}
-          {creator && (
+          
+
+
+
+
+          {isTaskPart && (
+            <button
+              className="hoverBtn"
+              onClick={() => {
+                setChoosenTask(task);
+                setShowUpdateProgress(true);
+              }}
+            >
+              Update Task Progress
+            </button>
+
+
+
+          )}
+
+
+
+
+
+          {creator && !idea.isCompleted && (
             <button
               className="hoverBtn"
               onClick={() => {
@@ -1493,6 +1521,57 @@ export default function Idea() {
     );
   };
 
+
+
+
+const UpdateTaskProgressCard=(props)=>{
+  const [progress,setProgress]=useState(null);
+  
+
+  function updateProgress(){
+    const progressObj={progress:progress}
+    fetch(`https://localhost:7187/api/Ideas/Tasks/TaskProgress/${props.task.id}/${userData.resercherId}`,{
+      method:"PUT",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":`Bearer ${userData.token}`
+      },
+      body:JSON.stringify(progressObj)
+    })
+    // .then(res=>res.ok?alert('Task progress updated successfully'):alert('failed to update progress'))
+    .then(res=>{
+      if(res.ok){
+        alert('Task progress updated successfully');
+        props.onClose();
+        getTasks();
+      }else alert('failed to update progress')
+    })
+  }
+
+
+  if (!props.show) return null;
+    return (
+      <div className="modal-overlay2">
+        <div className="modal2">
+          <select onChange={(e)=>setProgress(e.target.value*1)}>
+            <option selected disabled>Choose State</option>
+            <option value={1}>In Progress</option>
+            <option value={2}>Completed</option>
+          </select>
+          <button onClick={updateProgress}>Update</button>
+          <button onClick={props.onClose}>Cancel</button>
+        </div>
+        </div>
+    )
+}
+
+
+
+
+  
+
+  console.log(idea)
+
   return (
     <div>
       <Header userData={userData} />
@@ -1573,7 +1652,7 @@ export default function Idea() {
                 })}
             </div>
 
-            {creator && (
+            {creator && !idea.isCompleted && (
               <button className="bn54" onClick={() => setShowResModal(true)}>
                 Invite Researcher
               </button>
@@ -1589,10 +1668,12 @@ export default function Idea() {
               {ideaPar?.map((par) => {
                 return (
                   <div className="DivContResearchers">
-                    <h3>
+                    <h3 style={{display:'flex',alignItems:'center',columnGap:'5px'}}>
+                    {idea.creatorId===par.id&&<FaCrown/>}
                       {par?.studentObj.firstName +
                         " " +
                         par?.studentObj.lastName}
+                        
                     </h3>
                     <button
                       className="hoverBtn"
@@ -1609,7 +1690,7 @@ export default function Idea() {
               })}
             </div>
             <div className="contButtonsInIdea">
-              {creator && (
+              {creator && !idea.isCompleted &&(
                 <button
                   className="buttonn"
                   onClick={() => setShowTaskCard(true)}
@@ -1617,7 +1698,7 @@ export default function Idea() {
                   Create New Task
                 </button>
               )}
-              {creator && (
+              {creator && !idea.isCompleted && (
                 <button
                   className="buttonn"
                   onClick={() =>
@@ -1635,7 +1716,7 @@ export default function Idea() {
                   onClose={() => setShowTaskCard(false)}
                 />
               )}
-              {isPart && (
+              {isPart && !idea.isCompleted && (
                 <button
                   className="buttonn"
                   onClick={() => setShowExpertReqModal(true)}
@@ -1643,7 +1724,7 @@ export default function Idea() {
                   Send Expert Request
                 </button>
               )}
-              {isPart && (
+              {ideaChatPart && !idea.isCompleted && (
                 <button
                   className="buttonn"
                   onClick={() => setShowUploadFile(true)}
@@ -1651,7 +1732,7 @@ export default function Idea() {
                   Upload File
                 </button>
               )}
-              {isPart && (
+              {ideaChatPart && (
                 <button
                   className="buttonn"
                   onClick={() => setShowIdeaFiles(true)}
@@ -1736,6 +1817,13 @@ export default function Idea() {
             <TaskFilesCard
               show={showTaskDocuments}
               onClose={() => setShowTaskDocuments(false)}
+              task={choosenTask}
+            />
+          )}
+          {choosenTask && showUpdateProgress && (
+            <UpdateTaskProgressCard
+              show={showUpdateProgress}
+              onClose={() => setShowUpdateProgress(false)}
               task={choosenTask}
             />
           )}

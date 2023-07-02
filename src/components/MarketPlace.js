@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import "../css/Marketplace.css";
 import "../css/Modal.css";
+import { FaCrown } from 'react-icons/fa';
 export default function MarketPalce() {
   const userData = useLocation().state.data;
   const [researcherIdeas, setResearcherIdeas] = useState([]);
@@ -14,6 +15,7 @@ export default function MarketPalce() {
     SearchTerm: "",
     Topic: 0,
     Specality: 0,
+    Month:0,
   });
   const navigate = useNavigate();
 
@@ -37,7 +39,7 @@ export default function MarketPalce() {
 
   function getAllIdeas() {
     fetch(
-      `https://localhost:7187/api/Ideas?SearchTerm=${ideaSearch.SearchTerm}&Topic=${ideaSearch.Topic}&Specality=${ideaSearch.Specality}`,
+      `https://localhost:7187/api/Ideas?SearchTerm=${ideaSearch.SearchTerm}&Topic=${ideaSearch.Topic}&Specality=${ideaSearch.Specality}&Month=${ideaSearch.Month}`,
       {
         method: "GET",
         headers: {
@@ -319,7 +321,8 @@ export default function MarketPalce() {
     );
   };
 
-  console.log(researcherIdeas);
+  console.log(ideaSearch);
+  
 
   return (
     <div>
@@ -344,7 +347,7 @@ export default function MarketPalce() {
                   className="CardInAllIdeas"
                   style={{ cursor: "pointer" }}
                 >
-                  <h2>Idea: {index + 1}</h2>
+                  <h2 style={{display:'flex',alignItems:'center',columnGap:'5px',justifyContent:'center'}}>{idea.creatorId===userData.resercherId.toLowerCase()&&<FaCrown/>} Idea: {index + 1}</h2>
                   <div className="containerSpansData">
                     <span
                       style={{
@@ -367,6 +370,22 @@ export default function MarketPalce() {
                         {idea?.specalityObj.name}
                       </span>
                     </span>
+
+
+                    <span
+                      style={{
+                        borderBottom: "1px solid black",
+                        padding: "5px",
+                      }}
+                    >
+                      Status:{" "}
+                      <span style={{ fontWeight: "bold" }}>
+                        {idea?.isCompleted?'Completed':'In Progress'}
+                      </span>
+                    </span>
+
+
+
                     <span
                       style={{
                         borderBottom: "1px solid black",
@@ -424,11 +443,11 @@ export default function MarketPalce() {
           )}
         </div>
         <div className="ContainerbtnData">
-          {researcherIdeas?.length < 2 && (
+           (
             <button className="plusBtn" onClick={() => setShowIdeaCard(true)}>
               Create New Idea
             </button>
-          )}
+          )
           {showCreateIdeaCard && (
             <CreateNewIdeaCard
               show={showCreateIdeaCard}
@@ -484,6 +503,40 @@ export default function MarketPalce() {
                 return <option value={topic.id}>{topic.name}</option>;
               })}
             </select>
+
+
+
+            <select
+              onChange={(e) =>
+                setIdeaSearch((prev) => {
+                  return { ...prev, [e.target.name]: e.target.value * 1 };
+                })
+              }
+              name="Month"
+              className="search-select"
+            >
+              <option selected value={0}>
+                Month
+              </option>
+              {['January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December']?.map((month,index) => {
+                return <option value={index+1}>{month}</option>;
+              })}
+            </select>
+
+
+
+
           </div>
 
           <div className="AllIdeas">
@@ -520,6 +573,17 @@ export default function MarketPalce() {
                             {idea?.specalityObj.name}
                           </span>
                         </span>
+                        <span
+                      style={{
+                        borderBottom: "1px solid black",
+                        padding: "5px",
+                      }}
+                    >
+                      Status:{" "}
+                      <span style={{ fontWeight: "bold" }}>
+                        {idea?.isCompleted?'Completed':'In Progress'}
+                      </span>
+                    </span>
                         <span
                           style={{
                             borderBottom: "1px solid black",

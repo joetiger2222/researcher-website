@@ -5,7 +5,7 @@ import "../css/Researchers.css";
 import { BiChat } from 'react-icons/bi';
 import { FaPaperPlane } from "react-icons/fa";
 import { HubConnectionBuilder } from "@microsoft/signalr";
-
+import kariem from "../images/userImg.png";
 import user from "../images/imageUser.png"
 export default function Researchers(){
 
@@ -279,7 +279,70 @@ let counter=1;
   };
 
 
+const ResCard=(props)=>{
 
+  const[studentImage,setStudentImage]=useState({url:kariem});
+
+
+  function getStudentImage(){
+    fetch(`https://localhost:7187/api/Students/Image/${props.res.studentObj.id}`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      }
+    })
+    .then(res=>res.ok?setStudentImage(res):null)
+    
+  }
+
+  useEffect(()=>{
+    getStudentImage();
+  },[])
+
+
+  return (
+    <div className="ContCarduserInfo">
+      <div className="photoUserCard">
+          <img src={studentImage.url} alt="photo" />
+      </div>
+      <div className="containerSpansData padding20px">
+      <span>
+        {"Name : " +
+          props.res.studentObj.firstName +
+          " " +
+          props.res.studentObj.lastName}
+      </span>
+      <span>{"Age : " + props.res.studentObj.age}</span>
+      <span>{"Nationality : " + props.res.studentObj.nationality}</span>
+      <span>{"Speciality : " + props.res.specalityObject.name}</span>
+      <span>{"Points : " + props.res.points}</span>
+      <span>{"Level : " + props.res.level}</span>
+      
+      <div className="ContainerbtnData">
+      <button
+      className="bn54"
+        onClick={() =>
+          navigate(`/Profile/${props.res.studentObj.id}`, {
+            state: { data: userData },
+          })
+        }
+      >
+        View Profile
+      </button>
+      <button
+      onClick={()=>{setChoosenRes(props.res.studentObj.id);setShowChatModal(true)}}
+  className="plusBtn"            
+  >
+    Chat
+    <BiChat/>
+    {/* <PiChatCircleTextBold/> */}
+  </button>
+      </div>
+      </div>
+     
+    </div>
+  );
+}
 
   return (
     <>
@@ -334,48 +397,9 @@ let counter=1;
         </div>
         <div className="AllIdeas">
           {researchers?.filter(res=>res.id!==userData.resercherId.toLowerCase()).map((res) => {
-            return (
-              <div className="ContCarduserInfo">
-                <div className="photoUserCard">
-                    <img src={user} alt="photo" />
-                </div>
-                <div className="containerSpansData padding20px">
-                <span>
-                  {"Name : " +
-                    res.studentObj.firstName +
-                    " " +
-                    res.studentObj.lastName}
-                </span>
-                <span>{"Age : " + res.studentObj.age}</span>
-                <span>{"Nationality : " + res.studentObj.nationality}</span>
-                <span>{"Speciality : " + res.specalityObject.name}</span>
-                <span>{"Points : " + res.points}</span>
-                <span>{"Level : " + res.level}</span>
-                
-                <div className="ContainerbtnData">
-                <button
-                className="bn54"
-                  onClick={() =>
-                    navigate(`/Profile/${res.studentObj.id}`, {
-                      state: { data: userData },
-                    })
-                  }
-                >
-                  View Profile
-                </button>
-                <button
-                onClick={()=>{setChoosenRes(res.studentObj.id);setShowChatModal(true)}}
-            className="plusBtn"            
-            >
-              Chat
-              <BiChat/>
-              {/* <PiChatCircleTextBold/> */}
-            </button>
-                </div>
-                </div>
-               
-              </div>
-            );
+            return(
+            <ResCard res={res} />
+            )
           })}
           {choosenRes&&showChatModal&&<PrivateChatCard otherPersonId={choosenRes} show={showChatModal} onClose={()=>setShowChatModal(false)} />}
         </div>

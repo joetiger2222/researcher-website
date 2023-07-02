@@ -116,7 +116,7 @@ const CourseDetails = () => {
     }, []);
 
     
-
+console.log('enrollment',isStudentEnrolled)
 
 
     return (
@@ -148,10 +148,10 @@ const CourseDetails = () => {
                 }}
               />
               <FaRegEdit
-                onClick={() =>
+                onClick={() =>isStudentEnrolled?
                   navigate(`/AddQuizToSection/${section.id}`, {
                     state: { data: userData },
-                  })
+                  }):null
                 }
                 className="plusIcon"
               />
@@ -165,10 +165,10 @@ const CourseDetails = () => {
         >
           {videosIds?.map((video,index) => (
             <span
-              onClick={() =>
+              onClick={() =>isStudentEnrolled?
                 navigate(`/CourseForStudent/${section.id}/${video.id}`, {
                   state: { data: userData },
-                })
+                }):alert('Buy The Course First')
               }
               className="LinkVideoSection"
             >
@@ -179,10 +179,13 @@ const CourseDetails = () => {
           {sectionQuiz && (
             <span
               className="QuizTitle"
-              onClick={() =>
+              onClick={() =>{
+                if(isStudentEnrolled){
                 navigate(`/SectionQuiz/${section.id}`, {
                   state: { data: userData },
                 })
+              }
+              }
               }
             >
               {section.name} Quiz

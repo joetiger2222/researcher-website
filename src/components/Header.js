@@ -1,16 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../css/Header.css";
 import userImg from "../images/userImg.png";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import kariem from "../images/userImg.png";
 
 export default function Header({userData,resercherId}) {
+
+  const[studentImage,setStudentImage]=useState({url:kariem});
 
   const navigate=useNavigate();
 
 
+function getStudentImage(){
+    fetch(`https://localhost:7187/api/Students/Image/${userData?.userId}`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      }
+    })
+    .then(res=>res.ok?setStudentImage(res):null)
+    
+  }
 
+  useEffect(()=>{
+    getStudentImage();
+  },[])
 
 
   return (
@@ -46,7 +61,7 @@ export default function Header({userData,resercherId}) {
           
 
          {userData.roles!=='Admin'&&<li class="dropdown">
-              <img src={userImg} class="dropbtn userImgHeader"/>
+              <img src={studentImage.url} class="dropbtn userImgHeader"/>
               <div class="dropdown-content">
                 <a onClick={()=>userData.roles==='Admin'?navigate('/AdminPanel',{state:{data:userData}}):navigate(`/Profile/${userData.userId}`,{state:{data:userData}})}>Profile</a>
                 <a href="#">Link 2</a>
