@@ -27,6 +27,7 @@ const CourseDetails = () => {
   const [showUploadVideo, setShowUploadVideo] = useState(false);
   const [showDeleteCourseModal, setShowDeleteCourseModal] = useState(false);
   const [showEditCourseDataModal, setShowEditCourseDataModal] = useState(false);
+  const [isStudentEnrolled,setIsStudentEnrolled]=useState(false);
   const userData = useLocation()?.state?.data;
 
   let { id } = useParams();
@@ -56,9 +57,26 @@ const CourseDetails = () => {
       .then((data) => setCourseSections(data));
   }
 
+
+
+  function checkStudentEnrollment(){
+    fetch(`https://localhost:7187/api/Courses/CheckEnrollment?courseId=${id}&studentId=${userData.userId}`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      }
+    })
+    .then(res=>res.ok?res.json():alert('failed to check enrollment'))
+    .then(data=>data?setIsStudentEnrolled(data.isEnrolled):null)
+  }
+
+
   useEffect(() => {
     getCourseDetatils();
     getCourseSections();
+    if(userData.roles!=='Admin')
+    checkStudentEnrollment();
+    if(userData.roles==='Admin')setIsStudentEnrolled(true)
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
@@ -96,6 +114,10 @@ const CourseDetails = () => {
       getVideosIds();
       getSectionQuiz();
     }, []);
+
+    
+
+
 
     return (
       <div className="courseDetailsSectionsContainerNew">
@@ -141,7 +163,7 @@ const CourseDetails = () => {
           className="courseDetailsSectionVideosNew"
           style={{ display: activeSection ? "flex" : "none" }}
         >
-          {videosIds?.map((video) => (
+          {videosIds?.map((video,index) => (
             <span
               onClick={() =>
                 navigate(`/CourseForStudent/${section.id}/${video.id}`, {
@@ -150,7 +172,7 @@ const CourseDetails = () => {
               }
               className="LinkVideoSection"
             >
-              <span>{video?.title}</span>
+              <span>{isStudentEnrolled?video?.title:`video ${index+1}`}</span>
             </span>
           ))}
 
@@ -542,7 +564,7 @@ const CourseDetails = () => {
             <p className="briefCourseNew">{courseDetails?.brief}</p>
             <h2>Price: {courseDetails?.price} EGP</h2>
             {userData.roles !== "Admin" && (
-              <button className="btnBUY">Buy Now</button>
+              !isStudentEnrolled&&<button className="btnBUY">Buy Now</button>
             )}
           </div>
           <div className="ObjectivesNew">

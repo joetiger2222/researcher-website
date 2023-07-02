@@ -85,7 +85,7 @@ if(creator){
                         <span>{'Name : '+par.studentObj.firstName+' '+ par.studentObj.lastName}</span>
                         <span>{'Points : '+par.points}</span>
                         <span>{'Level : '+par.level}</span>
-                        <span>{par.studentObj.gender===0?'Gender : Female':'Gender : Male'}</span>
+                        <span>{'Email : '+par.studentObj.email}</span>
                         <span>{'Speciality : '+par.specalityObject.name}</span>
                         <select
                         onChange={(e)=>updateRate(par.id,e.target.value*1)}>

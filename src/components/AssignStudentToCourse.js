@@ -46,19 +46,45 @@ const CoursesCard=(props)=>{
         getAllCourses();
       },[])
 
-      console.log(courses)
+      
 
-      function assignToCourse(){
-        fetch(``,{
-            method:"POST",
+      function assignToCourse(courseId,studentId){
+        console.log('course id',courseId)
+        console.log('studen id',studentId);
+        const temp={studentId:studentId}
+        fetch(`https://localhost:7187/api/Courses/Enrollment?courseId=${courseId}`,{
+            method:"PUT",
             headers:{
                 "Content-Type":"application/json",
                 "Authorization":`Bearer ${userData.token}`
             },
-            body:JSON.stringify(props.student.id)
+            body:JSON.stringify(temp)
         })
         .then(res=>res.ok?alert('Student Assigned Successfully'):alert('Failed To Assign Student'))
       }
+
+
+      function checkCourseEnrollment(courseId,studentId){
+        fetch(`https://localhost:7187/api/Courses/CheckEnrollment?courseId=${courseId}&studentId=${studentId}`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      }
+    })
+    .then(res=>res.ok?res.json():alert('failed to check enrollment'))
+    .then(data=>{
+        if(data){
+            if(data.isEnrolled){
+                alert('this student already enrolled in this course')
+            }else {
+                assignToCourse(courseId,studentId);
+            }
+        }
+    })
+      }
+
+      
+
 
     if (!props.show) return null;
     return (
@@ -85,7 +111,7 @@ const CoursesCard=(props)=>{
                         <span>{"Hours : "+course.hours}</span>
                         <span>{"Price : "+course.price}</span>
                         <span>{"Skill : "+course.skillObj.name}</span>
-                        <button onClick={assignToCourse}>Assign To Student</button>
+                        <button onClick={()=>checkCourseEnrollment(course.id,choosenStudent.id)}>Assign To Student</button>
                         <button onClick={props.onClose}>Cancel</button>
                     </div>
                 )

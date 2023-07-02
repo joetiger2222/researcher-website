@@ -48,50 +48,7 @@ export default function SectionQuiz() {
     }
   };
 
-  // console.log('answers state',answers);
-  // console.log(sectionQuizData)
-
-  // function CountdownTimer({ timeLimit }) {
-  //   const [remainingTime, setRemainingTime] = useState(timeLimit);
-
-  //   useEffect(() => {
-  //     if (remainingTime.hours === '' || remainingTime.mins === '' || remainingTime.secs === '') {
-  //       return;
-  //     }
-
-  //     const intervalId = setInterval(() => {
-  //       setRemainingTime(prevTime => {
-  //         let hours = prevTime.hours;
-  //         let mins = prevTime.mins;
-  //         let secs = prevTime.secs;
-
-  //         if (secs === 0 && mins === 0 && hours === 0) {
-  //           clearInterval(intervalId);
-  //           return prevTime;
-  //         } else if (secs === 0 && mins === 0) {
-  //           hours--;
-  //           mins = 59;
-  //           secs = 59;
-  //         } else if (secs === 0) {
-  //           mins--;
-  //           secs = 59;
-  //         } else {
-  //           secs--;
-  //         }
-
-  //         return { hours, mins, secs };
-  //       });
-  //     }, 1000);
-
-  //     return () => clearInterval(intervalId);
-  //   }, [remainingTime]);
-
-  //   const formattedTime = `${remainingTime.hours}:${remainingTime.mins}:${remainingTime.secs
-  //     .toString()
-  //     .padStart(2, '0')}`;
-
-  //   return <div>{formattedTime}</div>;
-  // }
+  
 
   function getSectionData() {
     fetch(`https://localhost:7187/api/Courses/Sections/${sectionId}`)
@@ -197,7 +154,7 @@ export default function SectionQuiz() {
     .then(data=>console.log(data))
   }
 
-  // console.log(sectionQuizData)
+  
 
   return (
     <div className="sectionQuizContainer">
