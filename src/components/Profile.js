@@ -548,25 +548,24 @@ const Profile = () => {
     if (!props.show) return null;
     return (
       <div
-        style={{
-          position: "fixed",
-          left: "0",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          backgroundColor: "rgba(0, 0,0,0.5)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: "100",
-        }}
+        className="modal-overlay2"
       >
-        <div style={{ backgroundColor: "white", width: "50%", color: "black" }}>
-          <h4>Only Change The Field You Want To Modify</h4>
-          <span>First Name</span>
-          <input placeholder={studentData?.firstName} name="firstname" onChange={getEditData}></input>
-          <span>Last Name</span>
-          <input placeholder={studentData?.lastName} name="lastname" onChange={getEditData}></input>
+        <div className="modal2">
+        <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">Edit only data you want to change</h1>
+          <div className="FormModal2 custom-scrollbar">
+
+
+          <label className="AllLabeles">First Name</label>
+          <input className="InputModalHallDetails" placeholder={studentData?.firstName} name="firstname" onChange={getEditData}></input>
+          <label className="AllLabeles">Last Name</label>
+          <input className="InputModalHallDetails" placeholder={studentData?.lastName} name="lastname" onChange={getEditData}></input>
           {/* <span>Gender</span>
           <select
             name="gender"
@@ -582,10 +581,11 @@ const Profile = () => {
           </select> */}
           {/* <span>Email</span>
           <input placeholder={studentData?.email} name="email" onChange={getEditData}></input> */}
-          <span>Age</span>
-          <input placeholder={studentData?.age} type="number" name="age" onChange={(e)=>setEditData(prev=>{return{...prev,[e.target.name]:e.target.value*1}})}></input>
-          <span>Nationality</span>
+          <label className="AllLabeles">Age</label>
+          <input className="InputModalHallDetails" placeholder={studentData?.age} type="number" name="age" onChange={(e)=>setEditData(prev=>{return{...prev,[e.target.name]:e.target.value*1}})}></input>
+          <label className="AllLabeles">Nationality</label>
           <select
+          className="InputModalHallDetails"
             name="nationalityId"
             onChange={(e) =>
               setEditData((prev) => {
@@ -600,8 +600,9 @@ const Profile = () => {
               )
             })}
           </select>
-          <span>Type</span>
+          <label className="AllLabeles">Type</label>
           <select
+          className="InputModalHallDetails"
             name="type"
             onChange={(e) =>
               setEditData((prev) => {
@@ -614,10 +615,15 @@ const Profile = () => {
             <option value={2}>Doctor / Specialist</option>
             <option value={3}>Other</option>
           </select>
-          <span>Google Schooler Link</span>
-          <input placeholder={studentData?.googleSchoolerLink} name="googleSchoolerLink" onChange={getEditData}></input>
-          <button onClick={props.onClose}>Cancel</button>
-          <button onClick={sendEditData}>Submit</button>
+          <label className="AllLabeles">Google Schooler Link</label>
+          <input className="InputModalHallDetails" placeholder={studentData?.googleSchoolerLink} name="googleSchoolerLink" onChange={getEditData}></input>
+          <div className="buttonsOnModal">
+            <button onClick={sendEditData}>Submit</button>
+            <button onClick={props.onClose}>Cancel</button>
+
+          </div>
+
+          </div>
         </div>
       </div>
     );
@@ -651,40 +657,30 @@ const Profile = () => {
     if (!props.show) return null;
     return (
       <div
-        style={{
-          position: "fixed",
-          left: "0",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          backgroundColor: "rgba(0, 0,0,0.5)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: "100",
-        }}
+        className="modal-overlay2"
       >
         <div
-          style={{
-            backgroundColor: "white",
-            width: "60%",
-            borderRadius: "15px",
-            minWidth: "350px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            maxWidth:'1000px'
-          }}
+         className="modal2"
         >
-          <p className="Upload_profile_photo">Upload profile photo</p>
-          <img id="user" src={user} style={{ width: "150px",margin:'0 0 20px 0' }} />
-  
-          <input id="img" type="file" onChange={(e)=>setPhoto(e.target.files[0])} style={{width:'30%',minWidth:'200px'}} />
-          <div style={{display:'flex',alignItems:'center',justifyContent:'space-evenly',width:'100%'}}>
-          {photo&&<button onClick={editPhoto} style={{width:'30%',padding:'5px',maxWidth:'200px'}} >Finish</button>}
-          <button onClick={props.onClose} style={{width:'30%',padding:'5px',maxWidth:'200px',backgroundColor:'#d91111'}} id="Next_Step">Cancel</button>
-          
+          <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">Upload profile photo</h1>
+
+          <div className="FormModal2">
+<div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+
+<img id="user" src={user} style={{ width: "150px",margin:'0 0 20px 0' }} />
+          <input className="InputModalHallDetails" id="img" type="file" onChange={(e)=>setPhoto(e.target.files[0])}  />
+         
+</div> <div className="buttonsOnModal">
+            {photo&&<button onClick={editPhoto}  >Finish</button>}
+            <button onClick={props.onClose} id="Next_Step">Cancel</button>
+          </div>
           </div>
         </div>
       </div>
