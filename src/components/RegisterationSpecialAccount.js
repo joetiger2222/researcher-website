@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import registartionImg from "../images/registerImage.png";
 import google from "../google.png";
 import "../css/Registration.css";
+import toastr from "toastr";
+import 'toastr/build/toastr.min.css';
 import { useLocation, useNavigate } from "react-router-dom";
 export default function RegisterationSpecialAccount() {
   const userData = useLocation().state.data;
@@ -60,9 +62,9 @@ export default function RegisterationSpecialAccount() {
       // .then(res=>res.ok?alert('user successfully created'):alert('failed to send points and speciality'))
       .then((res) => {
         if (res.ok) {
-          alert("user successfully created");
+          toastr.success("user successfully created","Success");
           navigate("/AdminPanel", { state: { data: userData } });
-        } else alert("failed to send points and speciality");
+        } else toastr.error("failed to send points and speciality","Failed");
       });
   }
 
@@ -83,7 +85,7 @@ export default function RegisterationSpecialAccount() {
         .then((res) => {
           if (res.ok) {
             return res.json();
-          } else alert("failed to add student");
+          } else toastr.error("failed to add student","Failed");
         })
         .then((data) => {
           if (data) {
@@ -92,14 +94,14 @@ export default function RegisterationSpecialAccount() {
           }
         });
     } else {
-      alert("Password and Confirm Password Does not Match");
+      toastr.error("Password and Confirm Password Does not Match","Error");
     }
   }
 
   function getAllNationalities() {
     fetch(`https://localhost:7187/api/Students/Nationalites`)
       .then((res) =>
-        res.ok ? res.json() : alert("failed to load nationalities")
+        res.ok ? res.json() : toastr.error("failed to load nationalities","Failed")
       )
       .then((data) => (data ? setAllNationalities(data) : null));
   }
@@ -118,7 +120,7 @@ export default function RegisterationSpecialAccount() {
         Authorization: `Bearer ${userData.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : alert("failed to Load specs")))
+      .then((res) => (res.ok ? res.json() : toastr.error("failed to Load specs","Failed")))
       .then((data) => {
         if (data) {
           setAllSpecs(data);

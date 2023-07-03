@@ -7,6 +7,10 @@ import { FaPaperPlane } from "react-icons/fa";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import kariem from "../images/userImg.png";
 import user from "../images/imageUser.png"
+import ToastrComponent from "./Cards/ToastrComponent";
+import toastr from "toastr";
+import 'toastr/build/toastr.min.css';
+
 export default function Researchers(){
 
     const userData=useLocation().state.data
@@ -30,7 +34,7 @@ export default function Researchers(){
       }
     )
       .then((res) =>
-        res.ok ? res.json() : alert("failed to load Researchers")
+        res.ok ? res.json() : toastr.error("failed to load Researchers","Failed")
       )
       .then((data) => (data ? setResearchers(data) : null));
   }
@@ -42,7 +46,7 @@ export default function Researchers(){
         Authorization: `Bearer ${userData.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : alert("failed to Load specs")))
+      .then((res) => (res.ok ? res.json() : toastr.error("failed to Load specs","Failed")))
       .then((data) => {
         if (data) {
           setAllSpecs(data);
@@ -86,7 +90,7 @@ let counter=1;
           Authorization: `Bearer ${userData.token}`,
         },
       })
-        .then((res) => res.ok?res.json():alert('failed to load your messages'))
+        .then((res) => res.ok?res.json():toastr.error('failed to load your messages',"Failed"))
 
         .then(data=>{
           
@@ -107,7 +111,7 @@ let counter=1;
           Authorization: `Bearer ${userData.token}`,
         },
       })
-        .then((res) => res.ok?res.json():alert('failed to load your messages'))
+        .then((res) => res.ok?res.json():toastr.error('failed to load your messages',"Failed"))
 
         .then(data=>{
 
@@ -303,7 +307,10 @@ const ResCard=(props)=>{
   return (
     <div className="ContCarduserInfo">
       <div className="photoUserCard">
-          <img src={studentImage.url} alt="photo" />
+        <div className="ContainerImgRes">
+        <img src={studentImage.url} alt="photo" />
+
+        </div>
       </div>
       <div className="containerSpansData padding20px">
       <span>

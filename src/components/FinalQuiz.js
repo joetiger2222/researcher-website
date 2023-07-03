@@ -3,7 +3,8 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "../css/SectionQuiz.css";
 import Header from "./Header";
 import QuestionCard from "./QuestionCard";
-
+import toastr from "toastr";
+import 'toastr/build/toastr.min.css';
 export default function FinalQuiz() {
   const [finalQuizData, setFinalQuizData] = useState(null);
   const questions = finalQuizData?.questions;
@@ -169,7 +170,7 @@ export default function FinalQuiz() {
         body: JSON.stringify(arr),
       }
     )
-      .then((res) => (res.ok ? res.json() : alert("failed to submit quiz")))
+      .then((res) => (res.ok ? res.json() : toastr.error("failed to submit quiz","Failed")))
       .then((data) => {
         if (data) {
           if (data.isSuccessed) {
@@ -229,7 +230,7 @@ export default function FinalQuiz() {
 
   useEffect(() => {
     if (parseInt(timeLimit.mins) === 0 && parseInt(timeLimit.secs) === 0) {
-      alert("Your Timer Has Finished !");
+      toastr.warning("Your Timer Has Finished !");
       navigate("/HomePage", { state: { data: userData } });
     }
   }, [timer, timeLimit.mins, timeLimit.secs]);

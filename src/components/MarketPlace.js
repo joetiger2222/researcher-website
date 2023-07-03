@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import "../css/Marketplace.css";
 import "../css/Modal.css";
+import toastr from "toastr";
+import 'toastr/build/toastr.min.css';
 import { FaCrown } from 'react-icons/fa';
 export default function MarketPalce() {
   const userData = useLocation().state.data;
@@ -47,7 +49,7 @@ export default function MarketPalce() {
         },
       }
     )
-      .then((res) => (res.ok ? res.json() : alert("failed to Load All Ideas")))
+      .then((res) => (res.ok ? res.json() : toastr.error("failed to Load All Ideas","Failed")))
       .then((data) => {
         if (data) {
           setAllIdeas(data);
@@ -62,7 +64,7 @@ export default function MarketPalce() {
         Authorization: `Bearer ${userData.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : alert("failed to Load specs")))
+      .then((res) => (res.ok ? res.json() : toastr.error("failed to Load specs","Failed")))
       .then((data) => {
         if (data) {
           setAllSpecs(data);
@@ -77,7 +79,7 @@ export default function MarketPalce() {
         Authorization: `Bearer ${userData.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : alert("failed to Load topics")))
+      .then((res) => (res.ok ? res.json() : toastr.error("failed to Load topics","Failed")))
       .then((data) => {
         if (data) {
           setAllTopics(data);
@@ -125,9 +127,9 @@ export default function MarketPalce() {
               new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
             );
             if (body.includes("joined")) {
-              alert("You Already Joined This Idea");
-            } else alert(body);
-          } else alert("Request Sent Successfully");
+              toastr.info("You Already Joined This Idea");
+            } else toastr.info(body);
+          } else toastr.success("Request Sent Successfully","Success");
         });
       })
       .catch((error) => console.error(error));
@@ -161,7 +163,7 @@ export default function MarketPalce() {
           Authorization: `Bearer ${userData.token}`,
         },
       })
-        .then((res) => (res.ok ? res.json() : alert("failed to Load specs")))
+        .then((res) => (res.ok ? res.json() : toastr.error("failed to Load specs","Failed")))
         .then((data) => {
           if (data) {
             setAllSpecs(data);
@@ -176,7 +178,7 @@ export default function MarketPalce() {
           Authorization: `Bearer ${userData.token}`,
         },
       })
-        .then((res) => (res.ok ? res.json() : alert("failed to Load topics")))
+        .then((res) => (res.ok ? res.json() : toastr.error("failed to Load topics","Failed")))
         .then((data) => {
           if (data) {
             setAllTopics(data);
@@ -223,7 +225,7 @@ export default function MarketPalce() {
                 const body = new TextDecoder().decode(
                   new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
                 );
-                alert(body);
+                toastr.info(body);
               });
             } else window.location.reload();
 
@@ -235,7 +237,7 @@ export default function MarketPalce() {
             });
           })
           .catch((error) => console.error(error));
-      } else alert("please enter a valid deadline yyyy-mm-dd");
+      } else toastr.error("please enter a valid deadline yyyy-mm-dd","Error");
     }
 
     if (!props.show) return null;

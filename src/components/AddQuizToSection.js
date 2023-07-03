@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Header from "./Header";
 import AnswersCard from "./AnswerCard";
+import toastr from "toastr";
+import 'toastr/build/toastr.min.css';
 export default function AddQuizToSection() {
   const navigate = useNavigate();
   const { sectionId } = useParams();
@@ -177,7 +179,7 @@ export default function AddQuizToSection() {
       },
       body: JSON.stringify(updatedQuizData),
     })
-      .then((res) => res.ok?navigate(`/CourseDetails/${courseDetails.id}`,{state:{data:userData}}):alert('failed to add quiz to section'))
+      .then((res) => res.ok?navigate(`/CourseDetails/${courseDetails.id}`,{state:{data:userData}}):toastr.error('failed to add quiz to section',"Failed"))
       
     
   }

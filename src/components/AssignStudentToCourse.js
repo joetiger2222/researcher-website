@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "./Header";
-
+import toastr from "toastr";
+import 'toastr/build/toastr.min.css';
 export default function AssignStudentToCourse(){
     const userData=useLocation().state.data;
     const [allStudents,setAllStudents]=useState(null);
@@ -16,7 +17,7 @@ export default function AssignStudentToCourse(){
                 "Authorization":`Bearer ${userData.token}`
             }
         })
-        .then(res=>res.ok?res.json():alert('failed to load students data'))
+        .then(res=>res.ok?res.json():toastr.error('failed to load students data',"Failed"))
         .then(data=>data?setAllStudents(data):null)
     }
 
@@ -38,7 +39,7 @@ const CoursesCard=(props)=>{
             Authorization: `Bearer ${userData.token}`,
           },
         })
-          .then((res) => (res.ok ? res.json() : alert("Failed To Load Courses")))
+          .then((res) => (res.ok ? res.json() : toastr.error("Failed To Load Courses","Failed")))
           .then((data) => setCourses(data));
       }
 
@@ -60,7 +61,7 @@ const CoursesCard=(props)=>{
             },
             body:JSON.stringify(temp)
         })
-        .then(res=>res.ok?alert('Student Assigned Successfully'):alert('Failed To Assign Student'))
+        .then(res=>res.ok?toastr.success('Student Assigned Successfully',"Success"):toastr.error('Failed To Assign Student',"Failed"))
       }
 
 
@@ -71,11 +72,11 @@ const CoursesCard=(props)=>{
         "Authorization":`Bearer ${userData.token}`
       }
     })
-    .then(res=>res.ok?res.json():alert('failed to check enrollment'))
+    .then(res=>res.ok?res.json():toastr.error('failed to check enrollment',"Failed"))
     .then(data=>{
         if(data){
             if(data.isEnrolled){
-                alert('this student already enrolled in this course')
+                toastr.warning('this student already enrolled in this course')
             }else {
                 assignToCourse(courseId,studentId);
             }

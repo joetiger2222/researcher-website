@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Header from "./Header";
 import AnswersCard from "./AnswerCard";
-
+import toastr from "toastr";
+import 'toastr/build/toastr.min.css';
 export default function AddQuizToCourse (){
     const [showQuestionTemplate, setShowQuestionTemplate] = useState(false);
     const [answerCards, setAnswerCards] = useState([
@@ -127,7 +128,7 @@ function saveQuest() {
       },
       body: JSON.stringify(updatedQuizData),
     })
-      .then((res) => res.ok?navigate('/AdminPanel',{state:{data:userData}}):alert('failed to add quiz'))
+      .then((res) => res.ok?navigate('/AdminPanel',{state:{data:userData}}):toastr.error('failed to add quiz',"Failed"))
       
   }
 

@@ -32,7 +32,7 @@ function getStudentImage(){
     <div className="headerParent">
       <div className="headerContainer">
         <div className="headerLeft">
-          <h1 onClick={()=>userData.roles==='Admin'?navigate('/AdminPanel',{state:{data:userData}}):navigate('/HomePage',{state:{data:userData}})}>Logo</h1>
+          <h1 style={{cursor:"pointer"}} onClick={()=>userData.roles==='Admin'?navigate('/AdminPanel',{state:{data:userData}}):navigate('/HomePage',{state:{data:userData}})}>Logo</h1>
         </div>
 
         <div className="headerRight">

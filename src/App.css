@@ -53,6 +53,63 @@ p, h1 ,h2 ,h3 ,h4{
   border-radius: 0.25em;
 }
 
+
+/* For choose file */
+.InputFile[type="file"]::-webkit-file-upload-button {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.InputFile[type="file"]::file-selector-button {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;  
+ 
+}
+.InputFile{
+  padding: 10px;
+  border: 1px solid var(--darkgreen-color);
+  color: var(--darkgreen-color);
+}
+.LableForinputTypeFile{
+  padding: 10px;
+  border-radius: 5px;
+  margin: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.SpanUpload{
+  padding: 8px;
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--darkgreen-color);
+  color: white;
+}
+.SpanUpload svg{
+  color: white;
+  width: 20px;
+  height: 20px;
+}
+.SpanUpload:hover{
+  background-color: #044d45;
+cursor: pointer;
+}
+.SpanUpload:hover svg{
+ color: white;
+}
+
+
+
+
 /* button for all */
 
 .button-arounder1 {

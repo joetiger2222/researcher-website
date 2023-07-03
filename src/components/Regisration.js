@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import registartionImg from "../images/registerImage.png";
 import google from "../google.png";
 import "../css/Registration.css";
+import toastr from "toastr";
+import 'toastr/build/toastr.min.css';
 import { useNavigate } from "react-router-dom";
 const Registration = () => {
   const [formData, setFormData] = useState({
@@ -50,17 +52,17 @@ const Registration = () => {
       }).then((res) =>
         res.ok
           ? authorizeLogin(e)
-          : alert("failed to register please try again later")
+          : toastr.error("failed to register please try again later","Failed")
       );
     } else {
-      alert("Password and Confirm Password Does not Match");
+      toastr.error("Password and Confirm Password Does not Match","Error");
     }
   }
 
   function getAllNationalities() {
     fetch(`https://localhost:7187/api/Students/Nationalites`)
       .then((res) =>
-        res.ok ? res.json() : alert("failed to load nationalities")
+        res.ok ? res.json() : toastr.error("failed to load nationalities","Failed")
       )
       .then((data) => (data ? setAllNationalities(data) : null));
   }
@@ -80,7 +82,7 @@ const Registration = () => {
     })
       .then((response) => {
         if (response.ok) return response.json();
-        else alert("Failed to login in try again later");
+        else toastr.error("Failed to login in try again later","Failed");
       })
       .then((data) => {
         if (data) {

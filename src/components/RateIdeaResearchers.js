@@ -2,7 +2,8 @@ import React from "react";
 import { useState ,useEffect,useRef} from "react";
 import { useLocation, useParams } from "react-router-dom";
 import Header from "./Header";
-
+import toastr from "toastr";
+import 'toastr/build/toastr.min.css';
 export default function RateIdeaResearchers(){
     const userData=useLocation().state.data;
     const {ideaId}=useParams();
@@ -21,7 +22,7 @@ export default function RateIdeaResearchers(){
             Authorization: `Bearer ${userData?.token}`,
           },
         })
-          .then((res) => (res.ok ? res.json() : alert("failed to load idea data")))
+          .then((res) => (res.ok ? res.json() : toastr.error("failed to load idea data","Failed")))
           .then((data) => (data ? setIdea(data) : null));
       }
 
@@ -35,7 +36,7 @@ export default function RateIdeaResearchers(){
             Authorization: `Bearer ${userData?.token}`,
           },
         })
-          .then((res) => (res.ok ? res.json() : alert("failed to get Partipants")))
+          .then((res) => (res.ok ? res.json() : toastr.error("failed to get Partipants","Failed")))
           .then((data) => {
             if (data) {
               setIdeaPar(data);
@@ -84,7 +85,7 @@ function sendRate(){
     },
     body:JSON.stringify(rates)
   })
-  .then(res=>res.ok?alert('rate successfully'):alert('failed to rate'))
+  .then(res=>res.ok?toastr.success('rate successfully',"Success"):toastr.error('failed to rate',"Failed"))
 }
 
 
@@ -119,9 +120,9 @@ const UploadFileCard = (props) => {
       }
     ).then((res) => {
       if (res.ok) {
-        alert("File Uploaded Successfully");
+        toastr.success("File Uploaded Successfully","Success");
         props.onClose();
-      } else alert("failed to upload final document");
+      } else toastr.error("failed to upload final document","Failed");
     });
   };
 

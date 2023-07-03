@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import {useLocation, useNavigate, useParams } from "react-router-dom";
 import "../css/SectionQuiz.css";
 import Header from "./Header";
+import toastr from "toastr";
+import 'toastr/build/toastr.min.css';
+
 import QuestionCard from "./QuestionCard";
 export default function SectionQuiz() {
   const { sectionId } = useParams();
@@ -72,7 +75,7 @@ export default function SectionQuiz() {
         "Authorization":`Bearer ${userData.token}`
       }
     })
-      .then((res) => res.ok?res.json():alert('failed to load section quiz'))
+      .then((res) => res.ok?res.json():toastr.error('failed to load section quiz',"Failed"))
       .then((data) => {
         
         setTimeLimit((prevData) => {

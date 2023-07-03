@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import "../css/CreateCourse.css";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import toastr from "toastr";
+import 'toastr/build/toastr.min.css';
 export default function CreateCourse() {
   const navigate = useNavigate();
   const [courseId, setCourseId] = useState(null);
@@ -76,7 +77,7 @@ console.log(courseData)
     })
       .then((response) => {
         if (!response.ok)
-          alert("failed to create course please try again Later");
+          toastr.error("failed to create course please try again Later","Failed");
         return response.json();
       })
       .then((data) => setCourseId(data.courseId));

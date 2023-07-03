@@ -114,14 +114,15 @@ export default function CourseForStudent() {
             top: "90px",
             right: "0",
             minHeight: "100%",
-            backgroundColor: "#1f1f1f",
+            backgroundColor: "white",
             width: "30%",
           }}
         >
+          <h2 style={{padding:"20px"}}>Section Content</h2>
             <div className="videosNames">
             {videosIds?.map((video,index) => (
           <span
-                style={{backgroundColor:video.id===sectionVideo?'gray':'transparent'}}
+                style={{backgroundColor:video.id===sectionVideo?'gray':'transparent',borderBottom:"1px solid black",}}
             onClick={() => {
               setSectionVideo(video.id);
              

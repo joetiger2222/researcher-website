@@ -13,7 +13,14 @@ import PaperCardInProfile from "./Cards/PaperCardInProfile";
 import { FaCheckCircle } from "react-icons/fa";
 import request from "../images/request.png";
 import Swal from "sweetalert2";
-import user from '../images/useer.png'
+import toastr from "toastr";
+import "toastr/build/toastr.min.css";
+import { MdOutlineFileUpload } from "react-icons/md";
+import { MdCameraAlt } from "react-icons/md";
+
+
+import user from "../images/useer.png";
+import ToastrComponent from "./Cards/ToastrComponent";
 const Profile = () => {
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -25,13 +32,13 @@ const Profile = () => {
   const [showSpecCard, setShowSpecCard] = useState(false);
   const [showEditPaper, setShowEditPaper] = useState(false);
   const [showDeletePaper, setShowDeletePaper] = useState(false);
-  const [showEditAllData,setShowEditAllData]=useState(false);
-  const[showImageCard,setShowImageCard]=useState(false);
+  const [showEditAllData, setShowEditAllData] = useState(false);
+  const [showImageCard, setShowImageCard] = useState(false);
   const [paperData, setPaperData] = useState(null);
   const [expertReqs, setExpertReqs] = useState(null);
   const [adminReponse, setAdminResponse] = useState(null);
   const [researcherIdeas, setResearcherIdeas] = useState([]);
-  const[studentImage,setStudentImage]=useState({url:kariem});
+  const [studentImage, setStudentImage] = useState({ url: kariem });
   const userData = useLocation().state?.data;
   const { studentId } = useParams();
   const navigate = useNavigate();
@@ -43,7 +50,9 @@ const Profile = () => {
         Authorization: `Bearer ${userData?.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : alert("Something Wrong Happened")))
+      .then((res) =>
+        res.ok ? res.json() : toastr.error("Something Wrong Happened", "Error")
+      )
       .then((data) => {
         if (data) {
           setStudentData(data);
@@ -81,7 +90,7 @@ const Profile = () => {
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => (data ? setResearcherData(data) : null));
   }
-  
+
   function getResInvitations(resId) {
     fetch(`https://localhost:7187/api/Researchers/Invitations/${resId}`, {
       method: "GET",
@@ -144,18 +153,15 @@ const Profile = () => {
       });
   }
 
-  function getStudentImage(){
-    fetch(`https://localhost:7187/api/Students/Image/${studentId}`,{
-      method:"GET",
-      headers:{
-        "Authorization":`Bearer ${userData.token}`
-      }
-    })
-    .then(res=>res.ok?setStudentImage(res):null)
-    
+  function getStudentImage() {
+    fetch(`https://localhost:7187/api/Students/Image/${studentId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    }).then((res) => (res.ok ? setStudentImage(res) : null));
   }
-  
-  
+
   useEffect(() => {
     getStudentData();
     getStudentImage();
@@ -173,9 +179,9 @@ const Profile = () => {
       }
     ).then((res) => {
       if (res.ok) {
-        alert("rejected successfully");
+        toastr.success("rejected successfully", "Success");
         setResInvits(resInvits.filter((res) => res.id !== i.id));
-      } else alert("failed to reject Invitations");
+      } else toastr.error("failed to reject Invitations", "Failed");
     });
   }
 
@@ -191,13 +197,11 @@ const Profile = () => {
       }
     ).then((res) => {
       if (res.ok) {
-        alert("Accepted successfully");
+        toastr.success("Accepted successfully", "Success");
         setResInvits(resInvits.filter((res) => res.id !== i.id));
-      } else alert("failed to accept Invitations");
+      } else toastr.error("failed to accept Invitations", "Failed");
     });
   }
-
-  
 
   const AddPaperModal = (props) => {
     const [paperData, setPaperData] = useState({
@@ -229,7 +233,9 @@ const Profile = () => {
           body: JSON.stringify(peperArr),
         }
       ).then((res) =>
-        res.ok ? window.location.reload() : alert("failed to add paper")
+        res.ok
+          ? window.location.reload()
+          : toastr.error("failed to add paper", "Failed")
       );
     }
 
@@ -296,7 +302,9 @@ const Profile = () => {
           Authorization: `Bearer ${userData.token}`,
         },
       })
-        .then((res) => (res.ok ? res.json() : alert("failed to Load specs")))
+        .then((res) =>
+          res.ok ? res.json() : toastr.error("failed to Load specs", "Failed")
+        )
         .then((data) => (data ? setAllSpecs(data) : null));
     }
 
@@ -310,28 +318,28 @@ const Profile = () => {
         {
           method: "PUT",
           headers: {
-            "Content-Type":"application/json",
-            "Authorization": `Bearer ${userData?.token}`,
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userData?.token}`,
           },
         }
       ).then((res) => {
         if (res.ok) {
           props.onClose();
           getResearcherData(userData.resercherId);
-        } else alert("Failed To Update Speciality Please Try Again Later");
+        } else
+          toastr.error(
+            "Failed To Update Speciality Please Try Again Later",
+            "Failed"
+          );
       });
     }
 
     if (!props.show) return null;
 
     return (
-      <div
-       className="modal-overlay2"
-      >
-        <div
-          className="modal2"
-        >
-           <div className="ContExitbtn" onClick={props.onClose}>
+      <div className="modal-overlay2">
+        <div className="modal2">
+          <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
                 <label className="label2">Exit</label>
@@ -340,18 +348,21 @@ const Profile = () => {
           </div>
           <h1 className="headContact2">Choose Speciality</h1>
           <div className="FormModal2">
-          <select className="InputModalHallDetails" onChange={(e) => setNewSpec(e.target.value * 1)}>
-            <option disabled selected>
-              Choose Specality
-            </option>
-            {allSpecs?.map((spec) => {
-              return <option value={spec.id}>{spec.name}</option>;
-            })}
-          </select>
-          <div className="buttonsOnModal">
-          <button onClick={editSpec}>Confirm</button>
-          <button onClick={props.onClose}>Cancel</button>
-          </div>
+            <select
+              className="InputModalHallDetails"
+              onChange={(e) => setNewSpec(e.target.value * 1)}
+            >
+              <option disabled selected>
+                Choose Specality
+              </option>
+              {allSpecs?.map((spec) => {
+                return <option value={spec.id}>{spec.name}</option>;
+              })}
+            </select>
+            <div className="buttonsOnModal">
+              <button onClick={editSpec}>Confirm</button>
+              <button onClick={props.onClose}>Cancel</button>
+            </div>
           </div>
         </div>
       </div>
@@ -386,9 +397,10 @@ const Profile = () => {
         body: JSON.stringify(paperToEdit),
       }).then((res) => {
         if (res.ok) {
-          alert("Paper Edited Successfully");
+          toastr.success("Paper Edited Successfully", "Success");
           window.location.reload();
-        } else alert("Failed To Edit Paper Please Try Again Later");
+        } else
+          toastr.error("Failed To Edit Paper Please Try Again Later", "Failed");
       });
     }
 
@@ -447,25 +459,25 @@ const Profile = () => {
         showCancelButton: true,
       }).then((data) => {
         if (data.isConfirmed) {
-          fetch(`https://localhost:7187/api/Researchers/Papers/${props.paper.id}`, {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${userData.token}`,
-            },
-          })
-            .then((res) => {
-              if (res.ok) {
-                alert("Paper Successfully Deleted");
-                window.location.reload();
-              } else {
-                alert("Failed To Delete Paper");
-              }
-            });
+          fetch(
+            `https://localhost:7187/api/Researchers/Papers/${props.paper.id}`,
+            {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${userData.token}`,
+              },
+            }
+          ).then((res) => {
+            if (res.ok) {
+              toastr.success("Paper Successfully Deleted", "Success");
+              window.location.reload();
+            } else {
+              toastr.error("Failed To Delete Paper", "Failed");
+            }
+          });
         }
       });
     }
-  
-  
 
     if (!props.show) return null;
     return (
@@ -490,13 +502,12 @@ const Profile = () => {
     );
   };
 
-
   const EditData = (props) => {
     const [editData, setEditData] = useState({
       firstname: studentData.firstName,
       lastname: studentData.lastName,
       gender: studentData.gender,
-      email:studentData.email,
+      email: studentData.email,
       age: studentData.age,
       nationalityId: studentData.nationality.id,
       type: 0,
@@ -513,45 +524,48 @@ const Profile = () => {
       });
     }
 
-
     function getAllNationalities() {
       fetch(`https://localhost:7187/api/Students/Nationalites`)
         .then((res) =>
-          res.ok ? res.json() : alert("failed to load nationalities")
+          res.ok
+            ? res.json()
+            : toastr.error("failed to load nationalities", "Failed")
         )
         .then((data) => (data ? setAllNationalities(data) : null));
     }
-  
+
     useEffect(() => {
       getAllNationalities();
     }, []);
 
-
-    function sendEditData(){
-      fetch(`https://localhost:7187/api/Students/studentId?studentId=${studentId}`,{
-        method:"PUT",
-        headers:{
-          "Content-Type":"application/json",
-          "Authorization":`Bearer ${userData.token}`
-        },
-        body:JSON.stringify(editData)
-      })
-      .then(res=>{
-        if(res.ok){
-          alert('Data Successfully Updated');
+    function sendEditData() {
+      fetch(
+        `https://localhost:7187/api/Students/studentId?studentId=${studentId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userData.token}`,
+          },
+          body: JSON.stringify(editData),
+        }
+      ).then((res) => {
+        if (res.ok) {
+          toastr.success("Data Successfully Updated", "Success");
           window.location.reload();
-        }else alert('Failed To Update Data Please Try Again Later')
-      })
+        } else
+          toastr.error(
+            "Failed To Update Data Please Try Again Later",
+            "Failed"
+          );
+      });
     }
-
 
     if (!props.show) return null;
     return (
-      <div
-        className="modal-overlay2"
-      >
+      <div className="modal-overlay2">
         <div className="modal2">
-        <div className="ContExitbtn" onClick={props.onClose}>
+          <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
                 <label className="label2">Exit</label>
@@ -560,13 +574,21 @@ const Profile = () => {
           </div>
           <h1 className="headContact2">Edit only data you want to change</h1>
           <div className="FormModal2 custom-scrollbar">
-
-
-          <label className="AllLabeles">First Name</label>
-          <input className="InputModalHallDetails" placeholder={studentData?.firstName} name="firstname" onChange={getEditData}></input>
-          <label className="AllLabeles">Last Name</label>
-          <input className="InputModalHallDetails" placeholder={studentData?.lastName} name="lastname" onChange={getEditData}></input>
-          {/* <span>Gender</span>
+            <label className="AllLabeles">First Name</label>
+            <input
+              className="InputModalHallDetails"
+              placeholder={studentData?.firstName}
+              name="firstname"
+              onChange={getEditData}
+            ></input>
+            <label className="AllLabeles">Last Name</label>
+            <input
+              className="InputModalHallDetails"
+              placeholder={studentData?.lastName}
+              name="lastname"
+              onChange={getEditData}
+            ></input>
+            {/* <span>Gender</span>
           <select
             name="gender"
             onChange={(e) =>
@@ -579,89 +601,96 @@ const Profile = () => {
             <option value={0}>Male</option>
             <option value={1}>Female</option>
           </select> */}
-          {/* <span>Email</span>
+            {/* <span>Email</span>
           <input placeholder={studentData?.email} name="email" onChange={getEditData}></input> */}
-          <label className="AllLabeles">Age</label>
-          <input className="InputModalHallDetails" placeholder={studentData?.age} type="number" name="age" onChange={(e)=>setEditData(prev=>{return{...prev,[e.target.name]:e.target.value*1}})}></input>
-          <label className="AllLabeles">Nationality</label>
-          <select
-          className="InputModalHallDetails"
-            name="nationalityId"
-            onChange={(e) =>
-              setEditData((prev) => {
-                return { ...prev, [e.target.name]: e.target.value * 1 };
-              })
-            }
-          >
-            <option selected disabled>{studentData?.nationality.name}</option>
-            {allNationalities?.map(nat=>{
-              return(
-                <option value={nat.id}>{nat.name}</option>
-              )
-            })}
-          </select>
-          <label className="AllLabeles">Type</label>
-          <select
-          className="InputModalHallDetails"
-            name="type"
-            onChange={(e) =>
-              setEditData((prev) => {
-                return { ...prev, [e.target.name]: e.target.value * 1 };
-              })
-            }
-          >
-            <option value={0}>Student</option>
-            <option value={1}>Graduate</option>
-            <option value={2}>Doctor / Specialist</option>
-            <option value={3}>Other</option>
-          </select>
-          <label className="AllLabeles">Google Schooler Link</label>
-          <input className="InputModalHallDetails" placeholder={studentData?.googleSchoolerLink} name="googleSchoolerLink" onChange={getEditData}></input>
-          <div className="buttonsOnModal">
-            <button onClick={sendEditData}>Submit</button>
-            <button onClick={props.onClose}>Cancel</button>
-
-          </div>
-
+            <label className="AllLabeles">Age</label>
+            <input
+              className="InputModalHallDetails"
+              placeholder={studentData?.age}
+              type="number"
+              name="age"
+              onChange={(e) =>
+                setEditData((prev) => {
+                  return { ...prev, [e.target.name]: e.target.value * 1 };
+                })
+              }
+            ></input>
+            <label className="AllLabeles">Nationality</label>
+            <select
+              className="InputModalHallDetails"
+              name="nationalityId"
+              onChange={(e) =>
+                setEditData((prev) => {
+                  return { ...prev, [e.target.name]: e.target.value * 1 };
+                })
+              }
+            >
+              <option selected disabled>
+                {studentData?.nationality.name}
+              </option>
+              {allNationalities?.map((nat) => {
+                return <option value={nat.id}>{nat.name}</option>;
+              })}
+            </select>
+            <label className="AllLabeles">Type</label>
+            <select
+              className="InputModalHallDetails"
+              name="type"
+              onChange={(e) =>
+                setEditData((prev) => {
+                  return { ...prev, [e.target.name]: e.target.value * 1 };
+                })
+              }
+            >
+              <option value={0}>Student</option>
+              <option value={1}>Graduate</option>
+              <option value={2}>Doctor / Specialist</option>
+              <option value={3}>Other</option>
+            </select>
+            <label className="AllLabeles">Google Schooler Link</label>
+            <input
+              className="InputModalHallDetails"
+              placeholder={studentData?.googleSchoolerLink}
+              name="googleSchoolerLink"
+              onChange={getEditData}
+            ></input>
+            <div className="buttonsOnModal">
+              <button onClick={sendEditData}>Submit</button>
+              <button onClick={props.onClose}>Cancel</button>
+            </div>
           </div>
         </div>
       </div>
     );
   };
 
+  const EditImageCard = (props) => {
+    const [photo, setPhoto] = useState(null);
 
-  const EditImageCard=(props)=>{
-
-    const [photo,setPhoto]=useState(null);
-
-    function editPhoto(){
+    function editPhoto() {
       const formData = new FormData();
-        formData.append('file', photo, photo.name);
+      formData.append("file", photo, photo.name);
 
-      fetch(`https://localhost:7187/api/Students/UploadImage?userId=${userData.userId}`,{
-        method:"POST",
-        headers:{
-          "Authorization":`Bearer ${userData.token}`
-        },
-        body:formData
-      })
-      .then(res=>{
-        if(res.ok){
+      fetch(
+        `https://localhost:7187/api/Students/UploadImage?userId=${userData.userId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+          body: formData,
+        }
+      ).then((res) => {
+        if (res.ok) {
           window.location.reload();
-        }else alert('failed to update photo')
-      })
+        } else toastr.error("failed to update photo", "Failed");
+      });
     }
-
-
 
     if (!props.show) return null;
     return (
-      <div
-        className="modal-overlay2"
-      >
-        <div
-         className="modal2"
-        >
+      <div className="modal-overlay2">
+        <div className="modal2">
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
@@ -672,32 +701,86 @@ const Profile = () => {
           <h1 className="headContact2">Upload profile photo</h1>
 
           <div className="FormModal2">
-<div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <img
+                id="user"
+                src={user}
+                style={{ width: "150px", margin: "0 0 20px 0" }}
+              />
 
-<img id="user" src={user} style={{ width: "150px",margin:'0 0 20px 0' }} />
-          <input className="InputModalHallDetails" id="img" type="file" onChange={(e)=>setPhoto(e.target.files[0])}  />
-         
-</div> <div className="buttonsOnModal">
-            {photo&&<button onClick={editPhoto}  >Finish</button>}
-            <button onClick={props.onClose} id="Next_Step">Cancel</button>
-          </div>
+              <label className="LableForinputTypeFile" htmlFor="img">
+                <input
+                  className="InputFile"
+                  id="img"
+                  type="file"
+                  onChange={(e) => setPhoto(e.target.files[0])}
+                />
+                <span className="SpanUpload">
+                  {" "}
+                  <MdOutlineFileUpload />
+                  <span>Choose a File</span>
+                </span>
+              </label>
+            </div>{" "}
+            <div className="buttonsOnModal">
+              {photo && <button onClick={editPhoto}>Finish</button>}
+              <button onClick={props.onClose} id="Next_Step">
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       </div>
     );
-  }
-
-
+  };
 
   return (
     <div className="ParentHeadData">
       <Header userData={userData} />
       <div className="profile-header" style={{ marginTop: "130px" }}>
         <div className="imageProfDiv">
-          <img src={studentImage?.url} alt="Profile" className="profile-image" />
+          <div className="image-container">
+            <img
+              src={studentImage?.url}
+              alt="Profile"
+              className="profile-image"
+            />
+
+            <div className="button-container">
+
+            
+            {userData?.userId === studentId && (
+              <p
+                onClick={() => setShowImageCard(true)}
+                className=""
+              >
+               <MdCameraAlt/> <span>Edit Student Picture</span>
+              </p>
+            )}</div>
+            {showImageCard && (
+              <EditImageCard
+                show={showImageCard}
+                onClose={() => setShowImageCard(false)}
+              />
+            )}
+          </div>
           <div className="ContEditProfile">
             {researcherData && (
               <p className="nameUser">{researcherData?.specality?.name} </p>
+            )}
+            {userData?.userId === studentId && (
+              <p
+                onClick={() => setShowEditAllData(true)}
+                className="editBtnprofile"
+              >
+                Edit Student Data
+              </p>
             )}
             {userData.roles === "Researcher" &&
               userData?.userId === studentId && (
@@ -708,31 +791,20 @@ const Profile = () => {
                   Edit Speciality
                 </p>
               )}
-              {userData?.userId===studentId&&<p
-                  onClick={() => setShowEditAllData(true)}
-                  className="editBtnprofile"
-                >
-                  Edit Student Data
-                </p>}
-                {userData?.userId===studentId&&<p
-                  onClick={() => setShowImageCard(true)}
-                  className="editBtnprofile"
-                >
-                  Edit Student Picture
-                </p>}
+
             {showSpecCard && (
               <SpecCard
                 show={showSpecCard}
                 onClose={() => setShowSpecCard(false)}
               />
             )}
-            {showImageCard && (
-              <EditImageCard
-                show={showImageCard}
-                onClose={() => setShowImageCard(false)}
+
+            {showEditAllData && (
+              <EditData
+                show={showEditAllData}
+                onClose={() => setShowEditAllData(false)}
               />
             )}
-            {showEditAllData&&<EditData show={showEditAllData} onClose={()=>setShowEditAllData(false)} />}
           </div>
         </div>
         <div className="profile-details">
@@ -744,7 +816,11 @@ const Profile = () => {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis
             beatae non rerum ab es.
           </p>
-          {userData.roles==='Researcher'&&<span style={{color:'white'}}>{`Rate : ${researcherData?.overallRate}`}</span>}
+          {userData.roles === "Researcher" && (
+            <span
+              style={{ color: "white" }}
+            >{`Rate : ${researcherData?.overallRate}`}</span>
+          )}
         </div>
         <div className="btnsPlannerProf">
           <div className="planner-prof-btn-div">
@@ -796,14 +872,42 @@ const Profile = () => {
         <div className="badgesContainer">
           <h1>Points : {researcherData?.points}</h1>
           <div className="pointsDiv">
-            <li className="profileBeg" style={{backgroundColor:researcherData?.level===0?'gray':'transparent'}}>Beginner (1-3) Points</li>
-            <li className="profileInter" style={{backgroundColor:researcherData?.level===1?'gray':'transparent'}}>
+            <li
+              className="profileBeg"
+              style={{
+                backgroundColor:
+                  researcherData?.level === 0 ? "gray" : "transparent",
+              }}
+            >
+              Beginner (1-3) Points
+            </li>
+            <li
+              className="profileInter"
+              style={{
+                backgroundColor:
+                  researcherData?.level === 1 ? "gray" : "transparent",
+              }}
+            >
               Intermediate (4-6) Points
             </li>
-            <li className="profileInter" style={{backgroundColor:researcherData?.level===2?'gray':'transparent'}}>
-            Professional (7-8) Points
+            <li
+              className="profileInter"
+              style={{
+                backgroundColor:
+                  researcherData?.level === 2 ? "gray" : "transparent",
+              }}
+            >
+              Professional (7-8) Points
             </li>
-            <li className="profileExp"style={{backgroundColor:researcherData?.level>2?'gray':'transparent'}}>Expert (8&lt;points)</li>
+            <li
+              className="profileExp"
+              style={{
+                backgroundColor:
+                  researcherData?.level > 2 ? "gray" : "transparent",
+              }}
+            >
+              Expert (8&lt;points)
+            </li>
           </div>
         </div>
         <div className="badgesContainer">
@@ -931,97 +1035,96 @@ const Profile = () => {
         </div>
       )}
 
-      {(userData.roles === "Researcher" || userData.roles === "Admin") && researcherData?.papers?.length>0&&(
-        <div
-          style={{
-            color: "white",
-            display: "flex",
-            flexDirection: "column",
-            // padding: "20px",
-            alignItems: "center",
-            gap: "40px",
-            width: "100%",
-          }}
-        >
-          <h1>Papers</h1>
+      {(userData.roles === "Researcher" || userData.roles === "Admin") &&
+        researcherData?.papers?.length > 0 && (
           <div
-            className="PapersContainer custom-scrollbar"
+            style={{
+              color: "white",
+              display: "flex",
+              flexDirection: "column",
+              // padding: "20px",
+              alignItems: "center",
+              gap: "40px",
+              width: "100%",
+            }}
           >
-            {researcherData?.papers?.map((paper) => {
-              return (
-                <div className="ContCardPaper">
-                  {/* <PaperCardInProfile paper={paper}/> */}
-                  <div>
-                    <img src={paperPhoto} alt="paper" />
+            <h1>Papers</h1>
+            <div className="PapersContainer custom-scrollbar">
+              {researcherData?.papers?.map((paper) => {
+                return (
+                  <div className="ContCardPaper">
+                    {/* <PaperCardInProfile paper={paper}/> */}
+                    <div>
+                      <img src={paperPhoto} alt="paper" />
+                    </div>
+                    <div className="ContDataInCardPaper">
+                      <p className="custom-scrollbar">
+                        {"Paper Name : " + paper?.name}
+                      </p>
+                      <p className="custom-scrollbar">
+                        {"Paper citation : " + paper?.citation}
+                      </p>
+                      <p className="custom-scrollbar">
+                        {"Paper url : " + paper?.url}
+                      </p>
+                    </div>
+                    <div className="Contbtns">
+                      {userData?.userId === studentId && (
+                        <button
+                          className="editPaperbtn"
+                          onClick={() => {
+                            setShowEditPaper(true);
+                            setPaperData(paper);
+                          }}
+                        >
+                          Edit Paper
+                        </button>
+                      )}
+                      {userData?.userId === studentId && (
+                        <button
+                          onClick={() => {
+                            setPaperData(paper);
+                            setShowDeletePaper(true);
+                          }}
+                          className="deletePaperbtn"
+                        >
+                          Delete Paper
+                        </button>
+                      )}
+                    </div>
                   </div>
-                  <div className="ContDataInCardPaper">
-                    <p className="custom-scrollbar">
-                      {"Paper Name : " + paper?.name}
-                    </p>
-                    <p className="custom-scrollbar">
-                      {"Paper citation : " + paper?.citation}
-                    </p>
-                    <p className="custom-scrollbar">
-                      {"Paper url : " + paper?.url}
-                    </p>
-                  </div>
-                  <div className="Contbtns">
-                    {userData?.userId === studentId && (
-                      <button
-                        className="editPaperbtn"
-                        onClick={() => {
-                          setShowEditPaper(true);
-                          setPaperData(paper);
-                        }}
-                      >
-                        Edit Paper
-                      </button>
-                    )}
-                    {userData?.userId === studentId && (
-                      <button
-                        onClick={() => {
-                          setPaperData(paper);
-                          setShowDeletePaper(true);
-                        }}
-                        className="deletePaperbtn"
-                      >
-                        Delete Paper
-                      </button>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-            {showEditPaper && (
-              <EditPaper
-                show={showEditPaper}
-                onClose={() => setShowEditPaper(false)}
-              />
+                );
+              })}
+              {showEditPaper && (
+                <EditPaper
+                  show={showEditPaper}
+                  onClose={() => setShowEditPaper(false)}
+                />
+              )}
+              {showDeletePaper && paperData && (
+                <DeletePaperCard
+                  show={showDeletePaper}
+                  onClose={() => setShowDeletePaper(false)}
+                  paper={paperData}
+                />
+              )}
+            </div>
+            {userData?.userId === studentId && (
+              <button
+                className="AddNewPaper"
+                onClick={() => setShowAddPaper(true)}
+              >
+                Add New Paper
+              </button>
             )}
-            {showDeletePaper && paperData && (
-              <DeletePaperCard
-                show={showDeletePaper}
-                onClose={() => setShowDeletePaper(false)}
-                paper={paperData}
+            {userData?.userId === studentId && showAddPaper && (
+              <AddPaperModal
+                show={showAddPaper}
+                onClose={() => setShowAddPaper(false)}
               />
             )}
           </div>
-          {userData?.userId === studentId && (
-            <button
-              className="AddNewPaper"
-              onClick={() => setShowAddPaper(true)}
-            >
-              Add New Paper
-            </button>
-          )}
-          {userData?.userId === studentId && showAddPaper && (
-            <AddPaperModal
-              show={showAddPaper}
-              onClose={() => setShowAddPaper(false)}
-            />
-          )}
-        </div>
-      )}
+        )}
 
       <div className="ContInviteAndRequest">
         {userData.roles === "Researcher" && userData?.userId === studentId && (
@@ -1051,7 +1154,7 @@ const Profile = () => {
         {userData.roles === "Researcher" && userData?.userId === studentId && (
           <div className="Invitation">
             <h1>Your Requests : {resReqs?.length}</h1>
-            <div className="ContAllRequestss custom-scrollbar" >
+            <div className="ContAllRequestss custom-scrollbar">
               {resReqs?.map((r, index) => {
                 return (
                   <div className="ContainerreauestWithBtn">
@@ -1086,7 +1189,9 @@ const Profile = () => {
                   <div className="ContainerInfoWithbtn">
                     <div className="ContTitleAndContent">
                       <p>{req.title}</p>
-                      <p className="contentData custom-scrollbar">{req.content}</p>
+                      <p className="contentData custom-scrollbar">
+                        {req.content}
+                      </p>
                     </div>
                     <div>
                       <button

@@ -32,8 +32,10 @@
     border-radius: 20px 20px 20px 20px;
 }
 .photoUserCard img{
-    width: 35%;
-    height: 60%;
+    width: 120px;
+    height: 120px;
+    /* border-radius: 100%; */
+    clip-path: circle(50% at 50% 50%);
 }
 .padding20px{
     padding: 20px;
@@ -41,4 +43,14 @@
 .containerSpansData  span{
     border-bottom: 1px solid black;
     padding: 5px;
+}
+
+
+.ContainerImgRes{
+        /* clip-path: circle(50% at 50% 50%); */
+        width: 120px;
+        height: 120px;
+        border-radius: 100%;
+        border: 3px solid white;
+        padding: 3px;
 }

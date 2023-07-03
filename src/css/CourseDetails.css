@@ -67,14 +67,14 @@
 
 
 .LinkVideoSection {
-  padding: 15px 40px;
-}
+  padding: 15px 25px;
+  border-bottom: 1px solid black;}
 .LinkVideoSection:hover{
   background-color: rgb(203, 201, 201)
   /* padding: 12px; */
 }
 .LinkVideoSection span{
-  padding: 5px;
+  /* padding: 5px; */
   /* transition: all 0.3s ease; */
 }
 .LinkVideoSection span:hover {
@@ -266,7 +266,7 @@
   align-items: center;
   column-gap: 10px;
   cursor: pointer;
-  padding: 0px 15px;
+  /* padding: 0px 15px; */
 }
 .sectionHeader>h4{
     display: flex;

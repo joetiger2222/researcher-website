@@ -70,23 +70,29 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 350px;
+    height: 430px;
     justify-content: space-between;}
 
     .spanChat{
-      background-color: var(--darkgreen-color);
-      padding: 12px;
-      border-radius: 5px 5px 15px 0px;
+      /* background-color: var(--darkgreen-color);
+      padding: 12px; */
+      /* border-radius: 5px 5px 15px 0px; */
       max-width: 300px;
       font-size: 18px;
     }
     .spanChat1{
-      background-color: var(--darkgreen-color);
-      padding: 12px;
-      border-radius: 5px 5px 0px 15px;
+      /* background-color: var(--darkgreen-color);
+      padding: 12px; */
+      /* border-radius: 5px 5px 0px 15px; */
       max-width: 300px;
       font-size: 18px;
-      
+    }
+    .borderR{
+            border-radius: 5px 5px 15px 0px;
+    }
+    .borderR1{
+            border-radius: 5px 5px 0px 15px;
+
     }
 
     .shape5{

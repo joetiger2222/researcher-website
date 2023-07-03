@@ -13,6 +13,8 @@ import quizCartoon from "../images/quizCartoon.png";
 import Footer from "./Footer";
 import research from "../images/research.png";
 import SideBar from "./SideBar";
+import toastr from "toastr";
+import 'toastr/build/toastr.min.css';
 import { useLocation, useNavigate } from "react-router-dom";
 export default function HomePage() {
   const [sideBarVisible, setSideBarVisible] = useState(false);
@@ -79,7 +81,7 @@ export default function HomePage() {
         Authorization: `Bearer ${userData.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : alert("Failed To Load Courses")))
+      .then((res) => (res.ok ? res.json() : toastr.error("Failed To Load Courses","Failed")))
       .then((data) => setAllCourses(data));
   }
 
@@ -131,10 +133,10 @@ export default function HomePage() {
         },
       }
     )
-      .then((res) => (res.ok ? res.json() : alert("server error")))
+      .then((res) => (res.ok ? res.json() : toastr.error("server error","Error")))
       .then((data) => {
         if (data) {
-          if (data.isSuccessed) alert("you already succeded in this exam !");
+          if (data.isSuccessed) toastr.success("you already succeded in this exam !","Success");
           else navigate(`/FinalQuiz/${skillId}`, { state: { data: userData } });
         }
       });
@@ -331,7 +333,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="researchContainer">
+      {/* <div className="researchContainer">
         <div>
           <div>
             <h1>Take A Quiz</h1>
@@ -340,7 +342,7 @@ export default function HomePage() {
 
           <img className="quizImg" src={quiz} />
         </div>
-      </div>
+      </div> */}
 
       <Footer userData={userData} />
     </div>

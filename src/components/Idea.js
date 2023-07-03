@@ -7,6 +7,9 @@ import { HubConnectionBuilder } from "@microsoft/signalr";
 import { BiChat } from "react-icons/bi";
 import { FaPaperPlane } from "react-icons/fa";
 import { FaCrown } from 'react-icons/fa';
+import toastr from "toastr";
+import 'toastr/build/toastr.min.css';
+import ToastrComponent from "./Cards/ToastrComponent";
 export default function Idea() {
   const userData = useLocation()?.state.data;
   const { ideaId } = useParams();
@@ -41,7 +44,7 @@ export default function Idea() {
         Authorization: `Bearer ${userData?.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : alert("failed to load idea data")))
+      .then((res) => (res.ok ? res.json() : toastr.error("failed to load idea data","Failed")))
       .then((data) => (data ? setIdea(data) : null));
   }
 
@@ -54,7 +57,7 @@ export default function Idea() {
           Authorization: `Bearer ${userData?.token}`,
         },
       })
-        .then((res) => (res.ok ? res.json() : alert("failed to load reqs")))
+        .then((res) => (res.ok ? res.json() : toastr.error("failed to load reqs","Failed")))
         .then((data) => {
           if (data) {
             setIdeaReqs(data);
@@ -72,6 +75,9 @@ export default function Idea() {
     getIdeaReqs();
     getParticaptns();
     getTasks();
+    toastr.options = {
+      "positionClass": "toast-top-center", 
+    }
   }, []);
 
   function getResearcherData(resId) {
@@ -107,7 +113,7 @@ export default function Idea() {
       .then((res) =>
         res.ok
           ? setResReqsData(resReqsData.filter((res) => res.id !== resId))
-          : alert("failed to accept req")
+          : toastr.error("failed to accept req","Failed")
       )
       .then((data) => (data ? console.log(data) : null));
   }
@@ -123,7 +129,7 @@ export default function Idea() {
       .then((res) =>
         res.ok
           ? setResReqsData(resReqsData.filter((res) => res.id !== resId))
-          : alert("failed to reject req")
+          : toastr.error("failed to reject req","Failed")
       )
       .then((data) => (data ? console.log(data) : null));
   }
@@ -135,7 +141,7 @@ export default function Idea() {
         Authorization: `Bearer ${userData?.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : alert("failed to get Partipants")))
+      .then((res) => (res.ok ? res.json() : toastr.error("failed to get Partipants","Failed")))
       .then((data) => {
         if (data) {
           setIdeaPar(data);
@@ -156,7 +162,7 @@ export default function Idea() {
         Authorization: `Bearer ${userData?.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : alert("failed to load Tasks")))
+      .then((res) => (res.ok ? res.json() : toastr.error("failed to load Tasks","Failed")))
       .then((data) => (data ? setTasks(data) : null));
   }
 
@@ -171,7 +177,7 @@ export default function Idea() {
         },
       })
         .then((res) =>
-          res.ok ? res.json() : alert("failed to get Researchers")
+          res.ok ? res.json() : toastr.error("failed to get Researchers","Failed")
         )
         .then((data) => (data ? setRess(data) : null));
     }
@@ -194,8 +200,11 @@ export default function Idea() {
         }
       ).then((res) =>
         res.ok
-          ? alert("Invitation Sent Successfully")
-          : alert("Failed To Send Invitation")
+        ? toastr.success('Invitation Sent Successfully','Success')
+        : toastr.error('Failed To Send Invitation','Failed')
+       
+          // ? alert("Invitation Sent Successfully")
+          // : alert("Failed To Send Invitation")
       );
     }
 
@@ -303,14 +312,14 @@ export default function Idea() {
                 const body = new TextDecoder().decode(
                   new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
                 );
-                alert(body);
+                toastr.error(body);
               });
             } else {
               window.location.reload();
             }
           })
           .catch((error) => console.error(error));
-      } else alert("please enter a valid deadline yyyy-mm-dd");
+      } else toastr.error("please enter a valid deadline yyyy-mm-dd","Error");
     }
 
     if (!props.show) return null;
@@ -396,9 +405,9 @@ export default function Idea() {
         // .then(res=>res.ok?alert('Expert Request Sent Successfully'):alert('Failed To Send Please Try Again Later'))
         .then((res) => {
           if (res.ok) {
-            alert("Expert Request Sent Successfully");
+            toastr.success("Expert Request Sent Successfully","Success");
             props.onClose();
-          } else alert("Failed To Send Please Try Again Later");
+          } else toastr.error("Failed To Send Please Try Again Later","Failed");
         });
     }
 
@@ -475,9 +484,9 @@ export default function Idea() {
               const body = new TextDecoder().decode(
                 new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
               );
-              alert(body);
+              toastr.error(body);
             });
-          } else alert("Particpant Assigned Successfully");
+          } else toastr.success("Particpant Assigned Successfully","Success");
 
           return readStream().then((chunks) => {
             const body = new TextDecoder().decode(
@@ -547,7 +556,7 @@ export default function Idea() {
         }
       )
         .then((res) =>
-          res.ok ? res.json() : alert("failed to load particpants to task")
+          res.ok ? res.json() : toastr.error("failed to load particpants to task","Failed")
         )
         .then((data) => (data ? setTaskParticpants(data) : null));
     }
@@ -697,6 +706,7 @@ export default function Idea() {
               </div>
             </div>
           </div>
+          <h1 className="headContact2">Idea Chat</h1>
           <div className="ContAllDataWithInput">
             <div
               ref={chatWindowRef}
@@ -706,7 +716,7 @@ export default function Idea() {
                 width: "80%",
                 padding: "20px",
                 gap: "20px",
-                height: "240px",
+                height: "310px",
                 overflow: "auto",
                 display: "flex",
                 flexDirection: "column",
@@ -780,7 +790,13 @@ export default function Idea() {
     console.log('resData',resData)
     return (
       <div
+      className={ props.message.researcherId ===
+        userData.resercherId.toLowerCase()
+          ? "borderR1 spanChat"
+          : "borderR spanChat"}
                     style={{
+                      backgroundColor:"#c2c2c2",
+                      gap:"5px",
                       display: "flex",
                       flexDirection: "column",
                       alignSelf:
@@ -790,17 +806,19 @@ export default function Idea() {
                           : "flex-start",
                     }}
                   >
-                    <p>{resData[0].studentObj.firstName+" "+resData[0].studentObj.lastName}</p>
+                    <p style={{color:"var(--darkgreen-color)",padding:"8px",backgroundColor:"rgb(213 213 213)"}}>{resData[0].studentObj.firstName+" "+resData[0].studentObj.lastName}</p>
                     <p style={{
-                      borderTop:
-                      props.message.researcherId ===
-                       userData.resercherId.toLowerCase()
-                         ? "10px solid red"
-                         : "10px solid blue",
-                    }} className={ props.message.researcherId ===
-                      userData.resercherId.toLowerCase()
-                        ? "spanChat1"
-                        : "spanChat"}
+                      padding:"8px"
+                        // borderTop:
+                        // props.message.researcherId ===
+                        // userData.resercherId.toLowerCase()
+                        //   ? "10px solid red"
+                        //   : "10px solid blue",
+                    }} 
+                    // className={ props.message.researcherId ===
+                    //   userData.resercherId.toLowerCase()
+                    //     ? "spanChat1"
+                    //     : "spanChat"}
                     
                     >{props.message.content}</p>
                   </div>
@@ -908,6 +926,7 @@ export default function Idea() {
               </div>
             </div>
           </div>
+          <h1 className="headContact2">Task Chat</h1>
           <div className="ContAllDataWithInput">
             <div
               ref={chatWindowRef}
@@ -916,7 +935,7 @@ export default function Idea() {
                 width: "80%",
                 padding: "20px",
                 gap: "20px",
-                height: "240px",
+                height: "310px",
                 overflow: "auto",
                 display: "flex",
                 flexDirection: "column",
@@ -1012,7 +1031,13 @@ export default function Idea() {
 
     return (
       <div
+      className= { props.message.researcherId ===
+        userData.resercherId.toLowerCase()
+          ? " borderR1 spanChat"
+          : "borderR spanChat"}
                     style={{
+                      backgroundColor:"rgb(194, 194, 194)",
+                      gap:"5px",
                       display: "flex",
                       flexDirection: "column",
                       alignSelf:
@@ -1022,7 +1047,7 @@ export default function Idea() {
                           : "flex-start",
                     }}
                   >
-                    <p>
+                    <p style={{ padding:"8px",backgroundColor:"rgb(213, 213, 213)"}}>
                       {
                       props.message.researcherId===userData.resercherId.toLowerCase()?'':
                       resData?.firstName+" "+resData?.lastName
@@ -1030,16 +1055,14 @@ export default function Idea() {
                     </p>
                     <p 
                     style={{
-                      borderTop:
-                      props.message.researcherId ===
-                       userData.resercherId.toLowerCase()
-                         ? "10px solid red"
-                         : "10px solid blue",
+                      padding:"8px"
+                      // borderTop:
+                      // props.message.researcherId ===
+                      //  userData.resercherId.toLowerCase()
+                      //    ? "10px solid red"
+                      //    : "10px solid blue",
                     }}
-                     className= { props.message.researcherId ===
-                      userData.resercherId.toLowerCase()
-                        ? "spanChat1"
-                        : "spanChat"}
+                    
                     
                      >{props.message.content}</p>
                   </div>
@@ -1059,7 +1082,7 @@ export default function Idea() {
         },
       })
         .then((res) =>
-          res.ok ? res.json() : alert("failed to load particpants to task")
+          res.ok ? res.json() : toastr.error("failed to load particpants to task","Failed")
         )
         .then((data) => (data ? setTaskParticpants(data) : null));
     }
@@ -1219,9 +1242,9 @@ export default function Idea() {
         }
       ).then((res) => {
         if (res.ok) {
-          alert("File Uploaded Successfully");
+          toastr.success("File Uploaded Successfully","Success");
           props.onClose();
-        } else alert("failed to add video please try again later");
+        } else toastr.error("failed to add video please try again later","Failed");
       });
     };
 
@@ -1280,7 +1303,7 @@ export default function Idea() {
         },
       })
         .then((res) =>
-          res.ok ? res.json() : alert("failed to load documents")
+          res.ok ? res.json() : toastr.error("failed to load documents","Failed")
         )
         .then((data) => (data ? setDocuments(data) : null));
     }
@@ -1382,9 +1405,9 @@ export default function Idea() {
         }
       ).then((res) => {
         if (res.ok) {
-          alert("File Uploaded Successfully");
+          toastr.success("File Uploaded Successfully","Success");
           props.onClose();
-        } else alert("failed to add video please try again later");
+        } else toastr.error("failed to add video please try again later","Failed");
       });
     };
 
@@ -1442,7 +1465,7 @@ export default function Idea() {
         },
       })
         .then((res) =>
-          res.ok ? res.json() : alert("failed to load documents")
+          res.ok ? res.json() : toastr.error("failed to load documents","Failed")
         )
         .then((data) => (data ? setDocuments(data) : null));
     }
@@ -1541,10 +1564,10 @@ const UpdateTaskProgressCard=(props)=>{
     // .then(res=>res.ok?alert('Task progress updated successfully'):alert('failed to update progress'))
     .then(res=>{
       if(res.ok){
-        alert('Task progress updated successfully');
+        toastr.success('Task progress updated successfully',"Success");
         props.onClose();
         getTasks();
-      }else alert('failed to update progress')
+      }else toastr.error('failed to update progress',"Failed")
     })
   }
 

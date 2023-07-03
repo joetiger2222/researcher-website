@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../css/AdminPanel.css";
 import Header from "./Header";
+import toastr from "toastr";
+import 'toastr/build/toastr.min.css';
 import { json, useLocation, useNavigate } from "react-router-dom";
 export default function AdminPanel() {
   const navigate = useNavigate();
@@ -53,7 +55,7 @@ export default function AdminPanel() {
         Authorization: `Bearer ${userData.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : alert("failed to Load specs")))
+      .then((res) => (res.ok ? res.json() : toastr.error("failed to Load specs","Failed")))
       .then((data) => {
         if (data) {
           setAllSpecs(data);
@@ -68,7 +70,7 @@ export default function AdminPanel() {
         Authorization: `Bearer ${userData.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : alert("failed to Load topics")))
+      .then((res) => (res.ok ? res.json() : toastr.error("failed to Load topics","Failed")))
       .then((data) => {
         if (data) {
           setAllTopics(data);
@@ -83,7 +85,7 @@ export default function AdminPanel() {
         Authorization: `Bearer ${userData?.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : alert("failed to Load All Ideas")))
+      .then((res) => (res.ok ? res.json() : toastr.error("failed to Load All Ideas","Failed")))
       .then((data) => {
         if (data) {
           setAllIdeas(data);
@@ -102,7 +104,7 @@ export default function AdminPanel() {
       }
     )
       .then((res) =>
-        res.ok ? res.json() : alert("failed to load student problems")
+        res.ok ? res.json() : toastr.error("failed to load student problems","Failed")
       )
       .then((data) => (data ? setStudentProblems(data) : null));
   }
@@ -110,7 +112,7 @@ export default function AdminPanel() {
   function getProblemCategories() {
     fetch(`https://localhost:7187/api/Admin/ProblemCategories`)
       .then((res) =>
-        res.ok ? res.json() : alert("failed to load problem categories")
+        res.ok ? res.json() : toastr.error("failed to load problem categories","Failed")
       )
       .then((data) => (data ? setProblemCategories(data) : null));
   }
@@ -122,7 +124,7 @@ export default function AdminPanel() {
         Authorization: `Bearer ${userData.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : alert("failed to load responses")))
+      .then((res) => (res.ok ? res.json() : toastr.error("failed to load responses","Failed")))
       .then((data) => (data ? setAdminResponse(data) : null));
   }
 
@@ -183,7 +185,7 @@ export default function AdminPanel() {
         if (res.ok) {
           props.onClose();
           getAllSpecs();
-        } else alert("failed to add new speciality");
+        } else toastr.error("failed to add new speciality","Failed");
       });
     }
 
@@ -239,7 +241,7 @@ export default function AdminPanel() {
         if (res.ok) {
           props.onClose();
           getAllTopics();
-        } else alert("failed to add new Topic");
+        } else toastr.error("failed to add new Topic","Failed");
       });
     }
 
@@ -307,7 +309,7 @@ export default function AdminPanel() {
         }
       )
         .then((res) =>
-          res.ok ? res.json() : alert("failed to load Requests for this idea")
+          res.ok ? res.json() : toastr.error("failed to load Requests for this idea","Failed")
         )
         .then((data) => (data ? setExpertReqForSingleIdea(data) : null));
     }
@@ -321,9 +323,9 @@ export default function AdminPanel() {
         },
       }).then((res) => {
         if (res.ok) {
-          alert("Request Successfully deleted");
+          toastr.success("Request Successfully deleted","Success");
           props.onClose();
-        } else alert("Failed To Delete Request");
+        } else toastr.error("Failed To Delete Request","Failed");
       });
     }
 
@@ -407,9 +409,9 @@ export default function AdminPanel() {
         body: JSON.stringify(responseData),
       }).then((res) => {
         if (res.ok) {
-          alert("Response Sent Successfully");
+          toastr.success("Response Sent Successfully","Success");
           props.onClose();
-        } else alert("Failed To Send Response");
+        } else toastr.error("Failed To Send Response","Failed");
       });
     }
 

@@ -33,10 +33,11 @@
   border-bottom: 1px solid white;
   justify-content: center;
 }
-.imageProrDiv {
+.imageProfDiv {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px;
 }
 .profile-image {
   width: 10rem;
@@ -536,3 +537,35 @@
     background-color: var(--darkgreen-color);
     color: white;
     }
+
+      .image-container {
+        position: relative;
+       
+          }
+   
+    .button-container {
+      position: absolute;
+      bottom: 35%;
+      left: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+     
+  
+    }
+    .image-container:hover .button-container {
+      opacity: 1;
+    }
+    .button-container p{
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .editBtnprofile {
+      color: white;
+      cursor: pointer;
+      /* Additional styles for the button */
+    }
+    

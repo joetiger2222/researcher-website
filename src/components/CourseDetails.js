@@ -11,7 +11,8 @@ import { useNavigate } from "react-router-dom";
 import ModalForQuiz from "./ModalForQuiz";
 import video from "../1.mp4";
 import Swal from "sweetalert2";
-
+import toastr from "toastr";
+import 'toastr/build/toastr.min.css';
 const CourseDetails = () => {
   const navigate = useNavigate();
   const [videoUrl, setVideoUrl] = useState("");
@@ -66,7 +67,7 @@ const CourseDetails = () => {
         "Authorization":`Bearer ${userData.token}`
       }
     })
-    .then(res=>res.ok?res.json():alert('failed to check enrollment'))
+    .then(res=>res.ok?res.json():toastr.error('failed to check enrollment',"Failed"))
     .then(data=>data?setIsStudentEnrolled(data.isEnrolled):null)
   }
 
@@ -168,7 +169,7 @@ console.log('enrollment',isStudentEnrolled)
               onClick={() =>isStudentEnrolled?
                 navigate(`/CourseForStudent/${section.id}/${video.id}`, {
                   state: { data: userData },
-                }):alert('Buy The Course First')
+                }):toastr.warning('Buy The Course First',"Alert")
               }
               className="LinkVideoSection"
             >
@@ -223,7 +224,7 @@ console.log('enrollment',isStudentEnrolled)
         if (res.ok) {
           props.onClose();
           getCourseSections();
-        } else alert("failed to add video please try again later");
+        } else toastr.error("failed to add video please try again later","Failed");
       });
     };
 
@@ -358,7 +359,7 @@ console.log('enrollment',isStudentEnrolled)
           if (response.ok) {
             getCourseSections();
             onClose();
-          } else alert("Failed To Add new Section Please Try Again Later");
+          } else toastr.error("Failed To Add new Section Please Try Again Later","Failed");
         })
         .then((data) => {});
     }
@@ -412,7 +413,7 @@ console.log('enrollment',isStudentEnrolled)
       .then((res) => {
         if (res.ok) {
           navigate("/AdminPanel", { state: { data: userData } });
-        } else alert("Error Happened Please Try Again Later");
+        } else toastr.error("Error Happened Please Try Again Later","Failed");
       });
         }
       });
@@ -464,10 +465,10 @@ console.log('enrollment',isStudentEnrolled)
         body: JSON.stringify(editData),
       }).then((res) => {
         if (res.ok) {
-          alert("data updated successfuly");
+          toastr.success("data updated successfuly","Success");
           props.onClose();
           getCourseDetatils();
-        } else alert("failed");
+        } else toastr.error("failed","Failed");
       });
     }
 

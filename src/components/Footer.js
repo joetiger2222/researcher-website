@@ -6,7 +6,8 @@ import { FaLinkedin } from "react-icons/fa";
 import { FaTwitterSquare } from "react-icons/fa";
 
 import { FaWhatsapp } from "react-icons/fa";
-
+import toastr from "toastr";
+import 'toastr/build/toastr.min.css';
 import "../css/Footer.css";
 const Footer = ({ userData }) => {
   const [showProblemCard, setShowProblemCard] = useState(false);
@@ -32,7 +33,7 @@ const Footer = ({ userData }) => {
     function getProblemCategories() {
       fetch(`https://localhost:7187/api/Admin/ProblemCategories`)
         .then((res) =>
-          res.ok ? res.json() : alert("failed to load problem categories")
+          res.ok ? res.json() : toastr.error("failed to load problem categories","Failed")
         )
         .then((data) => (data ? setProblemCategories(data) : null));
     }
@@ -47,9 +48,9 @@ const Footer = ({ userData }) => {
         body: JSON.stringify(problem),
       }).then((res) => {
         if (res.ok) {
-          alert("Problem Sent Successfully");
+          toastr.success("Problem Sent Successfully","Success");
           props.onClose();
-        } else alert("Failed To Send Problem");
+        } else toastr.error("Failed To Send Problem","Failed");
       });
     }
 

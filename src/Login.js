@@ -4,7 +4,9 @@ import './Login.css'
 import google from "./google.png";
 import { useState, } from "react";
 import { useNavigate } from "react-router-dom";
-import loader from './loader.gif'
+import loader from './loader.gif';
+import toastr from "toastr";
+import 'toastr/build/toastr.min.css';
 export default function Login() {
   const navigate=useNavigate();
 
@@ -73,7 +75,7 @@ function authorizeLogin(e){
     .then((response) => {
       setLoad(false)
       if(response.ok)return response.json();
-      else alert('wrong username or password')
+      else toastr.error('wrong username or password',"Error")
     })
     .then(data=>{
       if(data){

@@ -82,7 +82,12 @@
     background-size: cover;
  
   }
-
+/* for file */
+  /* <label className="LableForinputTypeFile" htmlFor="img">
+  <input className="InputFile" 
+  id="img" type="file" onChange={(e)=>setPhoto(e.target.files[0])}  />
+   <span className="SpanUpload">  <MdOutlineFileUpload/><span>Choose a File</span></span>
+  </label> */
   
   /*   <div className="modal-overlay2">
         <div className="modal2">
@@ -448,14 +453,3 @@
 
 
 
-.InputModalHallDetails[type="file"]::-webkit-file-upload-button {
-  /* For Chrome, Safari, and Opera browsers */
-  background-color: #ff0000; /* Replace with your desired color */
-  color: #ffffff; /* Replace with your desired text color */
-}
-
-.InputModalHallDetails[type="file"]::file-selector-button {
-  /* For Firefox browsers */
-  background-color: #ff0000; /* Replace with your desired color */
-  color: #ffffff; /* Replace with your desired text color */
-}
