@@ -2,6 +2,7 @@ import React from "react";
 import { useState ,useEffect,useRef} from "react";
 import { useLocation, useParams } from "react-router-dom";
 import Header from "./Header";
+import "../css/RatePage.css";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
 export default function RateIdeaResearchers(){
@@ -182,17 +183,21 @@ if(creator){
     return (
         <div>
           <Header userData={userData} />
+          <div className="AllDataInRatePage">
+            <h1>Rate Then Submit Idea</h1>
+            <div className="ContainerForCardsRate">
             {ideaPar?.filter(par=>par.id!==userData.resercherId.toLowerCase()).map(par=>{
                 return (
-                    <div style={{display:'flex',flexDirection:'column',margin:'20px',backgroundColor:'gray'}}>
-                        <span>{'Name : '+par.studentObj.firstName+' '+ par.studentObj.lastName}</span>
-                        <span>{'Points : '+par.points}</span>
-                        <span>{'Level : '+par.level}</span>
-                        <span>{'Email : '+par.studentObj.email}</span>
-                        <span>{'Speciality : '+par.specalityObject.name}</span>
+                    <div className="CardRate">
+                        <span  style={{borderBottom:"1px solid white",padding:"20px"}}>{'Name : '+par.studentObj.firstName+' '+ par.studentObj.lastName}</span>
+                        <span className="padding20L">{'Points : '+par.points}</span>
+                        <span className="padding20L">{'Level : '+par.level}</span>
+                        <span className="padding20L">{'Email : '+par.studentObj.email}</span>
+                        <span className="padding20L">{'Speciality : '+par.specalityObject.name}</span>
                         <select
+                      style={{padding:"10px",borderRadius: "0px 0 10px 10px",cursor:"pointer",fontSize:"16px"}}
                         onChange={(e)=>updateRate(par.id,e.target.value*1)}>
-                            <option selected disabled>Rate</option>
+                            <option selected disabled>Rate Me</option>
                             {[1,2,3,4,5,6,7,8,9,10].map(num=>{
                                 return(
                                     <option value={num*1}>{num}</option>
@@ -202,8 +207,13 @@ if(creator){
                     </div>
                 )
             })}
-            {rates?.length===ideaPar?.length-1&&<button onClick={()=>setShowUploadFinal(true)}>Submit</button>}
+            </div>
+        
+            {rates?.length===ideaPar?.length-1&&<button className="AddNewPaper" onClick={()=>setShowUploadFinal(true)}>Submit</button>}
             <UploadFileCard show={showUploadFinal} onClose ={()=>setShowUploadFinal(false)} />
+        
+          </div>
+           
         </div>
     )
 }else{

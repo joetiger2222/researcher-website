@@ -11,6 +11,8 @@ import { BsFillCircleFill } from "react-icons/bs";
 import coin from "../images/coin.png";
 import quizCartoon from "../images/quizCartoon.png";
 import Footer from "./Footer";
+
+import video from "../images/video1.mp4"
 import research from "../images/research.png";
 import SideBar from "./SideBar";
 import toastr from "toastr";
@@ -310,10 +312,24 @@ export default function HomePage() {
           <div className="Shape2"></div>
         </div>
 
-        <div className="earnPointsContainer">
-          <h1>After Passing The Quiz You Earn Points</h1>
+        <div style={{width:"30%"}}>
+                {/* {videoUrl ? (
+                  <video
+                    className="Video"
+                    controls
+                    src={videoUrl}
+                    type="video/mp4"
+                  />
+                ) : (
+                  <h1>Intro Video</h1>
+                )} */}
+                <video controls style={{width:"100%"}}>
+                  <source src={video} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+          {/* <h1>After Passing The Quiz You Earn Points</h1>
           <img src={coin} />
-          <h3>These Points Qualify You To Be A Researcher</h3>
+          <h3>These Points Qualify You To Be A Researcher</h3> */}
         </div>
       </div>
 

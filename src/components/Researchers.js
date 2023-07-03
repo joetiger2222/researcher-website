@@ -196,10 +196,11 @@ let counter=1;
     return (
       <div className="modal-overlay2">
         <div className="modal2">
-          <div className="ContExitbtn" onClick={props.onClose}>
+          <div style={{display: "flex",justifyContent: "space-between",width: "100%",margin: "0 0 10px"}} onClick={props.onClose}>
+           
+            <span style={{fontWeight:"bold"}}>{otherPersonData[0].studentObj.firstName+" "+ otherPersonData[0].studentObj.lastName}</span>
             <div class="outer">
               <div class="inner">
-                <span>{otherPersonData[0].studentObj.firstName+" "+ otherPersonData[0].studentObj.lastName}</span>
                 <label className="label2">Exit</label>
               </div>
             </div>
@@ -235,6 +236,7 @@ let counter=1;
                 alignItems: "center",
               }}
             >
+
               <form
                 style={{
                   display: "flex",
@@ -247,7 +249,7 @@ let counter=1;
                   borderRadius: "20px",
                 }}
                 onSubmit={sendMessage}
-              >
+              >                
                 <input
                   className="InputChat"
                   name="content"

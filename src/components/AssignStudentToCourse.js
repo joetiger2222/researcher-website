@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "./Header";
+import "../css/RatePage.css"
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
 export default function AssignStudentToCourse(){
@@ -90,33 +91,48 @@ const CoursesCard=(props)=>{
     if (!props.show) return null;
     return (
       <div
-        style={{
-          position: "fixed",
-          left: "0",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          backgroundColor: "rgba(0, 0,0,0.5)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: "100",
-        }}
+        className="modal-overlay2"
       >
-        <div style={{ backgroundColor: "white", width: "50%", color: "black" }}>
-            {courses?.map(course=>{
+        <div className="modal2">
+             <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <div className="AllAssignData">
+          <h1 className="headContact2">Assign Student To Course</h1>
+            <div className="ContainerForCardsRate">
+  {courses?.map(course=>{
                 return(
-                    <div style={{margin:'20px',color:'gray',display:'flex',flexDirection:'column'}}>
-                        <span>{"Name : "+course.name}</span>
-                        <span>{"Brief : "+course.brief}</span>
-                        <span>{"Hours : "+course.hours}</span>
-                        <span>{"Price : "+course.price}</span>
-                        <span>{"Skill : "+course.skillObj.name}</span>
-                        <button onClick={()=>checkCourseEnrollment(course.id,choosenStudent.id)}>Assign To Student</button>
-                        <button onClick={props.onClose}>Cancel</button>
+                    <div className="CardRate">
+                        <span style={{borderBottom:"1px solid white",padding:"20px"}}>{"Name : "+course.name}</span>
+                        {/* <span className="padding20L">{"Brief : "+course.brief}</span> */}
+                        <span className="padding20L">{"Hours : "+course.hours}</span>
+                        <span className="padding20L">{"Price : "+course.price}</span>
+                        <span className="padding20L">{"Skill : "+course.skillObj.name}</span>
+                            <button style={{border:"1px solid black",
+                        padding:"10px",borderRadius: "0px 0 10px 10px",
+                        cursor:"pointer",fontSize:"16px"}} className="HoverAssignBtn"  onClick={()=>checkCourseEnrollment(course.id,choosenStudent.id)}>Assign Student</button>
+                    
+
+                        
                     </div>
                 )
             })}
+
+            </div>
+            <div className="DivBTNINassignTocourse">
+            <button  className="buttonExit2" onClick={props.onClose}>Cancel</button>
+
+            </div>
+
+          </div>
+            
+
+
+          
         </div>
         </div>
     )
@@ -128,21 +144,32 @@ const CoursesCard=(props)=>{
     return(
         <div>
             <Header userData={userData} />
-            <input onChange={(e)=>setSearchTerm(e.target.value)} placeholder="Enter Email..."></input>
+            <div className="AllDataInRatePage">
+<label style={{fontSize:"20px",fontWeight:"bold"}}>Search By Email</label>
+            <input className="search-input" onChange={(e)=>setSearchTerm(e.target.value)} placeholder="Enter Email..."></input>
+            <div className="ContainerForCardsRate">
             {allStudents?.map(student=>{
                 return(
-                    <div style={{margin:'20px',backgroundColor:'gray',display:'flex',flexDirection:'column'}}>
-                        <span>{'Name : '+student.firstName+' '+student.lastName}</span>
-                        <span>{'Email : '+student.email}</span>
-                        <span>{'Nationality : '+student.nationality.name}</span>
-                        <span>{'Age : '+student.age}</span>
-                        <span>{"Gender "+student.gender===0?'Female':'Male'}</span>
-                        <button onClick={()=>{setChoosenStudent(student);setShowCourseCard(true)}}>Assign To Course</button>
+                    <div className="CardRate">
+                        <span  style={{borderBottom:"1px solid white",padding:"20px"}}>{'Name : '+student.firstName+' '+student.lastName}</span>
+                        <span className="padding20L">{'Email : '+student.email}</span>
+                        <span className="padding20L">{'Nationality : '+student.nationality.name}</span>
+                        <span className="padding20L">{'Age : '+student.age}</span>
+                        <span className="padding20L">{"Gender "+student.gender===0?'Female':'Male'}</span>
+                        <button className="HoverAssignBtn" style={{border:"1px solid black",
+                        padding:"10px",borderRadius: "0px 0 10px 10px",
+                        cursor:"pointer",fontSize:"16px"}} onClick={()=>{setChoosenStudent(student);setShowCourseCard(true)}}>Assign To Course</button>
                     </div>
                 )
             })}
+            </div>
+          
             <CoursesCard show={showCourseCard} onClose={()=>setShowCourseCard(false)} student={choosenStudent} />
-        </div>
+       
+            </div>
+
+
+            </div>
     )
     }else {
         return(

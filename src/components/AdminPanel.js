@@ -192,24 +192,23 @@ export default function AdminPanel() {
     if (!props.show) return null;
     return (
       <div
-        style={{
-          position: "fixed",
-          left: "0",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          backgroundColor: "rgba(0, 0,0,0.5)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: "100",
-        }}
+        className="modal-overlay2"
       >
         <div
-          style={{ width: "50%", backgroundColor: "white", display: "flex" }}
+          className="modal2"
         >
-          <h1>Enter Specality Name: </h1>
+          <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">Enter Specality Name:</h1>
+          <div className="FormModal2">
+          <label className="AllLabeles">Name:</label>
           <input
+          className="InputModalHallDetails"
             value={specName.name}
             onChange={(e) => {
               setSpecName((prev) => {
@@ -218,8 +217,13 @@ export default function AdminPanel() {
             }}
             placeholder="New Speciality"
           ></input>
-          <button onClick={props.onClose}>Canel</button>
+          <div className="buttonsOnModal">
           {specName.name !== "" && <button onClick={addSPec}>Finish</button>}
+          <button onClick={props.onClose}>Cancel</button>
+
+          </div>
+        
+        </div>
         </div>
       </div>
     );
@@ -248,29 +252,24 @@ export default function AdminPanel() {
     if (!props.show) return null;
     return (
       <div
-        style={{
-          position: "fixed",
-          left: "0",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          backgroundColor: "rgba(0, 0,0,0.5)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: "100",
-        }}
+        className=" modal-overlay2"
       >
         <div
-          style={{
-            width: "50%",
-            backgroundColor: "white",
-            display: "flex",
-            flexDirection: "column",
-          }}
+         className="modal2"
         >
-          <h1>Enter Topic Name: </h1>
+          <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">Create New Topic</h1>
+          <div className="FormModal2">
+
+          <label className="AllLabeles">Enter Topic Name: </label>
           <input
+          className="InputModalHallDetails"
             value={topicName.name}
             onChange={(e) => {
               setTopicName((prev) => {
@@ -279,8 +278,9 @@ export default function AdminPanel() {
             }}
             placeholder="New Topic"
           ></input>
-          <h1>Enter Topic Min Points</h1>
+          <label className="AllLabeles">Enter Topic Min Points</label>
           <input
+          className="InputModalHallDetails"
             onChange={(e) => {
               setTopicName((prev) => {
                 return { ...prev, minmumPoints: e.target.value * 1 };
@@ -288,8 +288,12 @@ export default function AdminPanel() {
             }}
             placeholder="Topic Min Points"
           ></input>
-          <button onClick={props.onClose}>Canel</button>
+          <div className="buttonsOnModal">
           {topicName.name !== "" && <button onClick={addTopic}>Finish</button>}
+          <button onClick={props.onClose}>Cancel</button>
+
+          </div>
+          </div>
         </div>
       </div>
     );

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import loginImg from "./loginImg.png";
+import loginPhoto from "./images/loginPhoto.png"
 import './Login.css'
 import google from "./google.png";
 import { useState, } from "react";
@@ -212,13 +213,16 @@ if(load){
                 fontSize:'1.1em',
                 fontWeight:'bold',
                 cursor:'pointer',
+                gap:"5px"
               }}
               onClick={(e)=>{loginAdmin(e);authorizeLogin(e)}}
             >
-              Login
+              <img style={{width:"20px",height:"20px",color:"white"}} src={loginPhoto}/>
+              <span>Login</span>
+              
             </button>
 
-            <button
+            {/* <button
             className="loginGoogleBtn"
               style={{
                 width: "100%",
@@ -239,7 +243,7 @@ if(load){
             >
               <img style={{ width: "20px" }} src={google} />
               Login With Google
-            </button>
+            </button> */}
             <button
             onClick={()=>navigate('/Registration')}
             className="loginGoogleBtn"

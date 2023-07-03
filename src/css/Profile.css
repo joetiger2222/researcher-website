@@ -43,7 +43,8 @@
   width: 10rem;
   height: 10rem;
   border-radius: 50%;
-  object-fit: cover;
+  /* object-fit: cover; */
+  border: 1px solid white;
 }
 
 .profile-details {
@@ -352,7 +353,7 @@
 
 .ContCardPaper{
   width: 300px;
-  height: 350px;
+  /* height: 350px; */
   gap: 10px;
   display: flex;
   flex-direction: column;
@@ -485,7 +486,7 @@
       display: flex;
       gap: 40px;
       width: 85%;
-      max-height: 770px;
+      max-height: 390px;
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
@@ -562,6 +563,10 @@
       color: white;
       cursor: pointer;
       font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
     }
     .editBtnprofile {
       color: white;

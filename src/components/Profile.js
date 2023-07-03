@@ -760,7 +760,7 @@ const Profile = () => {
                 onClick={() => setShowImageCard(true)}
                 className=""
               >
-               <MdCameraAlt/> <span>Edit Student Picture</span>
+               <MdCameraAlt/> <span>Change Picture</span>
               </p>
             )}</div>
             {showImageCard && (
@@ -792,6 +792,8 @@ const Profile = () => {
                 </p>
               )}
 
+            
+            
             {showSpecCard && (
               <SpecCard
                 show={showSpecCard}
@@ -884,8 +886,9 @@ const Profile = () => {
             <li
               className="profileInter"
               style={{
-                backgroundColor:
-                  researcherData?.level === 1 ? "gray" : "transparent",
+                borderRadius:"5px",
+                   backgroundColor:
+                  researcherData?.level === 1 ? "#ab6565" : "transparent",
               }}
             >
               Intermediate (4-6) Points
@@ -1054,9 +1057,9 @@ const Profile = () => {
                 return (
                   <div className="ContCardPaper">
                     {/* <PaperCardInProfile paper={paper}/> */}
-                    <div>
+                    {/* <div>
                       <img src={paperPhoto} alt="paper" />
-                    </div>
+                    </div> */}
                     <div className="ContDataInCardPaper">
                       <p className="custom-scrollbar">
                         {"Paper Name : " + paper?.name}
