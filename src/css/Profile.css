@@ -9,6 +9,12 @@
   animation-name: fadeIn;
   animation-duration: 1s;
 }
+.ContainerAllContentProfile{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 50px;
+}
 .smallParent {
   width: 80%;
 }
@@ -30,7 +36,7 @@
   width: 100%;
   gap: 30px;
   padding: 0 0 30px 0;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid black;
   justify-content: center;
 }
 .imageProfDiv {
@@ -44,7 +50,7 @@
   height: 10rem;
   border-radius: 50%;
   /* object-fit: cover; */
-  border: 1px solid white;
+  border: 1px solid black;
 }
 
 .profile-details {
@@ -56,7 +62,7 @@
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
-  color: white;
+  color: black;
   display: flex;
   align-items: center;
   column-gap: 5px;
@@ -83,7 +89,7 @@
 .profile-bio {
   font-size: 1rem;
   margin-bottom: 1rem;
-  color: white;
+  color: black;
 }
 
 .social-icons {
@@ -109,7 +115,7 @@
 .nameUser {
   font-size: 16px;
   font-weight: bold;
-  color: white;
+  color: black;
 }
 .plan {
   display: flex;
@@ -165,7 +171,6 @@
   align-items: center;
   flex-direction: column;
   width: 100%;
-  background-color: #262626;
   min-height: 100vh;
   height: 100%;
 }
@@ -212,7 +217,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: white;
+  color: black;
   cursor: pointer;
   padding: 7px;
   border-radius: 10px;
@@ -221,7 +226,7 @@
 }
 
 .watchedCourse:hover {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: gray;
 }
 .badgesAndPoints{
   display: flex;
@@ -239,10 +244,10 @@
   min-height: 250px;
   gap: 20px;
   flex-wrap: wrap;
-  color: white;
-  border: 1px solid white;
-  background-color: brown;
-  border-radius: 50%;
+  color: black;
+  border: none;
+  background-color: white;
+  border-radius: 10px;
   justify-content: center;
   padding: 10px;
 }
@@ -353,11 +358,14 @@
 .ContCardPaper{
   width: 300px;
   /* height: 350px; */
-  gap: 10px;
+  gap: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   transition: 0.5s;
+  background-color: aliceblue;
+  padding: 20px;
+  border-radius: 10px;
 }
 .ContCardPaper:hover{
   scale: 1.1;
@@ -365,18 +373,39 @@
 .ContCardPaper>div{
   width: 100%;
   height: 50%;
+  color: black;
 }
 .ContCardPaper div img{
   width: 100%;
   height: 100%;
 }
-
-.ContCardPaper button{
+ .detailsbtn:hover{
+  color: white;
+  background-color: #346da0;
+}
+ .deletebtn:hover{
+  color: white;
+  background-color: rgb(230, 52, 52);
+}
+ .detailsbtn{
+  cursor: pointer;
   padding: 4px;
   font-size: 16px;
   transition: 0.5s;
+  background-color: transparent;
+  border: 1px solid #346da0;
+  color: #346da0;
 }
+ .deletebtn{
+  cursor: pointer;
 
+  padding: 4px;
+  font-size: 16px;
+  transition: 0.5s;
+  background-color: transparent;
+  border: 1px solid rgb(230, 52, 52);
+  color: rgb(230, 52, 52);
+}
 /* .editPaperbtn{transition: 0.5s;}
 .deletePaperbtn{transition: 0.5s;} */
 
@@ -387,17 +416,19 @@
   background-color: rgb(198, 25, 25);
 }
 .ContDataInCardPaper{
-    /* padding: 12px; */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100%;}
+       /* padding: 12px; */
+       display: flex;
+       flex-direction: column;
+       justify-content: space-between;
+       width: 100%;
+       gap: 10px;
+      }
 
     .Contbtns{
       display: flex;
-      flex-direction: column;
+      /* flex-direction: column; */
       gap: 10px;
-      justify-content: end;
+      justify-content: center;
     }
     .AddNewPaper{
       padding: 10px;
@@ -426,7 +457,7 @@
       display: flex;
       align-items: center;
       flex-direction: column;
-      justify-content: center;
+      /* justify-content: center; */
       padding: 20px;
       border-radius: 10px;
       gap: 20px;
@@ -455,6 +486,8 @@
       height: 200px;
       align-items: center;
       transition: 0.5s;
+      background-color: aliceblue;
+      padding: 10px;
     }
     .ContAllWithbtn:hover{
       /* border: 1px solid white; */
@@ -463,10 +496,10 @@
 
     }
     .ContTitleAndContent>p:nth-child(1){
-      color: #ffffff;
-    }
+      color: black;
+      font-weight: bold;    }
     .contentData{
-      color: #dcd6d6a6;
+      color: black;
       overflow: auto;
       height: 100px;
       max-height: 130px;
@@ -475,25 +508,27 @@
       display: flex;
       flex-direction: row;
       width: 100%;
-      max-height: 430px;
+      max-height: 240px;
       gap: 30px;
       flex-wrap: wrap;
       justify-content: center;
       overflow: auto;
+      padding: 10px;
     }
     .PapersContainer{
       display: flex;
       gap: 40px;
-      width: 85%;
-      max-height: 390px;
+      width: 40%;
+      max-height: 480px;
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
       overflow: auto;
+      padding: 10px;
     }
     .ContExpertRequests h1{
       text-align: center;
-      color: white;
+      color: black;
     }
     .ContainerInfoWithbtn{
       width: 100%;
@@ -545,13 +580,14 @@
    
     .button-container {
       position: absolute;
-      bottom: 35%;
+      bottom: 39%;
       left: 0;
       right: 0;
       background-color: rgba(0, 0, 0, 0.5);
       padding: 10px;
       opacity: 0;
       transition: opacity 0.3s;
+      border-radius: 10px;
      
   
     }
@@ -568,8 +604,16 @@
       gap: 5px;
     }
     .editBtnprofile {
-      color: white;
+      color: black;
       cursor: pointer;
       /* Additional styles for the button */
     }
-    
+    .ContainerAllIdeasInProfile{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      background-color: aliceblue;
+      padding: 10px;
+    }

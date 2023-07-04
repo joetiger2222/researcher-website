@@ -10,6 +10,7 @@ import { FaCrown } from 'react-icons/fa';
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
 import ToastrComponent from "./Cards/ToastrComponent";
+import { MdOutlineFileUpload } from "react-icons/md";
 export default function Idea() {
   const userData = useLocation()?.state.data;
   const { ideaId } = useParams();
@@ -251,12 +252,13 @@ export default function Idea() {
                   </div>
                 );
               })}
-            <div className="">
+           
+          </div>
+          <div className="resetAndCancel2">
               <button className="buttonExit2" onClick={props.onClose}>
                 Cancel
               </button>
             </div>
-          </div>
         </div>
       </div>
     );
@@ -533,10 +535,14 @@ export default function Idea() {
                 </div>
               );
             })}
-            <button className="buttonExit2" onClick={props.onClose}>
+            
+          </div>
+          <div style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <button  className="buttonExit2" onClick={props.onClose}>
               Close
             </button>
           </div>
+          
         </div>
       </div>
     );
@@ -1261,7 +1267,22 @@ export default function Idea() {
           </div>
           <h1 className="headContact2">Upload File</h1>
           <div className="FormModal2">
-          <input className="InputModalHallDetails" type="file" onChange={handleDocumentUpload} />
+          {/* <input className="InputModalHallDetails"
+           type="file"
+            onChange={handleDocumentUpload} /> */}
+          <label className="LableForinputTypeFile" htmlFor="img">
+                <input
+                  className="InputFile"
+                  id="img"
+                  type="file"
+                  onChange={handleDocumentUpload}
+                />
+                <span className="SpanUpload">
+                  {" "}
+                  <MdOutlineFileUpload />
+                  <span style={{borderBottom:"none",padding:"3px"}}>Choose a File</span>
+                </span>
+              </label>
           {document && (
             <input
               id="title"
@@ -1424,7 +1445,25 @@ export default function Idea() {
           </div>
           <h1 className="headContact2">Upload Document</h1>
           <div className="FormModal2">
-          <input className="InputModalHallDetails" type="file" onChange={handleDocumentUpload} />
+
+          {/* <input className="InputModalHallDetails"
+           type="file"
+            onChange={handleDocumentUpload} /> */}
+         
+         <label className="LableForinputTypeFile" htmlFor="img">
+                <input
+                  className="InputFile"
+                  id="img"
+                  type="file"
+                  onChange={handleDocumentUpload}
+                />
+                <span className="SpanUpload">
+                  {" "}
+                  <MdOutlineFileUpload />
+                  <span>Choose a File</span>
+                </span>
+              </label>
+         
           {document && (
             <input
               id="title"
@@ -1576,13 +1615,27 @@ const UpdateTaskProgressCard=(props)=>{
     return (
       <div className="modal-overlay2">
         <div className="modal2">
-          <select onChange={(e)=>setProgress(e.target.value*1)}>
+        <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">Update Task Progress</h1>
+          <div className="FormModal2">
+          <label className="AllLabeles">Choose State </label>
+          <select className="InputModalHallDetails" onChange={(e)=>setProgress(e.target.value*1)}>
             <option selected disabled>Choose State</option>
             <option value={1}>In Progress</option>
             <option value={2}>Completed</option>
           </select>
+          <div className="buttonsOnModal">
           <button onClick={updateProgress}>Update</button>
           <button onClick={props.onClose}>Cancel</button>
+          </div>
+          
+        </div>
         </div>
         </div>
     )

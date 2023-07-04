@@ -150,8 +150,7 @@
   margin-bottom: 20px;
 }
 .videoW{
-  width: 100%;
-}
+  width: 500px;}
 .ContObjecInst {
   display: flex;
   background-color: #484848;
@@ -315,13 +314,7 @@
   justify-content: center;
   gap:15px;
 }
-.ChooseAndCancel button{
-  display: flex;
-  padding: 5px 12px;
-  border-radius: 7px;
-  color: white;
-  /* border: none; */
-}
+
 #video-upload{
   border: none;
 
@@ -337,6 +330,8 @@
   flex-direction: column;
   gap: 15px;
   margin-bottom: 10px;
+  /* width: 350px; */
+  justify-content: center;
 }
 .uploadVideoContainer{
   display: flex;

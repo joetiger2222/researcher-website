@@ -13,6 +13,7 @@ import video from "../1.mp4";
 import Swal from "sweetalert2";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
+import { MdOutlineFileUpload } from "react-icons/md";
 const CourseDetails = () => {
   const navigate = useNavigate();
   const [videoUrl, setVideoUrl] = useState("");
@@ -233,22 +234,19 @@ console.log('enrollment',isStudentEnrolled)
     if (!props.show) return null;
     return (
       <div
-        style={{
-          position: "fixed",
-          left: "0",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          backgroundColor: "rgba(0, 0,0,0.5)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: "100",
-        }}
+        className="modal-overlay2"
       >
-        <div className="uploadVideoContainer">
-          <h2 style={{ color: "black" }}>Upload Video</h2>
+        <div className="modal2">
+        <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">Upload Video</h1>
 
+          <div className="FormModal2 custom-scrollbar">
           {video && (
             <div className="contVideoInfo">
               <video
@@ -256,27 +254,47 @@ console.log('enrollment',isStudentEnrolled)
                 src={URL.createObjectURL(video)}
                 controls
               />
+              <div style={{alignItems:"center",display:"flex",flexWrap:"wrap",gap:"20px"}}>
+              <label  style={{marginBottom:"0"}} className="AllLabeles">Video Title: </label>
               <input
+              style={{marginBottom:"0"}}
                 id="title"
-                className="InputUpload"
+                className="InputModalHallDetails"
                 type="text"
                 placeholder="Video's Title"
                 required
                 name="Title"
               ></input>
-              <button className="btnUpload" onClick={handleVideoSubmit}>
+              <button className="detailsbtn" onClick={handleVideoSubmit}>
                 Upload Video
               </button>
+              </div>
+              
             </div>
+            
           )}
-
+       
+       <label className="LableForinputTypeFile" htmlFor="upload">
+                <input
+                  className="InputFile"
+                  id="upload"
+                  type="file"
+                  onChange={handleVideoUpload}
+                />
+                <span className="SpanUpload">
+                  {" "}
+                  <MdOutlineFileUpload />
+                  <span>Choose a File</span>
+                </span>
+              </label>
           <div className="ChooseAndCancel">
-            <input type="file" id="video-upload" onChange={handleVideoUpload} />
-
-            <button className="cancelbtn" onClick={props.onClose}>
+            {/* <input type="file" id="video-upload" onChange={handleVideoUpload} /> */}
+       
+            <button className="deletebtn" onClick={props.onClose}>
               Cancel
             </button>
           </div>
+        </div>
         </div>
       </div>
     );

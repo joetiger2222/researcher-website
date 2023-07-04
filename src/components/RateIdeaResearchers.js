@@ -5,6 +5,8 @@ import Header from "./Header";
 import "../css/RatePage.css";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
+import { MdOutlineFileUpload } from "react-icons/md";
+import { FaFileUpload } from "react-icons/fa";
 export default function RateIdeaResearchers(){
     const userData=useLocation().state.data;
     const {ideaId}=useParams();
@@ -140,7 +142,22 @@ const UploadFileCard = (props) => {
         </div>
         <h1 className="headContact2">Upload File</h1>
         <div className="FormModal2">
-        <input className="InputModalHallDetails" type="file" onChange={handleDocumentUpload} />
+        {/* <input className="InputModalHallDetails"
+         type="file" onChange={handleDocumentUpload} /> */}
+        <label className="LableForinputTypeFile" htmlFor="img">
+                <input
+                  className="InputFile"
+                  id="img"
+                  type="file"
+                  onChange={handleDocumentUpload}
+                />
+                <span className="SpanUpload">
+                  {" "}
+                  <FaFileUpload />
+                  <span>Choose a File</span>
+                </span>
+              </label>
+        
         {document && (
           <input
             id="title"

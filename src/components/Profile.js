@@ -18,7 +18,6 @@ import "toastr/build/toastr.min.css";
 import { MdOutlineFileUpload } from "react-icons/md";
 import { MdCameraAlt } from "react-icons/md";
 
-
 import user from "../images/useer.png";
 import ToastrComponent from "./Cards/ToastrComponent";
 const Profile = () => {
@@ -743,6 +742,8 @@ const Profile = () => {
   return (
     <div className="ParentHeadData">
       <Header userData={userData} />
+      
+      <div className="ContainerAllContentProfile">
       <div className="profile-header" style={{ marginTop: "130px" }}>
         <div className="imageProfDiv">
           <div className="image-container">
@@ -753,16 +754,12 @@ const Profile = () => {
             />
 
             <div className="button-container">
-
-            
-            {userData?.userId === studentId && (
-              <p
-                onClick={() => setShowImageCard(true)}
-                className=""
-              >
-               <MdCameraAlt/> <span>Change Picture</span>
-              </p>
-            )}</div>
+              {userData?.userId === studentId && (
+                <p onClick={() => setShowImageCard(true)} className="">
+                  <MdCameraAlt /> <span>Change Picture</span>
+                </p>
+              )}
+            </div>
             {showImageCard && (
               <EditImageCard
                 show={showImageCard}
@@ -774,10 +771,11 @@ const Profile = () => {
             {researcherData && (
               <p className="nameUser">{researcherData?.specality?.name} </p>
             )}
+            <div style={{display:"flex",gap:"10px",flexWrap:"wrap"}}>
             {userData?.userId === studentId && (
               <p
                 onClick={() => setShowEditAllData(true)}
-                className="editBtnprofile"
+                className="detailsbtn"
               >
                 Edit Student Data
               </p>
@@ -786,14 +784,13 @@ const Profile = () => {
               userData?.userId === studentId && (
                 <p
                   onClick={() => setShowSpecCard(true)}
-                  className="editBtnprofile"
+                  className="detailsbtn"
                 >
                   Edit Speciality
                 </p>
               )}
+            </div>
 
-            
-            
             {showSpecCard && (
               <SpecCard
                 show={showSpecCard}
@@ -820,7 +817,7 @@ const Profile = () => {
           </p>
           {userData.roles === "Researcher" && (
             <span
-              style={{ color: "white" }}
+              style={{ color: "black",fontWeight:"bold" }}
             >{`Rate : ${researcherData?.overallRate}`}</span>
           )}
         </div>
@@ -858,8 +855,9 @@ const Profile = () => {
           </div>
         </div>
       </div>
-
-      <div className="badgesAndPoints">
+<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"30px",backgroundColor:"aliceblue"}}>
+  <h1 style={{color:"black",margin:"10px"}}>Achievements</h1>
+  <div className="badgesAndPoints">
         <div className="badgesContainer">
           <h1>Badges</h1>
           <div className="badgesDiv custom-scrollbar">
@@ -886,9 +884,9 @@ const Profile = () => {
             <li
               className="profileInter"
               style={{
-                borderRadius:"5px",
-                   backgroundColor:
-                  researcherData?.level === 1 ? "#ab6565" : "transparent",
+                borderRadius: "5px",
+                backgroundColor:
+                  researcherData?.level === 1 ? "#346da0" : "transparent",
               }}
             >
               Intermediate (4-6) Points
@@ -935,10 +933,12 @@ const Profile = () => {
           </div>
         </div>
       </div>
+</div>
+      
 
       {researcherIdeas > 0 && (
         <div className="ContainerAllIdeas">
-          <h1 style={{ color: "white" }}>Ideas</h1>
+          <h1 style={{ color: "black" }}>Ideas</h1>
 
           <div className="AllIdeas">
             {researcherIdeas?.length > 0 ? (
@@ -1042,7 +1042,7 @@ const Profile = () => {
         researcherData?.papers?.length > 0 && (
           <div
             style={{
-              color: "white",
+              color: "black",
               display: "flex",
               flexDirection: "column",
               // padding: "20px",
@@ -1061,20 +1061,22 @@ const Profile = () => {
                       <img src={paperPhoto} alt="paper" />
                     </div> */}
                     <div className="ContDataInCardPaper">
-                      <p className="custom-scrollbar">
-                        {"Paper Name : " + paper?.name}
+                      <p style={{display:"flex",flexDirection:"row",gap:"10px"}} className="custom-scrollbar">
+                        <span style={{fontWeight:"bold"}}>Paper Name :</span> <span>{paper?.name}</span>
                       </p>
-                      <p className="custom-scrollbar">
-                        {"Paper citation : " + paper?.citation}
+                      <p style={{display:"flex",flexDirection:"row",gap:"10px"}} className="custom-scrollbar">
+                        <span style={{fontWeight:"bold"}}>Paper citation :</span><span>{paper?.citation}</span>
                       </p>
-                      <p className="custom-scrollbar">
-                        {"Paper url : " + paper?.url}
+                      <p style={{display:"flex",flexDirection:"column",gap:"10px"}} className="custom-scrollbar">
+                        <span style={{fontWeight:"bold"}}>Paper url :</span><span>{paper?.url}</span>
+                        
                       </p>
                     </div>
                     <div className="Contbtns">
                       {userData?.userId === studentId && (
                         <button
-                          className="editPaperbtn"
+                          // className="editPaperbtn"
+                          className="detailsbtn"
                           onClick={() => {
                             setShowEditPaper(true);
                             setPaperData(paper);
@@ -1089,7 +1091,7 @@ const Profile = () => {
                             setPaperData(paper);
                             setShowDeletePaper(true);
                           }}
-                          className="deletePaperbtn"
+                          className="deletebtn"
                         >
                           Delete Paper
                         </button>
@@ -1217,9 +1219,9 @@ const Profile = () => {
       )}
 
       {userData.userId === studentId && (
-        <div className="ContainerAllIdeas">
+        <div className="ContainerAllIdeasInProfile">
           {adminReponse?.length > 0 && (
-            <h1 style={{ color: "white" }}>Admin Reponses</h1>
+            <h1 style={{ color: "black" }}>Admin Reponses</h1>
           )}
           <div className="AllIdeasWidth80">
             {adminReponse?.map((res) => {
@@ -1250,6 +1252,7 @@ const Profile = () => {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };
