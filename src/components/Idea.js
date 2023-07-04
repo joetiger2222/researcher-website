@@ -1105,12 +1105,14 @@ export default function Idea() {
     }, [taskParticpants]);
 
     return (
-      <div className="CardInAllIdeasInIdea">
-        <div className="containerSpansData">
+      <div className="CardInAllIdeasInIdea" style={{height:"315px",justifyContent:"space-around",gap:"0"}}>
+        <div className="containerSpansData" style={{height:"75%"}}>
           <span>
             <span style={{ fontWeight: "bold" }}>Name :</span> {task.name}
           </span>
-          <span className="custom-scrollbar" style={{overflow:"auto",maxHeight:"80px",maxWidth:"560px"}}>
+          <span 
+          // className="custom-scrollbar" style={{overflow:"auto",maxHeight:"80px",maxWidth:"560px"}}
+          >
             <span  style={{ fontWeight: "bold" }}>Description :</span>{" "}
             <span>{task.description}</span>
           </span>
@@ -1140,11 +1142,13 @@ export default function Idea() {
               setChoosenTask(task);
               setShowTaskParticpants(true);
             }}
+            style={{width:"141px"}}
           >
             View Task Particpants
           </button>
           {isTaskPart && (
             <button
+            style={{width:"141px"}}
               className="hoverBtn"
               onClick={() => {
                 setChoosenTask(task);
@@ -1156,6 +1160,7 @@ export default function Idea() {
           )}
           {isTaskPart && !idea.isCompleted && (
             <button
+            style={{width:"141px"}}
               className="hoverBtn"
               onClick={() => {
                 setChoosenTask(task);
@@ -1166,7 +1171,7 @@ export default function Idea() {
             </button>
           )}
           {isTaskPart && (
-            <button
+            <button style={{width:"141px"}}
               className="hoverBtn"
               onClick={() => {
                 setChoosenTask(task);
@@ -1185,7 +1190,7 @@ export default function Idea() {
 
 
           {isTaskPart && (
-            <button
+            <button style={{width:"141px"}}
               className="hoverBtn"
               onClick={() => {
                 setChoosenTask(task);
@@ -1204,7 +1209,7 @@ export default function Idea() {
 
 
           {creator && !idea.isCompleted && (
-            <button
+            <button style={{width:"141px"}}
               className="hoverBtn"
               onClick={() => {
                 setChoosenTask(task);
@@ -1655,10 +1660,10 @@ const UpdateTaskProgressCard=(props)=>{
         Data For Idea
       </h1>
       <div className="AllIdeas">
-        <div className="CardInAllIdeasInIdea">
+        <div className="CardInAllIdeasInIdea1" >
           <div className="shape5"></div>
 
-          <div className="containerSpansData">
+          <div  className="containerSpansData">
             <span>
               <span style={{ fontWeight: "bold" }}>Name:</span> {idea?.name}
             </span>
@@ -1688,12 +1693,15 @@ const UpdateTaskProgressCard=(props)=>{
               <span style={{ fontWeight: "bold" }}>Topic:</span>{" "}
               {idea?.topicObject.name}
             </span>
+            </div>
+
+            <div className="ContainerParticipants">
             {creator && (
               <h2 style={{ textAlign: "center" }}>
                 Requests : {resReqsData?.length}
               </h2>
             )}
-            <div className="ContInviteResearchers custom-scrollbar">
+              <div className="ContInviteResearchers custom-scrollbar">
               {creator &&
                 resReqsData?.map((res) => {
                   return (
@@ -1727,6 +1735,9 @@ const UpdateTaskProgressCard=(props)=>{
                   );
                 })}
             </div>
+            </div>
+           
+          
 
             {creator && !idea.isCompleted && (
               <button className="bn54" onClick={() => setShowResModal(true)}>
@@ -1739,8 +1750,10 @@ const UpdateTaskProgressCard=(props)=>{
                 onClose={() => setShowResModal(false)}
               />
             )}
+            <div className="ContainerParticipants">
+            <h2>Participants : {ideaPar?.length}</h2>
             <div className="ContInviteResearchers custom-scrollbar">
-              <h2>Participants : {ideaPar?.length}</h2>
+              
               {ideaPar?.map((par) => {
                 return (
                   <div className="DivContResearchers">
@@ -1765,6 +1778,8 @@ const UpdateTaskProgressCard=(props)=>{
                 );
               })}
             </div>
+            </div>
+      
             <div className="contButtonsInIdea">
               {creator && !idea.isCompleted &&(
                 <button
@@ -1849,7 +1864,6 @@ const UpdateTaskProgressCard=(props)=>{
                 />
               )}
             </div>
-          </div>
         </div>
       </div>
 

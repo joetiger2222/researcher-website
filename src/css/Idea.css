@@ -1,18 +1,46 @@
 .CardInAllIdeasInIdea{
-    display: flex;
-    min-width: 370px;
-    flex-direction: column;
-    padding: 20px;
-    background-color: white;
-    border-radius: 10px;
-    transition: transform 0.3s ease;
-    gap: 30px;
-    border-top: 15px solid var(--darkgreen-color) !important;
-    border: 1px solid var(--darkgreen-color);
+  display: flex;
+  width: 480px;
+  flex-direction: column;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+  gap: 30px;
+  border-top: 15px solid var(--darkgreen-color) !important;
+  border: 1px solid var(--darkgreen-color);
 }
-
+.CardInAllIdeasInIdea1{
+  display: flex;
+  width: 600px;
+  max-height: 850px;
+  flex-direction: column;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+  gap: 30px;
+  border-top: 15px solid var(--darkgreen-color) !important;
+  border: 1px solid var(--darkgreen-color);
+}
+.containerSpansData1{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: white;
+  border-radius: 25px 25px 0 0px;
+  height: 100%;
+  color: black;
+}
 .rejectReq{
 
+}
+.ContainerParticipants{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 .rejectReq{
     border: 1px solid red;
@@ -40,7 +68,10 @@
   .contButtonsInIdea{
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 15px 25px;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: center;
   }
 .InputChat:focus{
     outline: none;

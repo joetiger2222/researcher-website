@@ -243,9 +243,9 @@ top: -5px;
   font-size: 16px;
   border: 0.2em solid var(--c);
   border-radius: 0.5em;
-  /* width: 100%; */
-  padding: 10px;
-  text-transform: uppercase;
+  width: 180px;
+  padding: 5px;
+  /* text-transform: uppercase; */
   font-weight: bold;
   font-family: sans-serif;
   /* letter-spacing: 0.1em; */

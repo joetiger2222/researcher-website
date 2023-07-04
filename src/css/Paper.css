@@ -6,10 +6,10 @@
     gap: 20px;
     /* height: 100%; */
     padding: 10px;
-    max-height: 200px;
+    max-height: 70px;
 }
 .DivContResearchers{
-    justify-content: center;
+    justify-content: space-between;
     width: 100%;
     display: flex;
     gap: 20px;
