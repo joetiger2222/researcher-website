@@ -470,7 +470,7 @@ console.log('enrollment',isStudentEnrolled)
       hours: courseDetails.hours,
       brief: courseDetails.brief,
       driveLink:courseDetails.driveLink,
-      skillId: courseDetails.skillObj.id,
+      // skillId: courseDetails.skillObj.id,
     });
     console.log(editData);
 

@@ -153,10 +153,10 @@ export default function HomePage() {
     return (
       <div className="courseCard">
         <h1>{course.name}</h1>
-        <p>
+        {/* <p>
           <span style={{ fontWeight: "bold" }}>Skill: </span>
-          {course.skillObj.name}
-        </p>
+          {course?.skillObj?.name}
+        </p> */}
         <div className="courseBtnAndPriceDiv">
           <button
           className="bn54"

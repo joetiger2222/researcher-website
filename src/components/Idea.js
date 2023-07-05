@@ -1289,7 +1289,7 @@ export default function Idea() {
             </button>
           )}
 
-          {creator && !idea?.isCompleted && (
+          {creator && !idea?.isCompleted && userData.roles==='Researcher' &&(
             <button
               style={{ width: "141px" }}
               className="hoverBtn"
@@ -1764,96 +1764,96 @@ export default function Idea() {
   
 
 
-//   const UploadFinalTaskFile=(props)=>{
-//     const titleRef = useRef(null);
-//     const [document, setDocument] = useState(null);
+  const UploadFinalTaskFile=(props)=>{
+    const titleRef = useRef(null);
+    const [document, setDocument] = useState(null);
 
 
-//     const handleDocumentUpload = (event) => {
-//       const file = event.target.files[0];
-//       setDocument(file);
-//     };
+    const handleDocumentUpload = (event) => {
+      const file = event.target.files[0];
+      setDocument(file);
+    };
 
-//     const handleDocumentSubmit = (event) => {
-//       event.preventDefault();
-//       const titleValue = titleRef.current.value;
-//       const formData = new FormData();
-//       formData.append("file", document);
-//       formData.append("Name", titleValue);
+    const handleDocumentSubmit = (event) => {
+      event.preventDefault();
+      const titleValue = titleRef.current.value;
+      const formData = new FormData();
+      formData.append("file", document);
+      formData.append("Name", titleValue);
 
-//       fetch(
-//         `https://localhost:7187/api/Ideas/Tasks/Submit?taskId=${props.task.id}&participantId=${userData.resercherId}`,
-//         {
-//           method: "POST",
-//           headers: {
-//             Authorization: `Bearer ${userData.token}`,
-//           },
-//           body: formData,
-//         }
-//       ).then((res) => {
-//         if (res.ok) {
-//           toastr.success("File Uploaded Successfully", "Success");
-//           props.onClose();
-//         } else
-//           toastr.error("failed to add video please try again later", "Failed");
-//       });
-//     };
+      fetch(
+        `https://localhost:7187/api/Ideas/Tasks/Submit?taskId=${props.task.id}&participantId=${userData.resercherId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+          body: formData,
+        }
+      ).then((res) => {
+        if (res.ok) {
+          toastr.success("File Uploaded Successfully", "Success");
+          props.onClose();
+        } else
+          toastr.error("failed to add video please try again later", "Failed");
+      });
+    };
 
-// console.log('from modal',props);
+console.log('from modal',props);
 
-//     if (!props.show) return null;
-//     return (
-//       <div className="modal-overlay2">
-//         <div className="modal2">
-//           <div className="ContExitbtn" onClick={props.onClose}>
-//             <div class="outer">
-//               <div class="inner">
-//                 <label className="label2">Exit</label>
-//               </div>
-//             </div>
-//           </div>
-//           <h1 className="headContact2">Upload Document</h1>
-//           <div className="FormModal2">
-//             <label className="LableForinputTypeFile" htmlFor="img">
-//               <input
-//                 className="InputFile"
-//                 id="img"
-//                 type="file"
-//                 onChange={handleDocumentUpload}
-//               />
-//               <span className="SpanUpload">
-//                 {" "}
-//                 <MdOutlineFileUpload />
-//                 <span>Choose a File</span>
-//               </span>
-//             </label>
+    if (!props.show) return null;
+    return (
+      <div className="modal-overlay2">
+        <div className="modal2">
+          <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">Upload Document</h1>
+          <div className="FormModal2">
+            <label className="LableForinputTypeFile" htmlFor="img">
+              <input
+                className="InputFile"
+                id="img"
+                type="file"
+                onChange={handleDocumentUpload}
+              />
+              <span className="SpanUpload">
+                {" "}
+                <MdOutlineFileUpload />
+                <span>Choose a File</span>
+              </span>
+            </label>
 
-//             {document && (
-//               <input
-//                 id="title"
-//                 className="InputModalHallDetails"
-//                 type="text"
-//                 placeholder="file name"
-//                 required
-//                 name="Title"
-//                 ref={titleRef}
-//               ></input>
-//             )}
-//             <div className="buttonsOnModal">
-//               {document && (
-//                 <button className="" onClick={handleDocumentSubmit}>
-//                   Upload Document
-//                 </button>
-//               )}
-//               <button className="" onClick={props.onClose}>
-//                 Cancel
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   }
+            {document && (
+              <input
+                id="title"
+                className="InputModalHallDetails"
+                type="text"
+                placeholder="file name"
+                required
+                name="Title"
+                ref={titleRef}
+              ></input>
+            )}
+            <div className="buttonsOnModal">
+              {document && (
+                <button className="" onClick={handleDocumentSubmit}>
+                  Upload Document
+                </button>
+              )}
+              <button className="" onClick={props.onClose}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
 
  
@@ -2199,6 +2199,13 @@ export default function Idea() {
               <UpdateTaskProgressCard
                 show={showUpdateProgress}
                 onClose={() => setShowUpdateProgress(false)}
+                task={choosenTask}
+              />
+            )}
+            {choosenTask && showUploadFinalTaskFile && (
+              <UploadFinalTaskFile
+                show={showUploadFinalTaskFile}
+                onClose={() => setShowUploadFinalTaskFile(false)}
                 task={choosenTask}
               />
             )}
