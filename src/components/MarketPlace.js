@@ -192,7 +192,10 @@ export default function MarketPalce() {
     }, []);
 
     function createNewIdea() {
-      const val = /^\d{4}-\d{2}-\d{2}$/.test(ideaData.deadline);
+      // const val = /^\d{4}-\d{2}-\d{2}$/.test(ideaData.deadline);
+      const val = /^\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$/.test(ideaData.deadline);
+
+      console.log(val)
       if (val) {
         fetch(
           `https://localhost:7187/api/Ideas/InitiateIdea/${userData.resercherId}`,

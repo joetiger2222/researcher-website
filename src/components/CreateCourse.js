@@ -15,6 +15,7 @@ export default function CreateCourse() {
     price: "",
     hours: "",
     brief: "",
+    driveLink:'',
     skillId: 0,
   });
 
@@ -166,6 +167,14 @@ console.log(courseData)
             name="brief"
           ></textarea>
         </div>
+        
+
+        <div className="createCourseFormOneLine">
+            <label>Drive Link</label>
+            <input onChange={getCourseData} name="driveLink"></input>
+          </div>
+
+
         </div>
         {/* </div> */}
 

@@ -37,6 +37,7 @@ const Profile = () => {
   const [expertReqs, setExpertReqs] = useState(null);
   const [adminReponse, setAdminResponse] = useState(null);
   const [researcherIdeas, setResearcherIdeas] = useState([]);
+  const [studentCourses,setStudentCourses]=useState([]);
   const [studentImage, setStudentImage] = useState({ url: kariem });
   const userData = useLocation().state?.data;
   const { studentId } = useParams();
@@ -161,9 +162,22 @@ const Profile = () => {
     }).then((res) => (res.ok ? setStudentImage(res) : null));
   }
 
+  function getStudentCourses(){
+    fetch(`https://localhost:7187/api/Students/Courses?studentId=${studentId}`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`,
+      }
+    })
+    .then(res=>res.ok?res.json():alert('failed to get student courses'))
+    .then(data=>data?setStudentCourses(data):null)
+  }
+console.log(studentCourses)
+
   useEffect(() => {
     getStudentData();
     getStudentImage();
+    getStudentCourses();
     if (userData.userId === studentId) getAdminResponse();
   }, [studentId]);
 
@@ -501,6 +515,7 @@ const Profile = () => {
     );
   };
 
+  
   const EditData = (props) => {
     const [editData, setEditData] = useState({
       firstname: studentData.firstName,
@@ -510,6 +525,7 @@ const Profile = () => {
       age: studentData.age,
       nationalityId: studentData.nationality.id,
       type: 0,
+      bio:studentData.bio,
       googleSchoolerLink: "",
     });
 
@@ -587,21 +603,7 @@ const Profile = () => {
               name="lastname"
               onChange={getEditData}
             ></input>
-            {/* <span>Gender</span>
-          <select
-            name="gender"
-            onChange={(e) =>
-              setEditData((prev) => {
-                return { ...prev, [e.target.name]: e.target.value * 1 };
-              })
-            }
-          >
-            <option selected disabled>{studentData.gender===0?'Male':'Female'}</option>
-            <option value={0}>Male</option>
-            <option value={1}>Female</option>
-          </select> */}
-            {/* <span>Email</span>
-          <input placeholder={studentData?.email} name="email" onChange={getEditData}></input> */}
+            
             <label className="AllLabeles">Age</label>
             <input
               className="InputModalHallDetails"
@@ -651,6 +653,13 @@ const Profile = () => {
               className="InputModalHallDetails"
               placeholder={studentData?.googleSchoolerLink}
               name="googleSchoolerLink"
+              onChange={getEditData}
+            ></input>
+            <label className="AllLabeles">Bio</label>
+            <input
+              className="InputModalHallDetails"
+              placeholder={studentData?.bio}
+              name="bio"
               onChange={getEditData}
             ></input>
             <div className="buttonsOnModal">
@@ -812,8 +821,7 @@ const Profile = () => {
             {studentData?.isMentor && <FaCheckCircle />}
           </h1>
           <p className="profile-bio">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis
-            beatae non rerum ab es.
+            {studentData?.bio}
           </p>
           {userData.roles === "Researcher" && (
             <span
@@ -914,22 +922,16 @@ const Profile = () => {
         <div className="badgesContainer">
           <h1>Enrolled Courses</h1>
           <div className="pointsDiv custom-scrollbar">
-            <div className="watchedCourse">
-              <h4>Course Name</h4>
-              <p>Category</p>
+            
+
+            {studentCourses?.map(course=>{
+              return(
+                <div className="watchedCourse" onClick={()=>navigate(`/CourseDetails/${course.id}`,{state:{data:userData}})}>
+              <h4>{course.name}</h4>
+              
             </div>
-            <div className="watchedCourse">
-              <h4>Course Name</h4>
-              <p>Category</p>
-            </div>
-            <div className="watchedCourse">
-              <h4>Course Name</h4>
-              <p>Category</p>
-            </div>
-            <div className="watchedCourse">
-              <h4>Course Name</h4>
-              <p>Category</p>
-            </div>
+              )
+            })}
           </div>
         </div>
       </div>
@@ -1039,7 +1041,7 @@ const Profile = () => {
       )}
 
       {(userData.roles === "Researcher" || userData.roles === "Admin") &&
-        researcherData?.papers?.length > 0 && (
+         (
           <div
             style={{
               color: "black",

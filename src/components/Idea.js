@@ -36,7 +36,7 @@ export default function Idea() {
   const [showTaskDocuments, setShowTaskDocuments] = useState(false);
   const[showUpdateProgress,setShowUpdateProgress]=useState(false);
   const navigate = useNavigate();
-  const creator = userData?.resercherId.toLowerCase() === idea?.creatorId;
+  const creator = userData.roles==='Admin'? true: userData?.resercherId.toLowerCase() === idea?.creatorId;
 
   function getIdeaData() {
     fetch(`https://localhost:7187/api/Ideas/SingleIdea/${ideaId}`, {
@@ -169,9 +169,10 @@ export default function Idea() {
 
   const AllResCard = (props) => {
     const [ress, setRess] = useState(null);
+    const [search,setSearch]=useState('');
 
     function getAllRess() {
-      fetch(`https://localhost:7187/api/Researchers`, {
+      fetch(`https://localhost:7187/api/Researchers?SearchTerm=${search}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${userData.token}`,
@@ -184,7 +185,7 @@ export default function Idea() {
     }
     useEffect(() => {
       getAllRess();
-    }, []);
+    }, [search]);
 
     function sendInvitation(resId) {
       let invits = [];
@@ -204,8 +205,7 @@ export default function Idea() {
         ? toastr.success('Invitation Sent Successfully','Success')
         : toastr.error('Failed To Send Invitation','Failed')
        
-          // ? alert("Invitation Sent Successfully")
-          // : alert("Failed To Send Invitation")
+          
       );
     }
 
@@ -221,6 +221,7 @@ export default function Idea() {
             </div>
           </div>
           <h1 className="headContact2">All Researchers</h1>
+          <input name="search" onChange={(e)=>setSearch(e.target.value)}></input>
 
           <div className="ContInviteResearchers custom-scrollbar">
             {ress
@@ -282,7 +283,7 @@ export default function Idea() {
     }
 
     function createfTask() {
-      const val = /^\d{4}-\d{2}-\d{2}$/.test(taskData.deadline);
+      const val = /^\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$/.test(taskData.deadline);
       if (val) {
         fetch(
           `https://localhost:7187/api/Ideas/Tasks/InitiateTask/${ideaId}/${userData.resercherId}`,
@@ -1097,12 +1098,12 @@ export default function Idea() {
       getTaskParticpants();
     }, []);
 
-    useEffect(() => {
-      const arr = taskParticpants?.filter(
-        (obj) => obj.id === userData.resercherId.toLowerCase()
-      );
-      if (arr?.length > 0) setIsTaskPart(true);
-    }, [taskParticpants]);
+    // useEffect(() => {
+    //   const arr = taskParticpants?.filter(
+    //     (obj) => obj.id === userData.resercherId.toLowerCase()
+    //   );
+    //   if (arr?.length > 0) setIsTaskPart(true);
+    // }, [taskParticpants]);
 
     return (
       <div className="CardInAllIdeasInIdea" style={{height:"315px",justifyContent:"space-around",gap:"0"}}>
@@ -1208,7 +1209,7 @@ export default function Idea() {
 
 
 
-          {creator && !idea.isCompleted && (
+          {creator && !idea?.isCompleted && (
             <button style={{width:"141px"}}
               className="hoverBtn"
               onClick={() => {
@@ -1651,7 +1652,7 @@ const UpdateTaskProgressCard=(props)=>{
 
   
 
-  console.log(idea)
+  console.log('idea',idea)
 
   return (
     <div>
@@ -1739,7 +1740,7 @@ const UpdateTaskProgressCard=(props)=>{
            
           
 
-            {creator && !idea.isCompleted && (
+            {creator && !idea?.isCompleted && (
               <button className="bn54" onClick={() => setShowResModal(true)}>
                 Invite Researcher
               </button>
@@ -1781,7 +1782,7 @@ const UpdateTaskProgressCard=(props)=>{
             </div>
       
             <div className="contButtonsInIdea">
-              {creator && !idea.isCompleted &&(
+              {creator && !idea?.isCompleted &&(
                 <button
                   className="buttonn"
                   onClick={() => setShowTaskCard(true)}
@@ -1789,7 +1790,7 @@ const UpdateTaskProgressCard=(props)=>{
                   Create New Task
                 </button>
               )}
-              {creator && !idea.isCompleted && (
+              {creator && !idea?.isCompleted && (
                 <button
                   className="buttonn"
                   onClick={() =>
@@ -1867,7 +1868,7 @@ const UpdateTaskProgressCard=(props)=>{
         </div>
       </div>
 
-      <div>
+      {<div>
         <h1 style={{ textAlign: "center", margin: "50px 0" }}>
           Tasks : {tasks?.length}
         </h1>
@@ -1918,7 +1919,9 @@ const UpdateTaskProgressCard=(props)=>{
             />
           )}
         </div>
-      </div>
+      </div>}
+
+
     </div>
   );
 }

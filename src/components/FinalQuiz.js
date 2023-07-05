@@ -88,48 +88,7 @@ export default function FinalQuiz() {
     getFinalQuizData();
   }, []);
 
-  // function getResearcherIdByStudentId() {
-  //   fetch(
-  //     `https://localhost:7187/api/Researchers/ResearcherId/${userData.userId}`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         Authorization: `Bearer ${userData.token}`,
-  //       },
-  //     }
-  //   )
-  //     .then((res) => (res.ok ? res.json() : null))
-  //     .then((data) => {
-  //       if (data) {
-  //         userData.roles = "Researcher";
-  //         userData.resercherId = data.researcherId;
-  //         setResearcherId(data.researcherId);
-  //       }
-  //     })
-  //     .catch((error) => console.error(error));
-  // }
-
-  // async function getResearcherIdByStudentId() {
-  //   try {
-  //     const response = await fetch(
-  //       `https://localhost:7187/api/Researchers/ResearcherId/${userData.userId}`,
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           Authorization: `Bearer ${userData.token}`,
-  //         },
-  //       }
-  //     );
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       userData.roles = "Researcher";
-  //       userData.researcherId = data.researcherId;
-  //       setResearcherId(data.researcherId);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
+ 
 
   function getResearcherIdByStudentId() {
     return fetch(
@@ -227,6 +186,8 @@ export default function FinalQuiz() {
       clearInterval(timer);
     };
   }, [timer]);
+
+  
 
   useEffect(() => {
     if (parseInt(timeLimit.mins) === 0 && parseInt(timeLimit.secs) === 0) {

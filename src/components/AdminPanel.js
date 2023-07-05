@@ -21,8 +21,11 @@ export default function AdminPanel() {
   const [problemCategoryId, setProblemCategoryId] = useState(1);
   const [studentProblems, setStudentProblems] = useState(null);
   const [showResponseModal, setShowResponseModal] = useState(false);
+  const [showEditSkillName,setShowEditSkillName]=useState(false);
   const [choosenProblem, setChoosenProblem] = useState(null);
   const [adminReponse, setAdminResponse] = useState(null);
+  const [allExpertReqs,setAllExpertReqs]=useState(null);
+  const [searchIdea,setSearchIdea]=useState('');
   const userData = useLocation().state?.data;
 
   function getCourses() {
@@ -79,7 +82,7 @@ export default function AdminPanel() {
   }
 
   function getAllIdeas() {
-    fetch(`https://localhost:7187/api/Ideas`, {
+    fetch(`https://localhost:7187/api/Ideas?SearchTerm=${searchIdea}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData?.token}`,
@@ -128,6 +131,17 @@ export default function AdminPanel() {
       .then((data) => (data ? setAdminResponse(data) : null));
   }
 
+  function getAllExpertReqs(){
+    fetch(`https://localhost:7187/api/Admin/ExpertRequests`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      }
+    })
+    .then(res=>res.ok?res.json():alert('faield to load all expert reqs'))
+    .then(data=>data?setAllExpertReqs(data):null)
+  }
+
   useEffect(() => {
     getCourses();
     getAllSkills();
@@ -136,8 +150,15 @@ export default function AdminPanel() {
     getAllIdeas();
     getProblemCategories();
     getAdminResponse();
+    getAllExpertReqs();
   }, []);
+  useEffect(() => {
+   
+    getAllIdeas();
+    
+  }, [searchIdea]);
 
+  console.log(allExpertReqs)
   useEffect(() => {
     getStudentProblems();
   }, [problemCategoryId]);
@@ -318,20 +339,7 @@ export default function AdminPanel() {
         .then((data) => (data ? setExpertReqForSingleIdea(data) : null));
     }
 
-    function deleteExpertReq(req) {
-      fetch(`https://localhost:7187/api/Admin/ExpertRequests/${req?.id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userData.token}`,
-        },
-      }).then((res) => {
-        if (res.ok) {
-          toastr.success("Request Successfully deleted","Success");
-          props.onClose();
-        } else toastr.error("Failed To Delete Request","Failed");
-      });
-    }
+    
 
     useEffect(() => {
       getExpertReqs();
@@ -355,29 +363,7 @@ export default function AdminPanel() {
               {expertReqForSingleIdea.length > 0 ? (
                 expertReqForSingleIdea?.map((req) => {
                   return (
-                    <div className="ContExpertReqAdmin">
-                      <div className="contTitleAndContnentReq">
-                        <span>
-                          <span style={{ fontWeight: "bold" }}>Title : </span>
-                          {req.title}
-                        </span>
-                        <span
-                          className="custom-scrollbar"
-                          style={{ overflow: "auto", maxHeight: "100px" }}
-                        >
-                          <span style={{ fontWeight: "bold" }}>Content : </span>
-                          {req.content}
-                        </span>
-                      </div>
-                      <div>
-                        <button
-                          className="buttonExit2"
-                          onClick={() => deleteExpertReq(req)}
-                        >
-                          Delete Expert Request
-                        </button>
-                      </div>
-                    </div>
+                    <SingleExpertReqCard req={req} />
                   );
                 })
               ) : (
@@ -395,6 +381,80 @@ export default function AdminPanel() {
       </div>
     );
   };
+
+
+  const SingleExpertReqCard=(props)=>{
+    const [resData,setResData]=useState(null);
+
+    function getResData() {
+      fetch(`https://localhost:7187/api/Researchers/${props.req.participantId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData?.token}`,
+        },
+      })
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => (data ? setResData(data) : null));
+    }
+
+    useEffect(()=>{
+      getResData();
+    },[])
+
+
+
+    function deleteExpertReq(req) {
+      fetch(`https://localhost:7187/api/Admin/ExpertRequests/${req?.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userData.token}`,
+        },
+      }).then((res) => {
+        if (res.ok) {
+          toastr.success("Request Successfully deleted","Success");
+          props.onClose();
+        } else toastr.error("Failed To Delete Request","Failed");
+      });
+    }
+
+    return(
+      <div className="ContExpertReqAdmin" style={{backgroundColor:'white'}}>
+                      <div className="contTitleAndContnentReq">
+                      <span>
+                          <span style={{ fontWeight: "bold" }}>Sender Name : </span>
+                          {resData?.firstName+" "+resData?.lastName}
+                        </span>
+                        <span>
+                          <span style={{ fontWeight: "bold" }}>Title : </span>
+                          {props.req.title}
+                        </span>
+                        <span
+                          className="custom-scrollbar"
+                          style={{ overflow: "auto", maxHeight: "100px" }}
+                        >
+                          <span style={{ fontWeight: "bold" }}>Content : </span>
+                          {props.req.content}
+                        </span>
+                      </div>
+                      <div>
+                        <button
+                          className="buttonExit2"
+                          onClick={() => deleteExpertReq(props.req)}
+                        >
+                          Delete Expert Request
+                        </button>
+                        <button
+                          className="buttonExit2"
+                          onClick={() => navigate(`/Idea/${props.req.ideaId}`,{state:{data:userData}})}
+                        >
+                          View Idea
+                        </button>
+                      </div>
+                    </div>
+    )
+  }
+
 
   const ProblemResponseCard = (props) => {
     const [responseData, setResponseData] = useState({
@@ -455,6 +515,108 @@ export default function AdminPanel() {
     );
   };
 
+
+  const EditSkillCard=(props)=>{
+    const[skillName,setSkillName]=useState({name:''});
+
+    function editSkillName(){
+      fetch(`https://localhost:7187/api/Admin/Skills/${skillId}`,{
+        method:"PUT",
+        headers:{
+          "Authorization":`Bearer ${userData.token}`,
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify(skillName)
+      })
+     
+      .then(res=>{
+        if(res.ok){
+          alert('skill successfully edited');
+          props.onClose();
+          getAllSkills();
+        }else {
+          alert('Failed to edit skill name')
+        }
+      })
+    }
+
+
+    if (!props.show) return null;
+    return (
+      <div
+        className="modal-overlay2"
+      >
+        <div
+          className="modal2"
+        >
+          <h3>Enter Skill Name</h3>
+          <input type="text" name="name" onChange={(e)=>setSkillName(prev=>{return{...prev,[e.target.name]:e.target.value}})}></input>
+          <button onClick={editSkillName}>Submit</button>
+          <button onClick={props.onClose}>Cancel</button>
+
+        </div>
+        </div>
+    )
+  }
+
+
+  const StudentProblemCard=(props)=>{
+    const[studentData,setStudentData]=useState(null);
+
+    function getStudentData() {
+      fetch(`https://localhost:7187/api/Students/${props.prob.studentId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData?.token}`,
+        },
+      })
+        .then((res) =>
+          res.ok ? res.json() : toastr.error("Something Wrong Happened", "Error")
+        )
+        .then((data) => {
+          if (data) {
+            setStudentData(data);
+            
+          }
+        });
+    }
+useEffect(()=>{
+  getStudentData();
+},[])
+
+    return (
+      <div className="ContainerreauestWithBtnForProblems">
+                <span style={{ fontWeight: "bold", padding: "10px" }}>
+                  Problem Description:
+                  <p className="custom-scrollbar" style={{ padding: "10px", fontWeight: "normal",maxHeight:"145px",overflow:"auto" }}>
+                    {props.prob.description}
+                  </p>{" "}
+                </span>
+                <span style={{ fontWeight: "bold", padding: "10px" }}>
+                  Student Name:
+                  <p className="custom-scrollbar" onClick={()=>navigate(`/Profile/${props.prob.studentId}`,{state:{data:userData}})} style={{ cursor:'pointer',padding: "10px", fontWeight: "normal",maxHeight:"145px",overflow:"auto" }}>
+                    {studentData?.firstName+' '+studentData?.lastName}
+                  </p>{" "}
+                </span>
+                <button
+                className="hoverBtn"
+                  onClick={() => {
+                    setChoosenProblem(props.prob);
+                    setShowResponseModal(true);
+                  }}
+                >
+                  Respond
+                </button>
+              </div>
+    )
+  }
+
+
+
+
+
+  console.log(studentProblems)
+
   return (
     <div className="adminPanelParent" style={{ rowGap: "50px" }}>
       <Header userData={userData} />
@@ -511,6 +673,18 @@ export default function AdminPanel() {
               >
                 Create New Quiz
               </button>
+              
+            )}
+            {skillId && (
+              <button
+                className="plusBtn"
+                onClick={() =>
+                  setShowEditSkillName(true)
+                }
+              >
+                Edit Skill Name
+              </button>
+              
             )}
           </div>
           {/* <div>
@@ -575,11 +749,14 @@ export default function AdminPanel() {
 
       <div className="ContainerAllIdeas">
         <h1 style={{ color: "white" }}>All Ideas</h1>
+        <input onChange={(e)=>setSearchIdea(e.target.value)}></input>
         <div className="AllIdeas">
+          
           {allIdeas?.length > 0 ? (
             allIdeas?.map((idea, index) => {
               return (
                 <div className="CardInAllIdeas">
+                  
                   <h2>Idea {index + 1}</h2>
                   <div className="containerSpansData">
                     <span
@@ -680,6 +857,97 @@ export default function AdminPanel() {
         )}
       </div>
 
+
+
+
+
+
+
+
+
+      <div className="ContainerAllIdeas">
+        <h1 style={{ color: "white" }}>All Expert Requestes</h1>
+        <div className="AllIdeas">
+          {allExpertReqs?.length > 0 && (
+            allExpertReqs?.map((req, index) => {
+              return (
+                // <div className="CardInAllIdeas">
+                //   <h2>Request {index + 1}</h2>
+                //   <div className="containerSpansData">
+                //     <span
+                //       style={{
+                //         borderBottom: "1px solid black",
+                //         padding: "5px",
+                //       }}
+                //     >
+                //       Title:{" "}
+                //       <span style={{ fontWeight: "bold" }}>{req.title}</span>
+                //     </span>
+
+                //     <span
+                //       style={{
+                //         borderBottom: "1px solid black",
+                //         padding: "5px",
+                //       }}
+                //     >
+                //       Content:{" "}
+                //       <span style={{ fontWeight: "bold" }}>
+                //         {req?.content}
+                //       </span>
+                //     </span>
+                    
+                //     <span
+                //       style={{
+                //         borderBottom: "1px solid black",
+                //         padding: "5px",
+                //       }}
+                //     >
+                //       Sender Name:{" "}
+                //       <span style={{ fontWeight: "bold" }}>
+                //         {req?.content}
+                //       </span>
+                //     </span>
+                    
+                    
+                //   </div>
+                //   <div className="ContainerbtnData">
+                //     <button
+                //       className="button-arounder1"
+                //       onClick={() => {
+                        
+                //       }}
+                //     >
+                //       Delete Expert Request
+                //     </button>
+                //   </div>
+                // </div>
+                <SingleExpertReqCard req={req} />
+              );
+            })
+          ) }
+        </div>
+
+        {showExpertReqsModal && (
+          <ExpertReqsCard
+            show={showExpertReqsModal}
+            onClose={() => setShowExpertReqsModal(false)}
+            idea={expertIdea}
+          />
+        )}
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
       <div className="allSkillsDivForProblems">
         <h2>Choose Cateogry To See Problems </h2>
         <select
@@ -687,10 +955,6 @@ export default function AdminPanel() {
             setProblemCategoryId(e.target.value * 1);
           }}
           className="SelectSkillForProblems"
-          // className="SelectSkill"
-          // name="skillId"
-          // id="skill"
-          // class="select-field-skillInAdminPanel"
         >
           {problemCategories?.map((cat) => {
             return <option value={cat.id}>{cat.name}</option>;
@@ -702,23 +966,7 @@ export default function AdminPanel() {
         >
           {studentProblems?.map((prob) => {
             return (
-              <div className="ContainerreauestWithBtnForProblems">
-                <span style={{ fontWeight: "bold", padding: "10px" }}>
-                  Problem Description:
-                  <p className="custom-scrollbar" style={{ padding: "10px", fontWeight: "normal",maxHeight:"145px",overflow:"auto" }}>
-                    {prob.description}
-                  </p>{" "}
-                </span>
-                <button
-                className="hoverBtn"
-                  onClick={() => {
-                    setChoosenProblem(prob);
-                    setShowResponseModal(true);
-                  }}
-                >
-                  Respond
-                </button>
-              </div>
+              <StudentProblemCard prob={prob} />
             );
           })}
           {showResponseModal && choosenProblem && (
@@ -782,6 +1030,7 @@ export default function AdminPanel() {
           Assign Student To Course
         </button>
       </div>
+      {showEditSkillName&&skillId&&<EditSkillCard show={showEditSkillName} onClose={()=>setShowEditSkillName(false)} />}
     </div>
   );
 }

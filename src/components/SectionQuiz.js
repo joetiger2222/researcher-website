@@ -9,21 +9,20 @@ import QuestionCard from "./QuestionCard";
 export default function SectionQuiz() {
   const { sectionId } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
   const [sectionData, setSectionData] = useState(null);
   const [courseData, setCourseData] = useState(null);
   const [sectionQuizData, setSectionQuizData] = useState(null);
   const questions = sectionQuizData?.questions;
   const [renderQ, setRenderQ] = useState(false);
-  // const [timeLimit,setTimeLimit]=useState({hours:'',mins:''})
   const [timeLimit, setTimeLimit] = useState({
-    hours: "",
     mins: "",
-    secs: "59",
+    secs: "00",
   });
-  const [timerStarted, setTimerStarted] = useState(false);
   const [answers, setAnswers] = useState([]);
   const userData=useLocation().state?.data
+
+
+
 
   const handleUpdate = (update) => {
     const index = answers.findIndex(
@@ -77,23 +76,24 @@ export default function SectionQuiz() {
     })
       .then((res) => res.ok?res.json():toastr.error('failed to load section quiz',"Failed"))
       .then((data) => {
-        
-        setTimeLimit((prevData) => {
-          if (data.timeLimit.slice(0, 1) * 1 === 0) {
+        if (data) {
+          setTimeLimit((prevData) => {
+            if (data?.timeLimit.slice(0, 1) * 1 === 0) {
+              return {
+                ...prevData,
+                // hours: data.timeLimit.slice(1, 2),
+                mins: data.timeLimit.slice(1, 2),
+              };
+            }
             return {
               ...prevData,
-              hours: data.timeLimit.slice(1, 2),
-              mins: data.timeLimit.slice(3, 5),
+              // hours: data.timeLimit.slice(0, 2),
+              mins: data.timeLimit.slice(0, 2),
             };
-          }
-          return {
-            ...prevData,
-            hours: data.timeLimit.slice(0, 2),
-            mins: data.timeLimit.slice(3, 5),
-          };
-        });
+          });
 
-        setSectionQuizData(data);
+          setSectionQuizData(data);
+        }
       });
   }
 
@@ -105,35 +105,6 @@ export default function SectionQuiz() {
   useEffect(() => {
     getCourseDetatils();
   }, [sectionData]);
-
-  // const QuestionCard = ({ question, id,handleAnsQ }) => {
-
-  //   function handleQ(a){
-  //     const update={questionId:question.id,choosenAnsId:a.id}
-  //     handleAnsQ(update)
-  //   }
-
-  //   return (
-  //     <div>
-  //       <h1>{id + ". " + question?.name}</h1>
-  //       <div style={{ paddingLeft: "40px" }}>
-  //         {question.answers?.map((a) => {
-  //           return <Answers a={a} id={id} chooseAns={()=>handleQ(a)}
-  //           />;
-  //         })}
-  //       </div>
-  //     </div>
-  //   );
-  // };
-
-  // const Answers = ({ a ,id,chooseAns}) => {
-  //   return (
-  //     <div style={{ display: "flex" }}>
-  //       <input onClick={chooseAns} type="radio" name={`answernum${id}`}></input>
-  //       <p>{a?.answerText}</p>
-  //     </div>
-  //   );
-  // };
 
 
   
@@ -154,10 +125,74 @@ export default function SectionQuiz() {
       body:JSON.stringify(arr)
     })
     .then(res=>res.json())
-    .then(data=>console.log(data))
+    
+    .then(data=>{
+      if(data.isSuccessed===true){
+        alert('you succedded');
+      }else{
+        alert('you failed the exam');
+      }
+      navigate(-1);
+    })
   }
 
   
+
+
+  const [timer, setTimer] = useState(null);
+
+  const startTimer = () => {
+    let totalSeconds = parseInt(timeLimit.mins) * 60 + parseInt(timeLimit.secs);
+
+    if (isNaN(totalSeconds) || totalSeconds <= 0) {
+      
+      return;
+    }
+
+    setTimer(
+      setInterval(() => {
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+
+        setTimeLimit({
+          mins: String(minutes).padStart(2, "0"),
+          secs: String(seconds).padStart(2, "0"),
+        });
+
+        if (totalSeconds === 0) {
+          clearInterval(timer);
+         
+        } else {
+          totalSeconds--;
+        }
+      }, 1000)
+    );
+  };
+
+  const stopTimer = () => {
+    clearInterval(timer);
+    setTimer(null);
+  };
+
+  useEffect(() => {
+    return () => {
+      clearInterval(timer);
+    };
+  }, [timer]);
+
+  useEffect(() => {
+    if (parseInt(timeLimit.mins) === 0 && parseInt(timeLimit.secs) === 0) {
+      toastr.warning("Your Timer Has Finished !,you failed");
+      navigate(-1);
+    }
+  }, [timer, timeLimit.mins, timeLimit.secs]);
+
+
+
+
+
+
+
 
   return (
     <div className="sectionQuizContainer">
@@ -172,15 +207,15 @@ export default function SectionQuiz() {
           {sectionData?.name}
         </h3>
         <h4>
-          <span>Time Limit : </span>
-          {timeLimit?.hours + ":" + timeLimit?.mins}
+        <span>Time Limit : </span>
+          {timeLimit?.mins + ":" + timeLimit?.secs}
         </h4>
         <div className="startQBtn">
           <button
 
             style={{textAlign:'center', display: renderQ ? "none" : "flex" }}
             onClick={() => {
-              setTimerStarted(true);
+              startTimer(true);
               setRenderQ(true);
             }}
           >

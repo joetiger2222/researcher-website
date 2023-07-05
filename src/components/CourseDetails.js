@@ -178,7 +178,7 @@ console.log('enrollment',isStudentEnrolled)
             </span>
           ))}
 
-          {sectionQuiz && (
+          {sectionQuiz &&isStudentEnrolled&& (
             <span
               className="QuizTitle"
               onClick={() =>{
@@ -469,6 +469,7 @@ console.log('enrollment',isStudentEnrolled)
       price: courseDetails.price,
       hours: courseDetails.hours,
       brief: courseDetails.brief,
+      driveLink:courseDetails.driveLink,
       skillId: courseDetails.skillObj.id,
     });
     console.log(editData);
@@ -564,6 +565,13 @@ console.log('enrollment',isStudentEnrolled)
                 onChange={getEditData}
                 name="brief"
               ></input>
+              <label className="AllLabeles">Drive Link</label>
+              <input
+                className="InputModalHallDetails"
+                placeholder={courseDetails.driveLink}
+                onChange={getEditData}
+                name="driveLink"
+              ></input>
               <div className="buttonsOnModal">
                 <button onClick={editCourseData}>Edit</button>
                 <button onClick={props.onClose}>Cancel</button>
@@ -574,6 +582,8 @@ console.log('enrollment',isStudentEnrolled)
       </div>
     );
   };
+
+  console.log(courseDetails)
 
   return (
     <div className="courseParent">
@@ -586,7 +596,7 @@ console.log('enrollment',isStudentEnrolled)
             <p className="briefCourseNew">{courseDetails?.brief}</p>
             <h2>Price: {courseDetails?.price} EGP</h2>
             {userData.roles !== "Admin" && (
-              !isStudentEnrolled&&<button className="btnBUY">Buy Now</button>
+              !isStudentEnrolled&&<button className="btnBUY" onClick={()=>navigate('/BuyCourse',{state:{data:userData}})}>Buy Now</button>
             )}
           </div>
           <div className="ObjectivesNew">
@@ -596,6 +606,10 @@ console.log('enrollment',isStudentEnrolled)
           <div className="InstructionsNew">
             <h2>Instructions :</h2>
             <h3>{courseDetails?.instructions}</h3>
+          </div>
+          <div className="InstructionsNew">
+            <h2>Link :</h2>
+            <h3>{courseDetails?.driveLink}</h3>
           </div>
         </div>
 
