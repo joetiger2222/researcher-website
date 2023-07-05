@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../css/AdminPanel.css";
 import Header from "./Header";
 import toastr from "toastr";
-import 'toastr/build/toastr.min.css';
+import "toastr/build/toastr.min.css";
 import { json, useLocation, useNavigate } from "react-router-dom";
 export default function AdminPanel() {
   const navigate = useNavigate();
@@ -21,11 +21,14 @@ export default function AdminPanel() {
   const [problemCategoryId, setProblemCategoryId] = useState(1);
   const [studentProblems, setStudentProblems] = useState(null);
   const [showResponseModal, setShowResponseModal] = useState(false);
-  const [showEditSkillName,setShowEditSkillName]=useState(false);
+  const [showEditSkillName, setShowEditSkillName] = useState(false);
   const [choosenProblem, setChoosenProblem] = useState(null);
   const [adminReponse, setAdminResponse] = useState(null);
-  const [allExpertReqs,setAllExpertReqs]=useState(null);
-  const [searchIdea,setSearchIdea]=useState('');
+  const [allExpertReqs, setAllExpertReqs] = useState(null);
+  const [searchIdea, setSearchIdea] = useState("");
+  
+  const [skillsWithQuizes,setSkillsWithQuizes]=useState(null);
+  const [finalQuizSkillId,setFinalQuizSkillId]=useState(null);
   const userData = useLocation().state?.data;
 
   function getCourses() {
@@ -58,7 +61,9 @@ export default function AdminPanel() {
         Authorization: `Bearer ${userData.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : toastr.error("failed to Load specs","Failed")))
+      .then((res) =>
+        res.ok ? res.json() : toastr.error("failed to Load specs", "Failed")
+      )
       .then((data) => {
         if (data) {
           setAllSpecs(data);
@@ -73,7 +78,9 @@ export default function AdminPanel() {
         Authorization: `Bearer ${userData.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : toastr.error("failed to Load topics","Failed")))
+      .then((res) =>
+        res.ok ? res.json() : toastr.error("failed to Load topics", "Failed")
+      )
       .then((data) => {
         if (data) {
           setAllTopics(data);
@@ -88,7 +95,9 @@ export default function AdminPanel() {
         Authorization: `Bearer ${userData?.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : toastr.error("failed to Load All Ideas","Failed")))
+      .then((res) =>
+        res.ok ? res.json() : toastr.error("failed to Load All Ideas", "Failed")
+      )
       .then((data) => {
         if (data) {
           setAllIdeas(data);
@@ -107,7 +116,9 @@ export default function AdminPanel() {
       }
     )
       .then((res) =>
-        res.ok ? res.json() : toastr.error("failed to load student problems","Failed")
+        res.ok
+          ? res.json()
+          : toastr.error("failed to load student problems", "Failed")
       )
       .then((data) => (data ? setStudentProblems(data) : null));
   }
@@ -115,7 +126,9 @@ export default function AdminPanel() {
   function getProblemCategories() {
     fetch(`https://localhost:7187/api/Admin/ProblemCategories`)
       .then((res) =>
-        res.ok ? res.json() : toastr.error("failed to load problem categories","Failed")
+        res.ok
+          ? res.json()
+          : toastr.error("failed to load problem categories", "Failed")
       )
       .then((data) => (data ? setProblemCategories(data) : null));
   }
@@ -127,19 +140,39 @@ export default function AdminPanel() {
         Authorization: `Bearer ${userData.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : toastr.error("failed to load responses","Failed")))
+      .then((res) =>
+        res.ok ? res.json() : toastr.error("failed to load responses", "Failed")
+      )
       .then((data) => (data ? setAdminResponse(data) : null));
   }
 
-  function getAllExpertReqs(){
-    fetch(`https://localhost:7187/api/Admin/ExpertRequests`,{
-      method:"GET",
-      headers:{
-        "Authorization":`Bearer ${userData.token}`
-      }
+  function getAllExpertReqs() {
+    fetch(`https://localhost:7187/api/Admin/ExpertRequests`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
     })
-    .then(res=>res.ok?res.json():alert('faield to load all expert reqs'))
-    .then(data=>data?setAllExpertReqs(data):null)
+      .then((res) =>
+        res.ok ? res.json() : alert("faield to load all expert reqs")
+      )
+      .then((data) => (data ? setAllExpertReqs(data) : null));
+  }
+
+
+  
+
+
+  function getAllSkillsWithQuizes() {
+    fetch(`https://localhost:7187/api/Researchers/Skills`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setSkillsWithQuizes(data))
+      .catch((error) => console.error(error));
   }
 
   useEffect(() => {
@@ -151,14 +184,14 @@ export default function AdminPanel() {
     getProblemCategories();
     getAdminResponse();
     getAllExpertReqs();
+    getAllSkillsWithQuizes();
   }, []);
   useEffect(() => {
-   
     getAllIdeas();
-    
   }, [searchIdea]);
 
-  console.log(allExpertReqs)
+  console.log(allExpertReqs);
+
   useEffect(() => {
     getStudentProblems();
   }, [problemCategoryId]);
@@ -206,18 +239,14 @@ export default function AdminPanel() {
         if (res.ok) {
           props.onClose();
           getAllSpecs();
-        } else toastr.error("failed to add new speciality","Failed");
+        } else toastr.error("failed to add new speciality", "Failed");
       });
     }
 
     if (!props.show) return null;
     return (
-      <div
-        className="modal-overlay2"
-      >
-        <div
-          className="modal2"
-        >
+      <div className="modal-overlay2">
+        <div className="modal2">
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
@@ -227,24 +256,24 @@ export default function AdminPanel() {
           </div>
           <h1 className="headContact2">Enter Specality Name:</h1>
           <div className="FormModal2">
-          <label className="AllLabeles">Name:</label>
-          <input
-          className="InputModalHallDetails"
-            value={specName.name}
-            onChange={(e) => {
-              setSpecName((prev) => {
-                return { ...prev, name: e.target.value };
-              });
-            }}
-            placeholder="New Speciality"
-          ></input>
-          <div className="buttonsOnModal">
-          {specName.name !== "" && <button onClick={addSPec}>Finish</button>}
-          <button onClick={props.onClose}>Cancel</button>
-
+            <label className="AllLabeles">Name:</label>
+            <input
+              className="InputModalHallDetails"
+              value={specName.name}
+              onChange={(e) => {
+                setSpecName((prev) => {
+                  return { ...prev, name: e.target.value };
+                });
+              }}
+              placeholder="New Speciality"
+            ></input>
+            <div className="buttonsOnModal">
+              {specName.name !== "" && (
+                <button onClick={addSPec}>Finish</button>
+              )}
+              <button onClick={props.onClose}>Cancel</button>
+            </div>
           </div>
-        
-        </div>
         </div>
       </div>
     );
@@ -266,18 +295,14 @@ export default function AdminPanel() {
         if (res.ok) {
           props.onClose();
           getAllTopics();
-        } else toastr.error("failed to add new Topic","Failed");
+        } else toastr.error("failed to add new Topic", "Failed");
       });
     }
 
     if (!props.show) return null;
     return (
-      <div
-        className=" modal-overlay2"
-      >
-        <div
-         className="modal2"
-        >
+      <div className=" modal-overlay2">
+        <div className="modal2">
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
@@ -287,33 +312,33 @@ export default function AdminPanel() {
           </div>
           <h1 className="headContact2">Create New Topic</h1>
           <div className="FormModal2">
-
-          <label className="AllLabeles">Enter Topic Name: </label>
-          <input
-          className="InputModalHallDetails"
-            value={topicName.name}
-            onChange={(e) => {
-              setTopicName((prev) => {
-                return { ...prev, name: e.target.value };
-              });
-            }}
-            placeholder="New Topic"
-          ></input>
-          <label className="AllLabeles">Enter Topic Min Points</label>
-          <input
-          className="InputModalHallDetails"
-            onChange={(e) => {
-              setTopicName((prev) => {
-                return { ...prev, minmumPoints: e.target.value * 1 };
-              });
-            }}
-            placeholder="Topic Min Points"
-          ></input>
-          <div className="buttonsOnModal">
-          {topicName.name !== "" && <button onClick={addTopic}>Finish</button>}
-          <button onClick={props.onClose}>Cancel</button>
-
-          </div>
+            <label className="AllLabeles">Enter Topic Name: </label>
+            <input
+              className="InputModalHallDetails"
+              value={topicName.name}
+              onChange={(e) => {
+                setTopicName((prev) => {
+                  return { ...prev, name: e.target.value };
+                });
+              }}
+              placeholder="New Topic"
+            ></input>
+            <label className="AllLabeles">Enter Topic Min Points</label>
+            <input
+              className="InputModalHallDetails"
+              onChange={(e) => {
+                setTopicName((prev) => {
+                  return { ...prev, minmumPoints: e.target.value * 1 };
+                });
+              }}
+              placeholder="Topic Min Points"
+            ></input>
+            <div className="buttonsOnModal">
+              {topicName.name !== "" && (
+                <button onClick={addTopic}>Finish</button>
+              )}
+              <button onClick={props.onClose}>Cancel</button>
+            </div>
           </div>
         </div>
       </div>
@@ -334,12 +359,12 @@ export default function AdminPanel() {
         }
       )
         .then((res) =>
-          res.ok ? res.json() : toastr.error("failed to load Requests for this idea","Failed")
+          res.ok
+            ? res.json()
+            : toastr.error("failed to load Requests for this idea", "Failed")
         )
         .then((data) => (data ? setExpertReqForSingleIdea(data) : null));
     }
-
-    
 
     useEffect(() => {
       getExpertReqs();
@@ -362,12 +387,10 @@ export default function AdminPanel() {
             <div className="AllExpertReq custom-scrollbar">
               {expertReqForSingleIdea.length > 0 ? (
                 expertReqForSingleIdea?.map((req) => {
-                  return (
-                    <SingleExpertReqCard req={req} />
-                  );
+                  return <SingleExpertReqCard req={req} />;
                 })
               ) : (
-                <div style={{textAlign:"center"}}>No Expert Reqs</div>
+                <div style={{ textAlign: "center" }}>No Expert Reqs</div>
               )}
             </div>
 
@@ -382,26 +405,26 @@ export default function AdminPanel() {
     );
   };
 
-
-  const SingleExpertReqCard=(props)=>{
-    const [resData,setResData]=useState(null);
+  const SingleExpertReqCard = (props) => {
+    const [resData, setResData] = useState(null);
 
     function getResData() {
-      fetch(`https://localhost:7187/api/Researchers/${props.req.participantId}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${userData?.token}`,
-        },
-      })
+      fetch(
+        `https://localhost:7187/api/Researchers/${props.req.participantId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${userData?.token}`,
+          },
+        }
+      )
         .then((res) => (res.ok ? res.json() : null))
         .then((data) => (data ? setResData(data) : null));
     }
 
-    useEffect(()=>{
+    useEffect(() => {
       getResData();
-    },[])
-
-
+    }, []);
 
     function deleteExpertReq(req) {
       fetch(`https://localhost:7187/api/Admin/ExpertRequests/${req?.id}`, {
@@ -412,49 +435,52 @@ export default function AdminPanel() {
         },
       }).then((res) => {
         if (res.ok) {
-          toastr.success("Request Successfully deleted","Success");
+          toastr.success("Request Successfully deleted", "Success");
           props.onClose();
-        } else toastr.error("Failed To Delete Request","Failed");
+        } else toastr.error("Failed To Delete Request", "Failed");
       });
     }
 
-    return(
-      <div className="ContExpertReqAdmin" style={{backgroundColor:'white'}}>
-                      <div className="contTitleAndContnentReq">
-                      <span>
-                          <span style={{ fontWeight: "bold" }}>Sender Name : </span>
-                          {resData?.firstName+" "+resData?.lastName}
-                        </span>
-                        <span>
-                          <span style={{ fontWeight: "bold" }}>Title : </span>
-                          {props.req.title}
-                        </span>
-                        <span
-                          className="custom-scrollbar"
-                          style={{ overflow: "auto", maxHeight: "100px" }}
-                        >
-                          <span style={{ fontWeight: "bold" }}>Content : </span>
-                          {props.req.content}
-                        </span>
-                      </div>
-                      <div>
-                        <button
-                          className="buttonExit2"
-                          onClick={() => deleteExpertReq(props.req)}
-                        >
-                          Delete Expert Request
-                        </button>
-                        <button
-                          className="buttonExit2"
-                          onClick={() => navigate(`/Idea/${props.req.ideaId}`,{state:{data:userData}})}
-                        >
-                          View Idea
-                        </button>
-                      </div>
-                    </div>
-    )
-  }
-
+    return (
+      <div className="ContExpertReqAdmin" style={{ backgroundColor: "white" }}>
+        <div className="contTitleAndContnentReq">
+          <span>
+            <span style={{ fontWeight: "bold" }}>Sender Name : </span>
+            {resData?.firstName + " " + resData?.lastName}
+          </span>
+          <span>
+            <span style={{ fontWeight: "bold" }}>Title : </span>
+            {props.req.title}
+          </span>
+          <span
+            className="custom-scrollbar"
+            style={{ overflow: "auto", maxHeight: "100px" }}
+          >
+            <span style={{ fontWeight: "bold" }}>Content : </span>
+            {props.req.content}
+          </span>
+        </div>
+        <div>
+          <button
+            className="buttonExit2"
+            onClick={() => deleteExpertReq(props.req)}
+          >
+            Delete Expert Request
+          </button>
+          <button
+            className="buttonExit2"
+            onClick={() =>
+              navigate(`/Idea/${props.req.ideaId}`, {
+                state: { data: userData },
+              })
+            }
+          >
+            View Idea
+          </button>
+        </div>
+      </div>
+    );
+  };
 
   const ProblemResponseCard = (props) => {
     const [responseData, setResponseData] = useState({
@@ -473,9 +499,9 @@ export default function AdminPanel() {
         body: JSON.stringify(responseData),
       }).then((res) => {
         if (res.ok) {
-          toastr.success("Response Sent Successfully","Success");
+          toastr.success("Response Sent Successfully", "Success");
           props.onClose();
-        } else toastr.error("Failed To Send Response","Failed");
+        } else toastr.error("Failed To Send Response", "Failed");
       });
     }
 
@@ -515,53 +541,51 @@ export default function AdminPanel() {
     );
   };
 
+  const EditSkillCard = (props) => {
+    const [skillName, setSkillName] = useState({ name: "" });
 
-  const EditSkillCard=(props)=>{
-    const[skillName,setSkillName]=useState({name:''});
-
-    function editSkillName(){
-      fetch(`https://localhost:7187/api/Admin/Skills/${skillId}`,{
-        method:"PUT",
-        headers:{
-          "Authorization":`Bearer ${userData.token}`,
-          "Content-Type":"application/json"
+    function editSkillName() {
+      fetch(`https://localhost:7187/api/Admin/Skills/${skillId}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+          "Content-Type": "application/json",
         },
-        body:JSON.stringify(skillName)
-      })
-     
-      .then(res=>{
-        if(res.ok){
-          alert('skill successfully edited');
+        body: JSON.stringify(skillName),
+      }).then((res) => {
+        if (res.ok) {
+          alert("skill successfully edited");
           props.onClose();
           getAllSkills();
-        }else {
-          alert('Failed to edit skill name')
+        } else {
+          alert("Failed to edit skill name");
         }
-      })
+      });
     }
-
 
     if (!props.show) return null;
     return (
-      <div
-        className="modal-overlay2"
-      >
-        <div
-          className="modal2"
-        >
+      <div className="modal-overlay2">
+        <div className="modal2">
           <h3>Enter Skill Name</h3>
-          <input type="text" name="name" onChange={(e)=>setSkillName(prev=>{return{...prev,[e.target.name]:e.target.value}})}></input>
+          <input
+            type="text"
+            name="name"
+            onChange={(e) =>
+              setSkillName((prev) => {
+                return { ...prev, [e.target.name]: e.target.value };
+              })
+            }
+          ></input>
           <button onClick={editSkillName}>Submit</button>
           <button onClick={props.onClose}>Cancel</button>
-
         </div>
-        </div>
-    )
-  }
+      </div>
+    );
+  };
 
-
-  const StudentProblemCard=(props)=>{
-    const[studentData,setStudentData]=useState(null);
+  const StudentProblemCard = (props) => {
+    const [studentData, setStudentData] = useState(null);
 
     function getStudentData() {
       fetch(`https://localhost:7187/api/Students/${props.prob.studentId}`, {
@@ -571,51 +595,70 @@ export default function AdminPanel() {
         },
       })
         .then((res) =>
-          res.ok ? res.json() : toastr.error("Something Wrong Happened", "Error")
+          res.ok
+            ? res.json()
+            : toastr.error("Something Wrong Happened", "Error")
         )
         .then((data) => {
           if (data) {
             setStudentData(data);
-            
           }
         });
     }
-useEffect(()=>{
-  getStudentData();
-},[])
+    useEffect(() => {
+      getStudentData();
+    }, []);
 
     return (
       <div className="ContainerreauestWithBtnForProblems">
-                <span style={{ fontWeight: "bold", padding: "10px" }}>
-                  Problem Description:
-                  <p className="custom-scrollbar" style={{ padding: "10px", fontWeight: "normal",maxHeight:"145px",overflow:"auto" }}>
-                    {props.prob.description}
-                  </p>{" "}
-                </span>
-                <span style={{ fontWeight: "bold", padding: "10px" }}>
-                  Student Name:
-                  <p className="custom-scrollbar" onClick={()=>navigate(`/Profile/${props.prob.studentId}`,{state:{data:userData}})} style={{ cursor:'pointer',padding: "10px", fontWeight: "normal",maxHeight:"145px",overflow:"auto" }}>
-                    {studentData?.firstName+' '+studentData?.lastName}
-                  </p>{" "}
-                </span>
-                <button
-                className="hoverBtn"
-                  onClick={() => {
-                    setChoosenProblem(props.prob);
-                    setShowResponseModal(true);
-                  }}
-                >
-                  Respond
-                </button>
-              </div>
-    )
-  }
+        <span style={{ fontWeight: "bold", padding: "10px" }}>
+          Problem Description:
+          <p
+            className="custom-scrollbar"
+            style={{
+              padding: "10px",
+              fontWeight: "normal",
+              maxHeight: "145px",
+              overflow: "auto",
+            }}
+          >
+            {props.prob.description}
+          </p>{" "}
+        </span>
+        <span style={{ fontWeight: "bold", padding: "10px" }}>
+          Student Name:
+          <p
+            className="custom-scrollbar"
+            onClick={() =>
+              navigate(`/Profile/${props.prob.studentId}`, {
+                state: { data: userData },
+              })
+            }
+            style={{
+              cursor: "pointer",
+              padding: "10px",
+              fontWeight: "normal",
+              maxHeight: "145px",
+              overflow: "auto",
+            }}
+          >
+            {studentData?.firstName + " " + studentData?.lastName}
+          </p>{" "}
+        </span>
+        <button
+          className="hoverBtn"
+          onClick={() => {
+            setChoosenProblem(props.prob);
+            setShowResponseModal(true);
+          }}
+        >
+          Respond
+        </button>
+      </div>
+    );
+  };
 
-
-
-
-
-  console.log(studentProblems)
+  console.log(skillsWithQuizes)
 
   return (
     <div className="adminPanelParent" style={{ rowGap: "50px" }}>
@@ -673,18 +716,14 @@ useEffect(()=>{
               >
                 Create New Quiz
               </button>
-              
             )}
             {skillId && (
               <button
                 className="plusBtn"
-                onClick={() =>
-                  setShowEditSkillName(true)
-                }
+                onClick={() => setShowEditSkillName(true)}
               >
                 Edit Skill Name
               </button>
-              
             )}
           </div>
           {/* <div>
@@ -749,14 +788,12 @@ useEffect(()=>{
 
       <div className="ContainerAllIdeas">
         <h1 style={{ color: "white" }}>All Ideas</h1>
-        <input onChange={(e)=>setSearchIdea(e.target.value)}></input>
+        <input onChange={(e) => setSearchIdea(e.target.value)}></input>
         <div className="AllIdeas">
-          
           {allIdeas?.length > 0 ? (
             allIdeas?.map((idea, index) => {
               return (
                 <div className="CardInAllIdeas">
-                  
                   <h2>Idea {index + 1}</h2>
                   <div className="containerSpansData">
                     <span
@@ -839,6 +876,12 @@ useEffect(()=>{
                     >
                       View Expert Requests
                     </button>
+                    <button
+                      className="button-arounder1"
+                      onClick={() => navigate(`/Idea/${idea.id}`,{state:{data:userData}})}
+                    >
+                      View Idea
+                    </button>
                   </div>
                 </div>
               );
@@ -857,18 +900,10 @@ useEffect(()=>{
         )}
       </div>
 
-
-
-
-
-
-
-
-
       <div className="ContainerAllIdeas">
         <h1 style={{ color: "white" }}>All Expert Requestes</h1>
         <div className="AllIdeas">
-          {allExpertReqs?.length > 0 && (
+          {allExpertReqs?.length > 0 &&
             allExpertReqs?.map((req, index) => {
               return (
                 // <div className="CardInAllIdeas">
@@ -895,7 +930,7 @@ useEffect(()=>{
                 //         {req?.content}
                 //       </span>
                 //     </span>
-                    
+
                 //     <span
                 //       style={{
                 //         borderBottom: "1px solid black",
@@ -907,14 +942,13 @@ useEffect(()=>{
                 //         {req?.content}
                 //       </span>
                 //     </span>
-                    
-                    
+
                 //   </div>
                 //   <div className="ContainerbtnData">
                 //     <button
                 //       className="button-arounder1"
                 //       onClick={() => {
-                        
+
                 //       }}
                 //     >
                 //       Delete Expert Request
@@ -923,8 +957,7 @@ useEffect(()=>{
                 // </div>
                 <SingleExpertReqCard req={req} />
               );
-            })
-          ) }
+            })}
         </div>
 
         {showExpertReqsModal && (
@@ -935,18 +968,6 @@ useEffect(()=>{
           />
         )}
       </div>
-
-
-
-
-
-
-
-
-
-
-
-
 
       <div className="allSkillsDivForProblems">
         <h2>Choose Cateogry To See Problems </h2>
@@ -961,13 +982,9 @@ useEffect(()=>{
           })}
         </select>
 
-        <div
-          className="custom-scrollbar ContAllProblemsCards"
-        >
+        <div className="custom-scrollbar ContAllProblemsCards">
           {studentProblems?.map((prob) => {
-            return (
-              <StudentProblemCard prob={prob} />
-            );
+            return <StudentProblemCard prob={prob} />;
           })}
           {showResponseModal && choosenProblem && (
             <ProblemResponseCard
@@ -1008,7 +1025,7 @@ useEffect(()=>{
       </div>
       <div>
         <button
-        className="AddNewPaper"
+          className="AddNewPaper"
           onClick={() =>
             navigate("/RegisterationSpecialAccount", {
               state: { data: userData },
@@ -1020,7 +1037,7 @@ useEffect(()=>{
       </div>
       <div>
         <button
-        className="AddNewPaper"
+          className="AddNewPaper"
           onClick={() =>
             navigate("/AssignStudentToCourse", {
               state: { data: userData },
@@ -1030,7 +1047,54 @@ useEffect(()=>{
           Assign Student To Course
         </button>
       </div>
-      {showEditSkillName&&skillId&&<EditSkillCard show={showEditSkillName} onClose={()=>setShowEditSkillName(false)} />}
+
+
+      <div className="allSkillsDiv">
+            <h2>Choose a Skill To View It's Quizes </h2>
+            <select
+              onChange={(e) => {
+                setFinalQuizSkillId(e.target.value * 1);
+              }}
+              className="SelectSkill"
+              name="skillId"
+              id="skill"
+              class="select-field-skillInAdminPanel"
+            >
+              <option selected disabled value="">
+                Choose a Skill
+              </option>
+              {skillsWithQuizes?.map((skill) => {
+                return <option value={skill.id}>{skill.name}</option>;
+              })}
+            </select>
+            {finalQuizSkillId && (
+              <button
+                className="plusBtn"
+                onClick={() =>
+                  navigate(`/AllFinalQuizes/${finalQuizSkillId}`, {
+                    state: { data: userData },
+                  })
+                }
+              >
+                View All Quizes
+              </button>
+            )}
+            
+          </div>
+
+
+
+
+
+
+
+
+      {showEditSkillName && skillId && (
+        <EditSkillCard
+          show={showEditSkillName}
+          onClose={() => setShowEditSkillName(false)}
+        />
+      )}
     </div>
   );
 }

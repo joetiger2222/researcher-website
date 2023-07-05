@@ -9,7 +9,6 @@ import { useLocation } from "react-router-dom";
 import Header from "./Header";
 import paperPhoto from "../images/paper.jpg";
 import ModalEditProfile from "./ModalEditProfile";
-import PaperCardInProfile from "./Cards/PaperCardInProfile";
 import { FaCheckCircle } from "react-icons/fa";
 import request from "../images/request.png";
 import Swal from "sweetalert2";
@@ -19,7 +18,7 @@ import { MdOutlineFileUpload } from "react-icons/md";
 import { MdCameraAlt } from "react-icons/md";
 
 import user from "../images/useer.png";
-import ToastrComponent from "./Cards/ToastrComponent";
+
 const Profile = () => {
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -172,7 +171,7 @@ const Profile = () => {
     .then(res=>res.ok?res.json():alert('failed to get student courses'))
     .then(data=>data?setStudentCourses(data):null)
   }
-console.log(studentCourses)
+
 
   useEffect(() => {
     getStudentData();
@@ -821,7 +820,10 @@ console.log(studentCourses)
             {studentData?.isMentor && <FaCheckCircle />}
           </h1>
           <p className="profile-bio">
-            {studentData?.bio}
+            {"Bio : "+studentData?.bio}
+          </p>
+          <p className="profile-bio">
+            {"Google Schooler Link : "+studentData?.googleSchoolerLink}
           </p>
           {userData.roles === "Researcher" && (
             <span
@@ -938,7 +940,7 @@ console.log(studentCourses)
 </div>
       
 
-      {researcherIdeas > 0 && (
+      {researcherIdeas.length > 0 && (
         <div className="ContainerAllIdeas">
           <h1 style={{ color: "black" }}>Ideas</h1>
 

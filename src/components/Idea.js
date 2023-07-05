@@ -6,9 +6,9 @@ import "../css/Idea.css";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import { BiChat } from "react-icons/bi";
 import { FaPaperPlane } from "react-icons/fa";
-import { FaCrown } from 'react-icons/fa';
+import { FaCrown } from "react-icons/fa";
 import toastr from "toastr";
-import 'toastr/build/toastr.min.css';
+import "toastr/build/toastr.min.css";
 import ToastrComponent from "./Cards/ToastrComponent";
 import { MdOutlineFileUpload } from "react-icons/md";
 export default function Idea() {
@@ -34,9 +34,13 @@ export default function Idea() {
   const [showIdeaFiles, setShowIdeaFiles] = useState(false);
   const [showTaskUploadDocument, setShowTaskUploadDocuemnt] = useState(false);
   const [showTaskDocuments, setShowTaskDocuments] = useState(false);
-  const[showUpdateProgress,setShowUpdateProgress]=useState(false);
+  const [showUpdateProgress, setShowUpdateProgress] = useState(false);
+  const [showUploadFinalTaskFile,setShowUploadFinalTaskFile]=useState(false);
   const navigate = useNavigate();
-  const creator = userData.roles==='Admin'? true: userData?.resercherId.toLowerCase() === idea?.creatorId;
+  const creator =
+    userData.roles === "Admin"
+      ? true
+      : userData?.resercherId.toLowerCase() === idea?.creatorId;
 
   function getIdeaData() {
     fetch(`https://localhost:7187/api/Ideas/SingleIdea/${ideaId}`, {
@@ -45,7 +49,9 @@ export default function Idea() {
         Authorization: `Bearer ${userData?.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : toastr.error("failed to load idea data","Failed")))
+      .then((res) =>
+        res.ok ? res.json() : toastr.error("failed to load idea data", "Failed")
+      )
       .then((data) => (data ? setIdea(data) : null));
   }
 
@@ -58,7 +64,9 @@ export default function Idea() {
           Authorization: `Bearer ${userData?.token}`,
         },
       })
-        .then((res) => (res.ok ? res.json() : toastr.error("failed to load reqs","Failed")))
+        .then((res) =>
+          res.ok ? res.json() : toastr.error("failed to load reqs", "Failed")
+        )
         .then((data) => {
           if (data) {
             setIdeaReqs(data);
@@ -77,8 +85,8 @@ export default function Idea() {
     getParticaptns();
     getTasks();
     toastr.options = {
-      "positionClass": "toast-top-center", 
-    }
+      positionClass: "toast-top-center",
+    };
   }, []);
 
   function getResearcherData(resId) {
@@ -114,7 +122,7 @@ export default function Idea() {
       .then((res) =>
         res.ok
           ? setResReqsData(resReqsData.filter((res) => res.id !== resId))
-          : toastr.error("failed to accept req","Failed")
+          : toastr.error("failed to accept req", "Failed")
       )
       .then((data) => (data ? console.log(data) : null));
   }
@@ -130,7 +138,7 @@ export default function Idea() {
       .then((res) =>
         res.ok
           ? setResReqsData(resReqsData.filter((res) => res.id !== resId))
-          : toastr.error("failed to reject req","Failed")
+          : toastr.error("failed to reject req", "Failed")
       )
       .then((data) => (data ? console.log(data) : null));
   }
@@ -142,7 +150,9 @@ export default function Idea() {
         Authorization: `Bearer ${userData?.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : toastr.error("failed to get Partipants","Failed")))
+      .then((res) =>
+        res.ok ? res.json() : toastr.error("failed to get Partipants", "Failed")
+      )
       .then((data) => {
         if (data) {
           setIdeaPar(data);
@@ -163,13 +173,17 @@ export default function Idea() {
         Authorization: `Bearer ${userData?.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : toastr.error("failed to load Tasks","Failed")))
+      .then((res) =>
+        res.ok ? res.json() : toastr.error("failed to load Tasks", "Failed")
+      )
       .then((data) => (data ? setTasks(data) : null));
   }
 
+  
+
   const AllResCard = (props) => {
     const [ress, setRess] = useState(null);
-    const [search,setSearch]=useState('');
+    const [search, setSearch] = useState("");
 
     function getAllRess() {
       fetch(`https://localhost:7187/api/Researchers?SearchTerm=${search}`, {
@@ -179,7 +193,9 @@ export default function Idea() {
         },
       })
         .then((res) =>
-          res.ok ? res.json() : toastr.error("failed to get Researchers","Failed")
+          res.ok
+            ? res.json()
+            : toastr.error("failed to get Researchers", "Failed")
         )
         .then((data) => (data ? setRess(data) : null));
     }
@@ -202,10 +218,8 @@ export default function Idea() {
         }
       ).then((res) =>
         res.ok
-        ? toastr.success('Invitation Sent Successfully','Success')
-        : toastr.error('Failed To Send Invitation','Failed')
-       
-          
+          ? toastr.success("Invitation Sent Successfully", "Success")
+          : toastr.error("Failed To Send Invitation", "Failed")
       );
     }
 
@@ -221,7 +235,10 @@ export default function Idea() {
             </div>
           </div>
           <h1 className="headContact2">All Researchers</h1>
-          <input name="search" onChange={(e)=>setSearch(e.target.value)}></input>
+          <input
+            name="search"
+            onChange={(e) => setSearch(e.target.value)}
+          ></input>
 
           <div className="ContInviteResearchers custom-scrollbar">
             {ress
@@ -253,13 +270,12 @@ export default function Idea() {
                   </div>
                 );
               })}
-           
           </div>
           <div className="resetAndCancel2">
-              <button className="buttonExit2" onClick={props.onClose}>
-                Cancel
-              </button>
-            </div>
+            <button className="buttonExit2" onClick={props.onClose}>
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -283,7 +299,9 @@ export default function Idea() {
     }
 
     function createfTask() {
-      const val = /^\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$/.test(taskData.deadline);
+      const val = /^\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$/.test(
+        taskData.deadline
+      );
       if (val) {
         fetch(
           `https://localhost:7187/api/Ideas/Tasks/InitiateTask/${ideaId}/${userData.resercherId}`,
@@ -322,7 +340,7 @@ export default function Idea() {
             }
           })
           .catch((error) => console.error(error));
-      } else toastr.error("please enter a valid deadline yyyy-mm-dd","Error");
+      } else toastr.error("please enter a valid deadline yyyy-mm-dd", "Error");
     }
 
     if (!props.show) return null;
@@ -408,9 +426,10 @@ export default function Idea() {
         // .then(res=>res.ok?alert('Expert Request Sent Successfully'):alert('Failed To Send Please Try Again Later'))
         .then((res) => {
           if (res.ok) {
-            toastr.success("Expert Request Sent Successfully","Success");
+            toastr.success("Expert Request Sent Successfully", "Success");
             props.onClose();
-          } else toastr.error("Failed To Send Please Try Again Later","Failed");
+          } else
+            toastr.error("Failed To Send Please Try Again Later", "Failed");
         });
     }
 
@@ -489,7 +508,7 @@ export default function Idea() {
               );
               toastr.error(body);
             });
-          } else toastr.success("Particpant Assigned Successfully","Success");
+          } else toastr.success("Particpant Assigned Successfully", "Success");
 
           return readStream().then((chunks) => {
             const body = new TextDecoder().decode(
@@ -536,14 +555,19 @@ export default function Idea() {
                 </div>
               );
             })}
-            
           </div>
-          <div style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <button  className="buttonExit2" onClick={props.onClose}>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <button className="buttonExit2" onClick={props.onClose}>
               Close
             </button>
           </div>
-          
         </div>
       </div>
     );
@@ -563,7 +587,9 @@ export default function Idea() {
         }
       )
         .then((res) =>
-          res.ok ? res.json() : toastr.error("failed to load particpants to task","Failed")
+          res.ok
+            ? res.json()
+            : toastr.error("failed to load particpants to task", "Failed")
         )
         .then((data) => (data ? setTaskParticpants(data) : null));
     }
@@ -589,9 +615,10 @@ export default function Idea() {
               return (
                 <div className="DivContResearchers1">
                   <span style={{ fontWeight: "bold", fontSize: "18px" }}>
-                    {par.studentObj.firstName + " "}{par.studentObj.lastName}
+                    {par.studentObj.firstName + " "}
+                    {par.studentObj.lastName}
                   </span>
-                  
+
                   <button
                     className="plusBtn"
                     onClick={() =>
@@ -618,8 +645,9 @@ export default function Idea() {
     const [messageToSend, setMessageToSend] = useState({
       content: "",
       date: new Date().toISOString(),
-      researcherId: userData.resercherId,
+      researcherId: userData.roles === "Researcher" ? userData.resercherId : "",
     });
+
     const [ideaMessages, setIdeaMessages] = useState([]);
     const latestChat = useRef(null);
 
@@ -730,9 +758,7 @@ export default function Idea() {
               }}
             >
               {ideaMessages?.map((message) => {
-                return (
-                  <IdeaMessageCard message={message} />
-                );
+                return <IdeaMessageCard message={message} />;
               })}
             </div>
             <div
@@ -757,6 +783,7 @@ export default function Idea() {
                 onSubmit={sendMessage}
               >
                 <input
+                disabled={userData.roles==='Admin'}
                   className="InputChat"
                   name="content"
                   placeholder="Enter Your Message"
@@ -769,6 +796,7 @@ export default function Idea() {
                 ></input>
                 <div className="DivContChatIcon">
                   <button
+                  disabled={userData.roles==='Admin'}
                     style={{ backgroundColor: "transparent", border: "none" }}
                   >
                     <FaPaperPlane
@@ -790,47 +818,65 @@ export default function Idea() {
     );
   };
 
-
-  const IdeaMessageCard=(props)=>{
-    
-    const resData=ideaPar.filter(res=>res.id===props.message.researcherId)
-    console.log('resData',resData)
+  const IdeaMessageCard = (props) => {
+    const resData = ideaPar.filter((res) => res.id === props.message.researcherId)
+        
+    console.log("resData", resData);
     return (
       <div
-      className={ props.message.researcherId ===
-        userData.resercherId.toLowerCase()
-          ? "borderR1 spanChat"
-          : "borderR spanChat"}
-                    style={{
-                      backgroundColor:"#c2c2c2",
-                      gap:"5px",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignSelf:
-                        props.message.researcherId ===
-                        userData.resercherId.toLowerCase()
-                          ? "flex-end"
-                          : "flex-start",
-                    }}
-                  >
-                    <p style={{color:"var(--darkgreen-color)",padding:"8px",backgroundColor:"rgb(213 213 213)"}}>{resData[0].studentObj.firstName+" "+resData[0].studentObj.lastName}</p>
-                    <p style={{
-                      padding:"8px"
-                        // borderTop:
-                        // props.message.researcherId ===
-                        // userData.resercherId.toLowerCase()
-                        //   ? "10px solid red"
-                        //   : "10px solid blue",
-                    }} 
-                    // className={ props.message.researcherId ===
-                    //   userData.resercherId.toLowerCase()
-                    //     ? "spanChat1"
-                    //     : "spanChat"}
-                    
-                    >{props.message.content}</p>
-                  </div>
-    )
-  }
+        className={
+          userData.roles === "Researcher"
+            ? props.message.researcherId === userData.resercherId.toLowerCase()
+              ? "borderR1 spanChat"
+              : "borderR spanChat"
+            : "borderR spanChat"
+        }
+        style={{
+          backgroundColor: "#c2c2c2",
+          gap: "5px",
+          display: "flex",
+          flexDirection: "column",
+          alignSelf:
+            userData.roles === "Researcher"
+              ? props.message.researcherId ===
+                userData.resercherId.toLowerCase()
+                ? "flex-end"
+                : "flex-start"
+              : "flex-start",
+        }}
+      >
+        <p
+          style={{
+            color: "var(--darkgreen-color)",
+            padding: "8px",
+            backgroundColor: "rgb(213 213 213)",
+          }}
+        >
+          {resData
+            ? resData[0].studentObj.firstName +
+              " " +
+              resData[0].studentObj.lastName
+            : null}
+        </p>
+        <p
+          style={{
+            padding: "8px",
+            // borderTop:
+            // props.message.researcherId ===
+            // userData.resercherId.toLowerCase()
+            //   ? "10px solid red"
+            //   : "10px solid blue",
+          }}
+          // className={ props.message.researcherId ===
+          //   userData.resercherId.toLowerCase()
+          //     ? "spanChat1"
+          //     : "spanChat"}
+        >
+          {props.message.content}
+        </p>
+      </div>
+    );
+  };
 
   const TaskChatCard = (props) => {
     const [messageToSend, setMessageToSend] = useState({
@@ -854,7 +900,7 @@ export default function Idea() {
             },
           }
         )
-          .then((res) => res.json())
+          .then((res) => res.ok?res.json():alert('failed to get task chat'))
           .then((data) => setTaskMessages(data));
       }
       counter = 0;
@@ -950,9 +996,7 @@ export default function Idea() {
               }}
             >
               {taskMessage?.map((message) => {
-                return (
-                  <TaskMessageCard message={message} />
-                );
+                return <TaskMessageCard message={message} />;
               })}
             </div>
             <div
@@ -977,6 +1021,7 @@ export default function Idea() {
                 onSubmit={sendMessage}
               >
                 <input
+                disabled={userData.roles==='Admin'}
                   className="InputChat"
                   name="content"
                   placeholder="Enter Your Message"
@@ -989,6 +1034,7 @@ export default function Idea() {
                 ></input>
                 <div className="DivContChatIcon">
                   <button
+                  disabled={userData.roles==='Admin'}
                     style={{ backgroundColor: "transparent", border: "none" }}
                     onClick={sendMessage}
                   >
@@ -1012,69 +1058,73 @@ export default function Idea() {
     );
   };
 
-
-  const TaskMessageCard=(props)=>{
-
-    const [resData,setResData]=useState(null);
+  const TaskMessageCard = (props) => {
+    const [resData, setResData] = useState(null);
     // console.log('task message',props.message);
 
     function getResearcherData() {
-      if(props.message.researcherId!==userData.resercherId.toLowerCase()){
-      fetch(`https://localhost:7187/api/Researchers/${props.message.researcherId}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${userData?.token}`,
-        },
-      })
-        .then((res) => (res.ok ? res.json() : null))
-        .then((data) => (data ? setResData(data) : null));
+     
+      if (userData.roles==='Admin'||(userData.roles==='Researcher' &&props.message.researcherId !== userData.resercherId.toLowerCase())) {
+        fetch(
+          `https://localhost:7187/api/Researchers/${props.message.researcherId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${userData?.token}`,
+            },
+          }
+        )
+          .then((res) => (res.ok ? res.json() : null))
+          .then((data) => (data ? setResData(data) : null));
+      }
+    
     }
-    }
-    useEffect(()=>{
+    useEffect(() => {
       getResearcherData();
-    },[])
+    }, []);
 
-    console.log('res task data',resData)
+    console.log("res task data", resData);
 
     return (
       <div
-      className= { props.message.researcherId ===
-        userData.resercherId.toLowerCase()
-          ? " borderR1 spanChat"
-          : "borderR spanChat"}
-                    style={{
-                      backgroundColor:"rgb(194, 194, 194)",
-                      gap:"5px",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignSelf:
-                      props.message.researcherId ===
-                        userData.resercherId.toLowerCase()
-                          ? "flex-end"
-                          : "flex-start",
-                    }}
-                  >
-                    <p style={{ padding:"8px",backgroundColor:"rgb(213, 213, 213)"}}>
-                      {
-                      props.message.researcherId===userData.resercherId.toLowerCase()?'':
-                      resData?.firstName+" "+resData?.lastName
-                      }
-                    </p>
-                    <p 
-                    style={{
-                      padding:"8px"
-                      // borderTop:
-                      // props.message.researcherId ===
-                      //  userData.resercherId.toLowerCase()
-                      //    ? "10px solid red"
-                      //    : "10px solid blue",
-                    }}
-                    
-                    
-                     >{props.message.content}</p>
-                  </div>
-    )
-  }
+        className={
+          userData.roles==='Researcher'?
+          props.message.researcherId === userData.resercherId.toLowerCase()
+            ? " borderR1 spanChat"
+            : "borderR spanChat":"borderR spanChat"
+        }
+        style={{
+          backgroundColor: "rgb(194, 194, 194)",
+          gap: "5px",
+          display: "flex",
+          flexDirection: "column",
+          alignSelf:
+          userData.roles==='Researcher'?
+            props.message.researcherId === userData.resercherId.toLowerCase()
+              ? "flex-end"
+              : "flex-start":"flex-start",
+        }}
+      >
+        <p style={{ padding: "8px", backgroundColor: "rgb(213, 213, 213)" }}>
+          {userData.roles==='Researcher'?props.message.researcherId === userData.resercherId.toLowerCase()
+            ? ""
+            : resData?.firstName + " " + resData?.lastName:resData?.firstName + " " + resData?.lastName}
+        </p>
+        <p
+          style={{
+            padding: "8px",
+            // borderTop:
+            // props.message.researcherId ===
+            //  userData.resercherId.toLowerCase()
+            //    ? "10px solid red"
+            //    : "10px solid blue",
+          }}
+        >
+          {props.message.content}
+        </p>
+      </div>
+    );
+  };
 
   const TaskCard = ({ task }) => {
     const [isTaskPart, setIsTaskPart] = useState(false);
@@ -1085,11 +1135,13 @@ export default function Idea() {
       fetch(`https://localhost:7187/api/Ideas/Tasks/Participants/${task.id}`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${userData.token}`,
+          "Authorization": `Bearer ${userData.token}`,
         },
       })
         .then((res) =>
-          res.ok ? res.json() : toastr.error("failed to load particpants to task","Failed")
+          res.ok
+            ? res.json()
+            : toastr.error("failed to load particpants to task", "Failed")
         )
         .then((data) => (data ? setTaskParticpants(data) : null));
     }
@@ -1098,23 +1150,28 @@ export default function Idea() {
       getTaskParticpants();
     }, []);
 
-    // useEffect(() => {
-    //   const arr = taskParticpants?.filter(
-    //     (obj) => obj.id === userData.resercherId.toLowerCase()
-    //   );
-    //   if (arr?.length > 0) setIsTaskPart(true);
-    // }, [taskParticpants]);
+    useEffect(() => {
+      const arr = userData.roles==='Researcher'? taskParticpants?.filter(
+        (obj) => obj.id === userData.resercherId.toLowerCase()
+      ):[];
+      if (arr?.length > 0) setIsTaskPart(true);
+    }, [taskParticpants]);
+
+   
 
     return (
-      <div className="CardInAllIdeasInIdea" style={{height:"315px",justifyContent:"space-around",gap:"0"}}>
-        <div className="containerSpansData" style={{height:"75%"}}>
+      <div
+        className="CardInAllIdeasInIdea"
+        style={{ height: "315px", justifyContent: "space-around", gap: "0" }}
+      >
+        <div className="containerSpansData" style={{ height: "75%" }}>
           <span>
             <span style={{ fontWeight: "bold" }}>Name :</span> {task.name}
           </span>
-          <span 
+          <span
           // className="custom-scrollbar" style={{overflow:"auto",maxHeight:"80px",maxWidth:"560px"}}
           >
-            <span  style={{ fontWeight: "bold" }}>Description :</span>{" "}
+            <span style={{ fontWeight: "bold" }}>Description :</span>{" "}
             <span>{task.description}</span>
           </span>
           <span>
@@ -1125,7 +1182,15 @@ export default function Idea() {
           </span>
           <span>
             <span style={{ fontWeight: "bold" }}>Progress :</span>{" "}
-            {task.progress===0 ?'Assigned':task.progress===1?'In Progress':task.progress===2?'Completed':tasks.progress===3?'Closed':null}
+            {task.progress === 0
+              ? "Assigned"
+              : task.progress === 1
+              ? "In Progress"
+              : task.progress === 2
+              ? "Completed"
+              : tasks.progress === 3
+              ? "Closed"
+              : 'Closed'}
           </span>
           <span>
             <span style={{ fontWeight: "bold" }}>Deadline:</span>{" "}
@@ -1143,13 +1208,25 @@ export default function Idea() {
               setChoosenTask(task);
               setShowTaskParticpants(true);
             }}
-            style={{width:"141px"}}
+            style={{ width: "141px" }}
           >
             View Task Particpants
           </button>
           {isTaskPart && (
             <button
-            style={{width:"141px"}}
+              style={{ width: "141px" }}
+              className="hoverBtn"
+              onClick={() => {
+                setChoosenTask(task);
+                setShowTaskChat(true);
+              }}
+            >
+              View Task Chat
+            </button>
+          )}
+          {userData.roles==='Admin' && (
+            <button
+              style={{ width: "141px" }}
               className="hoverBtn"
               onClick={() => {
                 setChoosenTask(task);
@@ -1161,7 +1238,7 @@ export default function Idea() {
           )}
           {isTaskPart && !idea.isCompleted && (
             <button
-            style={{width:"141px"}}
+              style={{ width: "141px" }}
               className="hoverBtn"
               onClick={() => {
                 setChoosenTask(task);
@@ -1172,7 +1249,8 @@ export default function Idea() {
             </button>
           )}
           {isTaskPart && (
-            <button style={{width:"141px"}}
+            <button
+              style={{ width: "141px" }}
               className="hoverBtn"
               onClick={() => {
                 setChoosenTask(task);
@@ -1181,17 +1259,26 @@ export default function Idea() {
             >
               View All Files
             </button>
-
-
-
+            
           )}
-          
 
-
-
+{userData.roles==='Admin' && (
+            <button
+              style={{ width: "141px" }}
+              className="hoverBtn"
+              onClick={() => {
+                setChoosenTask(task);
+                setShowTaskDocuments(true);
+              }}
+            >
+              View All Files
+            </button>
+            
+          )}
 
           {isTaskPart && (
-            <button style={{width:"141px"}}
+            <button
+              style={{ width: "141px" }}
               className="hoverBtn"
               onClick={() => {
                 setChoosenTask(task);
@@ -1200,17 +1287,11 @@ export default function Idea() {
             >
               Update Task Progress
             </button>
-
-
-
           )}
 
-
-
-
-
           {creator && !idea?.isCompleted && (
-            <button style={{width:"141px"}}
+            <button
+              style={{ width: "141px" }}
               className="hoverBtn"
               onClick={() => {
                 setChoosenTask(task);
@@ -1219,6 +1300,21 @@ export default function Idea() {
             >
               Assign Particpants
             </button>
+            
+          )}
+
+{isTaskPart && !idea?.isCompleted && (
+            <button
+              style={{ width: "141px" }}
+              className="hoverBtn"
+              onClick={() => {
+                setChoosenTask(task);
+                setShowUploadFinalTaskFile(true);
+              }}
+            >
+              Submit Task
+            </button>
+            
           )}
         </div>
       </div>
@@ -1254,9 +1350,10 @@ export default function Idea() {
         }
       ).then((res) => {
         if (res.ok) {
-          toastr.success("File Uploaded Successfully","Success");
+          toastr.success("File Uploaded Successfully", "Success");
           props.onClose();
-        } else toastr.error("failed to add video please try again later","Failed");
+        } else
+          toastr.error("failed to add video please try again later", "Failed");
       });
     };
 
@@ -1264,7 +1361,7 @@ export default function Idea() {
     return (
       <div className="modal-overlay2">
         <div className="modal2">
-        <div className="ContExitbtn" onClick={props.onClose}>
+          <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
                 <label className="label2">Exit</label>
@@ -1273,47 +1370,47 @@ export default function Idea() {
           </div>
           <h1 className="headContact2">Upload File</h1>
           <div className="FormModal2">
-          {/* <input className="InputModalHallDetails"
+            {/* <input className="InputModalHallDetails"
            type="file"
             onChange={handleDocumentUpload} /> */}
-          <label className="LableForinputTypeFile" htmlFor="img">
-                <input
-                  className="InputFile"
-                  id="img"
-                  type="file"
-                  onChange={handleDocumentUpload}
-                />
-                <span className="SpanUpload">
-                  {" "}
-                  <MdOutlineFileUpload />
-                  <span style={{borderBottom:"none",padding:"3px"}}>Choose a File</span>
+            <label className="LableForinputTypeFile" htmlFor="img">
+              <input
+                className="InputFile"
+                id="img"
+                type="file"
+                onChange={handleDocumentUpload}
+              />
+              <span className="SpanUpload">
+                {" "}
+                <MdOutlineFileUpload />
+                <span style={{ borderBottom: "none", padding: "3px" }}>
+                  Choose a File
                 </span>
-              </label>
-          {document && (
-            <input
-              id="title"
-              className="InputModalHallDetails"
-              type="text"
-              placeholder="file name"
-              required
-              name="Title"
-              ref={titleRef}
-            ></input>
-          )}
-          
-           <div className="buttonsOnModal">
-           {document && (
-            <button className="" onClick={handleDocumentSubmit}>
-              Upload Document
-            </button>
-          )}
-           <button className="" onClick={props.onClose}>
-            Cancel
-          </button>
+              </span>
+            </label>
+            {document && (
+              <input
+                id="title"
+                className="InputModalHallDetails"
+                type="text"
+                placeholder="file name"
+                required
+                name="Title"
+                ref={titleRef}
+              ></input>
+            )}
+
+            <div className="buttonsOnModal">
+              {document && (
+                <button className="" onClick={handleDocumentSubmit}>
+                  Upload Document
+                </button>
+              )}
+              <button className="" onClick={props.onClose}>
+                Cancel
+              </button>
+            </div>
           </div>
-          
-           </div>
-         
         </div>
       </div>
     );
@@ -1330,7 +1427,9 @@ export default function Idea() {
         },
       })
         .then((res) =>
-          res.ok ? res.json() : toastr.error("failed to load documents","Failed")
+          res.ok
+            ? res.json()
+            : toastr.error("failed to load documents", "Failed")
         )
         .then((data) => (data ? setDocuments(data) : null));
     }
@@ -1377,7 +1476,7 @@ export default function Idea() {
     return (
       <div className="modal-overlay2">
         <div className="modal2">
-        <div className="ContExitbtn" onClick={props.onClose}>
+          <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
                 <label className="label2">Exit</label>
@@ -1385,18 +1484,25 @@ export default function Idea() {
             </div>
           </div>
           <h1 className="headContact2">All Files</h1>
-          <div className="ContInviteResearchers custom-scrollbar">  
-          {documents?.map((doc) => {
-            return (
-              <div className="DivContResearchers1">
-                <span style={{fontWeight:"bold",fontSize:"18px"}}>{doc.title}</span>
-                <button className="plusBtn" onClick={() => downloadDoc(doc.id)}>Download</button>
-              </div>
-            );
-          })}
-          <button className="buttonExit2" onClick={props.onClose}>
-            Cancel
-          </button>
+          <div className="ContInviteResearchers custom-scrollbar">
+            {documents?.map((doc) => {
+              return (
+                <div className="DivContResearchers1">
+                  <span style={{ fontWeight: "bold", fontSize: "18px" }}>
+                    {doc.title}
+                  </span>
+                  <button
+                    className="plusBtn"
+                    onClick={() => downloadDoc(doc.id)}
+                  >
+                    Download
+                  </button>
+                </div>
+              );
+            })}
+            <button className="buttonExit2" onClick={props.onClose}>
+              Cancel
+            </button>
           </div>
         </div>
       </div>
@@ -1432,9 +1538,10 @@ export default function Idea() {
         }
       ).then((res) => {
         if (res.ok) {
-          toastr.success("File Uploaded Successfully","Success");
+          toastr.success("File Uploaded Successfully", "Success");
           props.onClose();
-        } else toastr.error("failed to add video please try again later","Failed");
+        } else
+          toastr.error("failed to add video please try again later", "Failed");
       });
     };
 
@@ -1442,7 +1549,7 @@ export default function Idea() {
     return (
       <div className="modal-overlay2">
         <div className="modal2">
-        <div className="ContExitbtn" onClick={props.onClose}>
+          <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
                 <label className="label2">Exit</label>
@@ -1451,49 +1558,46 @@ export default function Idea() {
           </div>
           <h1 className="headContact2">Upload Document</h1>
           <div className="FormModal2">
-
-          {/* <input className="InputModalHallDetails"
+            {/* <input className="InputModalHallDetails"
            type="file"
             onChange={handleDocumentUpload} /> */}
-         
-         <label className="LableForinputTypeFile" htmlFor="img">
-                <input
-                  className="InputFile"
-                  id="img"
-                  type="file"
-                  onChange={handleDocumentUpload}
-                />
-                <span className="SpanUpload">
-                  {" "}
-                  <MdOutlineFileUpload />
-                  <span>Choose a File</span>
-                </span>
-              </label>
-         
-          {document && (
-            <input
-              id="title"
-              className="InputModalHallDetails"
-              type="text"
-              placeholder="file name"
-              required
-              name="Title"
-              ref={titleRef}
-            ></input>
-          )}
-          <div className="buttonsOnModal">
-          {document && (
-            <button className="" onClick={handleDocumentSubmit}>
-              Upload Document
-            </button>
-          )}
-          <button className="" onClick={props.onClose}>
-            Cancel
-          </button>
+
+            <label className="LableForinputTypeFile" htmlFor="img">
+              <input
+                className="InputFile"
+                id="img"
+                type="file"
+                onChange={handleDocumentUpload}
+              />
+              <span className="SpanUpload">
+                {" "}
+                <MdOutlineFileUpload />
+                <span>Choose a File</span>
+              </span>
+            </label>
+
+            {document && (
+              <input
+                id="title"
+                className="InputModalHallDetails"
+                type="text"
+                placeholder="file name"
+                required
+                name="Title"
+                ref={titleRef}
+              ></input>
+            )}
+            <div className="buttonsOnModal">
+              {document && (
+                <button className="" onClick={handleDocumentSubmit}>
+                  Upload Document
+                </button>
+              )}
+              <button className="" onClick={props.onClose}>
+                Cancel
+              </button>
+            </div>
           </div>
-         
-          </div>
-          
         </div>
       </div>
     );
@@ -1510,7 +1614,9 @@ export default function Idea() {
         },
       })
         .then((res) =>
-          res.ok ? res.json() : toastr.error("failed to load documents","Failed")
+          res.ok
+            ? res.json()
+            : toastr.error("failed to load documents", "Failed")
         )
         .then((data) => (data ? setDocuments(data) : null));
     }
@@ -1557,7 +1663,7 @@ export default function Idea() {
     return (
       <div className="modal-overlay2">
         <div className="modal2">
-        <div className="ContExitbtn" onClick={props.onClose}>
+          <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
                 <label className="label2">Exit</label>
@@ -1567,61 +1673,64 @@ export default function Idea() {
           <h1 className="headContact2">All Files</h1>
           <div className="FormModal2">
             <div className="DivContResearchers">
-          {documents?.map((doc) => {
-            return (
-              <div className="DivContResearchers1">
-                <span style={{fontWeight:"bold",fontSize:"18px"}}>{doc.title}</span>
-                <button className="plusBtn" onClick={() => downloadDoc(doc.id)}>Download</button>
-              </div>
-            );
-          })}
-          
-          </div>
-          <div className="resetAndCancel2">
-          <button className="buttonExit2" onClick={props.onClose}>
-            Cancel
-          </button>
-          </div>
-        
+              {documents?.map((doc) => {
+                return (
+                  <div className="DivContResearchers1">
+                    <span style={{ fontWeight: "bold", fontSize: "18px" }}>
+                      {doc.title}
+                    </span>
+                    <button
+                      className="plusBtn"
+                      onClick={() => downloadDoc(doc.id)}
+                    >
+                      Download
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="resetAndCancel2">
+              <button className="buttonExit2" onClick={props.onClose}>
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       </div>
     );
   };
 
+  const UpdateTaskProgressCard = (props) => {
+    const [progress, setProgress] = useState(null);
 
+    function updateProgress() {
+      const progressObj = { progress: progress };
+      fetch(
+        `https://localhost:7187/api/Ideas/Tasks/TaskProgress/${props.task.id}/${userData.resercherId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userData.token}`,
+          },
+          body: JSON.stringify(progressObj),
+        }
+      )
+        // .then(res=>res.ok?alert('Task progress updated successfully'):alert('failed to update progress'))
+        .then((res) => {
+          if (res.ok) {
+            toastr.success("Task progress updated successfully", "Success");
+            props.onClose();
+            getTasks();
+          } else toastr.error("failed to update progress", "Failed");
+        });
+    }
 
-
-const UpdateTaskProgressCard=(props)=>{
-  const [progress,setProgress]=useState(null);
-  
-
-  function updateProgress(){
-    const progressObj={progress:progress}
-    fetch(`https://localhost:7187/api/Ideas/Tasks/TaskProgress/${props.task.id}/${userData.resercherId}`,{
-      method:"PUT",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":`Bearer ${userData.token}`
-      },
-      body:JSON.stringify(progressObj)
-    })
-    // .then(res=>res.ok?alert('Task progress updated successfully'):alert('failed to update progress'))
-    .then(res=>{
-      if(res.ok){
-        toastr.success('Task progress updated successfully',"Success");
-        props.onClose();
-        getTasks();
-      }else toastr.error('failed to update progress',"Failed")
-    })
-  }
-
-
-  if (!props.show) return null;
+    if (!props.show) return null;
     return (
       <div className="modal-overlay2">
         <div className="modal2">
-        <div className="ContExitbtn" onClick={props.onClose}>
+          <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
                 <label className="label2">Exit</label>
@@ -1630,29 +1739,124 @@ const UpdateTaskProgressCard=(props)=>{
           </div>
           <h1 className="headContact2">Update Task Progress</h1>
           <div className="FormModal2">
-          <label className="AllLabeles">Choose State </label>
-          <select className="InputModalHallDetails" onChange={(e)=>setProgress(e.target.value*1)}>
-            <option selected disabled>Choose State</option>
-            <option value={1}>In Progress</option>
-            <option value={2}>Completed</option>
-          </select>
-          <div className="buttonsOnModal">
-          <button onClick={updateProgress}>Update</button>
-          <button onClick={props.onClose}>Cancel</button>
+            <label className="AllLabeles">Choose State </label>
+            <select
+              className="InputModalHallDetails"
+              onChange={(e) => setProgress(e.target.value * 1)}
+            >
+              <option selected disabled>
+                Choose State
+              </option>
+              <option value={1}>In Progress</option>
+              <option value={2}>Completed</option>
+            </select>
+            <div className="buttonsOnModal">
+              <button onClick={updateProgress}>Update</button>
+              <button onClick={props.onClose}>Cancel</button>
+            </div>
           </div>
-          
         </div>
-        </div>
-        </div>
-    )
-}
-
-
+      </div>
+    );
+  };
 
 
   
 
-  console.log('idea',idea)
+
+//   const UploadFinalTaskFile=(props)=>{
+//     const titleRef = useRef(null);
+//     const [document, setDocument] = useState(null);
+
+
+//     const handleDocumentUpload = (event) => {
+//       const file = event.target.files[0];
+//       setDocument(file);
+//     };
+
+//     const handleDocumentSubmit = (event) => {
+//       event.preventDefault();
+//       const titleValue = titleRef.current.value;
+//       const formData = new FormData();
+//       formData.append("file", document);
+//       formData.append("Name", titleValue);
+
+//       fetch(
+//         `https://localhost:7187/api/Ideas/Tasks/Submit?taskId=${props.task.id}&participantId=${userData.resercherId}`,
+//         {
+//           method: "POST",
+//           headers: {
+//             Authorization: `Bearer ${userData.token}`,
+//           },
+//           body: formData,
+//         }
+//       ).then((res) => {
+//         if (res.ok) {
+//           toastr.success("File Uploaded Successfully", "Success");
+//           props.onClose();
+//         } else
+//           toastr.error("failed to add video please try again later", "Failed");
+//       });
+//     };
+
+// console.log('from modal',props);
+
+//     if (!props.show) return null;
+//     return (
+//       <div className="modal-overlay2">
+//         <div className="modal2">
+//           <div className="ContExitbtn" onClick={props.onClose}>
+//             <div class="outer">
+//               <div class="inner">
+//                 <label className="label2">Exit</label>
+//               </div>
+//             </div>
+//           </div>
+//           <h1 className="headContact2">Upload Document</h1>
+//           <div className="FormModal2">
+//             <label className="LableForinputTypeFile" htmlFor="img">
+//               <input
+//                 className="InputFile"
+//                 id="img"
+//                 type="file"
+//                 onChange={handleDocumentUpload}
+//               />
+//               <span className="SpanUpload">
+//                 {" "}
+//                 <MdOutlineFileUpload />
+//                 <span>Choose a File</span>
+//               </span>
+//             </label>
+
+//             {document && (
+//               <input
+//                 id="title"
+//                 className="InputModalHallDetails"
+//                 type="text"
+//                 placeholder="file name"
+//                 required
+//                 name="Title"
+//                 ref={titleRef}
+//               ></input>
+//             )}
+//             <div className="buttonsOnModal">
+//               {document && (
+//                 <button className="" onClick={handleDocumentSubmit}>
+//                   Upload Document
+//                 </button>
+//               )}
+//               <button className="" onClick={props.onClose}>
+//                 Cancel
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     );
+//   }
+
+
+ 
 
   return (
     <div>
@@ -1661,12 +1865,15 @@ const UpdateTaskProgressCard=(props)=>{
         Data For Idea
       </h1>
       <div className="AllIdeas">
-        <div className="CardInAllIdeasInIdea1" >
+        <div className="CardInAllIdeasInIdea1">
           <div className="shape5"></div>
 
-          <div  className="containerSpansData">
+          <div className="containerSpansData">
             <span>
               <span style={{ fontWeight: "bold" }}>Name:</span> {idea?.name}
+            </span>
+            <span>
+              <span style={{ fontWeight: "bold" }}>Status:</span> {idea?.isCompleted?'Closed':'In Progress'}
             </span>
             <span>
               <span style={{ fontWeight: "bold" }}>Participants Number: </span>
@@ -1694,15 +1901,15 @@ const UpdateTaskProgressCard=(props)=>{
               <span style={{ fontWeight: "bold" }}>Topic:</span>{" "}
               {idea?.topicObject.name}
             </span>
-            </div>
+          </div>
 
-            <div className="ContainerParticipants">
+          {userData.roles==='Researcher'&&<div className="ContainerParticipants">
             {creator && (
               <h2 style={{ textAlign: "center" }}>
                 Requests : {resReqsData?.length}
               </h2>
             )}
-              <div className="ContInviteResearchers custom-scrollbar">
+            <div className="ContInviteResearchers custom-scrollbar">
               {creator &&
                 resReqsData?.map((res) => {
                   return (
@@ -1736,34 +1943,36 @@ const UpdateTaskProgressCard=(props)=>{
                   );
                 })}
             </div>
-            </div>
-           
-          
+          </div>}
 
-            {creator && !idea?.isCompleted && (
-              <button className="bn54" onClick={() => setShowResModal(true)}>
-                Invite Researcher
-              </button>
-            )}
-            {creator && showResModal && (
-              <AllResCard
-                show={showResModal}
-                onClose={() => setShowResModal(false)}
-              />
-            )}
-            <div className="ContainerParticipants">
+          {creator && !idea?.isCompleted && userData.roles==='Researcher'&& (
+            <button className="bn54" onClick={() => setShowResModal(true)}>
+              Invite Researcher
+            </button>
+          )}
+          {creator && showResModal && (
+            <AllResCard
+              show={showResModal}
+              onClose={() => setShowResModal(false)}
+            />
+          )}
+          <div className="ContainerParticipants">
             <h2>Participants : {ideaPar?.length}</h2>
             <div className="ContInviteResearchers custom-scrollbar">
-              
               {ideaPar?.map((par) => {
                 return (
                   <div className="DivContResearchers">
-                    <h3 style={{display:'flex',alignItems:'center',columnGap:'5px'}}>
-                    {idea.creatorId===par.id&&<FaCrown/>}
+                    <h3
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        columnGap: "5px",
+                      }}
+                    >
+                      {idea.creatorId === par.id && <FaCrown />}
                       {par?.studentObj.firstName +
                         " " +
                         par?.studentObj.lastName}
-                        
                     </h3>
                     <button
                       className="hoverBtn"
@@ -1779,10 +1988,12 @@ const UpdateTaskProgressCard=(props)=>{
                 );
               })}
             </div>
-            </div>
-      
-            <div className="contButtonsInIdea">
-              {creator && !idea?.isCompleted &&(
+          </div>
+
+          <div className="contButtonsInIdea">
+            {creator &&
+              !idea?.isCompleted &&
+              userData.roles === "Researcher" && (
                 <button
                   className="buttonn"
                   onClick={() => setShowTaskCard(true)}
@@ -1790,7 +2001,9 @@ const UpdateTaskProgressCard=(props)=>{
                   Create New Task
                 </button>
               )}
-              {creator && !idea?.isCompleted && (
+            {creator &&
+              !idea?.isCompleted &&
+              userData.roles === "Researcher" && (
                 <button
                   className="buttonn"
                   onClick={() =>
@@ -1802,126 +2015,198 @@ const UpdateTaskProgressCard=(props)=>{
                   Submit Idea
                 </button>
               )}
-              {creator && showTaskCard && (
-                <CreateTaskCard
-                  show={showTaskCard}
-                  onClose={() => setShowTaskCard(false)}
-                />
-              )}
-              {isPart && !idea.isCompleted && (
-                <button
-                  className="buttonn"
-                  onClick={() => setShowExpertReqModal(true)}
-                >
-                  Send Expert Request
-                </button>
-              )}
-              {ideaChatPart && !idea.isCompleted && (
-                <button
-                  className="buttonn"
-                  onClick={() => setShowUploadFile(true)}
-                >
-                  Upload File
-                </button>
-              )}
-              {ideaChatPart && (
-                <button
-                  className="buttonn"
-                  onClick={() => setShowIdeaFiles(true)}
-                >
-                  View All Files
-                </button>
-              )}
-              {showExpertReqModal && (
-                <SendExpertReqCard
-                  show={showExpertReqModal}
-                  onClose={() => setShowExpertReqModal(false)}
-                />
-              )}
-              {showUploadFile && (
-                <UploadFileCard
-                  show={showUploadFile}
-                  onClose={() => setShowUploadFile(false)}
-                />
-              )}
-              {showIdeaFiles && (
-                <IdeaFilesCard
-                  show={showIdeaFiles}
-                  onClose={() => setShowIdeaFiles(false)}
-                />
-              )}
-              {ideaChatPart && (
-                <button
-                  className="buttonn"
-                  onClick={() => setShowIdeaChat(true)}
-                >
-                  Chat <BiChat />
-                </button>
-              )}
-              {ideaChatPart && showIdeaChat && (
-                <IdeaChat
-                  show={showIdeaChat}
-                  onClose={() => setShowIdeaChat(false)}
-                />
-              )}
-            </div>
+            {creator && showTaskCard && (
+              <CreateTaskCard
+                show={showTaskCard}
+                onClose={() => setShowTaskCard(false)}
+              />
+            )}
+            {isPart && !idea.isCompleted && (
+              <button
+                className="buttonn"
+                onClick={() => setShowExpertReqModal(true)}
+              >
+                Send Expert Request
+              </button>
+            )}
+            {ideaChatPart && !idea.isCompleted && (
+              <button
+                className="buttonn"
+                onClick={() => setShowUploadFile(true)}
+              >
+                Upload File
+              </button>
+            )}
+            {ideaChatPart && (
+              <button
+                className="buttonn"
+                onClick={() => setShowIdeaFiles(true)}
+              >
+                View All Files
+              </button>
+            )}
+            {userData.roles === "Admin" && (
+              <button
+                className="buttonn"
+                onClick={() => setShowIdeaFiles(true)}
+              >
+                View All Files
+              </button>
+            )}
+            {showExpertReqModal && (
+              <SendExpertReqCard
+                show={showExpertReqModal}
+                onClose={() => setShowExpertReqModal(false)}
+              />
+            )}
+            {showUploadFile && (
+              <UploadFileCard
+                show={showUploadFile}
+                onClose={() => setShowUploadFile(false)}
+              />
+            )}
+            {showIdeaFiles && (
+              <IdeaFilesCard
+                show={showIdeaFiles}
+                onClose={() => setShowIdeaFiles(false)}
+              />
+            )}
+            {ideaChatPart && (
+              <button className="buttonn" onClick={() => setShowIdeaChat(true)}>
+                Chat <BiChat />
+              </button>
+            )}
+            {userData.roles === "Admin" && (
+              <button className="buttonn" onClick={() => setShowIdeaChat(true)}>
+                Chat <BiChat />
+              </button>
+            )}
+            {ideaChatPart && showIdeaChat && (
+              <IdeaChat
+                show={showIdeaChat}
+                onClose={() => setShowIdeaChat(false)}
+              />
+            )}
+            {userData.roles === "Admin" && showIdeaChat && (
+              <IdeaChat
+                show={showIdeaChat}
+                onClose={() => setShowIdeaChat(false)}
+              />
+            )}
+          </div>
         </div>
       </div>
 
-      {<div>
-        <h1 style={{ textAlign: "center", margin: "50px 0" }}>
-          Tasks : {tasks?.length}
-        </h1>
-        <div className="AllIdeas">
-          {tasks?.map((task) => {
-            return <TaskCard task={task} />;
-          })}
-          {choosenTask && showAssignParticpantToTask && (
-            <AssignParticpantToTask
-              show={showAssignParticpantToTask}
-              onClose={() => setShowAssingParticpantToTask(false)}
-              task={choosenTask}
-            />
-          )}
-          {choosenTask && showTaskParticpants && (
-            <TaskParticpantsCard
-              show={showTaskParticpants}
-              onClose={() => setShowTaskParticpants(false)}
-              task={choosenTask}
-            />
-          )}
-          {choosenTask && showTaskChat && (
-            <TaskChatCard
-              show={showTaskChat}
-              onClose={() => setShowTaskChat(false)}
-              task={choosenTask}
-            />
-          )}
-          {choosenTask && showTaskUploadDocument && (
-            <TaskUploadDocument
-              show={showTaskUploadDocument}
-              onClose={() => setShowTaskUploadDocuemnt(false)}
-              task={choosenTask}
-            />
-          )}
-          {choosenTask && showTaskDocuments && (
-            <TaskFilesCard
-              show={showTaskDocuments}
-              onClose={() => setShowTaskDocuments(false)}
-              task={choosenTask}
-            />
-          )}
-          {choosenTask && showUpdateProgress && (
-            <UpdateTaskProgressCard
-              show={showUpdateProgress}
-              onClose={() => setShowUpdateProgress(false)}
-              task={choosenTask}
-            />
-          )}
+      {ideaChatPart&&
+        <div>
+          <h1 style={{ textAlign: "center", margin: "50px 0" }}>
+            Tasks : {tasks?.length}
+          </h1>
+          <div className="AllIdeas">
+            {tasks?.map((task) => {
+              return <TaskCard task={task} />;
+            })}
+            {choosenTask && showAssignParticpantToTask && (
+              <AssignParticpantToTask
+                show={showAssignParticpantToTask}
+                onClose={() => setShowAssingParticpantToTask(false)}
+                task={choosenTask}
+              />
+            )}
+            {choosenTask && showTaskParticpants && (
+              <TaskParticpantsCard
+                show={showTaskParticpants}
+                onClose={() => setShowTaskParticpants(false)}
+                task={choosenTask}
+              />
+            )}
+            {choosenTask && showTaskChat && (
+              <TaskChatCard
+                show={showTaskChat}
+                onClose={() => setShowTaskChat(false)}
+                task={choosenTask}
+              />
+            )}
+            {choosenTask && showTaskUploadDocument && (
+              <TaskUploadDocument
+                show={showTaskUploadDocument}
+                onClose={() => setShowTaskUploadDocuemnt(false)}
+                task={choosenTask}
+              />
+            )}
+            {choosenTask && showTaskDocuments && (
+              <TaskFilesCard
+                show={showTaskDocuments}
+                onClose={() => setShowTaskDocuments(false)}
+                task={choosenTask}
+              />
+            )}
+            {choosenTask && showUpdateProgress && (
+              <UpdateTaskProgressCard
+                show={showUpdateProgress}
+                onClose={() => setShowUpdateProgress(false)}
+                task={choosenTask}
+              />
+            )}
+          </div>
         </div>
-      </div>}
-
-
+      }
+      {userData.roles==='Admin'&&
+        <div>
+          <h1 style={{ textAlign: "center", margin: "50px 0" }}>
+            Tasks : {tasks?.length}
+          </h1>
+          <div className="AllIdeas">
+            {tasks?.map((task) => {
+              return <TaskCard task={task} />;
+            })}
+            {choosenTask && showAssignParticpantToTask && (
+              <AssignParticpantToTask
+                show={showAssignParticpantToTask}
+                onClose={() => setShowAssingParticpantToTask(false)}
+                task={choosenTask}
+              />
+            )}
+            {choosenTask && showTaskParticpants && (
+              <TaskParticpantsCard
+                show={showTaskParticpants}
+                onClose={() => setShowTaskParticpants(false)}
+                task={choosenTask}
+              />
+            )}
+            {choosenTask && showTaskChat && (
+              <TaskChatCard
+                show={showTaskChat}
+                onClose={() => setShowTaskChat(false)}
+                task={choosenTask}
+              />
+            )}
+            {choosenTask && showTaskUploadDocument && (
+              <TaskUploadDocument
+                show={showTaskUploadDocument}
+                onClose={() => setShowTaskUploadDocuemnt(false)}
+                task={choosenTask}
+              />
+            )}
+            {choosenTask && showTaskDocuments && (
+              <TaskFilesCard
+                show={showTaskDocuments}
+                onClose={() => setShowTaskDocuments(false)}
+                task={choosenTask}
+              />
+            )}
+            {choosenTask && showUpdateProgress && (
+              <UpdateTaskProgressCard
+                show={showUpdateProgress}
+                onClose={() => setShowUpdateProgress(false)}
+                task={choosenTask}
+              />
+            )}
+            
+           
+          </div>
+        </div>
+      }
     </div>
   );
 }

@@ -23,6 +23,7 @@ import SuccededFinalQuiz from './components/SuccededFinalQuiz';
 import AssignStudentToCourse from './components/AssignStudentToCourse';
 import RateIdeaResearchers from './components/RateIdeaResearchers';
 import BuyCourse from './components/BuyCourse';
+import AllFinalQuizes from './components/AllFinalQuizes';
 function App() {
   return (
     <div >
@@ -50,6 +51,7 @@ function App() {
         <Route path='/AssignStudentToCourse' element={<AssignStudentToCourse/>}/>
         <Route path='/RateIdeaResearchers/:ideaId' element={<RateIdeaResearchers/>}/>
         <Route path='/BuyCourse' element={<BuyCourse/>}/>
+        <Route path='/AllFinalQuizes/:skillId' element={<AllFinalQuizes/>}/>
       
 
       </Routes>
