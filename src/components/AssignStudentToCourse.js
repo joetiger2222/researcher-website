@@ -111,7 +111,7 @@ const CoursesCard=(props)=>{
                         {/* <span className="padding20L">{"Brief : "+course.brief}</span> */}
                         <span className="padding20L">{"Hours : "+course.hours}</span>
                         <span className="padding20L">{"Price : "+course.price}</span>
-                        <span className="padding20L">{"Skill : "+course.skillObj.name}</span>
+                        {/* <span className="padding20L">{"Skill : "+course.skillObj?.name}</span> */}
                             <button style={{border:"1px solid black",
                         padding:"10px",borderRadius: "0px 0 10px 10px",
                         cursor:"pointer",fontSize:"16px"}} className="HoverAssignBtn"  onClick={()=>checkCourseEnrollment(course.id,choosenStudent.id)}>Assign Student</button>

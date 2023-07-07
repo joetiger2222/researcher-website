@@ -68,7 +68,7 @@
   .contButtonsInIdea{
     display: flex;
     justify-content: center;
-    gap: 15px 25px;
+    gap: 8px 25px;
     flex-wrap: wrap;
     width: 100%;
     align-items: center;
@@ -95,7 +95,13 @@
     justify-content: center;
     margin: 0;
   }
-
+.descriptionContainer{
+  display: flex;
+          max-height: 67px;
+          overflow: auto;
+          flex-direction: column;
+          border-bottom: none !important;
+}
   .ContAllDataWithInput{
     align-items: center;
     display: flex;

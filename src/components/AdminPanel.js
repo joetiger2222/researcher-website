@@ -4,6 +4,7 @@ import Header from "./Header";
 import toastr from "toastr";
 import "toastr/build/toastr.min.css";
 import { json, useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 export default function AdminPanel() {
   const navigate = useNavigate();
   const [courses, setCourses] = useState(null);
@@ -427,56 +428,72 @@ export default function AdminPanel() {
     }, []);
 
     function deleteExpertReq(req) {
-      fetch(`https://localhost:7187/api/Admin/ExpertRequests/${req?.id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userData.token}`,
-        },
-      }).then((res) => {
-        if (res.ok) {
-          toastr.success("Request Successfully deleted", "Success");
-          props.onClose();
-        } else toastr.error("Failed To Delete Request", "Failed");
+      Swal.fire({
+        title: "Are You Sure To Delete The Request",
+        showCancelButton: true,
+      }).then((data) => {
+        if (data.isConfirmed) {
+          fetch(`https://localhost:7187/api/Admin/ExpertRequests/${req?.id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userData.token}`,
+            },
+          }).then((res) => {
+            if (res.ok) {
+              toastr.success("Request Successfully deleted", "Success");
+              props.onClose();
+              getAllExpertReqs();
+            } else {
+              toastr.error("Failed To Delete Request", "Failed");
+            }
+          });
+        }
       });
     }
+    
+      
 
     return (
       <div className="ContExpertReqAdmin" style={{ backgroundColor: "white" }}>
-        <div className="contTitleAndContnentReq">
-          <span>
+         <span style={{padding:"10px",textAlign:"center",width:"100%",borderBottom:"1px solid black"}}>
             <span style={{ fontWeight: "bold" }}>Sender Name : </span>
             {resData?.firstName + " " + resData?.lastName}
           </span>
-          <span>
-            <span style={{ fontWeight: "bold" }}>Title : </span>
-            {props.req.title}
-          </span>
-          <span
-            className="custom-scrollbar"
-            style={{ overflow: "auto", maxHeight: "100px" }}
-          >
-            <span style={{ fontWeight: "bold" }}>Content : </span>
-            {props.req.content}
-          </span>
-        </div>
-        <div>
-          <button
-            className="buttonExit2"
-            onClick={() => deleteExpertReq(props.req)}
-          >
-            Delete Expert Request
-          </button>
-          <button
-            className="buttonExit2"
-            onClick={() =>
-              navigate(`/Idea/${props.req.ideaId}`, {
-                state: { data: userData },
-              })
-            }
-          >
-            View Idea
-          </button>
+        <div className="ContBTNSData">
+        <div className="contTitleAndContnentReq">
+         
+         <span>
+           <span style={{ fontWeight: "bold" }}>Title : </span>
+           {props.req.title}
+         </span>
+         <span
+           className="custom-scrollbar"
+           style={{ overflow: "auto", maxHeight: "150px" }}
+         >
+           <span style={{ fontWeight: "bold" }}>Content : </span>
+           {props.req.content}
+         </span>
+       </div>
+       <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:"10px"}}>
+        
+         <button
+           className="detailsbtn"
+           onClick={() =>
+             navigate(`/Idea/${props.req.ideaId}`, {
+               state: { data: userData },
+             })
+           }
+         >
+           View Idea
+         </button>
+         <button
+           className="buttonExit2"
+           onClick={() => deleteExpertReq(props.req)}
+         >
+           Delete Expert Request
+         </button>
+       </div>
         </div>
       </div>
     );
@@ -567,8 +584,19 @@ export default function AdminPanel() {
     return (
       <div className="modal-overlay2">
         <div className="modal2">
-          <h3>Enter Skill Name</h3>
+        <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+        <h1 className="headContact2">Edit Skill Name</h1>
+<div className="FormModal2">
+<label className="AllLabeles">Skill Name</label>
           <input
+          placeholder="Enter Skill Name"
+          className="InputModalHallDetails"
             type="text"
             name="name"
             onChange={(e) =>
@@ -577,8 +605,11 @@ export default function AdminPanel() {
               })
             }
           ></input>
-          <button onClick={editSkillName}>Submit</button>
-          <button onClick={props.onClose}>Cancel</button>
+          <div className="buttonsOnModal">
+            <button onClick={editSkillName}>Submit</button>
+            <button onClick={props.onClose}>Cancel</button>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -611,24 +642,8 @@ export default function AdminPanel() {
 
     return (
       <div className="ContainerreauestWithBtnForProblems">
-        <span style={{ fontWeight: "bold", padding: "10px" }}>
-          Problem Description:
           <p
-            className="custom-scrollbar"
-            style={{
-              padding: "10px",
-              fontWeight: "normal",
-              maxHeight: "145px",
-              overflow: "auto",
-            }}
-          >
-            {props.prob.description}
-          </p>{" "}
-        </span>
-        <span style={{ fontWeight: "bold", padding: "10px" }}>
-          Student Name:
-          <p
-            className="custom-scrollbar"
+            className="custom-scrollbar UserNameHover"
             onClick={() =>
               navigate(`/Profile/${props.prob.studentId}`, {
                 state: { data: userData },
@@ -636,16 +651,34 @@ export default function AdminPanel() {
             }
             style={{
               cursor: "pointer",
-              padding: "10px",
+              padding: "10px 0",
               fontWeight: "normal",
-              maxHeight: "145px",
+              borderBottom:"1px solid black",
+              width:"100%",
+              textAlign:"center",
+            }}
+          >
+           <span style={{fontWeight:"bold"}}>Student Name:</span> {studentData?.firstName + " " + studentData?.lastName}
+          </p>{" "}
+
+        <div style={{padding:"10px",width:"95%",height:"150px",display:"flex",justifyContent:"space-between",flexDirection:"column"}}>
+        <span style={{ fontWeight: "bold", padding: "10px",height:"101px" }}>
+          Problem Description:
+          <p
+            className="custom-scrollbar"
+            style={{
+              padding: "5px 10px",
+              fontWeight: "normal",
+              maxHeight: "75px",
               overflow: "auto",
             }}
           >
-            {studentData?.firstName + " " + studentData?.lastName}
+            {props.prob.description}
           </p>{" "}
         </span>
+        <div style={{width:"100%",display:"flex",justifyContent:"center",alignItems:"center"}}>
         <button
+        style={{width:"100px"}}
           className="hoverBtn"
           onClick={() => {
             setChoosenProblem(props.prob);
@@ -654,6 +687,9 @@ export default function AdminPanel() {
         >
           Respond
         </button>
+        </div>
+       
+        </div>
       </div>
     );
   };
@@ -788,8 +824,8 @@ export default function AdminPanel() {
 
       <div className="ContainerAllIdeas">
         <h1 style={{ color: "white" }}>All Ideas</h1>
-        <input onChange={(e) => setSearchIdea(e.target.value)}></input>
-        <div className="AllIdeas">
+        <input placeholder="Search by name" className="search-input" onChange={(e) => setSearchIdea(e.target.value)}></input>
+        <div style={{maxHeight:"480px",overflow:"auto"}} className="AllIdeas custom-scrollbar">
           {allIdeas?.length > 0 ? (
             allIdeas?.map((idea, index) => {
               return (
@@ -902,7 +938,7 @@ export default function AdminPanel() {
 
       <div className="ContainerAllIdeas">
         <h1 style={{ color: "white" }}>All Expert Requestes</h1>
-        <div className="AllIdeas">
+        <div style={{maxHeight:"350px",overflow:"auto"}} className="AllIdeas custom-scrollbar">
           {allExpertReqs?.length > 0 &&
             allExpertReqs?.map((req, index) => {
               return (

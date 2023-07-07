@@ -1162,16 +1162,17 @@ export default function Idea() {
     return (
       <div
         className="CardInAllIdeasInIdea"
-        style={{ height: "315px", justifyContent: "space-around", gap: "0" }}
+        style={{ height: "350px", justifyContent: "space-around", gap: "0" }}
       >
         <div className="containerSpansData" style={{ height: "75%" }}>
           <span>
             <span style={{ fontWeight: "bold" }}>Name :</span> {task.name}
           </span>
           <span
+className="descriptionContainer custom-scrollbar" 
           // className="custom-scrollbar" style={{overflow:"auto",maxHeight:"80px",maxWidth:"560px"}}
-          >
-            <span style={{ fontWeight: "bold" }}>Description :</span>{" "}
+          >    
+            <span style={{fontWeight: "bold" }}>Description :</span>{" "}
             <span>{task.description}</span>
           </span>
           <span>

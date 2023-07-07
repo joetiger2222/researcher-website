@@ -1,0 +1,18 @@
+.ContainerAllQuizes{
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    margin: 130px auto;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.ContainerDataForQuiz{
+    width: 45%;
+    background-color: aliceblue;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
