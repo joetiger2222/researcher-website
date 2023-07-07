@@ -9,7 +9,6 @@ export default function CourseForStudent() {
   const [videosIds, setVideosIds] = useState(null);
   const [sectionVideo, setSectionVideo] = useState(videoId);
   const userData=useLocation().state?.data;
-  console.log(userData)
 
   function getVideo() {
     fetch(`https://localhost:7187/api/courses/Videos/${sectionVideo}`,{
@@ -27,7 +26,7 @@ export default function CourseForStudent() {
       })
       .then((blob) => {
         const videoItself = URL.createObjectURL(blob);
-        console.log(videoItself)
+        
         setVideo(videoItself);
       })
       .catch((error) => {
@@ -35,45 +34,6 @@ export default function CourseForStudent() {
       });
   }
 
-  // function getVideo(){
-  //   fetch(`https://localhost:7187/api/courses/Videos/${sectionVideo}`)
-  //   .then(res=>res)
-  //   .then(data=>setVideo(data))
-  // }
-  // console.log(video)
-
-
-
-
-
-//   function getVideo(){
-//     fetch(`https://localhost:7187/api/courses/Videos/${sectionVideo}`)
-//     .then((response) => {
-//       const reader = response.body.getReader();
-//       let chunks = [];
-
-//       function readStream() {
-//         return reader.read().then(({ done, value }) => {
-//           if (done) {
-//             return chunks;
-//           }
-//           chunks.push(value);
-//           return readStream();
-//         });
-//       }
-
-//       return readStream();
-//     })
-//     .then((chunks) => {
-//       const body = new TextDecoder().decode(
-//         new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
-//       );
-//       console.log(body);
-      
-//     })
-//     .catch((error) => console.error(error));
-// }
-  
 
   function getVideosIds() {
     fetch(`https://localhost:7187/api/Courses/Sections/Videos/${sectionId}`,{
@@ -93,11 +53,10 @@ export default function CourseForStudent() {
 
   useEffect(() => {
     getVideo();
-    
   }, [sectionVideo]);
 
 
-  // console.log(videosIds);
+  console.log(sectionVideo)
 
   return (
     <div className="courseForStudentContainer">
@@ -105,7 +64,7 @@ export default function CourseForStudent() {
 
       <div className="courseForStudentContent">
         <div className="courseForStudentVideoDiv">
-          <video className="Video" controls src={video} type="video/mp4" />
+          <video className="Video" controls src={video} type="video/mp4" controlsList="nodownload"/>
         </div>
 
         <div
@@ -122,7 +81,7 @@ export default function CourseForStudent() {
             <div className="videosNames">
             {videosIds?.map((video,index) => (
           <span
-                style={{backgroundColor:video.id===sectionVideo?'gray':'transparent',borderBottom:"1px solid black",}}
+                style={{backgroundColor:video.id===sectionVideo*1?'gray':'transparent',borderBottom:"1px solid black",}}
             onClick={() => {
               setSectionVideo(video.id);
              

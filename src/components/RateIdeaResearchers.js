@@ -1,12 +1,13 @@
 import React from "react";
 import { useState ,useEffect,useRef} from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Header from "./Header";
 import "../css/RatePage.css";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
 import { MdOutlineFileUpload } from "react-icons/md";
 import { FaFileUpload } from "react-icons/fa";
+import Footer from "./Footer";
 export default function RateIdeaResearchers(){
     const userData=useLocation().state.data;
     const {ideaId}=useParams();
@@ -15,7 +16,7 @@ export default function RateIdeaResearchers(){
     const [rates,setRates]=useState([]);
     const [showUploadFinal,setShowUploadFinal]=useState(false);
     const creator = userData?.resercherId.toLowerCase() === idea?.creatorId;
-
+    const navigate=useNavigate();
 
 
     function getIdeaData() {
@@ -57,7 +58,7 @@ export default function RateIdeaResearchers(){
 
 
 
-console.log(rates)
+
 
 
 
@@ -105,7 +106,7 @@ const UploadFileCard = (props) => {
 
   const handleDocumentSubmit = (event) => {
     event.preventDefault();
-    sendRate();
+    
     const titleValue = titleRef.current.value;
     
     const formData = new FormData();
@@ -121,12 +122,48 @@ const UploadFileCard = (props) => {
         },
         body: formData,
       }
-    ).then((res) => {
-      if (res.ok) {
+    )
+    // .then((res) => {
+    //   if (res.ok) {
+    //     toastr.success("File Uploaded Successfully","Success");
+    //     props.onClose();
+    //   } else toastr.error("failed to upload final document","Failed");
+    // });
+    .then((response) => {
+      const reader = response.body.getReader();
+      let chunks = [];
+    
+      function readStream() {
+        return reader.read().then(({ done, value }) => {
+          if (done) {
+            return chunks;
+          }
+          chunks.push(value);
+          return readStream();
+        });
+      }
+    
+      if (!response.ok) {
+        return readStream().then((chunks) => {
+          const body = new TextDecoder().decode(
+            new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+          );
+          toastr.error(body);
+        });
+      }else {
         toastr.success("File Uploaded Successfully","Success");
-        props.onClose();
-      } else toastr.error("failed to upload final document","Failed");
-    });
+        sendRate();
+        navigate(-1, { replace: true });
+      }
+    
+      return readStream().then((chunks) => {
+        const body = new TextDecoder().decode(
+          new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+        );
+        console.log(body);
+      });
+    })
+    .catch((error) => console.error(error));
   };
 
   if (!props.show) return null;
@@ -230,7 +267,7 @@ if(creator){
             <UploadFileCard show={showUploadFinal} onClose ={()=>setShowUploadFinal(false)} />
         
           </div>
-           
+           <Footer userData={userData}/>
         </div>
     )
 }else{

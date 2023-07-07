@@ -18,6 +18,7 @@ import { MdOutlineFileUpload } from "react-icons/md";
 import { MdCameraAlt } from "react-icons/md";
 
 import user from "../images/useer.png";
+import Footer from "./Footer";
 
 const Profile = () => {
   const [show, setShow] = useState(false);
@@ -174,10 +175,12 @@ const Profile = () => {
 
 
   useEffect(() => {
+    if(userData){
     getStudentData();
     getStudentImage();
     getStudentCourses();
-    if (userData.userId === studentId) getAdminResponse();
+    }
+    if (userData?.userId === studentId) getAdminResponse();
   }, [studentId]);
 
   function rejectInvite(i) {
@@ -746,7 +749,7 @@ const Profile = () => {
       </div>
     );
   };
-
+if(userData){
   return (
     <div className="ParentHeadData">
       <Header userData={userData} />
@@ -825,6 +828,7 @@ const Profile = () => {
           <p className="profile-bio">
             {"Google Schooler Link : "+studentData?.googleSchoolerLink}
           </p>
+          
           {userData.roles === "Researcher" && (
             <span
               style={{ color: "black",fontWeight:"bold" }}
@@ -1257,8 +1261,19 @@ const Profile = () => {
         </div>
       )}
       </div>
+      <Footer userData={userData}/>
     </div>
   );
+          }
+          else {
+            console.log('hello')
+            return(
+              <div style={{width:'100%',minHeight:'100vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+            
+            <h1 >You Need To Sign In First</h1>
+            </div>
+            )
+          }
 };
 
 export default Profile;

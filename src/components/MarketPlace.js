@@ -6,6 +6,7 @@ import "../css/Modal.css";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
 import { FaCrown } from 'react-icons/fa';
+import Footer from "./Footer";
 export default function MarketPalce() {
   const userData = useLocation().state.data;
   const [researcherIdeas, setResearcherIdeas] = useState([]);
@@ -671,6 +672,7 @@ export default function MarketPalce() {
           </div>
         </div>
       </div>
+      <Footer userData={userData}/>
     </div>
   );
 }

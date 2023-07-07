@@ -10,6 +10,7 @@ import user from "../images/imageUser.png"
 import ToastrComponent from "./Cards/ToastrComponent";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
+import Footer from "./Footer";
 
 export default function Researchers(){
 
@@ -425,6 +426,7 @@ const ResCard=(props)=>{
             </button>
            
           </div>
+          
       </div>
     </>
   );

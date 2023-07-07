@@ -12,24 +12,22 @@ import ModalForQuiz from "./ModalForQuiz";
 import video from "../1.mp4";
 import Swal from "sweetalert2";
 import toastr from "toastr";
-import 'toastr/build/toastr.min.css';
+import "toastr/build/toastr.min.css";
 import { MdOutlineFileUpload } from "react-icons/md";
 const CourseDetails = () => {
   const navigate = useNavigate();
-  const [videoUrl, setVideoUrl] = useState("");
   const [videoId, setVideoId] = useState(null);
   const [courseDetails, setCourseDetails] = useState(null);
-  const [courseSections, setCourseSections] = useState(null);
+  const [courseSections, setCourseSections] = useState([]);
   const [showVideo, setShowVideo] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
-
-  const [isQuizes, setIsQuizes] = useState(false);
   const [showAddSection, setShowAddSection] = useState(false);
   const [sectionId, setSectionId] = useState(null);
   const [showUploadVideo, setShowUploadVideo] = useState(false);
   const [showDeleteCourseModal, setShowDeleteCourseModal] = useState(false);
   const [showEditCourseDataModal, setShowEditCourseDataModal] = useState(false);
-  const [isStudentEnrolled,setIsStudentEnrolled]=useState(false);
+  const [isStudentEnrolled, setIsStudentEnrolled] = useState(false);
+  const [introVideo,setIntroVideo]=useState(null);
   const userData = useLocation()?.state?.data;
 
   let { id } = useParams();
@@ -59,26 +57,83 @@ const CourseDetails = () => {
       .then((data) => setCourseSections(data));
   }
 
-
-
-  function checkStudentEnrollment(){
-    fetch(`https://localhost:7187/api/Courses/CheckEnrollment?courseId=${id}&studentId=${userData.userId}`,{
-      method:"GET",
-      headers:{
-        "Authorization":`Bearer ${userData.token}`
+  function checkStudentEnrollment() {
+    fetch(
+      `https://localhost:7187/api/Courses/CheckEnrollment?courseId=${id}&studentId=${userData.userId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
       }
-    })
-    .then(res=>res.ok?res.json():toastr.error('failed to check enrollment',"Failed"))
-    .then(data=>data?setIsStudentEnrolled(data.isEnrolled):null)
+    )
+      .then((res) =>
+        res.ok
+          ? res.json()
+          : toastr.error("failed to check enrollment", "Failed")
+      )
+      .then((data) => (data ? setIsStudentEnrolled(data.isEnrolled) : null));
   }
 
+  function getIntroVideo() {
+    const sectionId=courseSections[0].id;
+    console.log('section id',sectionId)
+    fetch(
+      `https://localhost:7187/api/Courses/Sections/Videos/${sectionId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      // .then((data) => console.log('from function',data));
+      .then(data=>{
+        if(data.length>0){
+          getVideo(data[0].id);
+          console.log('second check in if condition ')
+        }
+      })
 
+  }
+
+  function getVideo(videoId) {
+    fetch(`https://localhost:7187/api/courses/Videos/${videoId}`,{
+      method:"GET",
+      headers:{
+        "authorization":`Bearer ${userData.token}`
+      }
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch video.");
+        }
+
+        return response.blob();
+      })
+      .then((blob) => {
+        const videoItself = URL.createObjectURL(blob);
+        
+        setIntroVideo(videoItself);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  useEffect(()=>{
+    if (courseSections.length > 0) {
+      getIntroVideo();
+    }
+  },[courseSections,])
+
+console.log(introVideo)
   useEffect(() => {
     getCourseDetatils();
     getCourseSections();
-    if(userData.roles!=='Admin')
-    checkStudentEnrollment();
-    if(userData.roles==='Admin')setIsStudentEnrolled(true)
+    if (userData.roles !== "Admin") checkStudentEnrollment();
+    if (userData.roles === "Admin") setIsStudentEnrolled(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
@@ -117,9 +172,6 @@ const CourseDetails = () => {
       getSectionQuiz();
     }, []);
 
-    
-console.log('enrollment',isStudentEnrolled)
-
 
     return (
       <div className="courseDetailsSectionsContainerNew">
@@ -150,10 +202,12 @@ console.log('enrollment',isStudentEnrolled)
                 }}
               />
               <FaRegEdit
-                onClick={() =>isStudentEnrolled?
-                  navigate(`/AddQuizToSection/${section.id}`, {
-                    state: { data: userData },
-                  }):null
+                onClick={() =>
+                  isStudentEnrolled
+                    ? navigate(`/AddQuizToSection/${section.id}`, {
+                        state: { data: userData },
+                      })
+                    : null
                 }
                 className="plusIcon"
               />
@@ -165,30 +219,33 @@ console.log('enrollment',isStudentEnrolled)
           className="courseDetailsSectionVideosNew"
           style={{ display: activeSection ? "flex" : "none" }}
         >
-          {videosIds?.map((video,index) => (
+          {videosIds?.map((video, index) => (
             <span
-              onClick={() =>isStudentEnrolled?
-                navigate(`/CourseForStudent/${section.id}/${video.id}`, {
-                  state: { data: userData },
-                }):toastr.warning('Buy The Course First',"Alert")
+              onClick={() =>
+                isStudentEnrolled
+                  ? navigate(`/CourseForStudent/${section.id}/${video.id}`, {
+                      state: { data: userData },
+                    })
+                  : toastr.warning("Buy The Course First", "Alert")
               }
               className="LinkVideoSection"
             >
-              <span>{isStudentEnrolled?video?.title:`video ${index+1}`}</span>
+              <span>
+                {isStudentEnrolled ? video?.title : `video ${index + 1}`}
+              </span>
             </span>
           ))}
 
-          {sectionQuiz &&isStudentEnrolled&& (
+          {sectionQuiz && isStudentEnrolled && (
             <span
               className="QuizTitle"
-              onClick={() =>{
-                if(isStudentEnrolled){
-                navigate(`/SectionQuiz/${section.id}`, {
-                  state: { data: userData },
-                })
-              }
-              }
-              }
+              onClick={() => {
+                if (isStudentEnrolled) {
+                  navigate(`/SectionQuiz/${section.id}`, {
+                    state: { data: userData },
+                  });
+                }
+              }}
             >
               {section.name} Quiz
             </span>
@@ -200,7 +257,6 @@ console.log('enrollment',isStudentEnrolled)
 
   const UploadVideoCard = (props) => {
     const [video, setVideo] = useState(null);
-    
 
     const handleVideoUpload = (event) => {
       const file = event.target.files[0];
@@ -225,19 +281,16 @@ console.log('enrollment',isStudentEnrolled)
         if (res.ok) {
           props.onClose();
           getCourseSections();
-        } else toastr.error("failed to add video please try again later","Failed");
+        } else
+          toastr.error("failed to add video please try again later", "Failed");
       });
     };
 
-    
-
     if (!props.show) return null;
     return (
-      <div
-        className="modal-overlay2"
-      >
+      <div className="modal-overlay2">
         <div className="modal2">
-        <div className="ContExitbtn" onClick={props.onClose}>
+          <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
                 <label className="label2">Exit</label>
@@ -247,54 +300,61 @@ console.log('enrollment',isStudentEnrolled)
           <h1 className="headContact2">Upload Video</h1>
 
           <div className="FormModal2 custom-scrollbar">
-          {video && (
-            <div className="contVideoInfo">
-              <video
-                className="videoW"
-                src={URL.createObjectURL(video)}
-                controls
-              />
-              <div style={{alignItems:"center",display:"flex",flexWrap:"wrap",gap:"20px"}}>
-              <label  style={{marginBottom:"0"}} className="AllLabeles">Video Title: </label>
-              <input
-              style={{marginBottom:"0"}}
-                id="title"
-                className="InputModalHallDetails"
-                type="text"
-                placeholder="Video's Title"
-                required
-                name="Title"
-              ></input>
-              <button className="detailsbtn" onClick={handleVideoSubmit}>
-                Upload Video
-              </button>
-              </div>
-              
-            </div>
-            
-          )}
-       
-       <label className="LableForinputTypeFile" htmlFor="upload">
-                <input
-                  className="InputFile"
-                  id="upload"
-                  type="file"
-                  onChange={handleVideoUpload}
+            {video && (
+              <div className="contVideoInfo">
+                <video
+                  className="videoW"
+                  src={URL.createObjectURL(video)}
+                  controls
                 />
-                <span className="SpanUpload">
-                  {" "}
-                  <MdOutlineFileUpload />
-                  <span>Choose a File</span>
-                </span>
-              </label>
-          <div className="ChooseAndCancel">
-            {/* <input type="file" id="video-upload" onChange={handleVideoUpload} /> */}
-       
-            <button className="deletebtn" onClick={props.onClose}>
-              Cancel
-            </button>
+                <div
+                  style={{
+                    alignItems: "center",
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "20px",
+                  }}
+                >
+                  <label style={{ marginBottom: "0" }} className="AllLabeles">
+                    Video Title:{" "}
+                  </label>
+                  <input
+                    style={{ marginBottom: "0" }}
+                    id="title"
+                    className="InputModalHallDetails"
+                    type="text"
+                    placeholder="Video's Title"
+                    required
+                    name="Title"
+                  ></input>
+                  <button className="detailsbtn" onClick={handleVideoSubmit}>
+                    Upload Video
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <label className="LableForinputTypeFile" htmlFor="upload">
+              <input
+                className="InputFile"
+                id="upload"
+                type="file"
+                onChange={handleVideoUpload}
+              />
+              <span className="SpanUpload">
+                {" "}
+                <MdOutlineFileUpload />
+                <span>Choose a File</span>
+              </span>
+            </label>
+            <div className="ChooseAndCancel">
+              {/* <input type="file" id="video-upload" onChange={handleVideoUpload} /> */}
+
+              <button className="deletebtn" onClick={props.onClose}>
+                Cancel
+              </button>
+            </div>
           </div>
-        </div>
         </div>
       </div>
     );
@@ -377,7 +437,11 @@ console.log('enrollment',isStudentEnrolled)
           if (response.ok) {
             getCourseSections();
             onClose();
-          } else toastr.error("Failed To Add new Section Please Try Again Later","Failed");
+          } else
+            toastr.error(
+              "Failed To Add new Section Please Try Again Later",
+              "Failed"
+            );
         })
         .then((data) => {});
     }
@@ -423,19 +487,18 @@ console.log('enrollment',isStudentEnrolled)
       }).then((data) => {
         if (data.isConfirmed) {
           fetch(`https://localhost:7187/api/Courses/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${userData.token}`,
-        },
-      })
-      .then((res) => {
-        if (res.ok) {
-          navigate("/AdminPanel", { state: { data: userData } });
-        } else toastr.error("Error Happened Please Try Again Later","Failed");
-      });
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${userData.token}`,
+            },
+          }).then((res) => {
+            if (res.ok) {
+              navigate("/AdminPanel", { state: { data: userData } });
+            } else
+              toastr.error("Error Happened Please Try Again Later", "Failed");
+          });
         }
       });
-      
     }
 
     if (!show) return null;
@@ -453,7 +516,7 @@ console.log('enrollment',isStudentEnrolled)
           <h3 className="headContact2">Press Confirm To Delete</h3>
 
           <div className="buttonsOnModal">
-            <button onClick={deleteCourse }>Delete</button>
+            <button onClick={deleteCourse}>Delete</button>
             <button onClick={onClose}>Cancel</button>
           </div>
         </div>
@@ -469,7 +532,7 @@ console.log('enrollment',isStudentEnrolled)
       price: courseDetails.price,
       hours: courseDetails.hours,
       brief: courseDetails.brief,
-      driveLink:courseDetails.driveLink,
+      driveLink: courseDetails.driveLink,
       // skillId: courseDetails.skillObj.id,
     });
     console.log(editData);
@@ -484,10 +547,10 @@ console.log('enrollment',isStudentEnrolled)
         body: JSON.stringify(editData),
       }).then((res) => {
         if (res.ok) {
-          toastr.success("data updated successfuly","Success");
+          toastr.success("data updated successfuly", "Success");
           props.onClose();
           getCourseDetatils();
-        } else toastr.error("failed","Failed");
+        } else toastr.error("failed", "Failed");
       });
     }
 
@@ -583,8 +646,6 @@ console.log('enrollment',isStudentEnrolled)
     );
   };
 
-  console.log(courseDetails)
-
   return (
     <div className="courseParent">
       <Header userData={userData} />
@@ -595,8 +656,15 @@ console.log('enrollment',isStudentEnrolled)
             <h1 className="NameCourse">{courseDetails?.name}</h1>
             <p className="briefCourseNew">{courseDetails?.brief}</p>
             <h2>Price: {courseDetails?.price} EGP</h2>
-            {userData.roles !== "Admin" && (
-              !isStudentEnrolled&&<button className="btnBUY" onClick={()=>navigate('/BuyCourse',{state:{data:userData}})}>Buy Now</button>
+            {userData.roles !== "Admin" && !isStudentEnrolled && (
+              <button
+                className="btnBUY"
+                onClick={() =>
+                  navigate("/BuyCourse", { state: { data: userData } })
+                }
+              >
+                Buy Now
+              </button>
             )}
           </div>
           <div className="ObjectivesNew">
@@ -659,20 +727,8 @@ console.log('enrollment',isStudentEnrolled)
           <div className="contVideoAndQuiz">
             <div className="RightVideoIntro">
               <div className="VideoDv">
-                {/* {videoUrl ? (
-                  <video
-                    className="Video"
-                    controls
-                    src={videoUrl}
-                    type="video/mp4"
-                  />
-                ) : (
-                  <h1>Intro Video</h1>
-                )} */}
-                <video controls>
-                  <source src={video} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+                
+              <video className="Video" controls src={introVideo} type="video/mp4" controlsList="nodownload" />
               </div>
 
               <div className="BottomRightData">
@@ -794,7 +850,7 @@ console.log('enrollment',isStudentEnrolled)
       />
       <ModalForQuiz onClose={() => setShowQuiz(false)} show={showQuiz} />
 
-      <Footer />
+      <Footer userData={userData} />
     </div>
   );
 };

@@ -109,10 +109,10 @@ const Footer = ({ userData }) => {
 
   return (
     <div className="Footer">
-      <div className="btnsFooter">
+      {!userData&&<div className="btnsFooter">
         <button>Login</button>
         <button>Sign Up</button>
-      </div>
+      </div>}
       <div className="IconsFooter">
         <FaFacebook className="icon-footer " />
 

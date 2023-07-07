@@ -9,8 +9,8 @@ import { FaPaperPlane } from "react-icons/fa";
 import { FaCrown } from "react-icons/fa";
 import toastr from "toastr";
 import "toastr/build/toastr.min.css";
-import ToastrComponent from "./Cards/ToastrComponent";
 import { MdOutlineFileUpload } from "react-icons/md";
+import Footer from "./Footer";
 export default function Idea() {
   const userData = useLocation()?.state.data;
   const { ideaId } = useParams();
@@ -35,7 +35,6 @@ export default function Idea() {
   const [showTaskUploadDocument, setShowTaskUploadDocuemnt] = useState(false);
   const [showTaskDocuments, setShowTaskDocuments] = useState(false);
   const [showUpdateProgress, setShowUpdateProgress] = useState(false);
-  const [showUploadFinalTaskFile,setShowUploadFinalTaskFile]=useState(false);
   const navigate = useNavigate();
   const creator =
     userData.roles === "Admin"
@@ -1157,7 +1156,7 @@ export default function Idea() {
       if (arr?.length > 0) setIsTaskPart(true);
     }, [taskParticpants]);
 
-   
+  //  console.log(task)
 
     return (
       <div
@@ -1237,7 +1236,7 @@ className="descriptionContainer custom-scrollbar"
               View Task Chat
             </button>
           )}
-          {isTaskPart && !idea.isCompleted && (
+          {isTaskPart && !idea.isCompleted &&!task.isCompleted && (
             <button
               style={{ width: "141px" }}
               className="hoverBtn"
@@ -1277,7 +1276,7 @@ className="descriptionContainer custom-scrollbar"
             
           )}
 
-          {isTaskPart && (
+          {isTaskPart &&!idea.isCompleted&& !task.isCompleted &&(
             <button
               style={{ width: "141px" }}
               className="hoverBtn"
@@ -1290,7 +1289,7 @@ className="descriptionContainer custom-scrollbar"
             </button>
           )}
 
-          {creator && !idea?.isCompleted && userData.roles==='Researcher' &&(
+          {creator && !idea?.isCompleted && userData.roles==='Researcher' &&!task.isCompleted &&(
             <button
               style={{ width: "141px" }}
               className="hoverBtn"
@@ -1304,13 +1303,12 @@ className="descriptionContainer custom-scrollbar"
             
           )}
 
-{isTaskPart && !idea?.isCompleted && (
+{isTaskPart && !idea?.isCompleted && !task.isCompleted &&(
             <button
               style={{ width: "141px" }}
               className="hoverBtn"
               onClick={() => {
-                setChoosenTask(task);
-                setShowUploadFinalTaskFile(true);
+                navigate(`/UploadFinalTask/${task.id}`,{state:{data:userData}})
               }}
             >
               Submit Task
@@ -1762,101 +1760,6 @@ className="descriptionContainer custom-scrollbar"
   };
 
 
-  
-
-
-  const UploadFinalTaskFile=(props)=>{
-    const titleRef = useRef(null);
-    const [document, setDocument] = useState(null);
-
-
-    const handleDocumentUpload = (event) => {
-      const file = event.target.files[0];
-      setDocument(file);
-    };
-
-    const handleDocumentSubmit = (event) => {
-      event.preventDefault();
-      const titleValue = titleRef.current.value;
-      const formData = new FormData();
-      formData.append("file", document);
-      formData.append("Name", titleValue);
-
-      fetch(
-        `https://localhost:7187/api/Ideas/Tasks/Submit?taskId=${props.task.id}&participantId=${userData.resercherId}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${userData.token}`,
-          },
-          body: formData,
-        }
-      ).then((res) => {
-        if (res.ok) {
-          toastr.success("File Uploaded Successfully", "Success");
-          props.onClose();
-        } else
-          toastr.error("failed to add video please try again later", "Failed");
-      });
-    };
-
-console.log('from modal',props);
-
-    if (!props.show) return null;
-    return (
-      <div className="modal-overlay2">
-        <div className="modal2">
-          <div className="ContExitbtn" onClick={props.onClose}>
-            <div class="outer">
-              <div class="inner">
-                <label className="label2">Exit</label>
-              </div>
-            </div>
-          </div>
-          <h1 className="headContact2">Upload Document</h1>
-          <div className="FormModal2">
-            <label className="LableForinputTypeFile" htmlFor="img">
-              <input
-                className="InputFile"
-                id="img"
-                type="file"
-                onChange={handleDocumentUpload}
-              />
-              <span className="SpanUpload">
-                {" "}
-                <MdOutlineFileUpload />
-                <span>Choose a File</span>
-              </span>
-            </label>
-
-            {document && (
-              <input
-                id="title"
-                className="InputModalHallDetails"
-                type="text"
-                placeholder="file name"
-                required
-                name="Title"
-                ref={titleRef}
-              ></input>
-            )}
-            <div className="buttonsOnModal">
-              {document && (
-                <button className="" onClick={handleDocumentSubmit}>
-                  Upload Document
-                </button>
-              )}
-              <button className="" onClick={props.onClose}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-
  
 
   return (
@@ -2203,18 +2106,12 @@ console.log('from modal',props);
                 task={choosenTask}
               />
             )}
-            {choosenTask && showUploadFinalTaskFile && (
-              <UploadFinalTaskFile
-                show={showUploadFinalTaskFile}
-                onClose={() => setShowUploadFinalTaskFile(false)}
-                task={choosenTask}
-              />
-            )}
             
            
           </div>
         </div>
       }
+      <Footer userData={userData} />
     </div>
   );
 }

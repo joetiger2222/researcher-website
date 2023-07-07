@@ -2,6 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import Header from "./Header";
 import vod from '../images/photoPayment.png'
+import Footer from "./Footer";
 export default function BuyCourse() {
   const userData = useLocation().state.data;
 
@@ -61,6 +62,7 @@ export default function BuyCourse() {
       <VodafoneCashCard />
       </div>
       </div>
+      <Footer userData={userData} />
     </div>
   );
 }
