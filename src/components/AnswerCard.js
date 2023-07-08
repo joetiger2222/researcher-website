@@ -8,7 +8,7 @@ const AnswersCard = (props) => {
     return (
       <div className="ContAnswerCard">
         <input className="Radio" type="radio" name={props.groupName} onClick={props.correctAns}></input>
-        <input className="InputWithDelete"placeholder="Add Answer" type="text" onChange={(e) => props.setText(e.target.value)} ></input>
+        <textarea className="custom-scrollbar InputWithDelete"placeholder="Add Answer" type="text" onChange={(e) => props.setText(e.target.value)} ></textarea>
         {props.lastCard&&<FaTrash className="FaTrash" onClick={props.delete}/>}
       </div>
     );

@@ -1033,7 +1033,7 @@ export default function AdminPanel() {
       </div>
       <div className="ContainerAllIdeas">
         <h1 style={{ color: "white" }}>All Responses</h1>
-        <div className="AllIdeas">
+        <div style={{width:"90%",maxHeight:"430px",overflow:"auto"}} className="AllIdeas custom-scrollbar">
           {adminReponse?.map((res) => {
             return (
               <div
@@ -1059,32 +1059,6 @@ export default function AdminPanel() {
           })}
         </div>
       </div>
-      <div>
-        <button
-          className="AddNewPaper"
-          onClick={() =>
-            navigate("/RegisterationSpecialAccount", {
-              state: { data: userData },
-            })
-          }
-        >
-          Create Special Account
-        </button>
-      </div>
-      <div>
-        <button
-          className="AddNewPaper"
-          onClick={() =>
-            navigate("/AssignStudentToCourse", {
-              state: { data: userData },
-            })
-          }
-        >
-          Assign Student To Course
-        </button>
-      </div>
-
-
       <div className="allSkillsDiv">
             <h2>Choose a Skill To View It's Quizes </h2>
             <select
@@ -1117,6 +1091,33 @@ export default function AdminPanel() {
             )}
             
           </div>
+      <div>
+        <button
+          className="plusBtn"
+          onClick={() =>
+            navigate("/RegisterationSpecialAccount", {
+              state: { data: userData },
+            })
+          }
+        >
+          Create Special Account
+        </button>
+      </div>
+      <div style={{marginBottom:"50px"}}>
+        <button
+          className="plusBtn"
+          onClick={() =>
+            navigate("/AssignStudentToCourse", {
+              state: { data: userData },
+            })
+          }
+        >
+          Assign Student To Course
+        </button>
+      </div>
+
+
+     
 
 
 

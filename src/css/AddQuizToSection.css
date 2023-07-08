@@ -12,14 +12,18 @@
   align-items: center;
   width: 100%;
   min-height: 100vh;
-  background-color: black;
+  background-color: white;
 }
 .InputInQuestion{
   border: none;
   border-bottom: 1px solid black;
   width: 100%;
-  padding: 5px;
+  padding: 10px;
   font-size: 16px;
+  /* height: 100px; */
+  resize: none;
+  text-transform: capitalize;
+  outline: none;
 }
 .quizHeaderAndBtn {
   margin-top: 50px;
@@ -64,8 +68,8 @@
   padding: 10px 10px;
   font-size: 16px;
   color: #505050;
-  margin-bottom: 30px;
-  margin-left: 0px;
+  /* margin-bottom: 30px; */
+  /* margin-left: 0px; */
   border: none;
   border-bottom: 1px solid #141e30;
   outline: none;
@@ -97,6 +101,7 @@
   width: 90%;
   flex-direction: column;
   gap: 20px;
+  margin: 50px;
 }
 .ConquizHeaderAndBtnquizQiestionsDiv{
   margin-top: 130px;
@@ -104,6 +109,7 @@
   flex-direction: column;
   gap: 30px;
   align-items: center;
+  width: 70%;
 }
 /* .QestionTemplate{
   flex-direction: column;
@@ -137,7 +143,7 @@
 .ContQuestionScore{
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 20px;
 }
 .W100{
@@ -199,7 +205,7 @@
 } */
 
 .questionInput {
-         /* width: 150px; */
+       /* width: 150px; */
     /* padding: 10px 10px; */
     font-size: 16px;
     color: #505050;
@@ -211,17 +217,17 @@
     background: transparent;
     flex-grow: 1;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
+    gap: 10px;
     /* margin-bottom: 10px; */
     width: 100%;
 }
 .questionInput1 {
   display: flex;
-  align-items: center;
-  /* margin-bottom: 10px; */
+  align-items: flex-end;
+  gap: 10px;
 }
 .questionInput span ,.questionInput1 span {
-  margin-right: 10px;
   font-size: 1.2em;
   font-weight: bold;
   color: black;
@@ -232,7 +238,7 @@
   padding: 10px 10px;
   font-size: 17px;
   color: #323232;
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
   /* margin-left: 10px; */
   border: none;
   border-bottom: 1px solid #141e30;
@@ -256,6 +262,8 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  max-height: 400px;
+  overflow: auto;
 }
 
 .QestionTemplate .btnG {
@@ -324,6 +332,7 @@
   /* border-right: none; */
   letter-spacing: 1px;
   background: transparent;
+  resize: none;
 }
 .ContSubmitAndAddQues{
   display: flex;

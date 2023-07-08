@@ -150,7 +150,7 @@ if(load){
 
         <div
           className="loginDataDiv"
-          style={{ display: "flex", flexDirection: "column",width:'40%' }}
+          // style={{ display: "flex", flexDirection: "column",width:'40%' }}
         >
           <h1>Login To Website </h1>
           

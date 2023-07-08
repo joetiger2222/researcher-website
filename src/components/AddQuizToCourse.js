@@ -140,9 +140,11 @@ console.log(quizData)
     <div className="AddQuizToSectionContainer">
       <Header userData={userData} />
       <div className="ConquizHeaderAndBtnquizQiestionsDiv">
-        <div className="quizHeaderAndBtn">
+        {/* <div className="quizHeaderAndBtn"> */}
           <div className="quizHeaderData">
+            <h1>Create A Quiz </h1>
             <h2>Enter Minimum Score To Pass Quiz And Time Limit </h2>
+
             <div className="ContInputs">
               <div className="quizHeaderOneLine">
                 <span>Min Score: </span>
@@ -161,29 +163,39 @@ console.log(quizData)
                 />
               </div>
             </div>
-          </div>
+          {/* </div> */}
         </div>
+        {allQuestions.length> 0 && (
+          <h2>Questions</h2>
 
-        <div className="quizQiestionsDiv">
-          <div className="ContQuestions">
+        )}
+          <div className="ContQuestions custom-scrollbar">
             {" "}
-            {allQuestions.map((question) => {
+            {allQuestions.map((question,index) => {
               return (
                 <div
                   style={{
                     backgroundColor: "#eee",
-                    padding: "20px",
+                    // padding: "20px",
                     borderRadius: "10px",
-                  }}
+                    display:"flex",
+                    flexDirection:"column",
+                    width:"300px",
+                    height:"190px",
+                 }}
                 >
-                  <h3>
-                    <span>Name: </span>
+                  <span style={{padding:"5px",borderBottom:"1px solid black",fontWeight:"bold",textAlign:"center"}}>Question {index+1}</span>
+                  
+               <div style={{padding:"10px",display:"flex",flexDirection:"column",justifyContent:"space-around",height:"100%"}}>
+               <p className="custom-scrollbar" style={{maxHeight:"100px"}}>
+                    <span style={{fontWeight:"bold"}}>Question: </span>
                     {question.name}
-                  </h3>
-                  <h4>
-                    <span className="ScoreInAddQuis">Score: </span>
+                  </p>
+                  <p>
+                    <span style={{fontWeight:"bold"}} className="">Min Score: </span>
                     {question.score}
-                  </h4>
+                  </p>
+               </div>
                 </div>
               );
             })}
@@ -197,7 +209,7 @@ console.log(quizData)
               <div className="ContQuestionScore">
               <div className="questionInput ">
                 <span>Question:</span>
-                <input className="InputInQuestion" onChange={getQuestion} name="name"></input>
+                <textarea className="custom-scrollbar InputInQuestion " onChange={getQuestion} name="name"></textarea>
               </div>
               <div className="questionInput1">
                 <span>Score:</span>
@@ -247,7 +259,6 @@ console.log(quizData)
           </button>}
             </div>
           </div>
-        </div>
       </div>
     </div>
   );

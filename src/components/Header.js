@@ -4,6 +4,9 @@ import userImg from "../images/userImg.png";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import kariem from "../images/userImg.png";
+import LOGO from "../images/Logo - Text Only.png";
+// import LOGO from "../images/Logo - With Text.png";
+
 
 export default function Header({userData,resercherId}) {
 
@@ -31,8 +34,13 @@ function getStudentImage(){
   return (
     <div className="headerParent">
       <div className="headerContainer">
-        <div className="headerLeft">
-          <h1 style={{cursor:"pointer"}} onClick={()=>userData.roles==='Admin'?navigate('/AdminPanel',{state:{data:userData}}):navigate('/HomePage',{state:{data:userData}})}>Logo</h1>
+        <div
+        style={{width:"100px",height:"50px"}}
+        className="headerLeft">
+          <img 
+          src={LOGO} 
+          style={{cursor:"pointer",width:"100%",height:"100%"}}
+           onClick={()=>userData.roles==='Admin'?navigate('/AdminPanel',{state:{data:userData}}):navigate('/HomePage',{state:{data:userData}})}/>
         </div>
 
         <div className="headerRight">

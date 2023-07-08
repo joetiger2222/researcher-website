@@ -12,7 +12,9 @@ import coin from "../images/coin.png";
 import quizCartoon from "../images/quizCartoon.png";
 import Footer from "./Footer";
 
-import video from "../images/video1.mp4"
+import SearchIconLogo from "../images/Logo.png"
+
+import video from "../images/intro video in home.mp4"
 import research from "../images/research.png";
 import SideBar from "./SideBar";
 import toastr from "toastr";
@@ -151,7 +153,7 @@ export default function HomePage() {
 
   const CourseCard = ({ course }) => {
     return (
-      <div className="courseCard">
+      <div className="courseCard ">
         <h1>{course.name}</h1>
         
         <div className="courseBtnAndPriceDiv">
@@ -179,6 +181,9 @@ export default function HomePage() {
 
       <div className="ContainerLandingAndBadges">
         <div className="landingPage">
+        <div  className="sidebarCloseIcon">
+        <img style={{width:"100%"}} src={SearchIconLogo}/>
+        </div>
           {renderSideBar()}
           <div
             style={{
@@ -197,7 +202,7 @@ export default function HomePage() {
             {/* <h3>Hello Students, Researchers</h3> */}
             <h1>Education and participation</h1>
             <p>Learning is something we do almost every day</p>
-            <button className="buttonn">Join Us Now!</button>
+            {/* <button className="buttonn">Join Us Now!</button> */}
           </div>
         </div>
         <div className="badgesDivContainer">
@@ -309,25 +314,15 @@ export default function HomePage() {
           <div className="Shape2"></div>
         </div>
 
-        <div style={{width:"30%"}}>
-                {/* {videoUrl ? (
-                  <video
-                    className="Video"
-                    controls
-                    src={videoUrl}
-                    type="video/mp4"
-                  />
-                ) : (
-                  <h1>Intro Video</h1>
-                )} */}
-                <video controls style={{width:"100%"}}>
+        <div className="videoContainer" style={{width:"30%"}}>
+               
+                <video
+                //  poster="../images/OnlyLogo.svg"
+                  controls style={{width:"100%"}}>
                   <source src={video} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
-          {/* <h1>After Passing The Quiz You Earn Points</h1>
-          <img src={coin} />
-          <h3>These Points Qualify You To Be A Researcher</h3> */}
-        </div>
+           </div>
       </div>
 
       <div className="ContainerCoursesShape">

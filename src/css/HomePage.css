@@ -8,6 +8,53 @@
   --bluesky-color:#16ccbc;
 
 }
+
+
+
+@keyframes searchIconAnimation {
+  0% {
+    transform: rotate(0deg) translateX(150px) rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg) translateX(150px) rotate(-180deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(150px) rotate(-360deg);
+  }
+}
+
+.ContainerLandingAndBadges {
+  position: relative;
+}
+
+
+
+.sidebarCloseIcon {
+  width: 110px;
+  position: absolute;
+  top: 22%;
+  left: 46%;
+  transform: translate(-50%, -50%);
+  animation: searchIconAnimation 4s linear infinite;
+  z-index: -10;
+}
+
+.searchIcon {
+  width: 24px;
+  height: 24px;
+  fill: white;
+}
+
+
+
+
+
+
+
+
+
+
+
 .homePageContainer {
   width: 100%;
   display: flex;
@@ -239,7 +286,10 @@ p {
   justify-content: space-around;
   background-color: aliceblue;
   border-radius: 5px;
+
 }
+
+
 .courseCard > h1 {
   color: black;
   font-size: 24px;
@@ -430,4 +480,38 @@ p {
 
 .ShapeInCourses2{
   
+}
+
+
+
+
+
+
+
+@keyframes videoAnimation {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(100px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.videoContainer {
+  position: relative;
+  width: 100%;
+  /* height: 0; */
+  /* padding-bottom: 56.25%; */
+  /* overflow: hidden; */
+}
+
+.videoContainer video {
+     /* position: absolute; */
+     width: 100%;
+     height: 43%;
+     object-fit: cover;
+     animation: videoAnimation 4s linear infinite;
 }
