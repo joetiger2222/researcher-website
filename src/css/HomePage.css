@@ -1,9 +1,12 @@
 :root {
   --orange-color: #3030bf; 
   --green-color: #4040ff; 
-  --darkgreen-color: #3e3ef7; 
+  --darkgreen-color: rgb(21, 46, 125); 
   --lightgreen-color: #3e8dff; 
-  --button-color:rgb(21, 46, 125);
+  /* --button-color:rgb(21, 46, 125); */
+  --button-color:rgb(31 49 105);
+
+  
   --bluesky-color:#59aeff;
   --background-color: #F8F1F1; 
 

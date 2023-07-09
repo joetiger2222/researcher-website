@@ -187,6 +187,7 @@ top: -5px;
   /* background-color: var(--bluesky-color); */
   transform: translateY(-4px);
   color: white;
+  border: none;
 
 }
 

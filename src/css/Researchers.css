@@ -8,17 +8,17 @@
 }
 
 .ContCarduserInfo{
-       /* justify-content: space-around; */
-       display: flex;
-       flex-direction: column;
-       background-color: white;
-       height: 540px;
-       width: 20%;
-       /* border-radius: 10px; */
-       transition: transform 0.3s ease;
-       border: 1px solid var(--darkgreen-color);
-       border-radius: 20px 20px 0px 0px;
-       background-color: var(--darkgreen-color);
+           /* justify-content: space-around; */
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    height: 540px;
+    width: 20%;
+    /* border-radius: 10px; */
+    transition: transform 0.3s ease;
+    border: 1px solid var(--button-color);
+    border-radius: 20px 20px 0px 0px;
+    background-color: var(--button-color);
 }
 
 .photoUserCard{
@@ -27,7 +27,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--darkgreen-color);
+    background-color: var(--button-color);
     /* border-radius: 37px 20px 25px 0px; */
     border-radius: 20px 20px 20px 20px;
 }

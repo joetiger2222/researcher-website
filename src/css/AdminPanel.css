@@ -138,7 +138,7 @@ column-gap: 3px;
     color: white;
     /* animation: moveUp 0.3s forwards; */
     transform: translateY(-4px);
-    box-shadow: 0 2px 32px 0 rgb(20, 125, 20);
+    box-shadow: 0 2px 32px 0 var(--darkgreen-color);
   }
   .plusBtn:hover svg{
     color: white;
