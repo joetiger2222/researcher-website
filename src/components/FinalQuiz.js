@@ -63,17 +63,17 @@ export default function FinalQuiz() {
         .then((data) => {
           if (data) {
             setTimeLimit((prevData) => {
-              if (data?.timeLimit.slice(0, 1) * 1 === 0) {
+              if (data?.timeLimit.slice(3, 4) * 1 === 0) {
                 return {
                   ...prevData,
                   // hours: data.timeLimit.slice(1, 2),
-                  mins: data.timeLimit.slice(1, 2),
+                  mins: data.timeLimit.slice(4, 5),
                 };
               }
               return {
                 ...prevData,
                 // hours: data.timeLimit.slice(0, 2),
-                mins: data.timeLimit.slice(0, 2),
+                mins: data.timeLimit.slice(3, 5),
               };
             });
 
@@ -192,7 +192,7 @@ export default function FinalQuiz() {
   useEffect(() => {
     if (parseInt(timeLimit.mins) === 0 && parseInt(timeLimit.secs) === 0) {
       toastr.warning("Your Timer Has Finished !");
-      navigate("/HomePage", { state: { data: userData } });
+      navigate(-1);
     }
   }, [timer, timeLimit.mins, timeLimit.secs]);
 

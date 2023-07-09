@@ -183,44 +183,9 @@ export default function AddQuizToSection() {
       
     
   }
-  console.log(allQuestions);
+  console.log(quizData);
 
-  // function sendQuizData() {
-  //   const updatedQuizData = { ...quizData, questions: allQuestions };
 
-  //   fetch(`https://localhost:7187/api/Quizes/SectionQuiz`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(updatedQuizData),
-  //   })
-  //     .then((response) => {
-  //       const reader = response.body.getReader();
-  //       let chunks = [];
-
-  //       function readStream() {
-  //         return reader.read().then(({ done, value }) => {
-  //           if (done) {
-  //             return chunks;
-  //           }
-  //           chunks.push(value);
-  //           return readStream();
-  //         });
-  //       }
-
-  //       return readStream();
-  //     })
-  //     .then((chunks) => {
-  //       const body = new TextDecoder().decode(
-  //         new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
-  //       );
-  //       // console.log(body);
-  //     });
-  //     console.log(updatedQuizData)
-  // }
-
-  // console.log(quizData);
 
   return (
     <div className="AddQuizToSectionContainer">
@@ -243,11 +208,12 @@ export default function AddQuizToSection() {
                 ></input>
               </div>
               <div className="quizHeaderOneLine">
-                <span>Time Limit: </span>
+                <span>Time Limit (In Minutes): </span>
                 <input
                   name="timeLimit"
-                  onChange={getQuizData}
-                  placeholder="Ex: 2:00"
+                  onChange={(e)=>setQuizData(prev=>{return{...prev,[e.target.name]:'00:'+e.target.value+':00'}})}
+                  // onChange={getQuizData}
+                  placeholder="Ex: 20"
                 />
               </div>
             </div>

@@ -236,7 +236,7 @@ console.log(introVideo)
             </span>
           ))}
 
-          {sectionQuiz && isStudentEnrolled && (
+          {sectionQuiz && isStudentEnrolled && userData.roles!=='Admin'&& (
             <span
               className="QuizTitle"
               onClick={() => {

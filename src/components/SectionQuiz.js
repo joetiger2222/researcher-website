@@ -78,17 +78,17 @@ export default function SectionQuiz() {
       .then((data) => {
         if (data) {
           setTimeLimit((prevData) => {
-            if (data?.timeLimit.slice(0, 1) * 1 === 0) {
+            if (data?.timeLimit.slice(3, 4) * 1 === 0) {
               return {
                 ...prevData,
                 // hours: data.timeLimit.slice(1, 2),
-                mins: data.timeLimit.slice(1, 2),
+                mins: data.timeLimit.slice(4, 5),
               };
             }
             return {
               ...prevData,
               // hours: data.timeLimit.slice(0, 2),
-              mins: data.timeLimit.slice(0, 2),
+              mins: data.timeLimit.slice(3, 5),
             };
           });
 
@@ -190,10 +190,6 @@ export default function SectionQuiz() {
 
 
 
-
-
-
-
   return (
     <div className="sectionQuizContainer">
       <Header userData={userData} />
@@ -222,7 +218,6 @@ export default function SectionQuiz() {
             Start
           </button>
         </div>
-        {/* {timerStarted && <CountdownTimer timeLimit={timeLimit} />} */}
       </div>
 
       {renderQ && (

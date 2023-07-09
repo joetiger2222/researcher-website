@@ -123,7 +123,14 @@ export default function HomePage() {
       },
     })
       .then((res) => (res.ok ? res.json() : null))
-      .then((data) => setAllSkills(data))
+      .then((data) => {
+        const uniqueArray = Array.from(new Set(data.map((obj) => obj.id))).map(
+          (id) => {
+            return data.find((obj) => obj.id === id);
+          }
+        );
+        setAllSkills(uniqueArray)
+      })
       .catch((error) => console.error(error));
   }
 

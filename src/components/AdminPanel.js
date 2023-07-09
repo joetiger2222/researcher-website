@@ -27,9 +27,9 @@ export default function AdminPanel() {
   const [adminReponse, setAdminResponse] = useState(null);
   const [allExpertReqs, setAllExpertReqs] = useState(null);
   const [searchIdea, setSearchIdea] = useState("");
-  
-  const [skillsWithQuizes,setSkillsWithQuizes]=useState(null);
-  const [finalQuizSkillId,setFinalQuizSkillId]=useState(null);
+
+  const [skillsWithQuizes, setSkillsWithQuizes] = useState(null);
+  const [finalQuizSkillId, setFinalQuizSkillId] = useState(null);
   const userData = useLocation().state?.data;
 
   function getCourses() {
@@ -160,10 +160,6 @@ export default function AdminPanel() {
       .then((data) => (data ? setAllExpertReqs(data) : null));
   }
 
-
-  
-
-
   function getAllSkillsWithQuizes() {
     fetch(`https://localhost:7187/api/Researchers/Skills`, {
       method: "GET",
@@ -172,7 +168,14 @@ export default function AdminPanel() {
       },
     })
       .then((res) => (res.ok ? res.json() : null))
-      .then((data) => setSkillsWithQuizes(data))
+      .then((data) => {
+        const uniqueArray = Array.from(new Set(data.map((obj) => obj.id))).map(
+          (id) => {
+            return data.find((obj) => obj.id === id);
+          }
+        );
+        setSkillsWithQuizes(uniqueArray);
+      })
       .catch((error) => console.error(error));
   }
 
@@ -451,49 +454,59 @@ export default function AdminPanel() {
         }
       });
     }
-    
-      
 
     return (
       <div className="ContExpertReqAdmin" style={{ backgroundColor: "white" }}>
-         <span style={{padding:"10px",textAlign:"center",width:"100%",borderBottom:"1px solid black"}}>
-            <span style={{ fontWeight: "bold" }}>Sender Name : </span>
-            {resData?.firstName + " " + resData?.lastName}
-          </span>
+        <span
+          style={{
+            padding: "10px",
+            textAlign: "center",
+            width: "100%",
+            borderBottom: "1px solid black",
+          }}
+        >
+          <span style={{ fontWeight: "bold" }}>Sender Name : </span>
+          {resData?.firstName + " " + resData?.lastName}
+        </span>
         <div className="ContBTNSData">
-        <div className="contTitleAndContnentReq">
-         
-         <span>
-           <span style={{ fontWeight: "bold" }}>Title : </span>
-           {props.req.title}
-         </span>
-         <span
-           className="custom-scrollbar"
-           style={{ overflow: "auto", maxHeight: "150px" }}
-         >
-           <span style={{ fontWeight: "bold" }}>Content : </span>
-           {props.req.content}
-         </span>
-       </div>
-       <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:"10px"}}>
-        
-         <button
-           className="detailsbtn"
-           onClick={() =>
-             navigate(`/Idea/${props.req.ideaId}`, {
-               state: { data: userData },
-             })
-           }
-         >
-           View Idea
-         </button>
-         <button
-           className="buttonExit2"
-           onClick={() => deleteExpertReq(props.req)}
-         >
-           Delete Expert Request
-         </button>
-       </div>
+          <div className="contTitleAndContnentReq">
+            <span>
+              <span style={{ fontWeight: "bold" }}>Title : </span>
+              {props.req.title}
+            </span>
+            <span
+              className="custom-scrollbar"
+              style={{ overflow: "auto", maxHeight: "150px" }}
+            >
+              <span style={{ fontWeight: "bold" }}>Content : </span>
+              {props.req.content}
+            </span>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "10px",
+            }}
+          >
+            <button
+              className="detailsbtn"
+              onClick={() =>
+                navigate(`/Idea/${props.req.ideaId}`, {
+                  state: { data: userData },
+                })
+              }
+            >
+              View Idea
+            </button>
+            <button
+              className="buttonExit2"
+              onClick={() => deleteExpertReq(props.req)}
+            >
+              Delete Expert Request
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -584,30 +597,30 @@ export default function AdminPanel() {
     return (
       <div className="modal-overlay2">
         <div className="modal2">
-        <div className="ContExitbtn" onClick={props.onClose}>
+          <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
                 <label className="label2">Exit</label>
               </div>
             </div>
           </div>
-        <h1 className="headContact2">Edit Skill Name</h1>
-<div className="FormModal2">
-<label className="AllLabeles">Skill Name</label>
-          <input
-          placeholder="Enter Skill Name"
-          className="InputModalHallDetails"
-            type="text"
-            name="name"
-            onChange={(e) =>
-              setSkillName((prev) => {
-                return { ...prev, [e.target.name]: e.target.value };
-              })
-            }
-          ></input>
-          <div className="buttonsOnModal">
-            <button onClick={editSkillName}>Submit</button>
-            <button onClick={props.onClose}>Cancel</button>
+          <h1 className="headContact2">Edit Skill Name</h1>
+          <div className="FormModal2">
+            <label className="AllLabeles">Skill Name</label>
+            <input
+              placeholder="Enter Skill Name"
+              className="InputModalHallDetails"
+              type="text"
+              name="name"
+              onChange={(e) =>
+                setSkillName((prev) => {
+                  return { ...prev, [e.target.name]: e.target.value };
+                })
+              }
+            ></input>
+            <div className="buttonsOnModal">
+              <button onClick={editSkillName}>Submit</button>
+              <button onClick={props.onClose}>Cancel</button>
             </div>
           </div>
         </div>
@@ -642,59 +655,76 @@ export default function AdminPanel() {
 
     return (
       <div className="ContainerreauestWithBtnForProblems">
-          <p
-            className="custom-scrollbar UserNameHover"
-            onClick={() =>
-              navigate(`/Profile/${props.prob.studentId}`, {
-                state: { data: userData },
-              })
-            }
-            style={{
-              cursor: "pointer",
-              padding: "10px 0",
-              fontWeight: "normal",
-              borderBottom:"1px solid black",
-              width:"100%",
-              textAlign:"center",
-            }}
-          >
-           <span style={{fontWeight:"bold"}}>Student Name:</span> {studentData?.firstName + " " + studentData?.lastName}
-          </p>{" "}
-
-        <div style={{padding:"10px",width:"95%",height:"150px",display:"flex",justifyContent:"space-between",flexDirection:"column"}}>
-        <span style={{ fontWeight: "bold", padding: "10px",height:"101px" }}>
-          Problem Description:
-          <p
-            className="custom-scrollbar"
-            style={{
-              padding: "5px 10px",
-              fontWeight: "normal",
-              maxHeight: "75px",
-              overflow: "auto",
-            }}
-          >
-            {props.prob.description}
-          </p>{" "}
-        </span>
-        <div style={{width:"100%",display:"flex",justifyContent:"center",alignItems:"center"}}>
-        <button
-        style={{width:"100px"}}
-          className="hoverBtn"
-          onClick={() => {
-            setChoosenProblem(props.prob);
-            setShowResponseModal(true);
+        <p
+          className="custom-scrollbar UserNameHover"
+          onClick={() =>
+            navigate(`/Profile/${props.prob.studentId}`, {
+              state: { data: userData },
+            })
+          }
+          style={{
+            cursor: "pointer",
+            padding: "10px 0",
+            fontWeight: "normal",
+            borderBottom: "1px solid black",
+            width: "100%",
+            textAlign: "center",
           }}
         >
-          Respond
-        </button>
-        </div>
-       
+          <span style={{ fontWeight: "bold" }}>Student Name:</span>{" "}
+          {studentData?.firstName + " " + studentData?.lastName}
+        </p>{" "}
+        <div
+          style={{
+            padding: "10px",
+            width: "95%",
+            height: "150px",
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: "column",
+          }}
+        >
+          <span
+            style={{ fontWeight: "bold", padding: "10px", height: "101px" }}
+          >
+            Problem Description:
+            <p
+              className="custom-scrollbar"
+              style={{
+                padding: "5px 10px",
+                fontWeight: "normal",
+                maxHeight: "75px",
+                overflow: "auto",
+              }}
+            >
+              {props.prob.description}
+            </p>{" "}
+          </span>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <button
+              style={{ width: "100px" }}
+              className="hoverBtn"
+              onClick={() => {
+                setChoosenProblem(props.prob);
+                setShowResponseModal(true);
+              }}
+            >
+              Respond
+            </button>
+          </div>
         </div>
       </div>
     );
   };
 
-  console.log(skillsWithQuizes)
+  console.log(skillsWithQuizes);
 
   return (
     <div className="adminPanelParent" style={{ rowGap: "50px" }}>
@@ -824,8 +854,15 @@ export default function AdminPanel() {
 
       <div className="ContainerAllIdeas">
         <h1 style={{ color: "white" }}>All Ideas</h1>
-        <input placeholder="Search by name" className="search-input" onChange={(e) => setSearchIdea(e.target.value)}></input>
-        <div style={{maxHeight:"480px",overflow:"auto"}} className="AllIdeas custom-scrollbar">
+        <input
+          placeholder="Search by name"
+          className="search-input"
+          onChange={(e) => setSearchIdea(e.target.value)}
+        ></input>
+        <div
+          style={{ maxHeight: "480px", overflow: "auto" }}
+          className="AllIdeas custom-scrollbar"
+        >
           {allIdeas?.length > 0 ? (
             allIdeas?.map((idea, index) => {
               return (
@@ -914,7 +951,11 @@ export default function AdminPanel() {
                     </button>
                     <button
                       className="button-arounder1"
-                      onClick={() => navigate(`/Idea/${idea.id}`,{state:{data:userData}})}
+                      onClick={() =>
+                        navigate(`/Idea/${idea.id}`, {
+                          state: { data: userData },
+                        })
+                      }
                     >
                       View Idea
                     </button>
@@ -938,7 +979,10 @@ export default function AdminPanel() {
 
       <div className="ContainerAllIdeas">
         <h1 style={{ color: "white" }}>All Expert Requestes</h1>
-        <div style={{maxHeight:"350px",overflow:"auto"}} className="AllIdeas custom-scrollbar">
+        <div
+          style={{ maxHeight: "350px", overflow: "auto" }}
+          className="AllIdeas custom-scrollbar"
+        >
           {allExpertReqs?.length > 0 &&
             allExpertReqs?.map((req, index) => {
               return (
@@ -1033,7 +1077,10 @@ export default function AdminPanel() {
       </div>
       <div className="ContainerAllIdeas">
         <h1 style={{ color: "white" }}>All Responses</h1>
-        <div style={{width:"90%",maxHeight:"430px",overflow:"auto"}} className="AllIdeas custom-scrollbar">
+        <div
+          style={{ width: "90%", maxHeight: "430px", overflow: "auto" }}
+          className="AllIdeas custom-scrollbar"
+        >
           {adminReponse?.map((res) => {
             return (
               <div
@@ -1060,37 +1107,36 @@ export default function AdminPanel() {
         </div>
       </div>
       <div className="allSkillsDiv">
-            <h2>Choose a Skill To View It's Quizes </h2>
-            <select
-              onChange={(e) => {
-                setFinalQuizSkillId(e.target.value * 1);
-              }}
-              className="SelectSkill"
-              name="skillId"
-              id="skill"
-              class="select-field-skillInAdminPanel"
-            >
-              <option selected disabled value="">
-                Choose a Skill
-              </option>
-              {skillsWithQuizes?.map((skill) => {
-                return <option value={skill.id}>{skill.name}</option>;
-              })}
-            </select>
-            {finalQuizSkillId && (
-              <button
-                className="plusBtn"
-                onClick={() =>
-                  navigate(`/AllFinalQuizes/${finalQuizSkillId}`, {
-                    state: { data: userData },
-                  })
-                }
-              >
-                View All Quizes
-              </button>
-            )}
-            
-          </div>
+        <h2>Choose a Skill To View It's Quizes </h2>
+        <select
+          onChange={(e) => {
+            setFinalQuizSkillId(e.target.value * 1);
+          }}
+          className="SelectSkill"
+          name="skillId"
+          id="skill"
+          class="select-field-skillInAdminPanel"
+        >
+          <option selected disabled value="">
+            Choose a Skill
+          </option>
+          {skillsWithQuizes?.map((skill) => {
+            return <option value={skill.id}>{skill.name}</option>;
+          })}
+        </select>
+        {finalQuizSkillId && (
+          <button
+            className="plusBtn"
+            onClick={() =>
+              navigate(`/AllFinalQuizes/${finalQuizSkillId}`, {
+                state: { data: userData },
+              })
+            }
+          >
+            View All Quizes
+          </button>
+        )}
+      </div>
       <div>
         <button
           className="plusBtn"
@@ -1103,7 +1149,7 @@ export default function AdminPanel() {
           Create Special Account
         </button>
       </div>
-      <div style={{marginBottom:"50px"}}>
+      <div style={{ marginBottom: "50px" }}>
         <button
           className="plusBtn"
           onClick={() =>
@@ -1115,16 +1161,6 @@ export default function AdminPanel() {
           Assign Student To Course
         </button>
       </div>
-
-
-     
-
-
-
-
-
-
-
 
       {showEditSkillName && skillId && (
         <EditSkillCard

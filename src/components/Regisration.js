@@ -15,6 +15,7 @@ const Registration = () => {
     age: "",
     phoneNumber: "",
     gender: 0,
+    bio:'',
     nationalityId: 0,
   });
   const [passwordMatch, setPasswrdMatch] = useState("");
@@ -49,7 +50,8 @@ const Registration = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      }).then((res) =>
+      })
+      .then((res) =>
         res.ok
           ? authorizeLogin(e)
           : toastr.error("failed to register please try again later","Failed")

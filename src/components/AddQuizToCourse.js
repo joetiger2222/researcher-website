@@ -128,7 +128,8 @@ function saveQuest() {
       },
       body: JSON.stringify(updatedQuizData),
     })
-      .then((res) => res.ok?navigate('/AdminPanel',{state:{data:userData}}):toastr.error('failed to add quiz',"Failed"))
+    .then(res=>res.ok?navigate(-1):toastr.error('Failed to add quiz'))
+    .catch((error) => console.error(error));
       
   }
 
@@ -155,11 +156,12 @@ console.log(quizData)
                 ></input>
               </div>
               <div className="quizHeaderOneLine">
-                <span>Time Limit: </span>
+                <span>Time Limit (In Minutes): </span>
                 <input
                   name="timeLimit"
-                  onChange={getQuizData}
-                  placeholder="Ex: 2:00"
+                  onChange={(e)=>setQuizData(prev=>{return{...prev,[e.target.name]:'00:'+e.target.value+':00'}})}
+                  // onChange={getQuizData}
+                  placeholder="Ex: 20"
                 />
               </div>
             </div>
