@@ -151,7 +151,7 @@ console.log(quizData)
                 <input
                   onChange={getQuizData}
                   name="maxScore"
-                  placeholder="Max Score"
+                  placeholder="Min Score"
                 ></input>
               </div>
               <div className="quizHeaderOneLine">

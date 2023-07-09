@@ -1,11 +1,11 @@
 :root {
-  --orange-color: #ff702d; 
-  --green-color: #117d5d; 
-  --darkgreen-color: #007d6f; 
-  --lightgreen-color: #71b9b4; 
-  --background-color: #F8F1F1; 
+  --orange-color: #3030bf; 
+  --green-color: #4040ff; 
+  --darkgreen-color: #3e3ef7; 
+  --lightgreen-color: #3e8dff; 
   --button-color:rgb(21, 46, 125);
-  --bluesky-color:#16ccbc;
+  --bluesky-color:#59aeff;
+  --background-color: #F8F1F1; 
 
 }
 
@@ -69,7 +69,7 @@
   justify-content: center;
 }
 .landingPage {
-    background-color: #16ccbc;
+  background-color: var(--button-color);
   /* background: rgba(0, 0, 0, 0.5) url(http://localhost:3000/static/media/homePageImg.70d5afa….png); */
   height: 100vh;
   background-repeat: no-repeat;
@@ -151,7 +151,8 @@ p {
   flex-direction: column;
   width: 400px;
   height: 400px;
-  background-color: #16ccbc;
+  /* background-color: var(--button-color); */
+  background: linear-gradient(#3030bf, #59aeff);
   justify-content: center;
   align-items: center;
   /* clip-path: circle(50% at 50% 50%); */
@@ -201,6 +202,7 @@ p {
 .researchContainer > h1 {
   text-align: center;
   width: 80%;
+  color: white;
 }
 .btnSkillHome{
   padding: 8px;
@@ -222,8 +224,8 @@ p {
   border: none;
   border-radius: 5px;
   background-color: #efefef;
-  color: var(--darkgreen-color);
-  border: 1px solid var(--darkgreen-color);
+  color: var(--button-color);
+  border: 1px solid var(--button-color);
   font-size: 16px;
   /* margin-bottom: 10px; */
   transition: all 0.3s ease-in-out;
@@ -275,26 +277,29 @@ p {
   /* margin: 0 0 50px 0; */
 }
 .courseCard {
-  border: 1px solid var(--lightgreen-color);
+  border: none;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 30px;
-  /* box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19); */
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
   width: 30%;
   height: 190px;
   justify-content: space-around;
-  background-color: aliceblue;
+  background-color: var(--button-color);
   border-radius: 5px;
+  /* background: linear-gradient(#3030bf, #59aeff); */
+  color: white;
 
 }
 
 
 .courseCard > h1 {
-  color: black;
+  color: white;
   font-size: 24px;
   width: 100%;
   text-align: center;
+  word-wrap: break-word;
 }
 .courseCard > p {
   font-size: 16px;
@@ -413,7 +418,7 @@ p {
 
 .ContNum{
   clip-path: circle(50% at 50% 50%);
-  background: linear-gradient(#05b1c7, #16ccbc);
+  background: linear-gradient(#3030bf, #59aeff);
   width: 80px;
   height: 80px;
   display: flex;
@@ -439,16 +444,18 @@ p {
 
 .Shape3{
   width: 80px;
-    height: 80px;
-    margin-bottom: -20%;
-    background-color: aqua;
-    z-index: -1;
-    clip-path: polygon(100% 1%, 0 65%, 100% 100%);
+  height: 80px;
+  margin-bottom: -20%;
+  background: linear-gradient(#3030bf, #59aeff);
+  /* background-color: var(--lightgreen-color); */
+  z-index: -1;
+  clip-path: polygon(100% 1%, 0 65%, 100% 100%);
 }
 .Shape2{
   width: 80px;
   height: 80px;
-  background-color: aqua;
+  /* background-color: var(--lightgreen-color); */
+  background: linear-gradient(#3030bf, #59aeff);
   margin-top: -20%;
   z-index: -1;
   clip-path: polygon(100% 1%, 0 47%, 100% 100%);
@@ -471,7 +478,8 @@ p {
   top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #16ccbc;
+  /* background-color: var(--bluesky-color); */
+  background: linear-gradient(#3030bf, #59aeff);
   width: 100px;
   height: 100px;
   clip-path: polygon(0% 0%, 0% 100%, 25% 100%, 25% 25%, 75% 25%, 75% 75%, 25% 75%, 25% 100%, 100% 100%, 100% 0%);
@@ -509,9 +517,12 @@ p {
 }
 
 .videoContainer video {
-     /* position: absolute; */
-     width: 100%;
-     height: 43%;
-     object-fit: cover;
-     animation: videoAnimation 4s linear infinite;
+        /* position: absolute; */
+        width: 100%;
+        object-fit: cover;
+        animation: videoAnimation 4s linear infinite;
+        border-radius: 20px;
+        width: 100%;
+        /* border-radius: 25px; */
+        height: 300px;
 }

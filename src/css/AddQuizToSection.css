@@ -1,11 +1,4 @@
-:root {
-  --orange-color: #ff702d; 
-  --green-color: #117d5d; 
-  --darkgreen-color: #007d6f; 
-  --lightgreen-color: #71b9b4; 
-  --background-color: #F8F1F1; 
 
-}
 .AddQuizToSectionContainer {
   display: flex;
   flex-direction: column;

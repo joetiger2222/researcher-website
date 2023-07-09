@@ -226,23 +226,20 @@ export default function AddQuizToSection() {
     <div className="AddQuizToSectionContainer">
       <Header userData={userData} />
       <div className="ConquizHeaderAndBtnquizQiestionsDiv">
-        <div className="quizHeaderAndBtn">
+        {/* <div className="quizHeaderAndBtn"> */}
           <div className="quizHeaderData">
-            <h1>
-              <span>Course Name: </span>
-              {courseDetails?.name}
-            </h1>
             <h2>
-              <span>Section Name: </span>
-              {sectionData?.name}
+              <span>Create Quiz For </span>
+               ({sectionData?.name})in Course ({courseDetails?.name})
             </h2>
+            <h2>Enter Minimum Score To Pass Quiz And Time Limit </h2>
             <div className="ContInputs">
               <div className="quizHeaderOneLine">
                 <span>Min Score: </span>
                 <input
                   onChange={getQuizData}
                   name="maxScore"
-                  placeholder="Max Score"
+                  placeholder="Min Score"
                 ></input>
               </div>
               <div className="quizHeaderOneLine">
@@ -255,28 +252,39 @@ export default function AddQuizToSection() {
               </div>
             </div>
           </div>
-        </div>
+        {/* </div> */}
 
-        <div className="quizQiestionsDiv">
-          <div className="ContQuestions">
+          {allQuestions.length> 0 && (
+            <h2>Questions</h2>
+
+          )}
+          <div className="ContQuestions custom-scrollbar">
             {" "}
-            {allQuestions.map((question) => {
+            {allQuestions.map((question,index) => {
               return (
                 <div
                   style={{
                     backgroundColor: "#eee",
-                    padding: "20px",
+                    // padding: "20px",
                     borderRadius: "10px",
-                  }}
+                    display:"flex",
+                    flexDirection:"column",
+                    width:"300px",
+                    height:"190px",
+                 }}
                 >
-                  <h3>
-                    <span>Name: </span>
+                  <span style={{padding:"5px",borderBottom:"1px solid black",fontWeight:"bold",textAlign:"center"}}>Question {index+1}</span>
+                  
+               <div style={{padding:"10px",display:"flex",flexDirection:"column",justifyContent:"space-around",height:"100%"}}>
+               <p className="custom-scrollbar" style={{maxHeight:"100px"}}>
+                    <span style={{fontWeight:"bold"}}>Question: </span>
                     {question.name}
-                  </h3>
-                  <h4>
-                    <span>Score: </span>
+                  </p>
+                  <p>
+                    <span style={{fontWeight:"bold"}} className="">Min Score: </span>
                     {question.score}
-                  </h4>
+                  </p>
+               </div>
                 </div>
               );
             })}
@@ -287,18 +295,21 @@ export default function AddQuizToSection() {
               style={{ display: showQuestionTemplate ? "flex" : "none" }}
               className="QestionTemplate"
             >
+              <div className="ContQuestionScore">
               <div className="questionInput ">
                 <span>Question:</span>
-                <input className="InputInQuestion" onChange={getQuestion} name="name"></input>
+                <textarea className="custom-scrollbar InputInQuestion " onChange={getQuestion} name="name"></textarea>
               </div>
               <div className="questionInput1">
-                <span style={{ marginRight: "25px" }}>Score:</span>
+                <span>Score:</span>
                 <input
+                className="ScoreInAddQuis"
                   type="number"
                   style={{ width: "40px" }}
                   onChange={getQuestion}
                   name="score"
                 ></input>
+              </div>
               </div>
               {answerCards.map((card) => {
                 return (
@@ -312,30 +323,32 @@ export default function AddQuizToSection() {
                   />
                 );
               })}
-              <div>
+              <div className="AddNewAnswerSaveQuestion">
                 {" "}
-                <button className="btnG greenBackground" onClick={addNewAnswer}>
+                <button className="AddNewAnswerWithHover" onClick={addNewAnswer}>
                   Add New Answer
                 </button>
-                <button className="btnG blueBackground" onClick={saveQuest}>
+                <button className="SaveQuestionWithHover" onClick={saveQuest}>
                   Save Question
                 </button>
               </div>
             </div>
 
-          <div>
+          <div className="ContSubmitAndAddQues">
             <button
               onClick={() => setShowQuestionTemplate(true)}
-              className="addQuestionbtn"
+              className="addQuestionbtn button-arounder"
             >
-              <span>+</span>Add Question
+               +Add Question
             </button>
+            {allQuestions.length>0 &&
+              <button className="buttonbtn button-arounder" onClick={sendQuizData}>
+            Submit{" "}
+          </button>}
           </div>
 
         {/* <button onClick={sendQuizData}>Submit</button> */}
-        <button className="buttonbtn button-arounder" onClick={sendQuizData}>
-          Submit{" "}
-        </button>
+        
         {/* <div>
         <button
         id="btn"
@@ -360,7 +373,6 @@ export default function AddQuizToSection() {
               </div>
           </button> */}
         </div>
-      </div>
 
     </div>
     </div>

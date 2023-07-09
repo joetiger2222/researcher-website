@@ -154,7 +154,7 @@ export default function HomePage() {
   const CourseCard = ({ course }) => {
     return (
       <div className="courseCard ">
-        <h1>{course.name}</h1>
+        <h1 className="shakingText">{course.name}</h1>
         
         <div className="courseBtnAndPriceDiv">
           <button
