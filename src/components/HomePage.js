@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import homePageImg from "../images/homePageImg.png";
 import "../css/HomePage.css";
 import "../css/Header.css";
 import "../../src/App.css";
-import { useState } from "react";
 import badge from "../images/badge.png";
 import quiz from "../images/quiz.png";
 import { BsFillCircleFill } from "react-icons/bs";
@@ -29,6 +28,40 @@ export default function HomePage() {
   const navigate = useNavigate();
   const userData = useLocation().state?.data;
   console.log(courses);
+
+
+//   const observer = new IntersectionObserver((entries) => {
+//     entries.forEach((entry) =>{
+//       if(entry.isIntersecting){
+//         entry.target.classList.add("show")
+//       }else{
+//         entry.target.classList.remove("show")
+//       }
+//     })
+//   })
+// const hiddenElements = document.querySelectorAll(".hidden");
+// hiddenElements.forEach((el)=>observer.observe(el));
+
+const [isVisible, setIsVisible] = useState(false);
+  const elementRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        } else {
+          setIsVisible(false);
+        }
+      });
+    });
+
+    observer.observe(elementRef.current);
+
+    return () => {
+      observer.unobserve(elementRef.current);
+    };
+  }, []);
 
   function renderSideBar() {
     if (sideBarVisible) {
@@ -154,7 +187,10 @@ export default function HomePage() {
   const CourseCard = ({ course }) => {
     return (
       <div className="courseCard ">
-        <h1 className="shakingText">{course.name}</h1>
+        <h1
+        //  className="shakingText"
+        className="scalingText"
+        >{course.name}</h1>
         
         <div className="courseBtnAndPriceDiv">
           <button
@@ -278,9 +314,11 @@ export default function HomePage() {
 
       <div className="ContSkillAndAchievePrize">
         <div className="ContShape2Skill">
-          <div className="Shape3"></div>
+          <div className="Shape3 "></div>
+          <div className="Shape4 "></div>
 
           <div className="quizContainer">
+
             {/* <div>
             <div>
               <h1>Take A Quiz</h1>
@@ -312,6 +350,8 @@ export default function HomePage() {
             )}
           </div>
           <div className="Shape2"></div>
+          <div className="Shape5"></div>
+
         </div>
 
         <div className="videoContainer" style={{width:"30%"}}>
@@ -328,7 +368,7 @@ export default function HomePage() {
       <div className="ContainerCoursesShape">
         <div className="coursesBigDiv">
           <h3>Couldn't Solve it?, No Problem. Take A Look On Our Courses</h3>
-          <h1>Our Courses</h1>
+          <h1 ref={elementRef} className={isVisible ? 'show' : 'hidden'}>Our Courses</h1>
           <div className="coursesContainer">
             {courses?.map((course) => {
               return (

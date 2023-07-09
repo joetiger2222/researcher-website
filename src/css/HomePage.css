@@ -444,15 +444,44 @@ p {
   flex-wrap: wrap;
   gap: 30px;
 }
+@keyframes rotationAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
-.Shape3{
+.Shape3 {
   width: 80px;
   height: 80px;
   margin-bottom: -20%;
   background: linear-gradient(#3030bf, #59aeff);
-  /* background-color: var(--lightgreen-color); */
   z-index: -1;
   clip-path: polygon(100% 1%, 0 65%, 100% 100%);
+  animation: rotationAnimation 4s linear infinite;
+}
+.Shape4 {
+  width: 80px;
+  height: 80px;
+  margin-left: 76%;
+  margin-bottom: -20%;
+  background: linear-gradient(#3030bf, #59aeff);
+  z-index: -1;
+  clip-path: polygon(100% 1%, 0 65%, 100% 100%);
+  animation: rotationAnimation 4s linear infinite;
+}
+.Shape5 {
+  width: 80px;
+  height: 80px;
+  /* background-color: var(--lightgreen-color); */
+  background: linear-gradient(#3030bf, #59aeff);
+  margin-top: -20%;
+  margin-left: 76%;
+  z-index: -1;
+  clip-path: polygon(100% 1%, 0 47%, 100% 100%);
+  animation: rotationAnimation 4s linear infinite;
 }
 .Shape2{
   width: 80px;
@@ -462,6 +491,8 @@ p {
   margin-top: -20%;
   z-index: -1;
   clip-path: polygon(100% 1%, 0 47%, 100% 100%);
+  animation: rotationAnimation 4s linear infinite;
+
 }
 
 .ContShape2Skill{
@@ -478,8 +509,8 @@ p {
 
 .ShapeInCourses1{
   position: absolute;
-  top: 60%;
-  left: 50%;
+  top: 54%;
+  left: 45%;
   transform: translate(-50%, -50%);
   /* background-color: var(--bluesky-color); */
   background: linear-gradient(#3030bf, #59aeff);
@@ -487,8 +518,17 @@ p {
   height: 100px;
   clip-path: polygon(0% 0%, 0% 100%, 25% 100%, 25% 25%, 75% 25%, 75% 75%, 25% 75%, 25% 100%, 100% 100%, 100% 0%);
   z-index: -1;
-}
+  animation: rotationAnimation 4s linear infinite;
 
+}
+@keyframes rotationAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 .ShapeInCourses2{
   
 }
@@ -504,7 +544,7 @@ p {
     transform: translateX(0);
   }
   50% {
-    transform: translateX(100px);
+    transform: translateX(50px);
   }
   100% {
     transform: translateX(0);
@@ -529,4 +569,30 @@ p {
     /* border-radius: 25px; */
     height: 300px;
     border: 1px solid var(--button-color);
+}
+
+.ContainerCoursesShape {
+  opacity: 0;
+  animation: fadeInAnimation 1s forwards;
+  animation-delay: 0.5s;
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.show{
+  opacity: 1;
+}
+.hidden{
+  opacity: 0;
+  transition: all 1s;
 }
