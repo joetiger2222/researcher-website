@@ -1,6 +1,9 @@
 import React, { useEffect ,useState} from "react";
 import { useLocation, useParams} from "react-router-dom";
 import "../css/AllFinalQuizes.css"
+import Swal from "sweetalert2";
+import toastr from "toastr";
+import "toastr/build/toastr.min.css";
 export default function AllFinalQuizes(){
     
     const userData = useLocation().state?.data;
@@ -26,7 +29,12 @@ console.log(allFinalQuizes)
 
 
 function deleteFinalQuiz(quizId){
-    fetch(`https://localhost:7187/api/Admin/Quizzes/${quizId}`,{
+    Swal.fire({
+         title: "Are You Sure To Delete The Quiz",
+        showCancelButton: true,
+    }).then((data) => {
+        if(data.isConfirmed){
+           fetch(`https://localhost:7187/api/Admin/Quizzes/${quizId}`,{
       method:"DELETE",
       headers:{
         "Authorization":`Bearer ${userData.token}`
@@ -34,10 +42,13 @@ function deleteFinalQuiz(quizId){
     })
     .then(res=>{
         if(res.ok){
-            alert('Quiz Successfully Deleted')
+            toastr.success('Quiz Successfully Deleted',"Success")
             getAllFinalQuizes();
-        }else alert('Failed to delete quiz')
+        }else toastr.error('Failed to delete quiz',"Error")
+    }) 
+        }
     })
+    
   }
 
 

@@ -520,12 +520,13 @@ p {
 }
 
 .videoContainer video {
-        /* position: absolute; */
-        width: 100%;
-        object-fit: cover;
-        animation: videoAnimation 4s linear infinite;
-        border-radius: 20px;
-        width: 100%;
-        /* border-radius: 25px; */
-        height: 300px;
+         /* position: absolute; */
+    width: 100%;
+    /* object-fit: cover; */
+    animation: videoAnimation 4s linear infinite;
+    border-radius: 20px;
+    width: 100%;
+    /* border-radius: 25px; */
+    height: 300px;
+    border: 1px solid var(--button-color);
 }

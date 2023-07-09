@@ -11,7 +11,7 @@ import { BsFillCircleFill } from "react-icons/bs";
 import coin from "../images/coin.png";
 import quizCartoon from "../images/quizCartoon.png";
 import Footer from "./Footer";
-
+import LOGOJPG from "../images/LogoJPG.jpg"
 import SearchIconLogo from "../images/Logo.png"
 
 import video from "../images/intro video in home.mp4"
@@ -123,14 +123,7 @@ export default function HomePage() {
       },
     })
       .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        const uniqueArray = Array.from(new Set(data.map((obj) => obj.id))).map(
-          (id) => {
-            return data.find((obj) => obj.id === id);
-          }
-        );
-        setAllSkills(uniqueArray)
-      })
+      .then((data) => setAllSkills(data))
       .catch((error) => console.error(error));
   }
 
@@ -324,7 +317,7 @@ export default function HomePage() {
         <div className="videoContainer" style={{width:"30%"}}>
                
                 <video
-                //  poster="../images/OnlyLogo.svg"
+                 poster={LOGOJPG}
                   controls style={{width:"100%"}}>
                   <source src={video} type="video/mp4" />
                   Your browser does not support the video tag.
