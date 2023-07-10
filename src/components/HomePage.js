@@ -351,7 +351,7 @@ const [isVisible, setIsVisible] = useState(false);
       <div className="ContainerCoursesShape">
         <div className="coursesBigDiv">
           <h3>Couldn't Solve it?, No Problem. Take A Look On Our Courses</h3>
-          <h1 ref={elementRef} className={isVisible ? 'show' : 'hidden'}>Our Courses</h1>
+          <h1 >Our Courses</h1>
           <div className="coursesContainer">
             {courses?.map((course) => {
               return (
