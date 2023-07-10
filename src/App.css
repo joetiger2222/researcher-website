@@ -100,7 +100,7 @@ p, h1 ,h2 ,h3 ,h4{
   height: 20px;
 }
 .SpanUpload:hover{
-  background-color: #044d45;
+  background-color: var(--button-color);
 cursor: pointer;
 }
 .SpanUpload:hover svg{

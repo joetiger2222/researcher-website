@@ -234,10 +234,15 @@ export default function Idea() {
             </div>
           </div>
           <h1 className="headContact2">All Researchers</h1>
+          <div style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <input
+          placeholder="Search Name"
+          className="search-input"
             name="search"
             onChange={(e) => setSearch(e.target.value)}
           ></input>
+          </div>
+          
 
           <div className="ContInviteResearchers custom-scrollbar">
             {ress
