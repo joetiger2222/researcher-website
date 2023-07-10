@@ -223,8 +223,8 @@ let counter=1;
             >
               {AllMessages?.map((message) => {
                 return (
-                  <div style={{ display: "flex", flexDirection: "column",alignSelf:message.senderId===userData.userId?'flex-end':null }}>
-                    <p className="spanChat">{message.content}</p>
+                  <div style={{ gap:"5px",display:"flex",flexDirection:"column",alignSelf:message.senderId===userData.userId?'flex-end':null }}>
+                    <p style={{padding:"8px",backgroundColor:"rgb(213,213,213)"}} className="borderR spanChat">{message.content}</p>
                   </div>
                 );
               })}

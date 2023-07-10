@@ -188,6 +188,8 @@ top: -5px;
   transform: translateY(-4px);
   color: white;
   border: none;
+  border: 2px solid var(--button-color);
+
 
 }
 
