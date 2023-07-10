@@ -449,11 +449,11 @@ export default function MarketPalce() {
           )}
         </div>
         <div className="ContainerbtnData">
-           (
+           
             <button className="plusBtn" onClick={() => setShowIdeaCard(true)}>
               Create New Idea
             </button>
-          )
+          
           {showCreateIdeaCard && (
             <CreateNewIdeaCard
               show={showCreateIdeaCard}
