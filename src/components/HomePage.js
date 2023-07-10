@@ -45,23 +45,6 @@ export default function HomePage() {
 const [isVisible, setIsVisible] = useState(false);
   const elementRef = useRef(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        } else {
-          setIsVisible(false);
-        }
-      });
-    });
-
-    observer.observe(elementRef.current);
-
-    return () => {
-      observer.unobserve(elementRef.current);
-    };
-  }, []);
 
   function renderSideBar() {
     if (sideBarVisible) {
