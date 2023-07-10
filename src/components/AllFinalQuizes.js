@@ -84,7 +84,7 @@ function deleteFinalQuiz(quizId){
                         })}
                         </div>
                        <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
-                       <button className="buttonExit2" style={{width:"120px"}} onClick={()=>deleteFinalQuiz(quiz.id)}>Delete This Quiz</button>
+                       <button className="buttonExit2" style={{width:"160px"}} onClick={()=>deleteFinalQuiz(quiz.id)}>Delete This Quiz</button>
 
                        </div>
                     </div>

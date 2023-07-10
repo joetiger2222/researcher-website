@@ -235,7 +235,7 @@ column-gap: 3px;
     border: none;
     border-radius: 5px;
     background-color: white;
-    color: var(--green-color);
+    color: var(--button-color);
     font-size: 16px;
     /* margin-bottom: 10px; */
     transition: all 0.3s ease-in-out;

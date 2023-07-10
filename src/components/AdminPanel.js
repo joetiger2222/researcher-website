@@ -803,7 +803,7 @@ export default function AdminPanel() {
                 return (
                   <li
                     style={{
-                      color: "#007d6f",
+                      color: "rgb(21 46 125)",
                       fontSize: "16px",
                       fontWeight: "700",
                     }}
@@ -833,7 +833,7 @@ export default function AdminPanel() {
                 return (
                   <li
                     style={{
-                      color: "#007d6f",
+                      color: "rgb(21 46 125)",
                       fontSize: "16px",
                       fontWeight: "700",
                     }}
