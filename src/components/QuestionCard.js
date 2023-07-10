@@ -9,9 +9,9 @@ const QuestionCard = ({ question, id,handleAnsQ }) => {
     }
     const MemoizedAnswersCard = useMemo(() => {
     return (
-      <div>
-        <h1>{id + ". " + question?.name}</h1>
-        <div style={{ paddingLeft: "40px" }}>
+      <div style={{padding:"20px",display:"flex",flexDirection:"column",gap:"10px"}}>
+        <h3 style={{textAlign:"justify"}}>{id + ". " + question?.name}</h3>
+        <div style={{ paddingLeft: "40px",display: "flex",flexDirection: "column",gap: "10px"}}>
           {question.answers?.map((a) => {
             return <Answers a={a} id={id} chooseAns={()=>handleQ(a)}
             />;
@@ -26,9 +26,9 @@ const QuestionCard = ({ question, id,handleAnsQ }) => {
 
   const Answers = ({ a ,id,chooseAns}) => {
     return (
-      <div style={{ display: "flex",gap:"10px" }}>
+      <div className="custom-scrollbar" style={{ display: "flex",gap:"10px",width:"100%",maxHeight:"60px",overflow:"auto",textAlign:"justify",wordBreak:"break-word" }}>
         <input onClick={chooseAns} type="radio" name={`answernum${id}`}></input>
-        <p>{a?.answerText}</p>
+        <p style={{padding:"5px"}} className="custom-scrollbar">{a?.answerText}</p>
       </div>
     );
   };

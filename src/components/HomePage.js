@@ -229,42 +229,60 @@ const [isVisible, setIsVisible] = useState(false);
             <div className="ContNum">
               <h2>01</h2>
             </div>
+            <div style={{height:"170px" ,display:"flex",flexDirection:"column",gap:"5px"}}>
+
             <h3>Best Doctors</h3>
-            <p>
+            <p style={{padding:"5px",maxHeight:"130px",overflow:"auto"}} className="custom-scrollbar">
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry.
             </p>
+                        </div>
+
           </div>
 
           <div className="badgeDiv">
             <div className="ContNum">
               <h2>02</h2>
             </div>
+            <div style={{height:"170px" ,display:"flex",flexDirection:"column",gap:"5px"}}>
+
             <h3>Best Students</h3>
-            <p>
+            <p style={{padding:"5px",maxHeight:"130px",overflow:"auto"}} className="custom-scrollbar">
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry.
             </p>
+                       </div>
+ 
           </div>
           <div className="badgeDiv">
             <div className="ContNum">
               <h2>03</h2>
             </div>
+            <div style={{height:"170px" ,display:"flex",flexDirection:"column",gap:"5px"}}>
+
             <h3>Best Researchers</h3>
-            <p>
+            <p style={{padding:"5px",maxHeight:"130px",overflow:"auto"}} className="custom-scrollbar">
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry.
             </p>
+                        </div>
+
           </div>
           <div className="badgeDiv">
             <div className="ContNum">
               <h2>04</h2>
             </div>
+            <div style={{height:"170px" ,display:"flex",flexDirection:"column",gap:"5px"}}>
             <h3>Best Ideas</h3>
-            <p>
+            <p style={{padding:"5px",maxHeight:"130px",overflow:"auto"}} className="custom-scrollbar">
               Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum is simply dummy text of the printing and typesetting
               industry.
             </p>
+            </div>
           </div>
 
           {/* <div className="badgeDiv">
@@ -338,7 +356,7 @@ const [isVisible, setIsVisible] = useState(false);
         </div>
 
         <div className="videoContainer" style={{width:"30%"}}>
-               
+               <h2 style={{textAlign:"center",padding:"5px"}}>Demonstration Video</h2>
                 <video
                  poster={LOGOJPG}
                   controls style={{width:"100%"}}>

@@ -8,9 +8,9 @@ export default function FinalQuizResult(){
     const navigate=useNavigate();
 
     return(
-        <div style={{minHeight:'100vh',display:'flex',alignItems:'center',width:'100%',backgroundColor:'black',justifyContent:'center'}}>
+        <div style={{minHeight:'100vh',display:'flex',alignItems:'center',width:'100%',justifyContent:'center'}}>
             <Header userData={userData} />
-            <div style={{backgroundColor:'white',borderRadius:'10px',width:'50%',display:'flex',flexDirection:'column',padding:'10px',alignItems:'center'}}>
+            <div style={{backgroundColor:'white',borderRadius:'10px',width:'50%',display:'flex',flexDirection:'column',padding:'20px',alignItems:'center',color:"red"}}>
                 <h1 style={{textAlign:'center'}}>You Failed The Exam</h1>
                 <button className="SubmitQuizInFinalAndSectionQuiz" onClick={()=>navigate(`/FinalQuiz/${skillId}`, { state: { data: userData } })}>Retake</button>
             </div>

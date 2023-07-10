@@ -215,6 +215,7 @@ p {
   background-color: transparent;
   border-radius: 20px;
   text-align: center;
+  transition: 0.5s;
   /* margin-top: 20px; */
 }
 .btnSkillHome:hover{
@@ -267,6 +268,9 @@ p {
 .badgeDiv > p {
   color: black;
   font-size: 16px;
+  max-height: 100px;
+  padding: 5px;
+  overflow: auto;
 }
 
 .coursesContainer {
@@ -331,10 +335,11 @@ p {
 .coursesBigDiv > h1 {
   font-size: 40px;
   text-align: center;
+  text-transform: capitalize;
 }
 .coursesBigDiv > h3 {
   text-align: center;
-}
+  text-transform: capitalize;}
 
 .earnPointsContainer {
           /* width: 70%; */
@@ -569,6 +574,10 @@ p {
     /* border-radius: 25px; */
     height: 300px;
     border: 1px solid var(--button-color);
+}
+.videoContainer h2 {
+
+animation: videoAnimation 4s linear infinite;
 }
 
 .ContainerCoursesShape {

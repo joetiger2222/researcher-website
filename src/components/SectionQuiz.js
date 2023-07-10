@@ -143,9 +143,9 @@ export default function SectionQuiz() {
     
     .then(data=>{
       if(data.isSuccessed===true){
-        alert('you succedded');
+        toastr.success('you succedded',"Success");
       }else{
-        alert('you failed the exam');
+        toastr.error('you failed the exam',"Error");
       }
       navigate(-1);
     })
@@ -203,20 +203,19 @@ export default function SectionQuiz() {
   }, [timer, timeLimit.mins, timeLimit.secs]);
 
 
-
+console.log(courseData)
 
   return (
     <div className="sectionQuizContainer">
       <Header userData={userData} />
       <div className="sectionQuizHeader">
         <h1>
-          <span>Course Name : </span>
-          {courseData?.name}
+          Quiz for <span>{sectionData?.name}</span> In {courseData?.name}
+          
+           
+          
         </h1>
-        <h3>
-          <span>Section Name : </span>
-          {sectionData?.name}
-        </h3>
+       
         <h4>
         <span>Time Limit : </span>
           {timeLimit?.mins + ":" + timeLimit?.secs}
@@ -236,7 +235,7 @@ export default function SectionQuiz() {
       </div>
 
       {renderQ && (
-          <div className="questions">
+          <div className="questions custom-scrollbar">
             {questions?.map((q, index) => {
               return (
                 <QuestionCard

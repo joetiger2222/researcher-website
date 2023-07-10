@@ -42,13 +42,15 @@
 }
 
 .icon-footer{
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     cursor: pointer;
     color: white;
-
+    transition: 0.5s;
 }
-
+.icon-footer:hover{
+    color: black;
+}
 
 
 .aboutUsAndContact{

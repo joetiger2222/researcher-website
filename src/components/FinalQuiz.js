@@ -244,8 +244,8 @@ useEffect(() => {
 
   if (!finalQuizData) {
     return (
-      <div>
-        <h1>
+      <div style={{height:"100vh",display:"flex",alignItems:"center",width:"60%",margin:"auto"}}>
+        <h1 style={{textAlign:"center",backgroundColor:"aliceblue",padding:"20px"}}>
           You Have Exceeded The Free Trials Limit You Need To Buy The Course In
           Order To Retake The Final Quiz
         </h1>
@@ -276,7 +276,7 @@ useEffect(() => {
       </div>
 
       {renderQ && (
-        <div className="questions">
+        <div className="questions custom-scrollbar">
           {questions?.map((q, index) => {
             return (
               <QuestionCard

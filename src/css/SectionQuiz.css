@@ -4,20 +4,20 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: black;
+    /* background-color: black; */
     min-height: 100vh;
     row-gap: 30px;
 }
 
 .sectionQuizHeader{
-    margin-top: 50px;
-    background-color: var(--background-color);
-    width: 50%;
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    margin-top: 130px;
+  margin-top: 50px;
+  background-color: aliceblue;
+  width: 50%;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 130px;
 }
 .SubmitQuizInFinalAndSectionQuiz{
     padding: 8px;
@@ -38,15 +38,19 @@
     align-items: center;
     display: flex;
     justify-content: center;
+    margin: 15px 0;
   }
 .questions{
-    background-color: var(--background-color);
-    width: 50%;
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 50px;
+  background-color: aliceblue;
+  width: 70%;
+  border-radius: 10px;
+  /* padding: 20px; */
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 50px;
+  gap: 15px;
+  max-height: 100vh;
+  overflow: auto;
 }
 
 .startQBtn{
@@ -67,6 +71,7 @@
     background-color: transparent;
     text-align: center;
     margin-top: 20px;
+    transition: 0.5s;
   }
   .startQBtn>button:hover{
     background-color: #1c4b94;

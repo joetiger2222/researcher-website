@@ -74,7 +74,7 @@ function deleteFinalQuiz(quizId){
                                     <div style={{padding:"10px",display:"flex",flexDirection:"column",gap:"5px"}}>
                                     {q.answers.map((a,index)=>{
                                         return(
-                                            <span style={{lineBreak:"auto", display:'flex',flexDirection:'row',textAlign:"justify",gap:"5px"}}><span style={{fontWeight:"bold"}}>{index+1+")"} </span> {a.answerText}</span>
+                                            <span className="custom-scrollbar" style={{lineBreak:"auto", display:'flex',flexDirection:'row',textAlign:"justify",gap:"5px",overflow:"auto",width:"100%"}}><span style={{fontWeight:"bold"}}>{index+1+")"} </span> {a.answerText}</span>
                                         )
                                     })}
                                     </div>
