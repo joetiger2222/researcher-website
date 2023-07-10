@@ -14,7 +14,14 @@ export default function MarketPalce() {
   const [showCreateIdeaCard, setShowIdeaCard] = useState(false);
   const [allTopics, setAllTopics] = useState(null);
   const [allSpecs, setAllSpecs] = useState(null);
+  const [completedIdeas,setCompletedIdea]=useState(null);
   const [ideaSearch, setIdeaSearch] = useState({
+    SearchTerm: "",
+    Topic: 0,
+    Specality: 0,
+    Month:0,
+  });
+  const [completeIdeaSearch, setCompleteIdeaSearch] = useState({
     SearchTerm: "",
     Topic: 0,
     Specality: 0,
@@ -88,15 +95,41 @@ export default function MarketPalce() {
       });
   }
 
+
+  function getCompletedIdeas() {
+    fetch(`https://localhost:7187/api/Ideas/CompletedIdeas?SearchTerm=${completeIdeaSearch.SearchTerm}&Specality=${completeIdeaSearch.Specality}&Month=${completeIdeaSearch.Month}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    })
+      .then((res) => (res.ok ? res.json() : toastr.error("failed to Load completed Ideas","Failed")))
+      .then((data) => {
+        if (data) {
+          setCompletedIdea(data);
+        }
+      });
+  }
+
+
+
+console.log('compelte',completedIdeas)
+
+
   useEffect(() => {
     getResearcherIdeas();
     getAllSpecs();
     getAllTopics();
   }, []);
 
+
   useEffect(() => {
     getAllIdeas();
   }, [ideaSearch]);
+
+  useEffect(()=>{
+    getCompletedIdeas();
+  },[completeIdeaSearch])
 
   function sendReq(ideaId) {
     fetch(
@@ -670,7 +703,244 @@ export default function MarketPalce() {
               <span> No Ideas Yet!</span>
             )}
           </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
         </div>
+
+
+
+
+
+
+
+
+
+
+
+        <div className="ContainerAllIdeas">
+          <h1>Completed Ideas</h1>
+
+          <div className="AllIdeas">
+            <input
+              name="SearchTerm"
+              onChange={(e) =>
+                setCompleteIdeaSearch((prev) => {
+                  return { ...prev, [e.target.name]: e.target.value };
+                })
+              }
+              placeholder="Search Idea"
+              type="text"
+              className="search-input"
+            ></input>
+            <select
+              onChange={(e) =>
+                setCompleteIdeaSearch((prev) => {
+                  return { ...prev, [e.target.name]: e.target.value * 1 };
+                })
+              }
+              name="Specality"
+              className="search-select"
+            >
+              <option selected value={0}>
+                Speciality
+              </option>
+              {allSpecs?.map((spec) => {
+                return <option value={spec.id}>{spec.name}</option>;
+              })}
+            </select>
+            
+
+
+
+            <select
+              onChange={(e) =>
+                setCompleteIdeaSearch((prev) => {
+                  return { ...prev, [e.target.name]: e.target.value * 1 };
+                })
+              }
+              name="Month"
+              className="search-select"
+            >
+              <option selected value={0}>
+                Month
+              </option>
+              {['January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December']?.map((month,index) => {
+                return <option value={index+1}>{month}</option>;
+              })}
+            </select>
+
+
+
+
+          </div>
+
+          <div className="AllIdeas">
+            {completedIdeas?.length > 0 ? (
+              completedIdeas
+                ?.filter(
+                  (idea) =>
+                    !researcherIdeas?.map((idea) => idea.id).includes(idea.id)
+                )
+                .map((idea, index) => {
+                  return (
+                    <div className="CardInAllIdeas">
+                      <h2>Idea: {index + 1}</h2>
+                      <div className="containerSpansData">
+                        <span
+                          style={{
+                            borderBottom: "1px solid black",
+                            padding: "5px",
+                          }}
+                        >
+                          Name:{" "}
+                          <span style={{ fontWeight: "bold" }}>
+                            {idea.name}
+                          </span>
+                        </span>
+                        <span
+                          style={{
+                            borderBottom: "1px solid black",
+                            padding: "5px",
+                          }}
+                        >
+                          specality:{" "}
+                          <span style={{ fontWeight: "bold" }}>
+                            {idea?.specalityObj.name}
+                          </span>
+                        </span>
+                        <span
+                      style={{
+                        borderBottom: "1px solid black",
+                        padding: "5px",
+                      }}
+                    >
+                      Status:{" "}
+                      <span style={{ fontWeight: "bold" }}>
+                        {idea?.isCompleted?'Completed':'In Progress'}
+                      </span>
+                    </span>
+                        <span
+                          style={{
+                            borderBottom: "1px solid black",
+                            padding: "5px",
+                          }}
+                        >
+                          deadline:{" "}
+                          <span style={{ fontWeight: "bold" }}>
+                            {new Date(idea?.deadline).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "long",
+                                day: "numeric",
+                                year: "numeric",
+                              }
+                            )}
+                          </span>
+                        </span>
+                        <span
+                          style={{
+                            borderBottom: "1px solid black",
+                            padding: "5px",
+                          }}
+                        >
+                          topic:{" "}
+                          <span style={{ fontWeight: "bold" }}>
+                            {idea?.topicObject.name}
+                          </span>
+                        </span>
+                        <span
+                          style={{
+                            borderBottom: "1px solid black",
+                            padding: "5px",
+                          }}
+                        >
+                          Participants Number:{" "}
+                          <span style={{ fontWeight: "bold" }}>
+                            {idea?.participantsNumber}
+                          </span>
+                        </span>
+                        <span
+                          style={{
+                            borderBottom: "1px solid black",
+                            padding: "5px",
+                          }}
+                        >
+                          max Participants Number:{" "}
+                          <span style={{ fontWeight: "bold" }}>
+                            {idea?.maxParticipantsNumber}
+                          </span>
+                        </span>
+                      </div>
+                      <div className="ContainerbtnData">
+                        
+                        <button
+                          className="plusBtn"
+                          onClick={() =>
+                            navigate(`/Idea/${idea.id}`, {
+                              state: { data: userData },
+                            })
+                          }
+                        >
+                          View Idea
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })
+            ) : (
+              <span> No Ideas!</span>
+            )}
+          </div>
+
+        </div>
+
+
+
+
+
+        
+
+
+
+
+
       </div>
       <Footer userData={userData}/>
     </div>

@@ -78,6 +78,21 @@ export default function SectionQuiz() {
       .then((data) => {
         if (data) {
           setTimeLimit((prevData) => {
+            if(data?.timeLimit.slice(1,2)*1!==0){
+              let hours=data?.timeLimit.slice(1,2)*1;
+              let hoursToMins=hours*60
+              let allMins=hoursToMins+(data?.timeLimit.slice(3,5)*1);
+              console.log('all mins',allMins)
+              return{
+                ...prevData,
+                mins:allMins
+              }
+              // return allMins;
+
+              // console.log('mins',hoursToMins)
+            }
+
+
             if (data?.timeLimit.slice(3, 4) * 1 === 0) {
               return {
                 ...prevData,

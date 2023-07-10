@@ -60,7 +60,7 @@ function deleteFinalQuiz(quizId){
                 return(
                     <div className="ContainerDataForQuiz">
                         <h1 style={{textAlign:"center",borderBottom:"1px solid black"}}>Quiz Number : {index+1}</h1>
-                        <h3 style={{textAlign:"center"}}>Time Limit : {quiz.timeLimit.slice(3,5)+':00'}</h3>
+                        <h3 style={{textAlign:"center"}}>Time Limit : {quiz.timeLimit}</h3>
                         <h3>Questions</h3>
 
                         <div className="custom-scrollbar" style={{maxHeight: "515px",overflow:"auto"}}>

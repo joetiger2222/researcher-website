@@ -150,6 +150,7 @@ console.log(quizData)
               <div className="quizHeaderOneLine">
                 <span>Min Score: </span>
                 <input
+                type="number"
                   onChange={getQuizData}
                   name="maxScore"
                   placeholder="Min Score"
@@ -159,7 +160,20 @@ console.log(quizData)
                 <span>Time Limit (In Minutes): </span>
                 <input
                   name="timeLimit"
-                  onChange={(e)=>setQuizData(prev=>{return{...prev,[e.target.name]:'00:'+e.target.value+':00'}})}
+                  type="number"
+                  // onChange={(e)=>setQuizData(prev=>{return{...prev,[e.target.name]:'00:'+e.target.value+':00'}})}
+                  onChange={(e)=>{
+                    if(e.target.value*1>=60){
+                      let time=(e.target.value*1)/60;
+                      let hours = Math.floor(time);
+                      let minutes = Math.round((time - hours) * 60);
+                      setQuizData(prev=>{return{...prev,[e.target.name]:`0${hours}:${minutes}:00`}})
+                      // console.log(hours + " hours " + minutes + " minutes");
+                      
+                    }else{
+                      setQuizData(prev=>{return{...prev,[e.target.name]:'00:'+e.target.value+':00'}})
+                    }
+                  }}
                   // onChange={getQuizData}
                   placeholder="Ex: 20"
                 />

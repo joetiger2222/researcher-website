@@ -46,6 +46,7 @@ export default function FinalQuiz() {
       ]);
     }
   };
+  console.log('time limit',timeLimit)
 
   let counter = 1;
   function getFinalQuizData() {
@@ -63,6 +64,21 @@ export default function FinalQuiz() {
         .then((data) => {
           if (data) {
             setTimeLimit((prevData) => {
+              if(data?.timeLimit.slice(1,2)*1!==0){
+                let hours=data?.timeLimit.slice(1,2)*1;
+                let hoursToMins=hours*60
+                let allMins=hoursToMins+(data?.timeLimit.slice(3,5)*1);
+                console.log('all mins',allMins)
+                return{
+                  ...prevData,
+                  mins:allMins
+                }
+                // return allMins;
+
+                // console.log('mins',hoursToMins)
+              }
+
+
               if (data?.timeLimit.slice(3, 4) * 1 === 0) {
                 return {
                   ...prevData,
@@ -135,16 +151,46 @@ export default function FinalQuiz() {
           if (data.isSuccessed) {
             getResearcherIdByStudentId().then(() => {
               userData.roles = "Researcher";
-              navigate(`/SuccededFianlQuiz`, { state: { data: userData } });
+              navigate(`/SuccededFianlQuiz`, { state: { data: userData },replace:true });
             });
           } else {
             navigate(`/FailedFinalQuiz/${skillId}`, {
-              state: { data: userData },
+              state: { data: userData },replace:true
             });
+            // toastr.error('You Failed Final Quiz');
+            // navigate(-1,{replace:true})
           }
         }
       });
   }
+
+
+
+
+useEffect(() => {
+    const handleNavigation = (event) => {
+      // Prevent going back to the current page
+      event.preventDefault();
+      
+      // Replace the current page with the previous page
+      navigate(-1, { replace: true });
+    };
+
+    // Listen for the 'popstate' event when the user navigates back
+    window.addEventListener('popstate', handleNavigation);
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      window.removeEventListener('popstate', handleNavigation);
+    };
+  }, [navigate]);
+
+
+
+
+
+
+
 
   const [timer, setTimer] = useState(null);
 
@@ -226,7 +272,7 @@ export default function FinalQuiz() {
             Start
           </button>
         </div>
-        {/* {timerStarted && <CountdownTimer timeLimit={timeLimit} />} */}
+        
       </div>
 
       {renderQ && (
