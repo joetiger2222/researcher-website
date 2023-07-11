@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import "../css/RatePage.css"
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 export default function AssignStudentToCourse(){
-    const userData=useLocation().state.data;
+    // const userData=useLocation().state.data;
+    const userData = useContext(MyContext);
     const [allStudents,setAllStudents]=useState(null);
     const [searchTerm,setSearchTerm]=useState('');
     const [choosenStudent,setChoosenStudent]=useState(null);
     const [showCourseCard,setShowCourseCard]=useState(false);
-
+    const navigate=useNavigate();
     function getAllStudents(){
         fetch(`https://localhost:7187/api/Students?SearchTerm=${searchTerm}`,{
             method:"GET",
@@ -18,13 +21,13 @@ export default function AssignStudentToCourse(){
                 "Authorization":`Bearer ${userData.token}`
             }
         })
-        .then(res=>res.ok?res.json():toastr.error('failed to load students data',"Failed"))
+        .then(res=>res.ok?res.json():null)
         .then(data=>data?setAllStudents(data):null)
     }
 
     useEffect(()=>{
         getAllStudents();
-    },[searchTerm])
+    },[searchTerm,userData])
 
     // console.log(allStudents)
 
@@ -46,7 +49,7 @@ const CoursesCard=(props)=>{
 
       useEffect(()=>{
         getAllCourses();
-      },[])
+      },[userData])
 
       
 
@@ -138,7 +141,14 @@ const CoursesCard=(props)=>{
     )
 }
 
-
+if(userData.userId===''){
+  return (
+    <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>
+      <h1>Please Login First</h1>
+      <button style={{width:'120px',height:'50px',borderRadius:'10px',backgroundColor:'rgb(21, 46, 125)',color:'white',fontSize:'20px',fontWeight:'bold'}} onClick={()=>navigate('/')}>Login</button>
+    </div>
+  )
+}
 
     if(userData.roles==='Admin'){
     return(
@@ -153,7 +163,7 @@ const CoursesCard=(props)=>{
                     <div className="CardRate">
                         <span  style={{borderBottom:"1px solid white",padding:"20px"}}>{'Name : '+student.firstName+' '+student.lastName}</span>
                         <span className="padding20L">{'Email : '+student.email}</span>
-                        <span className="padding20L">{'Nationality : '+student.nationality.name}</span>
+                        <span className="padding20L">{'Nationality : '+student.nationality?.name}</span>
                         <span className="padding20L">{'Age : '+student.age}</span>
                         <span className="padding20L">{"Gender "+student.gender===0?'Female':'Male'}</span>
                         <button className="HoverAssignBtn" style={{border:"1px solid black",

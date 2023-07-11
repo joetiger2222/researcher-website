@@ -1,15 +1,17 @@
 import React, { useEffect ,useState} from "react";
-import { useLocation, useParams} from "react-router-dom";
+import { useLocation, useNavigate, useParams} from "react-router-dom";
 import "../css/AllFinalQuizes.css"
 import Swal from "sweetalert2";
 import toastr from "toastr";
 import "toastr/build/toastr.min.css";
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 export default function AllFinalQuizes(){
-    
-    const userData = useLocation().state?.data;
+    const userData = useContext(MyContext);
+    // const userData = useLocation().state?.data;
     const {skillId}=useParams();
     const[allFinalQuizes,setAllFinalQuizes]=useState(null);
-
+    const navigate=useNavigate();
 
     function getAllFinalQuizes(){
         fetch(`https://localhost:7187/api/Admin/Quizzes/${skillId}`,{
@@ -18,14 +20,14 @@ export default function AllFinalQuizes(){
             "Authorization":`Bearer ${userData.token}`
           }
         })
-        .then(res=>res.ok?res.json():alert('failed to load all quizes'))
+        .then(res=>res.ok?res.json():null)
         .then(data=>data?setAllFinalQuizes(data):null)
       }
 
       useEffect(()=>{
         getAllFinalQuizes();
-      },[])
-console.log(allFinalQuizes)
+      },[userData])
+
 
 
 function deleteFinalQuiz(quizId){
@@ -52,7 +54,14 @@ function deleteFinalQuiz(quizId){
   }
 
 
-
+  if(userData.userId===''){
+    return (
+      <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>
+        <h1>Please Login First</h1>
+        <button style={{width:'120px',height:'50px',borderRadius:'10px',backgroundColor:'rgb(21, 46, 125)',color:'white',fontSize:'20px',fontWeight:'bold'}} onClick={()=>navigate('/')}>Login</button>
+      </div>
+    )
+  }
 
     return (
         <div className="ContainerAllQuizes">

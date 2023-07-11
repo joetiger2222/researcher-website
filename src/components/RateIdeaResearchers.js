@@ -8,8 +8,11 @@ import 'toastr/build/toastr.min.css';
 import { MdOutlineFileUpload } from "react-icons/md";
 import { FaFileUpload } from "react-icons/fa";
 import Footer from "./Footer";
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 export default function RateIdeaResearchers(){
-    const userData=useLocation().state.data;
+    // const userData=useLocation().state.data;
+    const userData = useContext(MyContext);
     const {ideaId}=useParams();
     const [idea, setIdea] = useState(null);
     const [ideaPar, setIdeaPar] = useState(null);
@@ -26,7 +29,7 @@ export default function RateIdeaResearchers(){
             Authorization: `Bearer ${userData?.token}`,
           },
         })
-          .then((res) => (res.ok ? res.json() : toastr.error("failed to load idea data","Failed")))
+          .then((res) => (res.ok ? res.json() : null))
           .then((data) => (data ? setIdea(data) : null));
       }
 
@@ -40,7 +43,7 @@ export default function RateIdeaResearchers(){
             Authorization: `Bearer ${userData?.token}`,
           },
         })
-          .then((res) => (res.ok ? res.json() : toastr.error("failed to get Partipants","Failed")))
+          .then((res) => (res.ok ? res.json() : null))
           .then((data) => {
             if (data) {
               setIdeaPar(data);
@@ -53,7 +56,7 @@ export default function RateIdeaResearchers(){
       useEffect(() => {
         getIdeaData();
         getParticaptns();
-      }, []);
+      }, [userData]);
 
 
 
@@ -227,6 +230,14 @@ const UploadFileCard = (props) => {
 
 
 
+if(userData.userId===''){
+  return (
+    <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>
+      <h1>Please Login First</h1>
+      <button style={{width:'120px',height:'50px',borderRadius:'10px',backgroundColor:'rgb(21, 46, 125)',color:'white',fontSize:'20px',fontWeight:'bold'}} onClick={()=>navigate('/')}>Login</button>
+    </div>
+  )
+}
 
 
 

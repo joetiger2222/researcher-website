@@ -10,8 +10,11 @@ import { FaWhatsapp } from "react-icons/fa";
 import toastr from "toastr";
 import "toastr/build/toastr.min.css";
 import "../css/Footer.css";
-const Footer = ({ userData }) => {
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
+const Footer = () => {
   const [showProblemCard, setShowProblemCard] = useState(false);
+  const userData = useContext(MyContext);
   // console.log('from footer',userData)
   const [whatsappUrl, setWhatsappUrl] = useState("");
   const urlWhatSap = () => {

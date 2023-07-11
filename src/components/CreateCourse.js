@@ -4,10 +4,13 @@ import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 export default function CreateCourse() {
   const navigate = useNavigate();
   const [courseId, setCourseId] = useState(null);
-  const userData=useLocation().state?.data
+  // const userData=useLocation().state?.data
+  const userData = useContext(MyContext);
   const [courseData, setCourseData] = useState({
     name: "",
     instructions: "",
@@ -61,9 +64,28 @@ console.log(courseData)
     .catch(error=>console.error(error))
   }
 
+  function getAllSkillsWithQuizes() {
+    fetch(`https://localhost:7187/api/Researchers/Skills`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        const uniqueArray = Array.from(new Set(data.map((obj) => obj.id))).map(
+          (id) => {
+            return data.find((obj) => obj.id === id);
+          }
+        );
+        setAllSkills(uniqueArray);
+      })
+      .catch((error) => console.error(error));
+  }
+
   useEffect(()=>{
-    getAllSkills();
-},[])
+    getAllSkillsWithQuizes();
+},[userData])
 
   function sendCourseData(e) {
     e.preventDefault();
@@ -86,6 +108,20 @@ console.log(courseData)
   useEffect(() => {
     if (courseId) navigate(`/CourseDetails/${courseId}`,{state:{data:userData}});
   }, [courseId]);
+
+
+
+  if(userData.userId===''){
+    return (
+      <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>
+        <h1>Please Login First</h1>
+        <button style={{width:'120px',height:'50px',borderRadius:'10px',backgroundColor:'rgb(21, 46, 125)',color:'white',fontSize:'20px',fontWeight:'bold'}} onClick={()=>navigate('/')}>Login</button>
+      </div>
+    )
+  }
+
+
+
 
   return (
     <div className="createCourseContainer">

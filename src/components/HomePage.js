@@ -19,15 +19,18 @@ import SideBar from "./SideBar";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
 import { useLocation, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 export default function HomePage() {
   const [sideBarVisible, setSideBarVisible] = useState(false);
-  const [resercherId, setResearcherId] = useState(null);
+  // const [resercherId, setResearcherId] = useState(null);
   const [courses, setAllCourses] = useState(null);
   const [allSkills, setAllSkills] = useState(null);
   const [skillId, setSkillId] = useState(null);
   const navigate = useNavigate();
-  const userData = useLocation().state?.data;
-  console.log(courses);
+  // const userData = useLocation().state?.data;
+  const userData = useContext(MyContext);
+  
 
 
 //   const observer = new IntersectionObserver((entries) => {
@@ -101,13 +104,13 @@ const [isVisible, setIsVisible] = useState(false);
         Authorization: `Bearer ${userData.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : toastr.error("Failed To Load Courses","Failed")))
+      .then((res) => (res.ok ? res.json() : null))
       .then((data) => setAllCourses(data));
   }
 
   useEffect(() => {
     getAllCourses();
-  }, []);
+  }, [userData]);
 
   function getResearcherIdByStudentId() {
     fetch(
@@ -124,7 +127,7 @@ const [isVisible, setIsVisible] = useState(false);
         if (data) {
           userData.roles = "Researcher";
           userData.resercherId = data.researcherId;
-          setResearcherId(data.researcherId);
+          userData.setResercherId(data.researcherId);
         }
       })
       .catch((error) => console.error(error));
@@ -139,7 +142,14 @@ const [isVisible, setIsVisible] = useState(false);
       },
     })
       .then((res) => (res.ok ? res.json() : null))
-      .then((data) => setAllSkills(data))
+      .then((data) => {
+        const uniqueArray = Array.from(new Set(data.map((obj) => obj.id))).map(
+          (id) => {
+            return data.find((obj) => obj.id === id);
+          }
+        );
+        setAllSkills(uniqueArray);
+      })
       .catch((error) => console.error(error));
   }
 
@@ -153,11 +163,11 @@ const [isVisible, setIsVisible] = useState(false);
         },
       }
     )
-      .then((res) => (res.ok ? res.json() : toastr.error("server error","Error")))
+      .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data) {
           if (data.isSuccessed) toastr.success("you already succeded in this exam !","Success");
-          else navigate(`/FinalQuiz/${skillId}`, { state: { data: userData } });
+          else navigate(`/FinalQuiz/${skillId}`);
         }
       });
   }
@@ -165,7 +175,7 @@ const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
     getResearcherIdByStudentId();
     getAllSkills();
-  }, []);
+  }, [userData]);
 
   const CourseCard = ({ course }) => {
     return (
@@ -174,14 +184,16 @@ const [isVisible, setIsVisible] = useState(false);
         //  className="shakingText"
         className="scalingText"
         >{course.name}</h1>
+        <h3
+        //  className="shakingText"
+        className="scalingText"
+        >Skill : {course.skillObj.name}</h3>
         
         <div className="courseBtnAndPriceDiv">
           <button
           className="bn54"
             onClick={() =>
-              navigate(`/CourseDetails/${course.id}`, {
-                state: { data: userData },
-              })
+              navigate(`/CourseDetails/${course.id}`)
             }
           >
             Details
@@ -192,7 +204,16 @@ const [isVisible, setIsVisible] = useState(false);
     );
   };
 
-  console.log(userData);
+  console.log('courses',courses)
+
+  if(userData.userId===''){
+    return (
+      <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>
+        <h1>Please Login First</h1>
+        <button style={{width:'120px',height:'50px',borderRadius:'10px',backgroundColor:'rgb(21, 46, 125)',color:'white',fontSize:'20px',fontWeight:'bold'}} onClick={()=>navigate('/')}>Login</button>
+      </div>
+    )
+  }
 
   return (
     <div className="homePageContainer">
@@ -393,7 +414,7 @@ const [isVisible, setIsVisible] = useState(false);
         </div>
       </div> */}
 
-      <Footer userData={userData} />
+      <Footer  />
     </div>
   );
 }

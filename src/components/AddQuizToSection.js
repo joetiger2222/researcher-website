@@ -6,7 +6,10 @@ import Header from "./Header";
 import AnswersCard from "./AnswerCard";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 export default function AddQuizToSection() {
+  const userData = useContext(MyContext);
   const navigate = useNavigate();
   const { sectionId } = useParams();
 
@@ -25,7 +28,7 @@ export default function AddQuizToSection() {
     maxScore: 0,
     questions: [],
   });
-  const userData=useLocation().state?.data
+  // const userData=useLocation().state?.data
   // const [isActive, setIsActive] = useState(false);
 
   // const handleClickSubmit = () => {
@@ -58,11 +61,11 @@ export default function AddQuizToSection() {
 
   useEffect(() => {
     getSectionData();
-  }, []);
+  }, [userData]);
 
   useEffect(() => {
     getCourseDetatils();
-  }, [sectionData]);
+  }, [sectionData,userData]);
 
   function addNewAnswer() {
     setAnswerCards((prevCards) => {
@@ -106,22 +109,7 @@ export default function AddQuizToSection() {
     setAnswerCards(updatedAnswerCards);
   };
 
-  // const AnswersCard = (props) => {
-  //   const [text,setText]=useState('')
-  //   return (
-  //     <div>
-  //       <input type="radio"></input>
-  //       <input
-  //       value={text}
-  //         type="text"
-  //         onChange={(e)=>setText(e.target.value)}
-  //       ></input>
-  //       <button onClick={props.delete}>Delete</button>
-  //     </div>
-  //   );
-  // };
-
-  // console.log(answerCards);
+ 
 
   function getQuestion(e) {
     if (e.target.name !== "score") {

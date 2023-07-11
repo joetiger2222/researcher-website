@@ -6,7 +6,10 @@ import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
 
 import QuestionCard from "./QuestionCard";
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 export default function SectionQuiz() {
+  const userData = useContext(MyContext);
   const { sectionId } = useParams();
   const navigate = useNavigate();
   const [sectionData, setSectionData] = useState(null);
@@ -19,7 +22,7 @@ export default function SectionQuiz() {
     secs: "00",
   });
   const [answers, setAnswers] = useState([]);
-  const userData=useLocation().state?.data
+  // const userData=useLocation().state?.data
 
 
 
@@ -54,16 +57,14 @@ export default function SectionQuiz() {
 
   function getSectionData() {
     fetch(`https://localhost:7187/api/Courses/Sections/${sectionId}`)
-      .then((res) => {
-        return res.json();
-      })
+      .then((res) => res.ok?res.json():null)
       .then((data) => setSectionData(data))
       .then(getCourseDetatils());
   }
 
   function getCourseDetatils() {
     fetch(`https://localhost:7187/api/Courses/${sectionData?.courseId}`)
-      .then((res) => res.json())
+      .then((res) => res.ok? res.json():null)
       .then((data) => setCourseData(data));
   }
 
@@ -74,7 +75,7 @@ export default function SectionQuiz() {
         "Authorization":`Bearer ${userData.token}`
       }
     })
-      .then((res) => res.ok?res.json():toastr.error('failed to load section quiz',"Failed"))
+      .then((res) => res.ok?res.json():null)
       .then((data) => {
         if (data) {
           setTimeLimit((prevData) => {
@@ -115,11 +116,11 @@ export default function SectionQuiz() {
   useEffect(() => {
     getSectionData();
     getSectionQuiz();
-  }, []);
+  }, [userData]);
 
   useEffect(() => {
     getCourseDetatils();
-  }, [sectionData]);
+  }, [sectionData,userData]);
 
 
   
@@ -204,6 +205,19 @@ export default function SectionQuiz() {
 
 
 console.log(courseData)
+
+
+
+
+
+if(userData.userId===''){
+  return (
+    <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>
+      <h1>Please Login First</h1>
+      <button style={{width:'120px',height:'50px',borderRadius:'10px',backgroundColor:'rgb(21, 46, 125)',color:'white',fontSize:'20px',fontWeight:'bold'}} onClick={()=>navigate('/')}>Login</button>
+    </div>
+  )
+}
 
   return (
     <div className="sectionQuizContainer">

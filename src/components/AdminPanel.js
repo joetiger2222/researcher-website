@@ -5,6 +5,8 @@ import toastr from "toastr";
 import "toastr/build/toastr.min.css";
 import { json, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 export default function AdminPanel() {
   const navigate = useNavigate();
   const [courses, setCourses] = useState(null);
@@ -30,7 +32,8 @@ export default function AdminPanel() {
 
   const [skillsWithQuizes, setSkillsWithQuizes] = useState(null);
   const [finalQuizSkillId, setFinalQuizSkillId] = useState(null);
-  const userData = useLocation().state?.data;
+  // const userData = useLocation().state?.data;
+  const userData = useContext(MyContext);
 
   function getCourses() {
     fetch(`https://localhost:7187/api/Courses`, {
@@ -63,7 +66,7 @@ export default function AdminPanel() {
       },
     })
       .then((res) =>
-        res.ok ? res.json() : toastr.error("failed to Load specs", "Failed")
+        res.ok ? res.json() : null
       )
       .then((data) => {
         if (data) {
@@ -80,7 +83,7 @@ export default function AdminPanel() {
       },
     })
       .then((res) =>
-        res.ok ? res.json() : toastr.error("failed to Load topics", "Failed")
+        res.ok ? res.json() : null
       )
       .then((data) => {
         if (data) {
@@ -97,7 +100,7 @@ export default function AdminPanel() {
       },
     })
       .then((res) =>
-        res.ok ? res.json() : toastr.error("failed to Load All Ideas", "Failed")
+        res.ok ? res.json() : null
       )
       .then((data) => {
         if (data) {
@@ -119,7 +122,7 @@ export default function AdminPanel() {
       .then((res) =>
         res.ok
           ? res.json()
-          : toastr.error("failed to load student problems", "Failed")
+          : null
       )
       .then((data) => (data ? setStudentProblems(data) : null));
   }
@@ -129,7 +132,7 @@ export default function AdminPanel() {
       .then((res) =>
         res.ok
           ? res.json()
-          : toastr.error("failed to load problem categories", "Failed")
+          : null
       )
       .then((data) => (data ? setProblemCategories(data) : null));
   }
@@ -142,7 +145,7 @@ export default function AdminPanel() {
       },
     })
       .then((res) =>
-        res.ok ? res.json() : toastr.error("failed to load responses", "Failed")
+        res.ok ? res.json() : null
       )
       .then((data) => (data ? setAdminResponse(data) : null));
   }
@@ -155,7 +158,7 @@ export default function AdminPanel() {
       },
     })
       .then((res) =>
-        res.ok ? res.json() : alert("faield to load all expert reqs")
+        res.ok ? res.json() : null
       )
       .then((data) => (data ? setAllExpertReqs(data) : null));
   }
@@ -189,10 +192,10 @@ export default function AdminPanel() {
     getAdminResponse();
     getAllExpertReqs();
     getAllSkillsWithQuizes();
-  }, []);
+  }, [userData]);
   useEffect(() => {
     getAllIdeas();
-  }, [searchIdea]);
+  }, [searchIdea,userData]);
 
   console.log(allExpertReqs);
 
@@ -204,9 +207,7 @@ export default function AdminPanel() {
     return (
       <div
         onClick={() =>
-          navigate(`/CourseDetails/${props.course.id}`, {
-            state: { data: userData },
-          })
+          navigate(`/CourseDetails/${props.course.id}`)
         }
         className="courseDiv"
       >
@@ -493,9 +494,7 @@ export default function AdminPanel() {
             <button
               className="detailsbtn"
               onClick={() =>
-                navigate(`/Idea/${props.req.ideaId}`, {
-                  state: { data: userData },
-                })
+                navigate(`/Idea/${props.req.ideaId}`)
               }
             >
               View Idea
@@ -658,9 +657,7 @@ export default function AdminPanel() {
         <p
           className="custom-scrollbar UserNameHover"
           onClick={() =>
-            navigate(`/Profile/${props.prob.studentId}`, {
-              state: { data: userData },
-            })
+            navigate(`/Profile/${props.prob.studentId}`)
           }
           style={{
             cursor: "pointer",
@@ -724,7 +721,15 @@ export default function AdminPanel() {
     );
   };
 
-  console.log(skillsWithQuizes);
+  if(userData.userId===''){
+    return (
+      <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>
+        <h1>Please Login First</h1>
+        <button style={{width:'120px',height:'50px',borderRadius:'10px',backgroundColor:'rgb(21, 46, 125)',color:'white',fontSize:'20px',fontWeight:'bold'}} onClick={()=>navigate('/')}>Login</button>
+      </div>
+    )
+  }
+
 
   return (
     <div className="adminPanelParent" style={{ rowGap: "50px" }}>
@@ -743,7 +748,7 @@ export default function AdminPanel() {
           <div className="ContainerbtnData">
             <button
               onClick={() =>
-                navigate("/CreateCourse", { state: { data: userData } })
+                navigate("/CreateCourse")
               }
               className="plusBtn"
             >
@@ -775,9 +780,7 @@ export default function AdminPanel() {
               <button
                 className="plusBtn"
                 onClick={() =>
-                  navigate(`/AddQuizToCourse/${skillId}`, {
-                    state: { data: userData },
-                  })
+                  navigate(`/AddQuizToCourse/${skillId}`)
                 }
               >
                 Create New Quiz
@@ -887,7 +890,7 @@ export default function AdminPanel() {
                     >
                       specality:{" "}
                       <span style={{ fontWeight: "bold" }}>
-                        {idea?.specalityObj.name}
+                        {idea?.specalityObj?.name}
                       </span>
                     </span>
                     <span
@@ -913,7 +916,7 @@ export default function AdminPanel() {
                     >
                       topic:{" "}
                       <span style={{ fontWeight: "bold" }}>
-                        {idea?.topicObject.name}
+                        {idea?.topicObject?.name}
                       </span>
                     </span>
                     <span
@@ -952,9 +955,7 @@ export default function AdminPanel() {
                     <button
                       className="button-arounder1"
                       onClick={() =>
-                        navigate(`/Idea/${idea.id}`, {
-                          state: { data: userData },
-                        })
+                        navigate(`/Idea/${idea.id}`)
                       }
                     >
                       View Idea
@@ -1091,7 +1092,7 @@ export default function AdminPanel() {
                   <span style={{ fontWeight: "bold" }}>
                     Problem Description :
                   </span>{" "}
-                  {res.problem.description}
+                  {res.problem?.description}
                 </span>
                 <span className="spanForScroll custom-scrollbar">
                   <span style={{ fontWeight: "bold" }}>Admin Response :</span>{" "}
@@ -1099,7 +1100,7 @@ export default function AdminPanel() {
                 </span>
                 <span className="custom-scrollbar">
                   <span style={{ fontWeight: "bold" }}>Problem Category :</span>{" "}
-                  {res.problem.problemCategory.name}
+                  {res.problem?.problemCategory?.name}
                 </span>
               </div>
             );
@@ -1128,9 +1129,7 @@ export default function AdminPanel() {
           <button
             className="plusBtn"
             onClick={() =>
-              navigate(`/AllFinalQuizes/${finalQuizSkillId}`, {
-                state: { data: userData },
-              })
+              navigate(`/AllFinalQuizes/${finalQuizSkillId}`)
             }
           >
             View All Quizes
@@ -1141,9 +1140,7 @@ export default function AdminPanel() {
         <button
           className="plusBtn"
           onClick={() =>
-            navigate("/RegisterationSpecialAccount", {
-              state: { data: userData },
-            })
+            navigate("/RegisterationSpecialAccount")
           }
         >
           Create Special Account
@@ -1153,9 +1150,7 @@ export default function AdminPanel() {
         <button
           className="plusBtn"
           onClick={() =>
-            navigate("/AssignStudentToCourse", {
-              state: { data: userData },
-            })
+            navigate("/AssignStudentToCourse")
           }
         >
           Assign Student To Course
@@ -1170,4 +1165,5 @@ export default function AdminPanel() {
       )}
     </div>
   );
+      
 }

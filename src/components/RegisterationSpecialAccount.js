@@ -5,9 +5,11 @@ import "../css/Registration.css";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
 import { useLocation, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 export default function RegisterationSpecialAccount() {
-  const userData = useLocation().state.data;
-
+  // const userData = useLocation().state.data;
+  const userData = useContext(MyContext);
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -63,7 +65,7 @@ export default function RegisterationSpecialAccount() {
       .then((res) => {
         if (res.ok) {
           toastr.success("user successfully created","Success");
-          navigate("/AdminPanel", { state: { data: userData } });
+          navigate("/AdminPanel");
         } else toastr.error("failed to send points and speciality","Failed");
       });
   }
@@ -109,7 +111,7 @@ export default function RegisterationSpecialAccount() {
   useEffect(() => {
     getAllNationalities();
     getAllSpecs();
-  }, []);
+  }, [userData]);
   // console.log('stuId',stuId);
   // console.log('show res moda',showResModal);
 
@@ -128,47 +130,7 @@ export default function RegisterationSpecialAccount() {
       });
   }
 
-  //   const ResCard=(props)=>{
-  //     const [resData,setResData]=useState({points:0,specalityId:0});
-
-  //     useEffect(()=>{
-  //         getAllSpecs();
-  //     },[])
-
-  //     if (!props.show) return null;
-  // return (
-  //   <div
-  //     style={{
-  //       position: "fixed",
-  //       left: "0",
-  //       top: "0",
-  //       right: "0",
-  //       bottom: "0",
-  //       backgroundColor: "rgba(0, 0,0,0.5)",
-  //       display: "flex",
-  //       alignItems: "center",
-  //       justifyContent: "center",
-  //       zIndex: "100",
-  //     }}
-  //   >
-  //     <div
-  //       style={{ width: "50%", backgroundColor: "white", }}
-  //     >
-
-  //     <span>Points : </span>
-  //     <input name="points" onChange={(e)=>setResData(prev=>{return{...prev,[e.target.name]:e.target.value*1}})}></input>
-  //     <select onChange={(e)=>setResData(prev=>{return{...prev,[e.target.name]:e.target.value}})}>
-  //         <option disabled selected>Speciality</option>
-  //         {allSpecs?.map(spec=>{
-  //             return(
-  //                 <option value={spec.id} >{spec.name}</option>
-  //             )
-  //         })}
-  //     </select>
-  //     </div>
-  //     </div>
-  // )
-  //   }
+ 
 
   if (userData.roles === "Admin") {
     return (

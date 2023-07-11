@@ -5,7 +5,10 @@ import Header from "./Header";
 import QuestionCard from "./QuestionCard";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 export default function FinalQuiz() {
+  const userData = useContext(MyContext);
   const [finalQuizData, setFinalQuizData] = useState(null);
   const questions = finalQuizData?.questions;
   const [renderQ, setRenderQ] = useState(false);
@@ -15,7 +18,7 @@ export default function FinalQuiz() {
   });
   const [answers, setAnswers] = useState([]);
   const { skillId } = useParams();
-  const userData = useLocation().state?.data;
+  // const userData = useLocation().state?.data;
   const [researcherId, setResearcherId] = useState("");
   const navigate = useNavigate();
 
@@ -98,11 +101,11 @@ export default function FinalQuiz() {
         });
     counter = counter - 1;
   }
-  console.log(timeLimit);
+  
 
   useEffect(() => {
     getFinalQuizData();
-  }, []);
+  }, [userData]);
 
  
 
@@ -151,12 +154,10 @@ export default function FinalQuiz() {
           if (data.isSuccessed) {
             getResearcherIdByStudentId().then(() => {
               userData.roles = "Researcher";
-              navigate(`/SuccededFianlQuiz`, { state: { data: userData },replace:true });
+              navigate(`/SuccededFianlQuiz`, {replace:true });
             });
           } else {
-            navigate(`/FailedFinalQuiz/${skillId}`, {
-              state: { data: userData },replace:true
-            });
+            navigate(`/FailedFinalQuiz/${skillId}`, {replace:true});
             // toastr.error('You Failed Final Quiz');
             // navigate(-1,{replace:true})
           }
@@ -251,6 +252,16 @@ useEffect(() => {
         </h1>
       </div>
     );
+  }
+
+
+  if(userData.userId===''){
+    return (
+      <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>
+        <h1>Please Login First</h1>
+        <button style={{width:'120px',height:'50px',borderRadius:'10px',backgroundColor:'rgb(21, 46, 125)',color:'white',fontSize:'20px',fontWeight:'bold'}} onClick={()=>navigate('/')}>Login</button>
+      </div>
+    )
   }
 
   return (

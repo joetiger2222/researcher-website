@@ -14,7 +14,10 @@ import Swal from "sweetalert2";
 import toastr from "toastr";
 import "toastr/build/toastr.min.css";
 import { MdOutlineFileUpload } from "react-icons/md";
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 const CourseDetails = () => {
+  const userData = useContext(MyContext);
   const navigate = useNavigate();
   const [videoId, setVideoId] = useState(null);
   const [courseDetails, setCourseDetails] = useState(null);
@@ -28,7 +31,7 @@ const CourseDetails = () => {
   const [showEditCourseDataModal, setShowEditCourseDataModal] = useState(false);
   const [isStudentEnrolled, setIsStudentEnrolled] = useState(false);
   const [introVideo,setIntroVideo]=useState(null);
-  const userData = useLocation()?.state?.data;
+  // const userData = useLocation()?.state?.data;
 
   let { id } = useParams();
 
@@ -70,7 +73,7 @@ const CourseDetails = () => {
       .then((res) =>
         res.ok
           ? res.json()
-          : toastr.error("failed to check enrollment", "Failed")
+          : null
       )
       .then((data) => (data ? setIsStudentEnrolled(data.isEnrolled) : null));
   }
@@ -126,16 +129,17 @@ const CourseDetails = () => {
     if (courseSections.length > 0) {
       getIntroVideo();
     }
-  },[courseSections,])
+  },[courseSections,userData])
 
-console.log(introVideo)
+// console.log(introVideo)
   useEffect(() => {
     getCourseDetatils();
     getCourseSections();
     if (userData.roles !== "Admin") checkStudentEnrollment();
     if (userData.roles === "Admin") setIsStudentEnrolled(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+  }, [userData]);
+  // console.log('enrollment',isStudentEnrolled)
 
   const SectionCard = ({ section }) => {
     const [activeSection, setAtiveSection] = useState(false);
@@ -170,7 +174,24 @@ console.log(introVideo)
     useEffect(() => {
       getVideosIds();
       getSectionQuiz();
-    }, []);
+    }, [userData]);
+
+
+
+
+
+
+
+
+
+    if(userData.userId===''){
+      return (
+        <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>
+          <h1>Please Login First</h1>
+          <button style={{width:'120px',height:'50px',borderRadius:'10px',backgroundColor:'rgb(21, 46, 125)',color:'white',fontSize:'20px',fontWeight:'bold'}} onClick={()=>navigate('/')}>Login</button>
+        </div>
+      )
+    }
 
 
     return (
@@ -203,10 +224,8 @@ console.log(introVideo)
               />
               <FaRegEdit
                 onClick={() =>
-                  isStudentEnrolled
-                    ? navigate(`/AddQuizToSection/${section.id}`, {
-                        state: { data: userData },
-                      })
+                  userData.roles==='Admin'
+                    ? navigate(`/AddQuizToSection/${section.id}`)
                     : null
                 }
                 className="plusIcon"
@@ -222,16 +241,14 @@ console.log(introVideo)
           {videosIds?.map((video, index) => (
             <span
               onClick={() =>
-                isStudentEnrolled
-                  ? navigate(`/CourseForStudent/${section.id}/${video.id}`, {
-                      state: { data: userData },
-                    })
+                isStudentEnrolled || userData.roles==='Admin'
+                  ? navigate(`/CourseForStudent/${section.id}/${video.id}`)
                   : toastr.warning("Buy The Course First", "Alert")
               }
               className="LinkVideoSection"
             >
               <span>
-                {isStudentEnrolled ? video?.title : `video ${index + 1}`}
+                {isStudentEnrolled ||userData.roles==='Admin' ? video?.title : `video ${index + 1}`}
               </span>
             </span>
           ))}
@@ -241,9 +258,7 @@ console.log(introVideo)
               className="QuizTitle"
               onClick={() => {
                 if (isStudentEnrolled) {
-                  navigate(`/SectionQuiz/${section.id}`, {
-                    state: { data: userData },
-                  });
+                  navigate(`/SectionQuiz/${section.id}`);
                 }
               }}
             >
@@ -493,7 +508,7 @@ console.log(introVideo)
             },
           }).then((res) => {
             if (res.ok) {
-              navigate("/AdminPanel", { state: { data: userData } });
+              navigate("/AdminPanel");
             } else
               toastr.error("Error Happened Please Try Again Later", "Failed");
           });
@@ -646,9 +661,11 @@ console.log(introVideo)
     );
   };
 
+  console.log(userData)
+
   return (
     <div className="courseParent">
-      <Header userData={userData} />
+      <Header  />
 
       <div className="AllContentContainer">
         <div className="LeftCourseData">
@@ -660,7 +677,7 @@ console.log(introVideo)
               <button
                 className="btnBUY"
                 onClick={() =>
-                  navigate("/BuyCourse", { state: { data: userData } })
+                  navigate("/BuyCourse")
                 }
               >
                 Buy Now
@@ -850,7 +867,7 @@ console.log(introVideo)
       />
       <ModalForQuiz onClose={() => setShowQuiz(false)} show={showQuiz} />
 
-      <Footer userData={userData} />
+      <Footer />
     </div>
   );
 };

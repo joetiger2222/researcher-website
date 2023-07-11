@@ -19,8 +19,10 @@ import { MdCameraAlt } from "react-icons/md";
 
 import user from "../images/useer.png";
 import Footer from "./Footer";
-
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 const Profile = () => {
+  const userData = useContext(MyContext);
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [studentData, setStudentData] = useState(null);
@@ -39,9 +41,10 @@ const Profile = () => {
   const [researcherIdeas, setResearcherIdeas] = useState([]);
   const [studentCourses,setStudentCourses]=useState([]);
   const [studentImage, setStudentImage] = useState({ url: kariem });
-  const userData = useLocation().state?.data;
+  // const userData = useLocation().state?.data;
   const { studentId } = useParams();
   const navigate = useNavigate();
+  console.log('from profile',userData)
 
   function getStudentData() {
     fetch(`https://localhost:7187/api/Students/${studentId}`, {
@@ -51,7 +54,7 @@ const Profile = () => {
       },
     })
       .then((res) =>
-        res.ok ? res.json() : toastr.error("Something Wrong Happened", "Error")
+        res.ok ? res.json() : null
       )
       .then((data) => {
         if (data) {
@@ -79,6 +82,7 @@ const Profile = () => {
         }
       });
   }
+  // console.log('res data',resInvits)
 
   function getResearcherData(resId) {
     fetch(`https://localhost:7187/api/Researchers/${resId}`, {
@@ -169,7 +173,7 @@ const Profile = () => {
         "Authorization":`Bearer ${userData.token}`,
       }
     })
-    .then(res=>res.ok?res.json():alert('failed to get student courses'))
+    .then(res=>res.ok?res.json():null)
     .then(data=>data?setStudentCourses(data):null)
   }
 
@@ -181,7 +185,7 @@ const Profile = () => {
     getStudentCourses();
     }
     if (userData?.userId === studentId) getAdminResponse();
-  }, [studentId]);
+  }, [studentId,userData]);
 
   function rejectInvite(i) {
     fetch(
@@ -318,7 +322,7 @@ const Profile = () => {
         },
       })
         .then((res) =>
-          res.ok ? res.json() : toastr.error("failed to Load specs", "Failed")
+          res.ok ? res.json() : null
         )
         .then((data) => (data ? setAllSpecs(data) : null));
     }
@@ -749,7 +753,20 @@ const Profile = () => {
       </div>
     );
   };
-if(userData){
+  
+
+  if(userData.userId===''){
+    return (
+      <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>
+        <h1>Please Login First</h1>
+        <button style={{width:'120px',height:'50px',borderRadius:'10px',backgroundColor:'rgb(21, 46, 125)',color:'white',fontSize:'20px',fontWeight:'bold'}} onClick={()=>navigate('/')}>Login</button>
+      </div>
+    )
+  }
+
+
+console.log('studentd data',studentData)
+
   return (
     <div className="ParentHeadData">
       <Header userData={userData} />
@@ -823,10 +840,10 @@ if(userData){
             {studentData?.isMentor && <FaCheckCircle />}
           </h1>
           <p className="profile-bio">
-            {"Bio : "+studentData?.bio}
+            {studentData?.bio?"Bio : "+studentData?.bio:'Bio : '}
           </p>
           <p className="profile-bio">
-            {"Google Schooler Link : "+studentData?.googleSchoolerLink}
+            {studentData?.googleSchoolerLink?"Google Schooler Link : "+studentData?.googleSchoolerLink:'Google Schooler Link :'}
           </p>
           
           {userData.roles === "Researcher" && (
@@ -875,12 +892,17 @@ if(userData){
         <div className="badgesContainer">
           <h1>Badges</h1>
           <div className="badgesDiv custom-scrollbar">
-            <div className="badge">
-              <h4>Medical Coding</h4>
+            {studentData?.badges.map(badge=>{
+              return (
+                <div className="badge">
+              <h4>{badge.name}</h4>
             </div>
-            <div className="badge">
+              )
+            })}
+            {/* <div className="badge">
               <h4>Medical Coding</h4>
-            </div>
+            </div> */}
+            
           </div>
         </div>
         <div className="badgesContainer">
@@ -932,7 +954,7 @@ if(userData){
 
             {studentCourses?.map(course=>{
               return(
-                <div className="watchedCourse" onClick={()=>navigate(`/CourseDetails/${course.id}`,{state:{data:userData}})}>
+                <div className="watchedCourse" onClick={()=>navigate(`/CourseDetails/${course.id}`)}>
               <h4>{course.name}</h4>
               
             </div>
@@ -954,9 +976,7 @@ if(userData){
                 return (
                   <div
                     onClick={() =>
-                      navigate(`/Idea/${idea.id}`, {
-                        state: { data: userData },
-                      })
+                      navigate(`/Idea/${idea.id}`)
                     }
                     className="CardInAllIdeas"
                     style={{ cursor: "pointer" }}
@@ -1149,9 +1169,7 @@ if(userData){
                   <p>Invitation {index + 1}</p>
                   <button
                     onClick={() =>
-                      navigate(`/Idea/${i.ideaId}`, {
-                        state: { data: userData },
-                      })
+                      navigate(`/Idea/${i.ideaId}`)
                     }
                   >
                     View Idea
@@ -1174,9 +1192,7 @@ if(userData){
                     <p>Request {index + 1}</p>
                     <button
                       onClick={() =>
-                        navigate(`/Idea/${r.ideaId}`, {
-                          state: { data: userData },
-                        })
+                        navigate(`/Idea/${r.ideaId}`)
                       }
                     >
                       View Idea
@@ -1210,9 +1226,7 @@ if(userData){
                       <button
                         className="viewData"
                         onClick={() =>
-                          navigate(`/idea/${req.ideaId}`, {
-                            state: { data: userData },
-                          })
+                          navigate(`/idea/${req.ideaId}`)
                         }
                       >
                         View Idea
@@ -1264,16 +1278,8 @@ if(userData){
       <Footer userData={userData}/>
     </div>
   );
-          }
-          else {
-            console.log('hello')
-            return(
-              <div style={{width:'100%',minHeight:'100vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
-            
-            <h1 >You Need To Sign In First</h1>
-            </div>
-            )
-          }
+          
+          
 };
 
 export default Profile;

@@ -1,12 +1,19 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import vod from '../images/photoPayment.png'
 import Footer from "./Footer";
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 export default function BuyCourse() {
-  const userData = useLocation().state.data;
-
+  // const userData = useLocation().state.data;
+  const userData = useContext(MyContext);
+  const navigate=useNavigate();
   const VodafoneCashCard = () => {
+
+
+
+    
     return (
       <div
       className="custom-scrollbar"
@@ -41,6 +48,22 @@ export default function BuyCourse() {
     );
   };
 
+
+
+  if(userData.userId===''){
+    return (
+      <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>
+        <h1>Please Login First</h1>
+        <button style={{width:'120px',height:'50px',borderRadius:'10px',backgroundColor:'rgb(21, 46, 125)',color:'white',fontSize:'20px',fontWeight:'bold'}} onClick={()=>navigate('/')}>Login</button>
+      </div>
+    )
+  }
+
+
+
+
+
+
   return (
     <div
       style={{
@@ -53,7 +76,7 @@ export default function BuyCourse() {
         backgroundColor: "#eee",
       }}
     >
-      <Header userData={userData} />
+      <Header  />
       <div style={{margin:"40px",display:'flex',flexDirection:'column',width:'100%',alignItems:'center',marginTop:'120px'}}>
       
       <div  style={{alignItems:"center", display:"flex",flexDirection:"column",gap:"20px"}}>
@@ -62,7 +85,7 @@ export default function BuyCourse() {
       <VodafoneCashCard />
       </div>
       </div>
-      <Footer userData={userData} />
+      <Footer />
     </div>
   );
 }

@@ -3,8 +3,11 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useState,useRef } from "react";
 import toastr from "toastr";
 import { MdOutlineFileUpload } from "react-icons/md";
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 export default function UploadFinalTask(){
-    const userData=useLocation().state.data;
+    // const userData=useLocation().state.data;
+    const userData = useContext(MyContext);
     const {taskId}=useParams();
     const navigate=useNavigate();
 
@@ -36,14 +39,7 @@ export default function UploadFinalTask(){
               body: formData,
             }
           )
-        //   .then((res) => {
-        //     if (res.ok) {
-        //       toastr.success("File Uploaded Successfully", "Success");
-        //       navigate(-1, { replace: true });
-              
-        //     } else
-        //       toastr.error("failed to add file please try again later", "Failed");
-        //   });
+        
         .then((response) => {
             const reader = response.body.getReader();
             let chunks = [];
@@ -80,7 +76,14 @@ export default function UploadFinalTask(){
           .catch((error) => console.error(error));
         };
     
-
+        if(userData.userId===''){
+          return (
+            <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>
+              <h1>Please Login First</h1>
+              <button style={{width:'120px',height:'50px',borderRadius:'10px',backgroundColor:'rgb(21, 46, 125)',color:'white',fontSize:'20px',fontWeight:'bold'}} onClick={()=>navigate('/')}>Login</button>
+            </div>
+          )
+        }
 
     return (
         <div style={{width:'100%',minHeight:'100vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>

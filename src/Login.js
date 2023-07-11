@@ -8,12 +8,15 @@ import { useNavigate } from "react-router-dom";
 import loader from './loader.gif';
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
+import { useContext } from "react";
+import { MyContext } from './Users/Redux';
 export default function Login() {
   const navigate=useNavigate();
 
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loginData,setLoginData]=useState(null);
   const [load,setLoad]=useState(false)
+  const { userId, setUserId, token, setToken, roles, setRoles } = useContext(MyContext);
 
   function getLoginData(event) {
     setFormData(prevFormData=>{
@@ -45,13 +48,16 @@ function loginAdmin(e){
   }).then(data=>{
     if (data) {
          
-      const admin = {
-        roles: "Admin",
-        token: data.token,
-        userId: data.userId,
-      };
+      // const admin = {
+      //   roles: "Admin",
+      //   token: data.token,
+      //   userId: data.userId,
+      // };
       // console.log('login data',admin)
-      navigate(`/adminPanel`, { state: { data: admin } });
+      setRoles('Admin');
+      setUserId(data.userId);
+      setToken(data.token)
+      navigate(`/adminPanel`);
     }
   })
 }
@@ -80,14 +86,17 @@ function authorizeLogin(e){
     })
     .then(data=>{
       if(data){
-      setLoginData(prev=>{
-        return{
-          roles:'Student',
-          userId:data.userId,
-          token:data.token
+      // setLoginData(prev=>{
+      //   return{
+      //     roles:'Student',
+      //     userId:data.userId,
+      //     token:data.token
           
-        }
-      })
+      //   }
+      // });
+      setRoles('Student');
+      setUserId(data.userId);
+      setToken(data.token)
     }
     });
 }
@@ -97,10 +106,10 @@ function authorizeLogin(e){
 
 
 useEffect(()=>{
-  if(loginData){
-    navigate(`/HomePage`, { state: { data: loginData } });
+  if(token){
+    navigate(`/HomePage`,);
   }
-},[loginData])
+},[token])
 
 
 if(load){

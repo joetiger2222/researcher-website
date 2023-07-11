@@ -323,6 +323,7 @@ column-gap: 3px;
   color: black;
 }
 .ContainerbtnData{
+  margin-top: auto;
   display: flex;
   gap: 10px;
   justify-content: center;

@@ -10,11 +10,13 @@ import user from "../images/imageUser.png"
 import ToastrComponent from "./Cards/ToastrComponent";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
+
 import Footer from "./Footer";
-
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 export default function Researchers(){
-
-    const userData=useLocation().state.data
+  const userData = useContext(MyContext);
+    // const userData=useLocation().state.data
     const [researchers,setResearchers]=useState(null);
     const [searchData,setSearchData]=useState({SearchTerm:'',Level:'',Specality:0,PageSize:10})
     const [allSpecs, setAllSpecs] = useState(null);
@@ -35,7 +37,7 @@ export default function Researchers(){
       }
     )
       .then((res) =>
-        res.ok ? res.json() : toastr.error("failed to load Researchers","Failed")
+        res.ok ? res.json() : null
       )
       .then((data) => (data ? setResearchers(data) : null));
   }
@@ -47,7 +49,7 @@ export default function Researchers(){
         Authorization: `Bearer ${userData.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : toastr.error("failed to Load specs","Failed")))
+      .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data) {
           setAllSpecs(data);
@@ -57,11 +59,11 @@ export default function Researchers(){
 
   useEffect(() => {
     getAllSpecs();
-  }, []);
+  }, [userData]);
 
   useEffect(() => {
     getAllResearchers();
-  }, [searchData]);
+  }, [searchData,userData]);
 
 
 
@@ -292,7 +294,7 @@ const ResCard=(props)=>{
 
 
   function getStudentImage(){
-    fetch(`https://localhost:7187/api/Students/Image/${props.res.studentObj.id}`,{
+    fetch(`https://localhost:7187/api/Students/Image/${props.res?.studentObj?.id}`,{
       method:"GET",
       headers:{
         "Authorization":`Bearer ${userData.token}`
@@ -318,29 +320,27 @@ const ResCard=(props)=>{
       <div className="containerSpansData padding20px">
       <span>
         {"Name : " +
-          props.res.studentObj.firstName +
+          props.res?.studentObj?.firstName +
           " " +
-          props.res.studentObj.lastName}
+          props.res?.studentObj?.lastName}
       </span>
-      <span>{"Age : " + props.res.studentObj.age}</span>
-      <span>{"Nationality : " + props.res.studentObj.nationality}</span>
-      <span>{"Speciality : " + props.res.specalityObject.name}</span>
-      <span>{"Points : " + props.res.points}</span>
-      <span>{"Level : " + props.res.level}</span>
+      <span>{"Age : " + props.res?.studentObj?.age}</span>
+      {/* <span>{"Nationality : " + props.res?.studentObj?.nationality}</span> */}
+      <span>{"Speciality : " + props.res?.specalityObject?.name}</span>
+      <span>{"Points : " + props.res?.points}</span>
+      <span>{"Level : " + props.res?.level}</span>
       
       <div className="ContainerbtnData">
       <button
       className="bn54"
         onClick={() =>
-          navigate(`/Profile/${props.res.studentObj.id}`, {
-            state: { data: userData },
-          })
+          navigate(`/Profile/${props.res?.studentObj?.id}`)
         }
       >
         View Profile
       </button>
       <button
-      onClick={()=>{setChoosenRes(props.res.studentObj.id);setShowChatModal(true)}}
+      onClick={()=>{setChoosenRes(props.res?.studentObj?.id);setShowChatModal(true)}}
   className="plusBtn"            
   >
     Chat
@@ -353,6 +353,23 @@ const ResCard=(props)=>{
     </div>
   );
 }
+
+
+
+if(userData.userId===''){
+  return (
+    <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>
+      <h1>Please Login First</h1>
+      <button style={{width:'120px',height:'50px',borderRadius:'10px',backgroundColor:'rgb(21, 46, 125)',color:'white',fontSize:'20px',fontWeight:'bold'}} onClick={()=>navigate('/')}>Login</button>
+    </div>
+  )
+}
+
+
+
+
+
+
 
   return (
     <>

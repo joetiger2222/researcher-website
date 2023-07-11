@@ -5,7 +5,10 @@ import "../css/Registration.css";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 const Registration = () => {
+  const { userId, setUserId, token, setToken, roles, setRoles } = useContext(MyContext);
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -19,8 +22,8 @@ const Registration = () => {
     nationalityId: 0,
   });
   const [passwordMatch, setPasswrdMatch] = useState("");
-  const [userId, setUserId] = useState(null);
-  const [loginData, setLoginData] = useState(null);
+  // const [userId, setUserId] = useState(null);
+  // const [loginData, setLoginData] = useState(null);
   const [allNationalities, setAllNationalities] = useState([]);
   const navigate = useNavigate();
   console.log(allNationalities);
@@ -39,7 +42,7 @@ const Registration = () => {
     setFormData(data);
   }, [formData.gender]);
 
-  console.log(formData);
+  
 
   function sendRegisterData(e) {
     e.preventDefault();
@@ -88,12 +91,15 @@ const Registration = () => {
       })
       .then((data) => {
         if (data) {
-          const login = {
-            roles: "Student",
-            userId: data.userId,
-            token: data.token,
-          };
-          navigate(`/HomePage`, { state: { data: login } });
+          // const login = {
+          //   roles: "Student",
+          //   userId: data.userId,
+          //   token: data.token,
+          // };
+          setRoles('Student');
+      setUserId(data.userId);
+      setToken(data.token);
+          navigate(`/HomePage`,);
         }
       });
   }

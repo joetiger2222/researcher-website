@@ -6,6 +6,8 @@ import Header from "./Header";
 import AnswersCard from "./AnswerCard";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 export default function AddQuizToCourse (){
     const [showQuestionTemplate, setShowQuestionTemplate] = useState(false);
     const [answerCards, setAnswerCards] = useState([
@@ -20,7 +22,8 @@ export default function AddQuizToCourse (){
       maxScore: 0,
       questions: [],
     });
-    const userData=useLocation().state?.data
+    // const userData=useLocation().state?.data
+    const userData = useContext(MyContext);
     const navigate=useNavigate();
 
 
@@ -134,8 +137,8 @@ function saveQuest() {
   }
 
 
-console.log(quizData)
 
+if(userData){
 
   return (
     <div className="AddQuizToSectionContainer">
@@ -278,4 +281,12 @@ console.log(quizData)
       </div>
     </div>
   );
+              }else {
+                return (
+                  <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column'}}>
+                    <h1>Please Login First</h1>
+                    <button onClick={()=>navigate('/')}>Login</button>
+                  </div>
+                )
+              }
 }

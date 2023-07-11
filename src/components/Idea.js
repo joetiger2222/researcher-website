@@ -11,8 +11,11 @@ import toastr from "toastr";
 import "toastr/build/toastr.min.css";
 import { MdOutlineFileUpload } from "react-icons/md";
 import Footer from "./Footer";
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 export default function Idea() {
-  const userData = useLocation()?.state.data;
+  // const userData = useLocation()?.state.data;
+  const userData = useContext(MyContext);
   const { ideaId } = useParams();
   const [idea, setIdea] = useState(null);
   const [ideaReqs, setIdeaReqs] = useState(null);
@@ -49,7 +52,7 @@ export default function Idea() {
       },
     })
       .then((res) =>
-        res.ok ? res.json() : toastr.error("failed to load idea data", "Failed")
+        res.ok ? res.json() : null
       )
       .then((data) => (data ? setIdea(data) : null));
   }
@@ -86,7 +89,7 @@ export default function Idea() {
     toastr.options = {
       positionClass: "toast-top-center",
     };
-  }, []);
+  }, [userData]);
 
   function getResearcherData(resId) {
     fetch(`https://localhost:7187/api/Researchers/${resId}`, {
@@ -121,7 +124,7 @@ export default function Idea() {
       .then((res) =>
         res.ok
           ? setResReqsData(resReqsData.filter((res) => res.id !== resId))
-          : toastr.error("failed to accept req", "Failed")
+          : null
       )
       .then((data) => (data ? console.log(data) : null));
   }
@@ -137,7 +140,7 @@ export default function Idea() {
       .then((res) =>
         res.ok
           ? setResReqsData(resReqsData.filter((res) => res.id !== resId))
-          : toastr.error("failed to reject req", "Failed")
+          : null
       )
       .then((data) => (data ? console.log(data) : null));
   }
@@ -150,7 +153,7 @@ export default function Idea() {
       },
     })
       .then((res) =>
-        res.ok ? res.json() : toastr.error("failed to get Partipants", "Failed")
+        res.ok ? res.json() : null
       )
       .then((data) => {
         if (data) {
@@ -173,7 +176,7 @@ export default function Idea() {
       },
     })
       .then((res) =>
-        res.ok ? res.json() : toastr.error("failed to load Tasks", "Failed")
+        res.ok ? res.json() : null
       )
       .then((data) => (data ? setTasks(data) : null));
   }
@@ -194,7 +197,7 @@ export default function Idea() {
         .then((res) =>
           res.ok
             ? res.json()
-            : toastr.error("failed to get Researchers", "Failed")
+            : null
         )
         .then((data) => (data ? setRess(data) : null));
     }
@@ -218,7 +221,7 @@ export default function Idea() {
       ).then((res) =>
         res.ok
           ? toastr.success("Invitation Sent Successfully", "Success")
-          : toastr.error("Failed To Send Invitation", "Failed")
+          : null
       );
     }
 
@@ -258,9 +261,7 @@ export default function Idea() {
                     <button
                       className="plusBtn"
                       onClick={() =>
-                        navigate(`/Profile/${res?.studentObj.id}`, {
-                          state: { data: userData },
-                        })
+                        navigate(`/Profile/${res?.studentObj.id}`)
                       }
                     >
                       View Profile
@@ -546,9 +547,7 @@ export default function Idea() {
                   <button
                     className="plusBtn"
                     onClick={() =>
-                      navigate(`/profile/${par.studentObj.id}`, {
-                        state: { data: userData },
-                      })
+                      navigate(`/profile/${par.studentObj.id}`)
                     }
                   >
                     View Profile
@@ -626,9 +625,7 @@ export default function Idea() {
                   <button
                     className="plusBtn"
                     onClick={() =>
-                      navigate(`/Profile/${par.studentObj.id}`, {
-                        state: { data: userData },
-                      })
+                      navigate(`/Profile/${par.studentObj.id}`)
                     }
                   >
                     View Profile
@@ -1145,7 +1142,7 @@ export default function Idea() {
         .then((res) =>
           res.ok
             ? res.json()
-            : toastr.error("failed to load particpants to task", "Failed")
+            : null
         )
         .then((data) => (data ? setTaskParticpants(data) : null));
     }
@@ -1313,7 +1310,7 @@ className="descriptionContainer custom-scrollbar"
               style={{ width: "141px" }}
               className="hoverBtn"
               onClick={() => {
-                navigate(`/UploadFinalTask/${task.id}`,{state:{data:userData}})
+                navigate(`/UploadFinalTask/${task.id}`)
               }}
             >
               Submit Task
@@ -1765,7 +1762,14 @@ className="descriptionContainer custom-scrollbar"
   };
 
 
- 
+  if(userData.userId===''){
+    return (
+      <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>
+        <h1>Please Login First</h1>
+        <button style={{width:'120px',height:'50px',borderRadius:'10px',backgroundColor:'rgb(21, 46, 125)',color:'white',fontSize:'20px',fontWeight:'bold'}} onClick={()=>navigate('/')}>Login</button>
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -1796,7 +1800,7 @@ className="descriptionContainer custom-scrollbar"
             </span>
             <span>
               <span style={{ fontWeight: "bold" }}>Specality:</span>{" "}
-              {idea?.specalityObj.name}
+              {idea?.specalityObj?.name}
             </span>
             <span>
               <span style={{ fontWeight: "bold" }}>Deadline:</span>{" "}
@@ -1808,7 +1812,7 @@ className="descriptionContainer custom-scrollbar"
             </span>
             <span>
               <span style={{ fontWeight: "bold" }}>Topic:</span>{" "}
-              {idea?.topicObject.name}
+              {idea?.topicObject?.name}
             </span>
           </div>
 
@@ -1829,9 +1833,7 @@ className="descriptionContainer custom-scrollbar"
                       <button
                         className="hoverBtn"
                         onClick={() =>
-                          navigate(`/Profile/${res.studentId}`, {
-                            state: { data: userData },
-                          })
+                          navigate(`/Profile/${res.studentId}`)
                         }
                       >
                         View Profile
@@ -1878,17 +1880,15 @@ className="descriptionContainer custom-scrollbar"
                         columnGap: "5px",
                       }}
                     >
-                      {idea.creatorId === par.id && <FaCrown />}
-                      {par?.studentObj.firstName +
+                      {idea?.creatorId === par?.id && <FaCrown />}
+                      {par?.studentObj?.firstName +
                         " " +
-                        par?.studentObj.lastName}
+                        par?.studentObj?.lastName}
                     </h3>
                     <button
                       className="hoverBtn"
                       onClick={() =>
-                        navigate(`/profile/${par.studentObj.id}`, {
-                          state: { data: userData },
-                        })
+                        navigate(`/profile/${par.studentObj?.id}`)
                       }
                     >
                       View Profile
@@ -1916,9 +1916,7 @@ className="descriptionContainer custom-scrollbar"
                 <button
                   className="buttonn"
                   onClick={() =>
-                    navigate(`/RateIdeaResearchers/${ideaId}`, {
-                      state: { data: userData },
-                    })
+                    navigate(`/RateIdeaResearchers/${ideaId}`)
                   }
                 >
                   Submit Idea

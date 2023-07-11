@@ -13,6 +13,7 @@ const ModalEditProfile = (props) => {
   const [email, setEmail] = useState("");
   const [gender, setGender] = useState(null);
   const [hallImage, setHallImage] = useState();
+  
   const params = useParams();
   let navigate = useNavigate();
   const handleSubmit = (event) => {

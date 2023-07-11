@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import Header from "./Header";
 import "../css/CourseForStudent.css";
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 export default function CourseForStudent() {
   const { videoId } = useParams();
   const { sectionId } = useParams();
   const [video, setVideo] = useState(null);
   const [videosIds, setVideosIds] = useState(null);
   const [sectionVideo, setSectionVideo] = useState(videoId);
-  const userData=useLocation().state?.data;
+  // const userData=useLocation().state?.data;
+  const userData = useContext(MyContext);
+  const navigate=useNavigate();
 
   function getVideo() {
     fetch(`https://localhost:7187/api/courses/Videos/${sectionVideo}`,{
@@ -56,7 +60,20 @@ export default function CourseForStudent() {
   }, [sectionVideo]);
 
 
-  console.log(sectionVideo)
+
+  if(userData.userId===''){
+    return (
+      <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>
+        <h1>Please Login First</h1>
+        <button style={{width:'120px',height:'50px',borderRadius:'10px',backgroundColor:'rgb(21, 46, 125)',color:'white',fontSize:'20px',fontWeight:'bold'}} onClick={()=>navigate('/')}>Login</button>
+      </div>
+    )
+  }
+
+
+
+
+
 
   return (
     <div className="courseForStudentContainer">

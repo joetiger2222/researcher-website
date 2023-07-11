@@ -24,9 +24,11 @@ import AssignStudentToCourse from './components/AssignStudentToCourse';
 import RateIdeaResearchers from './components/RateIdeaResearchers';
 import BuyCourse from './components/BuyCourse';
 import AllFinalQuizes from './components/AllFinalQuizes';
-import UploadFinalTask from './components/UploadFinalTask'
+import UploadFinalTask from './components/UploadFinalTask';
+import { MyProvider } from './Users/Redux';
 function App() {
   return (
+    <MyProvider>
     <div >
       <Routes>
         
@@ -58,6 +60,7 @@ function App() {
 
       </Routes>
     </div>
+     </MyProvider>
   );
 }
 
