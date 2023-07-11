@@ -9,6 +9,9 @@
     justify-content: space-around;
     height: 180px;
     gap: 20px;
+    background-image: url(../images/Logo\ -\ Text\ Only.png);
+    background-repeat: no-repeat;
+    background-position: center;
     
 }
 
@@ -45,7 +48,7 @@
     width: 25px;
     height: 25px;
     cursor: pointer;
-    color: white;
+    color: #ffffffa8;
     transition: 0.5s;
 }
 .icon-footer:hover{

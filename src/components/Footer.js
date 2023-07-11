@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 
 import { FaLinkedin } from "react-icons/fa";
-
+import Logo from "../images/Logo - Text Only.png"
 import { FaTwitterSquare } from "react-icons/fa";
 import { AiOutlineWhatsApp } from "react-icons/ai";
 
@@ -123,7 +123,7 @@ const Footer = () => {
   };
 
   return (
-    <div className="Footer">
+    <div className="Footer" style={{color:"#ffffffa8"}}>
       {!userData && (
         <div className="btnsFooter">
           <button>Login</button>
@@ -161,10 +161,10 @@ const Footer = () => {
         <a href="#">Contact Us </a>
       </div>
       <div className="AllRightReserved">
-        <p>&#169; All Rights Are Reserved For Teamwork</p>
+        <p><span>&#169; All Rights Are Reserved For Teamwork</span> </p>
       </div>
       <div>
-        <button className="bn54" onClick={() => setShowProblemCard(true)}>
+        <button style={{backgroundColor:"#ffffffa8"}}  className="bn54" onClick={() => setShowProblemCard(true)}>
           Send You Problem To Admin
         </button>
         {showProblemCard && (

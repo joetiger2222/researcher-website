@@ -148,3 +148,21 @@ outline: none;}
     margin-bottom: 5px;
     font-size: 18px;
 }
+
+.driveLink{
+  width: 96%;
+  padding: 14px 10px;
+  font-size: 16px;
+  color: #243b55;
+  /* margin-bottom: 30px; */
+  /* margin-left: 0px; */
+  border: none;
+  border-bottom: 1px solid #141e30;
+  outline: none;
+  /* padding-left: 15px; */
+  height: 13px;
+  border-right: none;
+  background: transparent;
+  /* box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white; */
+  /* box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white; */
+}

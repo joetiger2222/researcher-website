@@ -7,6 +7,9 @@ import kariem from "../images/userImg.png";
 import LOGO from "../images/Logo - Text Only.png";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
+import Swal from "sweetalert2";
+import toastr from "toastr";
+import "toastr/build/toastr.min.css";
 // import LOGO from "../images/Logo - With Text.png";
 
 
@@ -89,6 +92,26 @@ function getStudentImage(){
             {!userData&&<button className="headerSignBtn">Login</button>}
             {!userData&&<button className="headerSignBtn">Signup</button>}
             {userData&&<button onClick={()=>{
+              // Swal.fire({
+              //   title: 'Are you sure?',
+              //   text: 'Do you want to proceed?',
+              //   icon: 'question',
+              //   showCancelButton: true,
+              //   confirmButtonColor: '#3085d6',
+              //   cancelButtonColor: '#d33',
+              //   confirmButtonText: 'Yes',
+              //   cancelButtonText: 'No',
+              // }).then((result) => {
+              //   if (result.isConfirmed) {
+              //     // User clicked "Yes"
+              //     // Perform desired action here
+              //     toastr.info('User clicked "Yes"');
+              //   } else {
+              //     // User clicked "No" or closed the dialog
+              //     // Perform desired action here
+              //     toastr.error('User clicked "No" or closed the dialog');
+              //   }
+              // });
                userData.setUserId('');
                userData.setToken('');
                userData.setRoles('');

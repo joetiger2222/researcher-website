@@ -176,6 +176,7 @@ if(load){
                   padding: "20px 10px",
                   margin: "5px 0 0 0",
                   fontSize:'18px',
+                  direction:"ltr"
                 }}
                 onChange={getLoginData}
                 placeholder="Enter your Email"

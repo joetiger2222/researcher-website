@@ -133,20 +133,36 @@
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
+    transition: 0.5s;
+
+    
   }
-  
+
+  .dropdown-content:hover a{
+    background: linear-gradient(#3030bf, #59aeff);
+
+  }
   .dropdown-content a {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
     text-align: left;
+    background: white;
+    border-radius: 10px;
+    transition: 0.5s;
+
   }
   
-  .dropdown-content a:hover {background-color: #f1f1f1;}
+  .dropdown-content a:hover {
+    /* background-color: #f1f1f1; */
+    /* background: linear-gradient(#3030bf, #59aeff); */
+  }
   
   .dropdown:hover .dropdown-content {
     display: block;
+    transition: 0.5s;
+
   }
 
   @media only screen and (max-width: 1200px) {

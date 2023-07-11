@@ -92,6 +92,7 @@
   .courseDiv h4:first-child {
     font-weight: bold;
     font-size: 22px;
+    text-align: center;
   }
   .courseDiv h4 span:first-child {
     

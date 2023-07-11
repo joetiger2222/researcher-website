@@ -205,9 +205,9 @@ console.log(courseData)
         </div>
         
 
-        <div className="createCourseFormOneLine">
+        <div className="createCourseFormOneLineNew">
             <label>Drive Link</label>
-            <input onChange={getCourseData} name="driveLink"></input>
+            <input className="driveLink" onChange={getCourseData} name="driveLink"></input>
           </div>
 
 

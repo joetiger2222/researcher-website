@@ -12,7 +12,7 @@ import quizCartoon from "../images/quizCartoon.png";
 import Footer from "./Footer";
 import LOGOJPG from "../images/LogoJPG.jpg"
 import SearchIconLogo from "../images/Logo.png"
-
+import loGo from "../images/Logo.png"
 import video from "../images/intro video in home.mp4"
 import research from "../images/research.png";
 import SideBar from "./SideBar";
@@ -21,6 +21,7 @@ import 'toastr/build/toastr.min.css';
 import { useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
+import { FaSearch } from "react-icons/fa";
 export default function HomePage() {
   const [sideBarVisible, setSideBarVisible] = useState(false);
   // const [resercherId, setResearcherId] = useState(null);
@@ -191,11 +192,13 @@ const [isVisible, setIsVisible] = useState(false);
         
         <div className="courseBtnAndPriceDiv">
           <button
+          style={{gap:"5px"}}
           className="bn54"
             onClick={() =>
               navigate(`/CourseDetails/${course.id}`)
             }
-          >
+          >            <img style={{width:"20px",height:"20px"}} src={loGo}/>
+
             Details
           </button>
           <h4>{course.price} EGP</h4>
@@ -354,20 +357,21 @@ const [isVisible, setIsVisible] = useState(false);
               onChange={(e) => {
                 setSkillId(e.target.value * 1);
               }}
-              className="selectboxSkill"
+              className="selectboxSkill "
               name="skillId"
               id="skill"
             >
-              <option selected disabled value="">
-                Choose a Skill
+              <option  selected disabled value="">
+                Choose a Skill 
               </option>
               {allSkills?.map((skill) => {
                 return <option value={skill.id}>{skill.name}</option>;
               })}
             </select>
             {skillId && (
-              <button className="btnSkillHome" onClick={checkQuiz}>
-                Take Quiz
+              <button className="btnSkillHome" style={{gap:"5px",alignItems:"center",display:"flex",justifyContent:"center"}} onClick={checkQuiz}>
+                Take Quiz             <img style={{width:"20px",height:"20px"}} src={loGo}/>
+
               </button>
             )}
           </div>

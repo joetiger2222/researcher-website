@@ -668,7 +668,7 @@ const CourseDetails = () => {
       <Header  />
 
       <div className="AllContentContainer">
-        <div className="LeftCourseData">
+        <div className="LeftCourseData custom-scrollbar">
           <div className="LeftIntroData">
             <h1 className="NameCourse">{courseDetails?.name}</h1>
             <p className="briefCourseNew">{courseDetails?.brief}</p>
@@ -699,7 +699,7 @@ const CourseDetails = () => {
         </div>
 
         <div className="CenterAndRighCourseData">
-          <div className="CourseSectionsData">
+          <div className="CourseSectionsData ">
             <div className="courseCOntAddDelSection">
               <h1>Course Content</h1>
               {userData.roles === "Admin" && (
@@ -725,7 +725,7 @@ const CourseDetails = () => {
                 />
               )}
             </div>
-            <div className="ContSectionsNew">
+            <div className="ContSectionsNew custom-scrollbar">
               {courseSections?.length === 0 &&
                 (userData.roles === "Admin" ? (
                   <h3 style={{ textAlign: "center" }}>

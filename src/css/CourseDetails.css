@@ -408,6 +408,9 @@ box-shadow: 15px 20px 50px 0px rgba(255, 111.99999999999986, 44.99999999999992, 
   display: flex;
   flex-direction: column;
   gap: 20px;
+  max-height: 1000px;
+  overflow: auto;
+  padding: 10px;
 
 }
 .LeftIntroData{
@@ -565,4 +568,7 @@ border-radius: 5px;  background-color: white;}
   width: 100%;
   flex-direction: column;
   gap: 15px;
+  max-height: 1000px;
+  overflow: auto;
+  padding: 10px;
 }
