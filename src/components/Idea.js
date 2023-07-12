@@ -252,7 +252,7 @@ export default function Idea() {
               ?.filter((res) => !ideaPar.some((par) => par.id === res.id))
               .map((res) => {
                 return (
-                  <div className="DivContResearchers">
+                  <div style={{justifyContent:"center",flexDirection:"row"}} className="DivContResearchers">
                     <span style={{ fontWeight: "bold", fontSize: "18px" }}>
                       {res?.studentObj.firstName +
                         " " +
@@ -1872,7 +1872,7 @@ className="descriptionContainer custom-scrollbar"
             <div className="ContInviteResearchers custom-scrollbar">
               {ideaPar?.map((par) => {
                 return (
-                  <div className="DivContResearchers">
+                  <div className="DivContResearchers1">
                     <h3
                       style={{
                         display: "flex",

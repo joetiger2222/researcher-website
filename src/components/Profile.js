@@ -970,7 +970,7 @@ console.log('studentd data',studentData)
         <div className="ContainerAllIdeas">
           <h1 style={{ color: "black" }}>Ideas</h1>
 
-          <div className="AllIdeas">
+          <div className="AllIdeas custom-scrollbar" style={{maxHeight:"400px",overflow:"auto",padding:"20px",width:"90%"}}>
             {researcherIdeas?.length > 0 ? (
               researcherIdeas?.map((idea, index) => {
                 return (
@@ -979,7 +979,8 @@ console.log('studentd data',studentData)
                       navigate(`/Idea/${idea.id}`)
                     }
                     className="CardInAllIdeas"
-                    style={{ cursor: "pointer" }}
+
+                    style={{ cursor: "pointer",height:"350px",justifyContent:"flex-start" }}
                   >
                     <h2>Idea: {index + 1}</h2>
                     <div className="containerSpansData">
@@ -1048,10 +1049,12 @@ console.log('studentd data',studentData)
                         style={{
                           borderBottom: "1px solid black",
                           padding: "5px",
+                          display:"flex",
+                          alignItems:"center"
                         }}
                       >
                         topic:{" "}
-                        <span style={{ fontWeight: "bold" }}>
+                        <span style={{borderBottom: "none", fontWeight: "bold" }}>
                           {idea?.topicObject.name}
                         </span>
                       </span>
@@ -1249,7 +1252,7 @@ console.log('studentd data',studentData)
             {adminReponse?.map((res) => {
               return (
                 <div
-                  //  style={{border:'2px solid white'}}
+                   style={{height:"200px",justifyContent:"center"}}
                   className="CardInAllIdeas"
                 >
                   <span className="custom-scrollbar">
