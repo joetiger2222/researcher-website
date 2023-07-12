@@ -25,7 +25,7 @@ export default function AddQuizToCourse (){
     // const userData=useLocation().state?.data
     const userData = useContext(MyContext);
     const navigate=useNavigate();
-
+console.log(quizData)
 
     function addNewAnswer() {
         setAnswerCards((prevCards) => {

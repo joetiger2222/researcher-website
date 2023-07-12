@@ -15,6 +15,8 @@ export default function MarketPalce() {
   const [allIdeas, setAllIdeas] = useState(null);
   const [showCreateIdeaCard, setShowIdeaCard] = useState(false);
   const [showTermsAndCondsCard, setShowTermsAndCondsCard] = useState(false);
+  const [showTermsForReq, setShowTermsForReq] = useState(false);
+  const [choosenIdea, setChoosenIdea] = useState(null);
   const [allTopics, setAllTopics] = useState(null);
   const [allSpecs, setAllSpecs] = useState(null);
   const [completedIdeas, setCompletedIdea] = useState(null);
@@ -117,8 +119,6 @@ export default function MarketPalce() {
         }
       });
   }
-
-
 
   useEffect(() => {
     getResearcherIdeas();
@@ -371,8 +371,8 @@ export default function MarketPalce() {
   const TermsAndConds = (props) => {
     if (!props.show) return null;
     return (
-      <div className="modal-overlay2" >
-        <div className="modal2" style={{width:'50%'}}>
+      <div className="modal-overlay2">
+        <div className="modal2" style={{ width: "50%" }}>
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
@@ -383,49 +383,280 @@ export default function MarketPalce() {
           <h1 className="headContact2">Terms & Conditions</h1>
 
           <div className="FormModal2">
-            <p >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-              eleifend tellus non libero posuere, id convallis diam fermentum.
-              Phasellus a erat sed arcu volutpat suscipit a non mauris. Maecenas
-              blandit eros id nunc convallis fringilla. In dapibus nibh a
-              pulvinar aliquam. Nunc interdum lectus nec turpis placerat
-              consequat. Pellentesque habitant morbi tristique senectus et netus
-              et malesuada fames ac turpis egestas. Vestibulum at tincidunt
-              urna. Morbi rhoncus, enim ut pellentesque posuere, risus mauris
-              pellentesque lectus, vel egestas nulla dolor sit amet felis. Nam
-              in leo quis ex aliquet cursus sed nec mauris. Vivamus bibendum,
-              justo at egestas luctus, nisl sem pellentesque nunc, nec elementum
-              odio elit vitae ligula. Aliquam erat volutpat. Nulla facilisi.
-              Praesent ullamcorper, sapien id volutpat finibus, justo mauris
-              placerat orci, nec lacinia lacus est vitae purus. Nam non
-              consequat lectus. Suspendisse potenti. Mauris nec rutrum dui.
-              Integer semper urna ac tincidunt eleifend. Donec mattis massa id
-              lorem sollicitudin, sit amet posuere elit maximus. Aliquam eget
-              nibh in enim maximus fringilla. Phasellus pellentesque, lectus
-              vitae tempor dapibus, nunc nulla tincidunt magna, id pretium eros
-              metus at ligula. Curabitur consectetur nisl mi, et convallis
-              tellus ullamcorper in. Integer gravida efficitur feugiat. Quisque
-              eu dui at erat fermentum rhoncus. Fusce eget urna ac nunc lobortis
-              condimentum. Sed pretium consectetur dolor, id congue ex
-              ullamcorper non. Vestibulum auctor mauris neque, at elementum
-              tortor dapibus eu. Integer sagittis tellus sit amet sem facilisis,
-              sed elementum metus efficitur. Duis sollicitudin nibh at
-              condimentum lobortis. Suspendisse ac consectetur tellus, ut
-              finibus mauris. Morbi hendrerit, turpis at placerat posuere, est
-              sapien luctus ex, non efficitur neque neque a elit. Sed vehicula
-              lectus vel consequat euismod. Fusce elementum nisi a hendrerit
-              bibendum. Vestibulum ut eros sem. Nunc malesuada felis in commodo
-              tempor. Cras volutpat felis enim, a accumsan ipsum consequat sit
-              amet. Fusce lacinia sapien eu dapibus eleifend. Curabitur sit amet
-              odio eleifend, lobortis turpis vitae, aliquet dui. Integer sit
-              amet lobortis nunc, id commodo mauris. Proin maximus luctus ex, a
-              fringilla dui sollicitudin non.
-              
+            <p>
+              Welcome to [ResWeb] ("the Platform"). By accessing or using the
+              Platform, you agree to be bound by the following terms and
+              conditions:<br></br><br></br> 1. Registration and User Accounts:<br></br> a. Eligibility:
+              Only individuals who meet the eligibility criteria may register
+              and use the Platform.<br></br> b. Account Information: You must provide
+              accurate and complete information during the registration process.
+              <br></br> c. Account Security: You are responsible for maintaining the
+              confidentiality and security of your account.<br></br><br></br> 2. Idea Submission
+              and Ownership:<br></br> a. Ownership: The creator of the submitted idea
+              retains ownership of their intellectual property rights but the
+              leader has the right to be from the first authors.<br></br> b.
+              Responsibility for Content: The leader ensures that the submitted
+              idea is original, does not contain plagiarism, and complies with
+              all ethical and legal requirements.<br></br> c. Data Source: The Platform
+              is not responsible for the authenticity or accuracy of the data
+              provided with the submitted idea.<br></br> d. License to the Platform:
+              Researchers grant the Platform a non-exclusive license to display,
+              promote, and distribute the submitted ideas.<br></br> e. No Ownership
+              Claim: The Platform does not claim ownership of the ideas or
+              research papers.<br></br> f. Affiliation claim: The Platform has the right
+              to be affiliated in any idea conducted by it, any idea which is
+              led by a researcher from our side or by doing an agreement (oral
+              or written) with the leader of the idea.<br></br><br></br> 3. Application and
+              Selection Process: <br></br>a. Eligibility: Researchers must meet the
+              specified criteria to apply for project ideas.<br></br> b. Selection
+              Criteria: The Leader reserves the right to select researchers who
+              are joining the idea based which is led by this leader based on
+              their qualifications, expertise, and proposal quality.<br></br> c.
+              Attribution: The leader's name will be attributed as the author or
+              co-author of the research paper resulting from the idea.<br></br> d.
+              Discretion: The leader or platform retains the right to accept or
+              reject applications at its sole discretion except if the leader is
+              not the creator of the idea, he cannot reject the creator of the
+              idea.<br></br><br></br> 4. Rights and Responsibilities:<br></br> a. Leader's Responsibility:
+              The leader of the idea is responsible for leading the research
+              paper from start to finish, reviewing all steps, and ensuring its
+              quality and accuracy.<br></br> b. Publication Responsibility: The leader is
+              responsible for deciding whether and where to publish the research
+              paper, in compliance with relevant policies and guidelines.<br></br> c.
+              Platform's Limited Liability: The Platform is not responsible for
+              the content, accuracy, or outcomes of the research papers
+              conducted by researchers. The platform is also not responsible for
+              the actions, conduct, or outcomes of individual researchers.<br></br> d.
+              Compliance: Researchers must comply with all applicable laws,
+              regulations, and ethical guidelines while conducting their
+              research.<br></br> e. Members joining an idea: The leader of the idea must
+              ensure that all the joining members are mentioned in the paper as
+              authors or co-authors.<br></br><br></br> 5. Confidentiality and Data Protection:<br></br> a.
+              Confidentiality: The Platform will handle research ideas and
+              personal data collected in accordance with its Privacy Policy.<br></br> b.
+              Data Protection: The Platform is committed to protecting user data
+              and complying with applicable data protection laws.<br></br> c.
+              Anonymization and Aggregation: The Platform may use anonymization
+              or aggregation techniques to protect privacy.<br></br><br></br> 6. Dispute
+              Resolution:<br></br> a. Mediation: Any disputes between researchers and the
+              Platform shall be resolved through mediation in good faith.<br></br> b.
+              Jurisdiction: The laws of [Egypt] shall govern any legal disputes
+              arising from the use of the Platform.<br></br> c. Venue: Any legal
+              proceedings shall be exclusively conducted in the courts of
+              [Egypt].<br></br><br></br> 7. Termination and Suspension:<br></br> a. Termination Rights: The
+              Platform reserves the right to terminate or suspend a researcher's
+              account for noncompliance with the terms or unethical conduct.<br></br> b.
+              Notice and Appeal: In the event of termination or suspension, the
+              Platform may provide notice and an opportunity to appeal the
+              decision.<br></br><br></br> 8. Modifications to the Terms and Conditions:<br></br> a.
+              Updates: The Platform may update or modify these terms and
+              conditions from time to time.<br></br> b. Notification: Users will be
+              notified of any changes to the terms and conditions, and the
+              revised terms will become effective as of the specified date.<br></br> c.
+              Termination Option: If you do not agree to the updated terms, you
+              have the option to terminate your account.<br></br><br></br> By using the Platform,
+              you acknowledge that you have read, understood, and agreed to
+              these terms and conditions. If you do not agree to these terms,
+              please do not use the Platform.<br></br><br></br> [ResWeb Research Platform]<br></br><br></br> [10th
+              July 2023]<br></br><br></br> <h3>Privacy & Policy</h3><br></br> Effective Date: [10th July 2023]<br></br> Thank
+              you for using [ResWeb] ("the Platform"). This Privacy Policy
+              outlines how we collect, use, and protect your personal
+              information when you access and use our services. By using the
+              Platform, you agree to the terms of this Privacy Policy.<br></br><br></br>
+              <h3>Information We Collect</h3> <br></br><br></br>Personal Information: [name, email address,
+              qualifications, skills, courses, previous research experience,
+              phone number, age, gender, nationality and degree] <br></br>Usage Data: [IP
+              addresses, browser information, usage patterns]<br></br><br></br> <h3>Use of Information</h3><br></br>
+              Purpose: We use the collected information to provide and improve
+              the services offered by the Platform, facilitate idea submission
+              and researcher applications, and communicate with users.<br></br>
+              Communication: We may use the provided email addresses to send
+              notifications, updates, and important information related to the
+              Platform.<br></br> <br></br><h3>Data Security</h3><br></br> Security Measures: We implement
+              appropriate security measures to protect your personal information
+              against unauthorized access, alteration, disclosure, or
+              destruction.<br></br> Data Retention: We retain your personal information
+              for as long as necessary to fulfill the purposes outlined in this
+              Privacy Policy or as required by law.<br></br> Third-Party Disclosure<br></br>
+              Sharing Information: We do not sell, trade, or transfer your
+              personal information to third parties without your explicit
+              consent, except as required to provide the Platform's services or
+              comply with legal obligations.<br></br> Service Providers: We may engage
+              trusted third-party service providers to assist in operating the
+              Platform, subject to confidentiality obligations.<br></br> <br></br><h3>Your Rights</h3><br></br>
+              Access and Correction: You have the right to access and correct
+              the personal information we hold about you.<br></br> Account Deletion: You
+              can request the deletion of your account and associated personal
+              information by contacting our support.<br></br><br></br> <h3>Cookies and Tracking
+              Technologies</h3> <br></br><br></br>Usage: We may use cookies and similar tracking
+              technologies to enhance your user experience and collect
+              information about usage patterns.<br></br> Control: You can control and
+              manage your cookie preferences through your browser settings.<br></br>
+              <h3>Changes to the Privacy Policy</h3><br></br> Updates: We reserve the right to
+              update or modify this Privacy Policy from time to time.<br></br>
+              Notification: We will notify you of any changes to the Privacy
+              Policy, and the revised policy will become effective as of the
+              specified date.<br></br> If you have any questions or concerns regarding
+              this Privacy Policy, please contact us at our WhatsApp number
+              +201064394735 or any of our social media platforms.
             </p>
-            
 
             <div className="buttonsOnModal">
-              <button className="" onClick={()=>{props.onClose();setShowIdeaCard(true)}}>Accept</button>
+              <button
+                className=""
+                onClick={() => {
+                  props.onClose();
+                  setShowIdeaCard(true);
+                }}
+              >
+                Accept
+              </button>
+              <button className="" onClick={props.onClose}>
+                Decline
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const TermsForReq = (props) => {
+    if (!props.show) return null;
+    return (
+      <div className="modal-overlay2">
+        <div className="modal2" style={{ width: "50%" }}>
+          <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">Terms & Conditions</h1>
+
+          <div className="FormModal2">
+            <p>
+              Welcome to [Your Research Platform] ("the Platform"). By accessing
+              or using the Platform, you agree to be bound by the following
+              terms and conditions:<br></br><br></br> 1. Registration and User Accounts:<br></br> a.
+              Eligibility: Only individuals who meet the eligibility criteria
+              may register and use the Platform.<br></br> b. Account Information: You
+              must provide accurate and complete information during the
+              registration process.<br></br> c. Account Security: You are responsible for
+              maintaining the confidentiality and security of your account.<br></br><br></br> 2.
+              Idea Submission and Ownership:<br></br> a. Ownership: The creator of the
+              submitted idea retains ownership of their intellectual property
+              rights but the leader has the right to be from the first authors.<br></br>
+              b. Responsibility for Content: The leader ensures that the
+              submitted idea is original, does not contain plagiarism, and
+              complies with all ethical and legal requirements.<br></br> c. Data Source:
+              The Platform is not responsible for the authenticity or accuracy
+              of the data provided with the submitted idea.<br></br> d. License to the
+              Platform: Researchers grant the Platform a non-exclusive license
+              to display, promote, and distribute the submitted ideas.<br></br> e. No
+              Ownership Claim: The Platform does not claim ownership of the
+              ideas or research papers.<br></br> f. Affiliation claim: The Platform has
+              the right to be affiliated in any idea conducted by it, any idea
+              which is led by a researcher from our side or by doing an
+              agreement (oral or written) with the leader of the idea.<br></br> 3.
+              Application and Selection Process:<br></br> a. Eligibility: Researchers
+              must meet the specified criteria to apply for project ideas.<br></br> b.
+              Selection Criteria: The leader reserves the right to select
+              researchers who are joining the idea based which is led by this
+              leader on their qualifications, expertise, and suitability for the
+              assigned tasks.<br></br> c. Attribution: The researcher's name will be
+              attributed as an author or co-author of the research paper
+              resulting from the idea.<br></br><br></br> 4. Rights and Responsibilities:<br></br> a.
+              Researcher's Responsibility: Researchers are responsible for
+              conducting the assigned tasks with diligence, ensuring the quality
+              and accuracy of their work.<br></br> b. Publication Rights: The researcher
+              shall not have any claim or right to publish or disclose the
+              research paper without the leader's approval.<br></br> c. No Financial
+              Compensation: The researcher shall not receive any monetary
+              compensation for their work; their motivation is to be recognized
+              as an author or co-author.<br></br><br></br> 5. Confidentiality and Data Protection:<br></br>
+              a. Confidentiality: The Platform will handle research ideas and
+              personal data collected in accordance with its Privacy Policy. The
+              Platform can view the paper data only for reviewing, reports and
+              checking problems, but not able to change or edit any of the
+              research idea’s data.<br></br> b. Data Protection: The Platform is
+              committed to protecting user data and complying with applicable
+              data protection laws.<br></br> c. Anonymization and Aggregation: The
+              Platform may use anonymization or aggregation techniques to
+              protect privacy.<br></br><br></br> 6. Dispute Resolution:<br></br> a. Mediation: Any disputes
+              between researchers and the Platform shall be resolved through
+              mediation in good faith.<br></br> b. Jurisdiction: The laws of [Egypt]
+              shall govern any legal disputes arising from the use of the
+              Platform.<br></br> c. Venue: Any legal proceedings shall be exclusively
+              conducted in the courts of [Egypt].<br></br><br></br> 7. Termination and Suspension:<br></br>
+              a. Termination Rights: The Platform reserves the right to
+              terminate or suspend a researcher's account for noncompliance with
+              the terms or unethical conduct.<br></br> b. Notice and Appeal: In the event
+              of termination or suspension, the Platform may provide notice and
+              an opportunity to appeal the decision.<br></br><br></br> 8. Modifications to the
+              Terms and Conditions:<br></br> a. Updates: The Platform may update or
+              modify these terms and conditions from time to time.<br></br> b.
+              Notification: Users will be notified of any changes to the terms
+              and conditions, and the revised terms will become effective as of
+              the specified date.<br></br> c. Termination Option: If you do not agree to
+              the updated terms, you have the option to terminate your account.<br></br><br></br>
+              By using the Platform, you acknowledge that you have read,
+              understood, and agreed to these terms and conditions. If you do
+              not agree to these terms, please do not use the Platform.<br></br><br></br> [ResWeb
+              Research Platform]<br></br> [10th July 2023] <br></br><br></br><h3>Privacy & Policy</h3> <br></br>Effective
+              Date: [10th July 2023]<br></br> Thank you for using [ResWeb] ("the
+              Platform"). This Privacy Policy outlines how we collect, use, and
+              protect your personal information when you access and use our
+              services. By using the Platform, you agree to the terms of this
+              Privacy Policy.<br></br><br></br> <h3>Information We Collect</h3><br></br> Personal Information:
+              [name, email address, qualifications, skills, courses, previous
+              research experience, phone number, age, gender, nationality and
+              degree]<br></br> Usage Data: [IP addresses, browser information, usage
+              patterns]<br></br><br></br> <h3>Use of Information</h3> <br></br>Purpose: We use the collected
+              information to provide and improve the services offered by the
+              Platform, facilitate idea submission and researcher applications,
+              and communicate with users.<br></br> Communication: We may use the provided
+              email addresses to send notifications, updates, and important
+              information related to the Platform.<br></br><br></br> <h3>Data Security</h3><br></br> Security
+              Measures: We implement appropriate security measures to protect
+              your personal information against unauthorized access, alteration,
+              disclosure, or destruction.<br></br> Data Retention: We retain your
+              personal information for as long as necessary to fulfill the
+              purposes outlined in this Privacy Policy or as required by law.<br></br>
+              Third-Party Disclosure<br></br> Sharing Information: We do not sell, trade,
+              or transfer your personal information to third parties without
+              your explicit consent, except as required to provide the
+              Platform's services or comply with legal obligations.<br></br> Service
+              Providers: We may engage trusted third-party service providers to
+              assist in operating the Platform, subject to confidentiality
+              obligations.<br></br><br></br> <h3>Your Rights</h3><br></br> Access and Correction: You have the right
+              to access and correct the personal information we hold about you.<br></br>
+              Account Deletion: You can request the deletion of your account and
+              associated personal information by contacting our support.<br></br><br></br> <h3>Cookies
+              and Tracking Technologies</h3><br></br> Usage: We may use cookies and similar
+              tracking technologies to enhance your user experience and collect
+              information about usage patterns.<br></br> Control: You can control and
+              manage your cookie preferences through your browser settings.<br></br><br></br>
+              <h3>Changes to the Privacy Policy</h3><br></br> Updates: We reserve the right to
+              update or modify this Privacy Policy from time to time.<br></br>
+              Notification: We will notify you of any changes to the Privacy
+              Policy, and the revised policy will become effective as of the
+              specified date.<br></br> If you have any questions or concerns regarding
+              this Privacy Policy, please contact us at our WhatsApp number
+              +201064394735 or any of our social media platforms.
+            </p>
+
+            <div className="buttonsOnModal">
+              <button
+                className=""
+                onClick={() => {
+                  props.onClose();
+                  sendReq(props.idea.id);
+                }}
+              >
+                Accept
+              </button>
               <button className="" onClick={props.onClose}>
                 Decline
               </button>
@@ -797,7 +1028,11 @@ export default function MarketPalce() {
                           !idea.isCompleted && (
                             <button
                               className="bn54"
-                              onClick={() => sendReq(idea.id)}
+                              // onClick={() => sendReq(idea.id)}
+                              onClick={() => {
+                                setChoosenIdea(idea);
+                                setShowTermsForReq(true);
+                              }}
                             >
                               Send Request
                             </button>
@@ -814,6 +1049,13 @@ export default function MarketPalce() {
                 })
             ) : (
               <span> No Ideas Yet!</span>
+            )}
+            {showTermsForReq && (
+              <TermsForReq
+                idea={choosenIdea}
+                show={showTermsForReq}
+                onClose={() => setShowTermsForReq(false)}
+              />
             )}
           </div>
         </div>
