@@ -237,6 +237,7 @@
   display: flex;
   align-items: center;
   padding: 15px;
+  height: 30px;
 }
 .sectionHeader .plusIcon{
   width: 25px;
@@ -245,9 +246,9 @@
   transition: all 0.3s ease;
 }
 .sectionHeader .plusIcon:hover{
-  /* rotate: 180deg; */
-  width: 35px;
-  height: 35px;
+  rotate: 180deg;
+  /* width: 35px;
+  height: 35px; */
 }
 
 .sectionHeader > h3 {

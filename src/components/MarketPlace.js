@@ -382,8 +382,8 @@ export default function MarketPalce() {
           </div>
           <h1 className="headContact2">Terms & Conditions</h1>
 
-          <div className="FormModal2">
-            <p>
+          <div style={{gap:"20px"}} className="FormModal2">
+            <p className="custom-scrollbar">
               Welcome to [ResWeb] ("the Platform"). By accessing or using the
               Platform, you agree to be bound by the following terms and
               conditions:<br></br><br></br> 1. Registration and User Accounts:<br></br> a. Eligibility:
@@ -535,8 +535,8 @@ export default function MarketPalce() {
           </div>
           <h1 className="headContact2">Terms & Conditions</h1>
 
-          <div className="FormModal2">
-            <p>
+          <div style={{gap:"20px"}} className="FormModal2">
+            <p className="custom-scrollbar">
               Welcome to [Your Research Platform] ("the Platform"). By accessing
               or using the Platform, you agree to be bound by the following
               terms and conditions:<br></br><br></br> 1. Registration and User Accounts:<br></br> a.

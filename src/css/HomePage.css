@@ -514,7 +514,7 @@ p {
 
 .ShapeInCourses1{
   position: absolute;
-  top: 54%;
+  top: 50%;
   left: 45%;
   transform: translate(-50%, -50%);
   /* background-color: var(--bluesky-color); */
@@ -604,4 +604,73 @@ animation: videoAnimation 4s linear infinite;
 .hidden{
   opacity: 0;
   transition: all 1s;
+}
+
+
+
+.hidden1{
+  display: none;
+  color: blue;
+}
+
+p {
+ 
+}
+
+p.active2 {
+  display: block;
+  color: red;
+}
+.AllAboutUsContainer{
+  height: 400px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: aliceblue;
+  justify-content: center;
+}
+.AllLeftRightAboutUs{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+.AllAboutUsContainer h1{
+  z-index: 10;
+  width: 360px;
+  font-size: 4rem;
+  text-align: center;
+  color: #00000057;
+}
+.RightContainer {
+  position: relative;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 30px;
+  height: 300px;
+}
+.RightContainer p{
+  overflow: auto;
+  max-height: 270px;
+}
+.LeftContainer{
+  width: 25%;}
+.LeftContainer img{
+  width: 100%;
+}
+.slider {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slider-active-0 {
+  transform: translateY(0);
+}
+
+.slider-active-1 {
+  transform: translateY(-100%);
 }

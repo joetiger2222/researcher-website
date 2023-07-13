@@ -22,6 +22,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
 import { FaSearch } from "react-icons/fa";
+import PhotoAbout from "../images/Logo - With Text.png"
 export default function HomePage() {
   const [sideBarVisible, setSideBarVisible] = useState(false);
   // const [resercherId, setResearcherId] = useState(null);
@@ -33,7 +34,35 @@ export default function HomePage() {
   const userData = useContext(MyContext);
   
 
+  const [showSecondParagraph, setShowSecondParagraph] = useState(false);
 
+  const handleSwitch = () => {
+    setShowSecondParagraph(!showSecondParagraph);
+  };
+  const [content, setContent] = useState("p1");
+
+  const [activeParagraph, setActiveParagraph] = useState(0);
+
+  useEffect(() => {
+    // Auto slide to next paragraph every 3 seconds
+    const timer = setInterval(() => {
+      setActiveParagraph((prev) => (prev === 0 ? 1 : 0));
+    }, 3000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+  useEffect(() => {
+    // Auto slide to next paragraph every 3 seconds
+    const timer = setInterval(() => {
+      setActiveParagraph((prev) => (prev === 0 ? 1 : 0));
+    }, 3000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 //   const observer = new IntersectionObserver((entries) => {
 //     entries.forEach((entry) =>{
 //       if(entry.isIntersecting){
@@ -370,7 +399,8 @@ const [isVisible, setIsVisible] = useState(false);
             </select>
             {skillId && (
               <button className="btnSkillHome" style={{gap:"5px",alignItems:"center",display:"flex",justifyContent:"center"}} onClick={checkQuiz}>
-                Take Quiz             <img style={{width:"20px",height:"20px"}} src={loGo}/>
+                <img style={{width:"20px",height:"20px"}} src={loGo}/>
+                Take Quiz             
 
               </button>
             )}
@@ -407,6 +437,87 @@ const [isVisible, setIsVisible] = useState(false);
         </div>
       </div>
 
+      {/* <div className="AllAboutUsContainer">
+      <h1>About Us</h1>
+      <div className="AllLeftRightAboutUs">
+        <div className="LeftContainer">
+          <img src={PhotoAbout} alt="Company Logo" />
+        </div>
+        <div className="RightContainer">
+          <p>
+            This is the first paragraph. It's always visible.
+          </p>
+          {showSecondParagraph && (
+            <p>
+              This is the second paragraph. It's displayed when the switch is toggled.
+            </p>
+          )}
+        </div>
+      </div>
+      <div className="SwitchContainer">
+        <label className="SwitchLabel">
+          <input
+            type="checkbox"
+            checked={showSecondParagraph}
+            onChange={handleSwitch}
+          />
+          Switch
+        </label>
+      </div>
+    </div> */}
+    {/* <div className="AllAboutUsContainer" style={{ height: '500px' }}>
+      <h1 style={{ zIndex: 10 }}>About Us</h1>
+      <div className="AllLeftRightAboutUs">
+        <div className="LeftContainer">
+          <img src={PhotoAbout} alt="About Us" />
+        </div>
+        <div className="RightContainer">
+          <p>First paragraph content</p>
+          <p>Second paragraph content</p>
+        </div>
+      </div>
+    </div> */}
+
+    <div className="AllAboutUsContainer" style={{ height: '500px' }}>
+      <h1 style={{ zIndex: 10 }}>About Us</h1>
+      <div className="AllLeftRightAboutUs">
+        <div className="LeftContainer">
+          <img src={PhotoAbout} alt="About Us" />
+        </div>
+        <div className="RightContainer">
+          <div
+           
+          >
+            <p className="custom-scrollbar" style={{ display: content==="p1"? "block":"none",}}>
+              First paragraph content First paragraph content First paragraph
+              content First paragraph content First paragraph content First
+              paragraph content First paragraph content First paragraph
+              content First paragraph content
+            </p>
+            <p className="custom-scrollbar" style={{ display: content==="p2"? "block":"none"}}>
+              Second paragraph content Second paragraph content Second
+              paragraph content Second paragraph content Second paragraph
+              content Second paragraph content Second paragraph content
+              Second paragraph content Second paragraph content Second
+              paragraph content Second paragraph content Second paragraph
+              content Second paragraph content Second paragraph content
+              Second paragraph content Second paragraph content Second
+              paragraph content Second paragraph content Second paragraph
+              content Second paragraph content Second paragraph content
+              Second paragraph content Second paragraph content Second
+              paragraph content Second paragraph content Second paragraph
+              content Second paragraph content content Second paragraph content Second paragraph content
+             nd paragraph content
+            </p>
+          </div>
+          <div>
+            <button style={{padding:"3px 20px",backgroundColor: content==="p1"? "black":"white"}} onClick={()=>setContent("p1")}></button>
+            <button style={{padding:"3px 20px",backgroundColor: content==="p2"? "black":"white"}} onClick={()=>setContent("p2")}></button>
+
+          </div>
+        </div>
+      </div>
+    </div>
       {/* <div className="researchContainer">
         <div>
           <div>
