@@ -629,6 +629,7 @@ p.active2 {
   flex-direction: column;
   background-color: aliceblue;
   justify-content: center;
+  padding: 20px 0;
 }
 .AllLeftRightAboutUs{
   display: flex;
@@ -655,6 +656,7 @@ p.active2 {
 .RightContainer p{
   overflow: auto;
   max-height: 270px;
+  color: var(--button-color);
 }
 .LeftContainer{
   width: 25%;}

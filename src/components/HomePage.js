@@ -478,7 +478,7 @@ const [isVisible, setIsVisible] = useState(false);
       </div>
     </div> */}
 
-    <div className="AllAboutUsContainer" style={{ height: '500px' }}>
+    <div className="AllAboutUsContainer" style={{ height: '600px' }}>
       <h1 style={{ zIndex: 10 }}>About Us</h1>
       <div className="AllLeftRightAboutUs">
         <div className="LeftContainer">
@@ -511,8 +511,8 @@ const [isVisible, setIsVisible] = useState(false);
             </p>
           </div>
           <div>
-            <button style={{padding:"3px 20px",backgroundColor: content==="p1"? "black":"white"}} onClick={()=>setContent("p1")}></button>
-            <button style={{padding:"3px 20px",backgroundColor: content==="p2"? "black":"white"}} onClick={()=>setContent("p2")}></button>
+            <button style={{padding:"5px 25px",backgroundColor: content==="p1"? "var(--button-color)":"white",border:"none"}} onClick={()=>setContent("p1")}></button>
+            <button style={{padding:"5px 25px",backgroundColor: content==="p2"? "var(--button-color)":"white",border:"none"}} onClick={()=>setContent("p2")}></button>
 
           </div>
         </div>
