@@ -289,9 +289,7 @@ column-gap: 3px;
     gap: 20px;
     flex-wrap: wrap;
     margin-bottom: 50px;
-    opacity: 0;
-    animation: fadeInAnimation 1s forwards;
-    animation-delay: 0.5s;
+   
   }
   @keyframes fadeInAnimation {
     0% {
