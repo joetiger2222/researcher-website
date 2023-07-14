@@ -54,11 +54,44 @@ const Registration = () => {
         },
         body: JSON.stringify(formData),
       })
-      .then((res) =>
-        res.ok
-          ? authorizeLogin(e)
-          : toastr.error("failed to register please try again later","Failed")
-      );
+      // .then((res) =>
+      //   res.ok
+      //     ? authorizeLogin(e)
+      //     : toastr.error("failed to register please try again later","Failed")
+      // );
+      .then((response) => {
+        const reader = response.body.getReader();
+        let chunks = [];
+      
+        function readStream() {
+          return reader.read().then(({ done, value }) => {
+            if (done) {
+              return chunks;
+            }
+            chunks.push(value);
+            return readStream();
+          });
+        }
+      
+        if (!response.ok) {
+          return readStream().then((chunks) => {
+            const body = new TextDecoder().decode(
+              new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+            );
+            toastr.error(body);
+          });
+        }else {
+          authorizeLogin(e)
+        }
+      
+        return readStream().then((chunks) => {
+          const body = new TextDecoder().decode(
+            new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+          );
+          console.log(body);
+        });
+      })
+      .catch((error) => console.error(error));
     } else {
       toastr.error("Password and Confirm Password Does not Match","Error");
     }
