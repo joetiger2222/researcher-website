@@ -47,3 +47,38 @@
     flex-direction: column;
     gap: 30px;
 }
+
+.DivSteps{
+        display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+.imagesStepsDiv{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+.imgSteps{
+    width: 400px;
+    height: 200px;
+}
+.Tips{
+        font-size: 50px;
+    letter-spacing: 4px;
+    background: linear-gradient(to right, #FCC11E, #d6b24d);
+    /* -webkit-background-clip: text; */
+    -webkit-text-fill-color: transparent;
+}
+
+.Tips2{
+        width: 180px;
+    text-align: center;
+    font-size: 34px;
+    /* color: var(--button-color); */
+}

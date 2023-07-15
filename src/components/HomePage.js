@@ -21,7 +21,7 @@ import 'toastr/build/toastr.min.css';
 import { useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
-import { FaSearch } from "react-icons/fa";
+import { FaAccusoft, FaSearch } from "react-icons/fa";
 import PhotoAbout from "../images/Logo - With Text.png"
 export default function HomePage() {
   const [sideBarVisible, setSideBarVisible] = useState(false);
@@ -273,7 +273,13 @@ const [isVisible, setIsVisible] = useState(false);
           <div className="landingData">
             {/* <h3>Hello Students, Researchers</h3> */}
             <h1>Education and participation</h1>
-            <p>Learning is something we do almost every day</p>
+ {/* <h1>           Our mission            </h1> */}
+
+            <p style={{textAlign:"center",width:"60%"}}>Welcome to <span style={{fontWeight:"bold",fontSize:"18px"}}>ResWeb</span>, the leading platform for researchers
+               and students seeking comprehensive courses, research opportunities,
+                and a vibrant research community. We are dedicated to empowering
+               researchers by providing a seamless and accessible environment
+                for academic growth and collaboration.</p>
             {/* <button className="buttonn">Join Us Now!</button> */}
           </div>
         </div>
@@ -284,10 +290,9 @@ const [isVisible, setIsVisible] = useState(false);
             </div>
             <div style={{height:"170px" ,display:"flex",flexDirection:"column",gap:"5px"}}>
 
-            <h3>Best Doctors</h3>
-            <p style={{padding:"5px",maxHeight:"130px",overflow:"auto"}} className="custom-scrollbar">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry.
+            <h3>Courses</h3>
+            <p style={{textAlign: "justiy",padding:"5px",maxHeight:"130px",overflow:"auto"}} className="custom-scrollbar">
+            At <span style={{fontWeight:"bold",fontSize:"16px"}}>ResWeb</span>, our mission is to bridge the gap between researchers and their aspirations (research opportunities). We offer a diverse range of high-quality courses designed to enhance your research skills and expand your knowledge in various fields. Our courses are carefully curated and offered at affordable prices, making them accessible to students and professionals alike. We believe that learning should be inclusive and cost-effective, and that's why we strive to provide exceptional value without compromising on quality.
             </p>
                         </div>
 
@@ -299,10 +304,9 @@ const [isVisible, setIsVisible] = useState(false);
             </div>
             <div style={{height:"170px" ,display:"flex",flexDirection:"column",gap:"5px"}}>
 
-            <h3>Best Students</h3>
-            <p style={{padding:"5px",maxHeight:"130px",overflow:"auto"}} className="custom-scrollbar">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry.
+            <h3>Research opportunities</h3>
+            <p style={{textAlign: "justiy",padding:"5px",maxHeight:"130px",overflow:"auto"}} className="custom-scrollbar">
+            One of the unique features of <span style={{fontWeight:"bold",fontSize:"16px"}}>ResWeb</span> is our Research Paper Enrollment Program. We understand the significance of publishing research papers as a crucial step towards academic and professional success. Our platform connects researchers with exciting opportunities to enroll in research papers and contribute to cutting-edge discoveries. By offering a curated selection of research ideas, we empower researchers to choose projects that align with their interests and expertise. We provide the necessary guidance and resources to ensure a seamless research experience, from proposal development to publication.
             </p>
                        </div>
  
@@ -313,10 +317,9 @@ const [isVisible, setIsVisible] = useState(false);
             </div>
             <div style={{height:"170px" ,display:"flex",flexDirection:"column",gap:"5px"}}>
 
-            <h3>Best Researchers</h3>
-            <p style={{padding:"5px",maxHeight:"130px",overflow:"auto"}} className="custom-scrollbar">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry.
+            <h3>International opportunities</h3>
+            <p style={{textAlign: "justiy",padding:"5px",maxHeight:"130px",overflow:"auto"}} className="custom-scrollbar">
+            In addition to local opportunities, <span style={{fontWeight:"bold",fontSize:"16px"}}>ResWeb</span> also offers international research opportunities from different countries. We collaborate with doctors and researchers from around the world to provide a diverse range of research projects and perspectives. This global network allows you to explore cross-cultural research collaborations, gain exposure to different research methodologies, and broaden your horizons as a researcher.
             </p>
                         </div>
 
@@ -326,14 +329,22 @@ const [isVisible, setIsVisible] = useState(false);
               <h2>04</h2>
             </div>
             <div style={{height:"170px" ,display:"flex",flexDirection:"column",gap:"5px"}}>
-            <h3>Best Ideas</h3>
-            <p style={{padding:"5px",maxHeight:"130px",overflow:"auto"}} className="custom-scrollbar">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry.
+            <h3>Mentors and experts</h3>
+            <p style={{textAlign: "justiy",padding:"5px",maxHeight:"130px",overflow:"auto"}} className="custom-scrollbar">
+            As part of our commitment to supporting researchers, <span style={{fontWeight:"bold",fontSize:"16px"}}>ResWeb</span> provides access to a network of mentors and experts. These experienced professionals from various disciplines are available to provide guidance, mentorship, and valuable insights throughout your research journey. Whether you need assistance with project development, data analysis, or publication strategies, our mentors and experts are here to help you succeed.
+            </p>
+            </div>
+          </div>
+          <div className="badgeDiv">
+            <div className="ContNum">
+              <h2>05</h2>
+            </div>
+            <div style={{height:"170px" ,display:"flex",flexDirection:"column",gap:"5px"}}>
+            <h3>Community</h3>
+            <p style={{    textAlign: "justiy",padding:"5px",maxHeight:"130px",overflow:"auto"}} className="custom-scrollbar">
+            <span style={{fontWeight:"bold",fontSize:"16px"}}>ResWeb</span> takes pride in fostering a vibrant research community where researchers can collaborate, exchange ideas, and form valuable connections. Our platform offers an organized and user-friendly system that allows researchers to easily navigate through available opportunities, connect with peers, chat with researchers, and stay up to date with the latest advancements in their fields of interest. We believe that collaboration fuels innovation, and we strive to create an environment that encourages meaningful interactions and fruitful partnerships.
+
+
             </p>
             </div>
           </div>
@@ -515,6 +526,53 @@ const [isVisible, setIsVisible] = useState(false);
             <button style={{padding:"5px 25px",backgroundColor: content==="p2"? "var(--button-color)":"white",border:"none"}} onClick={()=>setContent("p2")}></button>
 
           </div>
+        </div>
+      </div>
+    </div>
+    <div className="AllAboutUsContainer2">
+      <h1 style={{fontSize:"3rem"}}>Why Choose <span style={{fontWeight:"bold",fontSize:"30px"}}>ResWeb</span></h1>
+      <div className="ContainerWhy">
+        <div className="cardWhyChooseRes">
+          <div>
+            <FaAccusoft/>
+            <p>hello</p>
+          </div>
+          <p>Explanation</p>
+        </div>
+        <div className="cardWhyChooseRes">
+          <div>
+            <FaAccusoft/>
+            <p>hello</p>
+          </div>
+          <p>Explanation</p>
+        </div>
+        <div className="cardWhyChooseRes">
+          <div>
+            <FaAccusoft/>
+            <p>hello</p>
+          </div>
+          <p>Explanation</p>
+        </div>
+        <div className="cardWhyChooseRes">
+          <div>
+            <FaAccusoft/>
+            <p>hello</p>
+          </div>
+          <p>Explanation</p>
+        </div>
+        <div className="cardWhyChooseRes">
+          <div>
+            <FaAccusoft/>
+            <p>hello</p>
+          </div>
+          <p>Explanation</p>
+        </div>
+        <div className="cardWhyChooseRes">
+          <div>
+            <FaAccusoft/>
+            <p>hello</p>
+          </div>
+          <p>Explanation</p>
         </div>
       </div>
     </div>

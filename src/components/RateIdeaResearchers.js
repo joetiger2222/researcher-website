@@ -8,6 +8,10 @@ import 'toastr/build/toastr.min.css';
 import { MdOutlineFileUpload } from "react-icons/md";
 import { FaFileUpload } from "react-icons/fa";
 import Footer from "./Footer";
+import step1 from "../images/step1.png"
+import step2 from "../images/step2.png"
+import step3 from "../images/step3.png"
+
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
 export default function RateIdeaResearchers(){
@@ -253,6 +257,15 @@ if(creator){
         <div>
           <Header userData={userData} />
           <div className="AllDataInRatePage">
+            <div className="DivSteps">
+              <h1 style={{display:"flex",flexDirection:"column",alignItems:"center"}}><span className="Tips" >Tips</span> <span className="Tips2">For Idea Submittion</span></h1>
+              <div className="imagesStepsDiv">
+                <img className="imgSteps" src={step1} alt="step1"/>
+                <img className="imgSteps" src={step2} alt="step2"/>
+                <img className="imgSteps" src={step3} alt="step3"/>
+
+              </div>
+            </div>
             <h1>Rate Then Submit Idea</h1>
             <div className="ContainerForCardsRate">
             {ideaPar?.filter(par=>par.id!==userData.resercherId.toLowerCase()).map(par=>{
