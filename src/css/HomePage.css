@@ -514,24 +514,34 @@ p {
 
 .ShapeInCourses1{
   position: absolute;
-  top: 50%;
-  left: 45%;
-  transform: translate(-50%, -50%);
+  top: 4%;
+  /* width: 200px; */
+  left: 39%;
+  /* transform: translate(-50%, -50%); */
   /* background-color: var(--bluesky-color); */
   background: linear-gradient(#3030bf, #59aeff);
-  width: 100px;
+  width: 250px;
   height: 100px;
   clip-path: polygon(0% 0%, 0% 100%, 25% 100%, 25% 25%, 75% 25%, 75% 75%, 25% 75%, 25% 100%, 100% 100%, 100% 0%);
   z-index: -1;
-  animation: rotationAnimation 4s linear infinite;
+  /* transition: .6; */
+  animation: rotationAnimation1 2s linear infinite;
 
 }
 @keyframes rotationAnimation {
   0% {
-    transform: rotate(0deg);
+    transform: rotate(0)
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+@keyframes rotationAnimation1 {
+  0% {
+    transform: scale(.6)
+  }
+  100% {
+    transform: scale(1);
   }
 }
 .ShapeInCourses2{
@@ -580,7 +590,7 @@ p {
 animation: videoAnimation 4s linear infinite;
 }
 
-.ContainerCoursesShape {
+.fadinAnimation {
   opacity: 0;
   animation: fadeInAnimation 1s forwards;
   animation-delay: 0.5s;
@@ -678,3 +688,92 @@ p.active2 {
 }
 
 
+
+.AllWhyChoose{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 30px;
+}
+.ContainerWhy{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+.cardWhyChooseRes{
+  width: 375px;
+  height: 200px;
+  background-color: aliceblue;
+  display: flex;
+  flex-direction: column;
+  /* gap: 0px; */
+}
+.FirstInfo{
+  padding: 10px 20px;
+  display: flex;
+  gap: 20px;
+  /* border-bottom: 1px solid black; */
+  align-items: center;
+}
+.FirstInfo p{
+  font-weight: bold;
+}
+.FirstInfo img{
+  width: 50px;
+  height: 50px;
+}
+
+.OurGradingSys{
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  width: 100%;
+  background: linear-gradient(#ffffff, aliceblue);
+  padding: 20px 0;
+}
+.ContainerAlGrade{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.AllUsers{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+}
+.TextDownUsers{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.AllUsers div img{
+  width: 70px;
+  height: 70px;
+}
+.AllUsers div{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.TextDownUsers p{
+  text-align: center;
+}
+.TextDownUsers{
+  gap: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 70%;
+}

@@ -189,16 +189,18 @@
   border-radius: 5px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   position: relative;
-  overflow: auto;
   background-color: white;
   margin-top: 65px;
   /* top: 50%; */
   border-top: 20px solid var(--darkgreen-color);
   min-width: 500px;
-  /* min-height: 500px; */
+  max-height: 470px;
+  height: 470px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  max-width: 1000px;
+  /* max-height: 500px; */
 
 }
 

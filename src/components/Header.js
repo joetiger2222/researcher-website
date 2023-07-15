@@ -85,8 +85,19 @@ function getStudentImage(){
               
               
             </li>}
+            
 
             {userData?.roles==='Researcher'&&<li onClick={()=>navigate(`/Researchers`)}>Researchers</li>}
+            {userData.roles!=='Admin'&&<li class="dropdown">
+              <a onClick={()=>{
+                navigate('/HomePage');
+                window.scrollTo(0, 2300)
+              }}>
+                About Us
+              </a>
+              
+              
+            </li>}
           </ul>
           <div className="headerBtnsContainer">
             {!userData&&<button className="headerSignBtn">Login</button>}

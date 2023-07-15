@@ -189,7 +189,7 @@ const UploadFileCard = (props) => {
           </div>
         </div>
         <h1 className="headContact2">Upload File</h1>
-        <div className="FormModal2">
+        <div className="FormModal2" style={{maxHeight:"330px",height:"100%",justifyContent:"space-between"}}>
         {/* <input className="InputModalHallDetails"
          type="file" onChange={handleDocumentUpload} /> */}
         <label className="LableForinputTypeFile" htmlFor="img">

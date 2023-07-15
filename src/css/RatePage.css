@@ -11,6 +11,15 @@
     justify-content: center;
     gap: 30px;
     flex-wrap: wrap;
+    overflow: auto;
+    max-height: 310px;
+}
+.ContainerForCardsRate1{
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+   
 }
 .CardRate{
     display: flex;
@@ -72,7 +81,7 @@
         font-size: 50px;
     letter-spacing: 4px;
     background: linear-gradient(to right, #FCC11E, #d6b24d);
-    /* -webkit-background-clip: text; */
+    -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 

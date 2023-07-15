@@ -247,7 +247,7 @@ export default function Idea() {
           </div>
           
 
-          <div  className="ContInviteResearchers custom-scrollbar">
+          <div style={{maxHeight:"172px"}}  className="ContInviteResearchers custom-scrollbar">
             {ress
               ?.filter((res) => !ideaPar.some((par) => par.id === res.id))
               .map((res) => {
@@ -457,7 +457,7 @@ export default function Idea() {
             </div>
           </div>
           <h1 className="headContact2">Create Expert Req</h1>
-          <div className="FormModal2">
+          <div className="FormModal2" style={{height:"100%",maxHeight:"330px",justifyContent:"space-evenly"}}>
             <label className="AllLabeles">TITLE : </label>
             <input
               className="InputModalHallDetails"
@@ -544,7 +544,7 @@ export default function Idea() {
             </div>
           </div>
           <h1 class="headContact2">Assign Participants</h1>
-          <div className="ContInviteResearchers custom-scrollbar">
+          <div className="ContInviteResearchers custom-scrollbar" style={{maxHeight:"300px",height:"300px"}}>
             {ideaPar?.map((par) => {
               return (
                 <div className="DivContResearchers2">
@@ -620,7 +620,7 @@ export default function Idea() {
             </div>
           </div>
           <h1 className="headContact2">Task Participants</h1>
-          <div className="ContInviteResearchers custom-scrollbar">
+          <div className="ContInviteResearchers custom-scrollbar" style={{maxHeight:"300px",height:"300px"}}>
             {taskParticpants?.map((par) => {
               return (
                 <div className="DivContResearchers1">
@@ -640,10 +640,11 @@ export default function Idea() {
                 </div>
               );
             })}
-            <button className="buttonExit2" onClick={props.onClose}>
+           
+          </div>
+          <button className="buttonExit2" onClick={props.onClose}>
               Close
             </button>
-          </div>
         </div>
       </div>
     );
@@ -745,7 +746,7 @@ export default function Idea() {
     if (!props.show) return null;
     return (
       <div className="modal-overlay2">
-        <div className="modal2">
+        <div className="modal2" style={{height:"100%",maxHeight:"500px"}}>
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
@@ -987,7 +988,7 @@ export default function Idea() {
     if (!props.show) return null;
     return (
       <div className="modal-overlay2">
-        <div className="modal2">
+        <div className="modal2" style={{height:"500px",maxHeight:"500px"}}>
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
@@ -1389,7 +1390,7 @@ className="descriptionContainer custom-scrollbar"
             </div>
           </div>
           <h1 className="headContact2">Upload File</h1>
-          <div className="FormModal2">
+          <div className="FormModal2" style={{justifyContent:"space-between",height:"100%"}}>
             {/* <input className="InputModalHallDetails"
            type="file"
             onChange={handleDocumentUpload} /> */}
@@ -1504,7 +1505,7 @@ className="descriptionContainer custom-scrollbar"
             </div>
           </div>
           <h1 className="headContact2">All Files</h1>
-          <div className="ContInviteResearchers custom-scrollbar">
+          <div style={{height:"100%",maxHeight:"290px"}} className="ContInviteResearchers custom-scrollbar">
             {documents?.map((doc) => {
               return (
                 <div className="DivContResearchers1">
@@ -1520,10 +1521,11 @@ className="descriptionContainer custom-scrollbar"
                 </div>
               );
             })}
-            <button className="buttonExit2" onClick={props.onClose}>
+            
+          </div>
+          <button className="buttonExit2" onClick={props.onClose}>
               Cancel
             </button>
-          </div>
         </div>
       </div>
     );
@@ -1581,7 +1583,7 @@ className="descriptionContainer custom-scrollbar"
             </div>
           </div>
           <h1 className="headContact2">Upload Document</h1>
-          <div className="FormModal2">
+          <div className="FormModal2" style={{justifyContent:"space-between",height:"100%"}}>
             {/* <input className="InputModalHallDetails"
            type="file"
             onChange={handleDocumentUpload} /> */}
@@ -1713,12 +1715,13 @@ className="descriptionContainer custom-scrollbar"
                 );
               })}
             </div>
-            <div className="resetAndCancel2">
+            
+          </div>
+          <div className="resetAndCancel2">
               <button className="buttonExit2" onClick={props.onClose}>
                 Cancel
               </button>
             </div>
-          </div>
         </div>
       </div>
     );
@@ -1769,7 +1772,7 @@ className="descriptionContainer custom-scrollbar"
             </div>
           </div>
           <h1 className="headContact2">Update Task Progress</h1>
-          <form className="FormModal2" onSubmit={updateProgress}>
+          <form className="FormModal2" onSubmit={updateProgress} style={{height:"100%",justifyContent:"space-evenly"}}>
             <label className="AllLabeles">Choose State </label>
             <select
             required
@@ -1857,7 +1860,7 @@ className="descriptionContainer custom-scrollbar"
               {creator &&
                 resReqsData?.map((res) => {
                   return (
-                    <div className="DivContResearchers">
+                    <div style={{flexDirection:"row"}} className="DivContResearchers">
                       <h3>
                         Researcher Name : {res.firstName + " " + res.lastName}
                       </h3>
@@ -1900,7 +1903,7 @@ className="descriptionContainer custom-scrollbar"
           )}
           <div className="ContainerParticipants">
             <h2>Participants : {ideaPar?.length}</h2>
-            <div className="ContInviteResearchers custom-scrollbar">
+            <div className="ContInviteResearchers custom-scrollbar" style={{width:"60%"}}>
               {ideaPar?.map((par) => {
                 return (
                   <div className="DivContResearchers1">

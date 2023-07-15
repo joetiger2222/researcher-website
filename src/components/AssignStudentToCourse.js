@@ -157,7 +157,7 @@ if(userData.userId===''){
             <div className="AllDataInRatePage">
 <label style={{fontSize:"20px",fontWeight:"bold"}}>Search By Email</label>
             <input className="search-input" onChange={(e)=>setSearchTerm(e.target.value)} placeholder="Enter Email..."></input>
-            <div className="ContainerForCardsRate">
+            <div className="ContainerForCardsRate1">
             {allStudents?.map(student=>{
                 return(
                     <div className="CardRate">
