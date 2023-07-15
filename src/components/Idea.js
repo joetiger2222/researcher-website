@@ -305,9 +305,14 @@ export default function Idea() {
 
     function createfTask(e) {
       e.preventDefault();
-      const val = /^\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$/.test(
-        taskData.deadline
-      );
+      const currentYear = new Date().getFullYear();
+const futureYearLimit = currentYear + 10; // You can adjust the limit as needed
+
+const yearRangeRegex = new RegExp(
+  `^(${currentYear}|${Array.from({ length: futureYearLimit - currentYear }, (_, i) => currentYear + i + 1).join('|')})-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$`
+);
+
+const val = yearRangeRegex.test(taskData.deadline);
       if (val) {
         fetch(
           `https://localhost:7187/api/Ideas/Tasks/InitiateTask/${ideaId}/${userData.resercherId}`,

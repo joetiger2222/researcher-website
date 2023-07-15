@@ -91,7 +91,7 @@ function getStudentImage(){
             {userData.roles!=='Admin'&&<li class="dropdown">
               <a onClick={()=>{
                 navigate('/HomePage');
-                window.scrollTo(0, 2300)
+                window.scrollTo(0, 2000)
               }}>
                 About Us
               </a>

@@ -316,7 +316,7 @@ export default function AdminPanel() {
             </div>
           </div>
           <h1 className="headContact2">Create New Topic</h1>
-          <div className="FormModal2">
+          <form className="FormModal2" onSubmit={addTopic}>
             <label className="AllLabeles">Enter Topic Name: </label>
             <input
               className="InputModalHallDetails"
@@ -331,7 +331,7 @@ export default function AdminPanel() {
             <label className="AllLabeles">Enter Topic Min Points</label>
             <input
             type="number"
-            min={3}
+            min={4}
               className="InputModalHallDetails"
               onChange={(e) => {
                 setTopicName((prev) => {
@@ -342,11 +342,11 @@ export default function AdminPanel() {
             ></input>
             <div className="buttonsOnModal">
               {topicName.name !== "" && (
-                <button onClick={addTopic}>Finish</button>
+                <button type="submit">Finish</button>
               )}
               <button onClick={props.onClose}>Cancel</button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     );
@@ -620,7 +620,7 @@ export default function AdminPanel() {
               }
             ></input>
             <div className="buttonsOnModal">
-              <button onClick={editSkillName}>Submit</button>
+             {skillName.name!==''&&<button onClick={editSkillName}>Submit</button>}
               <button onClick={props.onClose}>Cancel</button>
             </div>
           </div>

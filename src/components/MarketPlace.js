@@ -236,9 +236,18 @@ export default function MarketPalce() {
     function createNewIdea(e) {
       e.preventDefault();
       // const val = /^\d{4}-\d{2}-\d{2}$/.test(ideaData.deadline);
-      const val = /^\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$/.test(
-        ideaData.deadline
-      );
+
+      // const val = /^\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$/.test(
+      //   ideaData.deadline
+      // );
+      const currentYear = new Date().getFullYear();
+const futureYearLimit = currentYear + 10; // You can adjust the limit as needed
+
+const yearRangeRegex = new RegExp(
+  `^(${currentYear}|${Array.from({ length: futureYearLimit - currentYear }, (_, i) => currentYear + i + 1).join('|')})-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$`
+);
+
+const val = yearRangeRegex.test(ideaData.deadline);
 
       console.log(val);
       if (val) {
