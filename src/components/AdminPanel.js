@@ -3,7 +3,7 @@ import "../css/AdminPanel.css";
 import Header from "./Header";
 import toastr from "toastr";
 import "toastr/build/toastr.min.css";
-import { json, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
@@ -12,7 +12,7 @@ export default function AdminPanel() {
   const [courses, setCourses] = useState(null);
   const [allSkills, setAllSkills] = useState(null);
   const [skillId, setSkillId] = useState(null);
-  const [showCreateSkill, setShowCreateSkill] = useState(false);
+  
   const [showSpec, setShowSpec] = useState(false);
   const [allSpecs, setAllSpecs] = useState(null);
   const [showTopic, setShowTopic] = useState(false);
