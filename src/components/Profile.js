@@ -41,7 +41,6 @@ const Profile = () => {
   const [researcherIdeas, setResearcherIdeas] = useState([]);
   const [studentCourses,setStudentCourses]=useState([]);
   const [studentImage, setStudentImage] = useState({ url: kariem });
-  // const userData = useLocation().state?.data;
   const { studentId } = useParams();
   const navigate = useNavigate();
   console.log('from profile',userData)
@@ -474,7 +473,7 @@ const Profile = () => {
   const DeletePaperCard = (props) => {
     function deletePaper() {
       Swal.fire({
-        title: "Are You Sure To Delete The Course",
+        title: "Are You Sure To Delete The Paper",
         showCancelButton: true,
       }).then((data) => {
         if (data.isConfirmed) {

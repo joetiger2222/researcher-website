@@ -18,9 +18,9 @@ export default function RegisterationSpecialAccount() {
     password: "",
     age: "",
     phoneNumber: "",
-    gender: 0,
+    gender: -1,
     nationalityId: 0,
-    type: 0,
+    type: -1,
     isMentor: true,
     points: 0,
     specalityId: 0,
@@ -40,6 +40,8 @@ export default function RegisterationSpecialAccount() {
       };
     });
   }
+
+ 
 
   useEffect(() => {
     let data = formData;
@@ -61,7 +63,7 @@ export default function RegisterationSpecialAccount() {
         body: JSON.stringify(formData),
       }
     )
-      // .then(res=>res.ok?alert('user successfully created'):alert('failed to send points and speciality'))
+      
       .then((res) => {
         if (res.ok) {
           toastr.success("user successfully created","Success");
@@ -72,6 +74,32 @@ export default function RegisterationSpecialAccount() {
 
   function sendRegisterData(e) {
     e.preventDefault();
+
+    if (formData.gender*1 !== 0) {
+      if (formData.gender*1 !== 1) {
+      toastr.error('Please Choose A Valid Gender');
+      return;
+      }
+    }
+    if (formData.type*1 !== 0) {
+      if (formData.type*1 !== 1) {
+        if (formData.type*1 !== 2) {
+      toastr.error('Please Choose A Valid Type');
+      return;
+      }
+    }
+    }
+    
+    if(formData.nationalityId===0){
+      toastr.error('Please Choose A Valid Nationality');
+      return;
+    }
+    if(formData.specalityId===0){
+      toastr.error('Please Choose A Valid Speciality');
+      return;
+    }
+
+
     if (formData.password === passwordMatch) {
       fetch(
         "https://localhost:7187/api/Authentication/Student/SpecialAccount",
@@ -84,17 +112,65 @@ export default function RegisterationSpecialAccount() {
           body: JSON.stringify(formData),
         }
       )
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          } else toastr.error("failed to add student","Failed");
-        })
-        .then((data) => {
-          if (data) {
-            setStuId(data.userId);
-            sendResData(data.userId);
+        // .then((res) => {
+        //   if (res.ok) {
+        //     return res.json();
+        //   } else toastr.error("failed to add student","Failed");
+        // })
+        // .then((data) => {
+        //   if (data) {
+        //     setStuId(data.userId);
+        //     sendResData(data.userId);
+        //   }
+        // });
+        .then((response) => {
+          const reader = response.body.getReader();
+          let chunks = [];
+
+          function readStream() {
+            return reader.read().then(({ done, value }) => {
+              if (done) {
+                return chunks;
+              }
+              chunks.push(value);
+              return readStream();
+            });
           }
-        });
+
+          if (!response.ok) {
+            return readStream().then((chunks) => {
+              const body = new TextDecoder().decode(
+                new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+              );
+              const response = JSON.parse(body);
+
+              const duplicateEmail = response.DuplicateEmail;
+              const duplicateUserName = response.DuplicateUserName;
+              const passwordTooShort=response.PasswordTooShort;
+              if (response.DuplicateEmail)
+                toastr.error(duplicateEmail[0], "Duplicate Email");
+              if (response.DuplicateUserName)
+                toastr.error(duplicateUserName[0], "Duplicate UserName");
+              if(response.PasswordTooShort)
+                toastr.error(passwordTooShort,'Short Password')
+              
+            });
+          } 
+
+          return readStream().then((chunks) => {
+            const body = new TextDecoder().decode(
+              new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+            );
+            const response = JSON.parse(body);
+          if(response.userId){
+              const userId = response.userId;
+              setStuId(userId);
+            sendResData(userId);
+              // console.log(userId);
+          }
+          });
+        })
+        .catch((error) => console.error(error));
     } else {
       toastr.error("Password and Confirm Password Does not Match","Error");
     }
@@ -139,12 +215,13 @@ export default function RegisterationSpecialAccount() {
           <div className="left">
             <h1 className="h1ForRegistration">Sign Up</h1>
 
-            <form className="registrationForm custom-scrollbar">
+            <form className="registrationForm custom-scrollbar" onSubmit={sendRegisterData}>
               <div className="NameAndUserName">
                 <div>
                   {" "}
                   <label htmlFor="">First Name</label>
                   <input
+                  required
                     onChange={getRegisterData}
                     name="firstname"
                     type="text"
@@ -155,6 +232,7 @@ export default function RegisterationSpecialAccount() {
                   {" "}
                   <label htmlFor="">Last Name</label>
                   <input
+                  required
                     onChange={getRegisterData}
                     name="lastname"
                     type="text"
@@ -166,6 +244,7 @@ export default function RegisterationSpecialAccount() {
                 {" "}
                 <label htmlFor="">Username</label>
                 <input
+                required
                   onChange={getRegisterData}
                   name="userName"
                   type="text"
@@ -175,6 +254,7 @@ export default function RegisterationSpecialAccount() {
               <div className="emailForm">
                 <label htmlFor="">Email</label>
                 <input
+                required
                   onChange={getRegisterData}
                   name="email"
                   type="email"
@@ -185,6 +265,7 @@ export default function RegisterationSpecialAccount() {
                 <div>
                   <label htmlFor="">Password</label>
                   <input
+                  required
                     onChange={getRegisterData}
                     name="password"
                     type="password"
@@ -194,6 +275,7 @@ export default function RegisterationSpecialAccount() {
                 <div>
                   <label htmlFor="">Confirm Password</label>
                   <input
+                  required
                     name="confirmPassword"
                     onChange={(e) => setPasswrdMatch(e.target.value)}
                     type="password"
@@ -207,6 +289,7 @@ export default function RegisterationSpecialAccount() {
                   {" "}
                   <label htmlFor="">Age</label>
                   <input
+                  required
                     onChange={getRegisterData}
                     name="age"
                     type="text"
@@ -217,6 +300,7 @@ export default function RegisterationSpecialAccount() {
                   {" "}
                   <label htmlFor="">Gender</label>
                   <select
+                  required
                     className="genderSelect"
                     name="gender"
                     onChange={getRegisterData}
@@ -234,6 +318,7 @@ export default function RegisterationSpecialAccount() {
                 {" "}
                 <label htmlFor="">Phone Number</label>
                 <input
+                required
                   onChange={getRegisterData}
                   name="phoneNumber"
                   type="text"
@@ -245,6 +330,7 @@ export default function RegisterationSpecialAccount() {
                   <label htmlFor="">Nationality</label>
 
                   <select
+                  required
                     name="nationalityId"
                     className="genderSelect"
                     onChange={(e) =>
@@ -265,6 +351,7 @@ export default function RegisterationSpecialAccount() {
                   <label htmlFor="">Type</label>
 
                   <select
+                  required
                     className="genderSelect"
                     name="type"
                     onChange={(e) =>
@@ -286,6 +373,7 @@ export default function RegisterationSpecialAccount() {
                   <label htmlFor="">isMentor</label>
 
                   <select
+                  required
                     className="genderSelect"
                     name="isMentor"
                     onChange={(e) => {
@@ -306,7 +394,10 @@ export default function RegisterationSpecialAccount() {
                 <div>
                   <label>Points </label>
                   <input
+                  required
                     placeholder="Enter Points"
+                    type="number"
+                    min={0}
                     name="points"
                     onChange={(e) =>
                       setFormData((prev) => {
@@ -319,6 +410,7 @@ export default function RegisterationSpecialAccount() {
                   <label>Speciality </label>
 
                   <select
+                  required
                     name="specalityId"
                     className="genderSelect"
                     onChange={(e) =>
@@ -338,7 +430,7 @@ export default function RegisterationSpecialAccount() {
               </div>
 
               <div className="registrationButtons">
-                <button onClick={sendRegisterData} className="createAccountbtn">
+                <button  className="createAccountbtn" type="submit">
                   Create Account
                 </button>
 

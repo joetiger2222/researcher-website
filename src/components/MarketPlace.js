@@ -27,6 +27,7 @@ export default function MarketPalce() {
     Topic: 0,
     Specality: 0,
     Month: 0,
+    counter:5,
   });
   const [completeIdeaSearch, setCompleteIdeaSearch] = useState({
     SearchTerm: "",
@@ -56,7 +57,7 @@ export default function MarketPalce() {
 
   function getAllIdeas() {
     fetch(
-      `https://localhost:7187/api/Ideas?SearchTerm=${ideaSearch.SearchTerm}&Topic=${ideaSearch.Topic}&Specality=${ideaSearch.Specality}&Month=${ideaSearch.Month}`,
+      `https://localhost:7187/api/Ideas?SearchTerm=${ideaSearch.SearchTerm}&Topic=${ideaSearch.Topic}&Specality=${ideaSearch.Specality}&Month=${ideaSearch.Month}&PageSize=${ideaSearch.counter}`,
       {
         method: "GET",
         headers: {
@@ -232,7 +233,8 @@ export default function MarketPalce() {
       getAllTopics();
     }, []);
 
-    function createNewIdea() {
+    function createNewIdea(e) {
+      e.preventDefault();
       // const val = /^\d{4}-\d{2}-\d{2}$/.test(ideaData.deadline);
       const val = /^\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$/.test(
         ideaData.deadline
@@ -298,15 +300,18 @@ export default function MarketPalce() {
           </div>
           <h1 className="headContact2">Create New Idea</h1>
 
-          <div className="FormModal2">
+          <form className="FormModal2" onSubmit={createNewIdea}>
             <label className="AllLabeles">Idea Name: </label>
             <input
+            required
               className="InputModalHallDetails"
               onChange={getIdeaData}
               name="name"
             ></input>
             <label className="AllLabeles">Participants Number: </label>
             <input
+            min={1}
+            required
               className="InputModalHallDetails"
               onChange={(e) =>
                 setIdeaData((prev) => {
@@ -317,6 +322,7 @@ export default function MarketPalce() {
               type="number"
             ></input>
             <select
+            required
               className="InputModalHallDetails"
               onChange={(e) =>
                 setIdeaData((prev) => {
@@ -332,6 +338,7 @@ export default function MarketPalce() {
               })}
             </select>
             <select
+            required
               className="InputModalHallDetails"
               onChange={(e) =>
                 setIdeaData((prev) => {
@@ -348,6 +355,7 @@ export default function MarketPalce() {
             </select>
             <label className="AllLabeles">Deadline</label>
             <input
+            required
               className="InputModalHallDetails"
               type="text"
               onChange={getIdeaData}
@@ -355,14 +363,14 @@ export default function MarketPalce() {
               name="deadline"
             ></input>
             <div className="buttonsOnModal">
-              <button className="" onClick={createNewIdea}>
+              <button className=""  type="submit">
                 Create
               </button>
               <button className="" onClick={props.onClose}>
                 Cancel
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     );
@@ -1044,6 +1052,7 @@ export default function MarketPalce() {
                           View Idea
                         </button>
                       </div>
+                      
                     </div>
                   );
                 })
@@ -1058,6 +1067,7 @@ export default function MarketPalce() {
               />
             )}
           </div>
+          {allIdeas?.length>5&&<button className="plusBtn" onClick={()=>setIdeaSearch(prev=>{return{...prev,counter:ideaSearch.counter+5}})}>View More</button>}
         </div>
 
         <div className="ContainerAllIdeas">

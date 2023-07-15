@@ -692,10 +692,10 @@ const CourseDetails = () => {
             <h2>Instructions :</h2>
             <h3>{courseDetails?.instructions}</h3>
           </div>
-          <div className="InstructionsNew">
+          {isStudentEnrolled&&<div className="InstructionsNew">
             <h2>Link :</h2>
             <h3>{courseDetails?.driveLink}</h3>
-          </div>
+          </div>}
         </div>
 
         <div className="CenterAndRighCourseData">

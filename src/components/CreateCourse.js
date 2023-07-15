@@ -49,21 +49,6 @@ export default function CreateCourse() {
 
 
 
-
-console.log(courseData)
-
-  function getAllSkills(){
-    fetch(`https://localhost:7187/api/Researchers/Skills`,{
-      method:"GET",
-      headers:{
-        "Authorization":`Bearer ${userData.token}`
-      }
-    })
-    .then(res=>res.ok?res.json():null)
-    .then(data=>setAllSkills(data))
-    .catch(error=>console.error(error))
-  }
-
   function getAllSkillsWithQuizes() {
     fetch(`https://localhost:7187/api/Researchers/Skills`, {
       method: "GET",
@@ -125,7 +110,7 @@ console.log(courseData)
 
   return (
     <div className="createCourseContainer">
-      <form className="createCourseForm">
+      <form className="createCourseForm" onSubmit={sendCourseData}>
         <h1>Create New Course</h1>
         {/* <div className="createCourseFormOneLine">
           <label>Course Name</label>
@@ -138,11 +123,11 @@ console.log(courseData)
         <div className="createCourseFormTwoInlineDiv">
           <div className="createCourseFormOneLine">
             <label>Course Name</label>
-            <input onChange={getCourseData} name="name"></input>
+            <input onChange={getCourseData} name="name" required></input>
           </div>
           <div className="createCourseFormOneLine">
             {/* <label>Skill</label> */}
-            <select onChange={getCourseData} className="SelectSkill" name="skillId" id="skill" class="select-field-skill">
+            <select required onChange={getCourseData} className="SelectSkill" name="skillId" id="skill" class="select-field-skill">
               <option selected disabled value="">Choose a Skill</option>
               {allSkills?.map(skill=>{
                   return(
@@ -158,6 +143,7 @@ console.log(courseData)
           <div className="createCourseFormOneLine">
             <label>Price (EGP)</label>
             <input
+            required
               type="number"
               className="number-input"
               onChange={getCourseData}
@@ -167,8 +153,10 @@ console.log(courseData)
           <div className="createCourseFormOneLine">
             <label>Hours</label>
             <input
+            required
               className="number-input"
-              type="text"
+              type="number"
+              min={1}
               onChange={getCourseData}
               name="hours"
             ></input>
@@ -178,6 +166,7 @@ console.log(courseData)
         <div className="createCourseFormOneLineNew">
           <label>Instructions</label>
           <textarea
+          required
             onChange={getCourseData}
             className="textareainput"
             type="text"
@@ -187,6 +176,7 @@ console.log(courseData)
         <div className="createCourseFormOneLineNew">
           <label>Objectives:</label>
           <textarea
+          required
             onChange={getCourseData}
             className="textareainput"
             type="text"
@@ -197,6 +187,7 @@ console.log(courseData)
         <div className="createCourseFormOneLineNew">
           <label>Brief</label>
           <textarea
+          required
             onChange={getCourseData}
             className="textareainput"
             type="text"
@@ -215,7 +206,7 @@ console.log(courseData)
         {/* </div> */}
 
         <div className="createCourseBtnDiv">
-          <button onClick={sendCourseData}>Create</button>
+          <button type="submit">Create</button>
         </div>
       </form>
     </div>

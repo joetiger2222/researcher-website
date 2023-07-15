@@ -107,13 +107,14 @@ const Footer = () => {
             </select>
             <label className="AllLabeles">Enter Problem Description : </label>
             <input
+            required
               className="InputModalHallDetails"
               name="description"
               onChange={getProblemData}
             ></input>
 
             <div className="buttonsOnModal">
-              <button onClick={sendProblem}>Send</button>
+              {problem.description!==''&&problem.problemCategoryId>0&&<button onClick={sendProblem}>Send</button>}
               <button onClick={props.onClose}>Cancel</button>
             </div>
           </div>

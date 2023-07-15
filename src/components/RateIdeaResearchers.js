@@ -111,6 +111,10 @@ const UploadFileCard = (props) => {
     event.preventDefault();
     
     const titleValue = titleRef.current.value;
+    if(titleValue===''){
+      toastr.error('Please Enter A Valid Name');
+      return;
+    }
     
     const formData = new FormData();
     formData.append("file", document);

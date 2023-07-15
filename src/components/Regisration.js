@@ -3,12 +3,13 @@ import registartionImg from "../images/registerImage.png";
 import google from "../google.png";
 import "../css/Registration.css";
 import toastr from "toastr";
-import 'toastr/build/toastr.min.css';
+import "toastr/build/toastr.min.css";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { MyContext } from '../Users/Redux';
+import { MyContext } from "../Users/Redux";
 const Registration = () => {
-  const { userId, setUserId, token, setToken, roles, setRoles } = useContext(MyContext);
+  const { userId, setUserId, token, setToken, roles, setRoles } =
+    useContext(MyContext);
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -17,13 +18,12 @@ const Registration = () => {
     password: "",
     age: "",
     phoneNumber: "",
-    gender: 0,
-    bio:'',
+    gender: -1,
+    bio: "",
     nationalityId: 0,
   });
   const [passwordMatch, setPasswrdMatch] = useState("");
-  // const [userId, setUserId] = useState(null);
-  // const [loginData, setLoginData] = useState(null);
+ 
   const [allNationalities, setAllNationalities] = useState([]);
   const navigate = useNavigate();
   console.log(allNationalities);
@@ -42,10 +42,21 @@ const Registration = () => {
     setFormData(data);
   }, [formData.gender]);
 
-  
+  console.log(formData)
 
   function sendRegisterData(e) {
     e.preventDefault();
+    if (formData.gender*1 !== 0) {
+      if (formData.gender*1 !== 1) {
+      toastr.error('Please Choose A Valid Gender');
+      return;
+      }
+    }
+    
+    if(formData.nationalityId===0){
+      toastr.error('Please Choose A Valid Nationality');
+      return;
+    }
     if (formData.password === passwordMatch) {
       fetch("https://localhost:7187/api/Authentication", {
         method: "POST",
@@ -54,53 +65,66 @@ const Registration = () => {
         },
         body: JSON.stringify(formData),
       })
-      // .then((res) =>
-      //   res.ok
-      //     ? authorizeLogin(e)
-      //     : toastr.error("failed to register please try again later","Failed")
-      // );
-      .then((response) => {
-        const reader = response.body.getReader();
-        let chunks = [];
-      
-        function readStream() {
-          return reader.read().then(({ done, value }) => {
-            if (done) {
-              return chunks;
-            }
-            chunks.push(value);
-            return readStream();
-          });
-        }
-      
-        if (!response.ok) {
+        // .then((res) =>
+        //   res.ok
+        //     ? authorizeLogin(e)
+        //     : toastr.error("failed to register please try again later","Failed")
+        // );
+        .then((response) => {
+          const reader = response.body.getReader();
+          let chunks = [];
+
+          function readStream() {
+            return reader.read().then(({ done, value }) => {
+              if (done) {
+                return chunks;
+              }
+              chunks.push(value);
+              return readStream();
+            });
+          }
+
+          if (!response.ok) {
+            return readStream().then((chunks) => {
+              const body = new TextDecoder().decode(
+                new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
+              );
+              const response = JSON.parse(body);
+
+              const duplicateEmail = response.DuplicateEmail;
+              const duplicateUserName = response.DuplicateUserName;
+              const passwordTooShort=response.PasswordTooShort;
+              if (response.DuplicateEmail)
+                toastr.error(duplicateEmail[0], "Duplicate Email");
+              if (response.DuplicateUserName)
+                toastr.error(duplicateUserName[0], "Duplicate UserName");
+              if(response.PasswordTooShort)
+                toastr.error(passwordTooShort,'Short Password')
+              console.log(body)
+            });
+          } else {
+            authorizeLogin(e);
+          }
+
           return readStream().then((chunks) => {
             const body = new TextDecoder().decode(
               new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
             );
-            toastr.error(body);
+            console.log(body);
           });
-        }else {
-          authorizeLogin(e)
-        }
-      
-        return readStream().then((chunks) => {
-          const body = new TextDecoder().decode(
-            new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
-          );
-          console.log(body);
-        });
-      })
-      .catch((error) => console.error(error));
+        })
+        .catch((error) => console.error(error));
     } else {
-      toastr.error("Password and Confirm Password Does not Match","Error");
+      toastr.error("Password and Confirm Password Does not Match", "Error");
     }
   }
 
   function getAllNationalities() {
     fetch(`https://localhost:7187/api/Students/Nationalites`)
       .then((res) =>
-        res.ok ? res.json() : toastr.error("failed to load nationalities","Failed")
+        res.ok
+          ? res.json()
+          : toastr.error("failed to load nationalities", "Failed")
       )
       .then((data) => (data ? setAllNationalities(data) : null));
   }
@@ -120,7 +144,7 @@ const Registration = () => {
     })
       .then((response) => {
         if (response.ok) return response.json();
-        else toastr.error("Failed to login in try again later","Failed");
+        else toastr.error("Failed to login in try again later", "Failed");
       })
       .then((data) => {
         if (data) {
@@ -129,10 +153,10 @@ const Registration = () => {
           //   userId: data.userId,
           //   token: data.token,
           // };
-          setRoles('Student');
-      setUserId(data.userId);
-      setToken(data.token);
-          navigate(`/HomePage`,);
+          setRoles("Student");
+          setUserId(data.userId);
+          setToken(data.token);
+          navigate(`/HomePage`);
         }
       });
   }
@@ -143,12 +167,16 @@ const Registration = () => {
         <div className="left">
           <h1 className="h1ForRegistration">Sign Up</h1>
 
-          <form className="registrationForm custom-scrollbar">
+          <form
+            className="registrationForm custom-scrollbar"
+            onSubmit={sendRegisterData}
+          >
             <div className="NameAndUserName">
               <div>
                 {" "}
                 <label htmlFor="">First Name</label>
                 <input
+                  required
                   onChange={getRegisterData}
                   name="firstname"
                   type="text"
@@ -159,6 +187,7 @@ const Registration = () => {
                 {" "}
                 <label htmlFor="">Last Name</label>
                 <input
+                  required
                   onChange={getRegisterData}
                   name="lastname"
                   type="text"
@@ -170,6 +199,7 @@ const Registration = () => {
               {" "}
               <label htmlFor="">Username</label>
               <input
+                required
                 onChange={getRegisterData}
                 name="userName"
                 type="text"
@@ -179,6 +209,7 @@ const Registration = () => {
             <div className="emailForm">
               <label htmlFor="">Email</label>
               <input
+                required
                 onChange={getRegisterData}
                 name="email"
                 type="email"
@@ -189,6 +220,7 @@ const Registration = () => {
               <div>
                 <label htmlFor="">Password</label>
                 <input
+                  required
                   onChange={getRegisterData}
                   name="password"
                   type="password"
@@ -198,6 +230,7 @@ const Registration = () => {
               <div>
                 <label htmlFor="">Confirm Password</label>
                 <input
+                  required
                   name="confirmPassword"
                   onChange={(e) => setPasswrdMatch(e.target.value)}
                   type="password"
@@ -211,6 +244,7 @@ const Registration = () => {
                 {" "}
                 <label htmlFor="">Age</label>
                 <input
+                  required
                   onChange={getRegisterData}
                   name="age"
                   type="text"
@@ -221,6 +255,7 @@ const Registration = () => {
                 {" "}
                 <label htmlFor="">Gender</label>
                 <select
+                  required
                   className="genderSelect"
                   name="gender"
                   onChange={getRegisterData}
@@ -238,6 +273,7 @@ const Registration = () => {
               {" "}
               <label htmlFor="">Phone Number</label>
               <input
+                required
                 onChange={getRegisterData}
                 name="phoneNumber"
                 type="text"
@@ -248,6 +284,7 @@ const Registration = () => {
               <label htmlFor="">Nationality</label>
 
               <select
+                required
                 name="nationalityId"
                 className="genderSelect"
                 onChange={(e) =>
@@ -256,7 +293,7 @@ const Registration = () => {
                   })
                 }
               >
-                <option selected disabled>
+                <option selected disabled value={0}>
                   Nationality
                 </option>
                 {allNationalities?.map((nat) => {
@@ -266,13 +303,17 @@ const Registration = () => {
             </div>
 
             <div className="registrationButtons">
-              <button onClick={sendRegisterData} className="createAccountbtn">
+              <button
+                // onClick={sendRegisterData}
+                type="submit"
+                className="createAccountbtn"
+              >
                 Create Account
               </button>
-              <button className="createAccountbtnWithGoogle">
+              {/* <button className="createAccountbtnWithGoogle">
                 <img style={{ width: "20px" }} src={google} />
                 SignUp With Google
-              </button>
+              </button> */}
             </div>
           </form>
         </div>

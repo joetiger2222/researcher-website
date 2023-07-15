@@ -330,6 +330,8 @@ export default function AdminPanel() {
             ></input>
             <label className="AllLabeles">Enter Topic Min Points</label>
             <input
+            type="number"
+            min={3}
               className="InputModalHallDetails"
               onChange={(e) => {
                 setTopicName((prev) => {

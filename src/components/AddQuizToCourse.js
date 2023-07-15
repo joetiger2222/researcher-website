@@ -8,6 +8,7 @@ import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
+import { FaTrash } from "react-icons/fa";
 export default function AddQuizToCourse (){
     const [showQuestionTemplate, setShowQuestionTemplate] = useState(false);
     const [answerCards, setAnswerCards] = useState([
@@ -28,7 +29,12 @@ export default function AddQuizToCourse (){
 console.log(quizData)
 
     function addNewAnswer() {
+      if(answerCards[answerCards.length-1].answerText===''){
+        toastr.error('Please Fill The Current Answer Before Adding New One');
+        return;
+      }
         setAnswerCards((prevCards) => {
+          
           const newAnswer = {
             id: prevCards.length + 1,
             isCorrectAnswer: false,
@@ -93,8 +99,28 @@ console.log(quizData)
 
 
 
-function saveQuest() {
-    const updatedQuestion = { ...question, answers: answerCards };
+ function saveQuest() {
+  
+  const updatedQuestion = { ...question, answers: answerCards };
+  console.log(updatedQuestion)
+  if(updatedQuestion.name===''){
+    toastr.error('Invalid Question Name');
+    return;
+  }
+  if(updatedQuestion.score===0){
+    toastr.error('Invalid Question Points');
+    return;
+  }
+  if(updatedQuestion.answers.length===0){
+    toastr.error('Please Enter At Least One Answer For The Question');
+    return;
+  }
+  const hasEmptyAnswer = updatedQuestion.answers.filter(ans => ans.answerText === '');
+  if (hasEmptyAnswer.length>0) {
+    toastr.error('One or more answers are empty');
+    return;
+  }
+    
     setQuestion(updatedQuestion);
     setAllQuestions((prev) => [...prev, updatedQuestion]);
     setShowQuestionTemplate(false);
@@ -122,6 +148,14 @@ function saveQuest() {
 
   function sendQuizData() {
     const updatedQuizData = { ...quizData, questions: allQuestions };
+    if(updatedQuizData.maxScore===0){
+      toastr.error('Please Enter A Valid Score For The Quiz');
+      return;
+    }
+    if(updatedQuizData.timeLimit===''){
+      toastr.error('Please Enter A Valid Time Limit For The Quiz');
+      return;
+    }
 
     fetch(`https://localhost:7187/api/Quizes/FinalQuiz`, {
       method: "POST",
@@ -136,7 +170,7 @@ function saveQuest() {
       
   }
 
-
+console.log(allQuestions)
 
 if(userData){
 
@@ -153,6 +187,7 @@ if(userData){
               <div className="quizHeaderOneLine">
                 <span>Min Score: </span>
                 <input
+                min={1}
                 type="number"
                   onChange={getQuizData}
                   name="maxScore"
@@ -214,6 +249,11 @@ if(userData){
                     <span style={{fontWeight:"bold"}} className="">Min Score: </span>
                     {question.score}
                   </p>
+                  <FaTrash style={{alignSelf:'center',color:'#ce1919',width:'20px',height:'20px',cursor:'pointer'}} 
+                  onClick={()=>{
+                    setAllQuestions(allQuestions.filter((q, i) => i !== index));
+                  }}
+                  />
                </div>
                 </div>
               );
@@ -266,12 +306,12 @@ if(userData){
             </div>
 
             <div className="ContSubmitAndAddQues">
-              <button
+              {!showQuestionTemplate&&<button
                 onClick={() => setShowQuestionTemplate(true)}
                 className="addQuestionbtn button-arounder"
               >
                +Add Question
-              </button>
+              </button>}
               {allQuestions.length>0 &&
               <button className="buttonbtn button-arounder" onClick={sendQuizData}>
             Submit{" "}

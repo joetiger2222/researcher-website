@@ -303,7 +303,8 @@ export default function Idea() {
       });
     }
 
-    function createfTask() {
+    function createfTask(e) {
+      e.preventDefault();
       const val = /^\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$/.test(
         taskData.deadline
       );
@@ -361,15 +362,19 @@ export default function Idea() {
           </div>
           <h1 className="headContact2">Create New Task</h1>
 
-          <div className="FormModal2">
+          <form className="FormModal2" onSubmit={createfTask}>
             <label className="AllLabeles">Task Name: </label>
             <input
+            required
               className="InputModalHallDetails"
               onChange={getTaskData}
               name="name"
             ></input>
             <label className="AllLabeles">participants Number: </label>
             <input
+            type="number"
+            min={1}
+            required
               className="InputModalHallDetails"
               onChange={(e) =>
                 setTaskData((prev) => {
@@ -380,12 +385,14 @@ export default function Idea() {
             ></input>
             <label className="AllLabeles">description: </label>
             <input
+            required
               className="InputModalHallDetails"
               onChange={getTaskData}
               name="description"
             ></input>
             <label className="AllLabeles">deadline</label>
             <input
+            required
               className="InputModalHallDetails"
               type="text"
               name="deadline"
@@ -393,10 +400,10 @@ export default function Idea() {
               placeholder="yyyy-mm-dd"
             ></input>
             <div className="buttonsOnModal">
-              <button onClick={createfTask}>Create</button>
+              <button type="submit" >Create</button>
               <button onClick={props.onClose}>Cancel</button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     );
@@ -706,6 +713,10 @@ export default function Idea() {
 
     const sendMessage = async (e) => {
       e.preventDefault();
+      if(messageToSend.content===''){
+        toastr.error('Please Enter A Valid Message');
+        return;
+      }
       const chatMessage = {
         content: messageToSend.content,
         date: new Date().toISOString(),
@@ -944,6 +955,10 @@ export default function Idea() {
 
     const sendMessage = async (e) => {
       e.preventDefault();
+      if(messageToSend.content===''){
+        toastr.error('Please Enter A Valid Message');
+        return;
+      }
       const chatMessage = {
         content: messageToSend.content,
         date: new Date().toISOString(),
@@ -1335,6 +1350,10 @@ className="descriptionContainer custom-scrollbar"
     const handleDocumentSubmit = (event) => {
       event.preventDefault();
       const titleValue = titleRef.current.value;
+      if(titleValue===''){
+        toastr.error('Please Enter A Valid Name');
+        return;
+      }
       // const titleValue = titleInput.value;
       const formData = new FormData();
       formData.append("file", document);
@@ -1523,6 +1542,10 @@ className="descriptionContainer custom-scrollbar"
     const handleDocumentSubmit = (event) => {
       event.preventDefault();
       const titleValue = titleRef.current.value;
+      if(titleValue===''){
+        toastr.error('Please Enter A Valid Name');
+        return;
+      }
       // const titleValue = titleInput.value;
       const formData = new FormData();
       formData.append("file", document);
@@ -1704,7 +1727,14 @@ className="descriptionContainer custom-scrollbar"
   const UpdateTaskProgressCard = (props) => {
     const [progress, setProgress] = useState(null);
 
-    function updateProgress() {
+    function updateProgress(e) {
+      e.preventDefault();
+      if(progress!==1){
+        if(progress!==2){
+          toastr.error('Please Choose A Valid State');
+          return;
+        }
+      }
       const progressObj = { progress: progress };
       fetch(
         `https://localhost:7187/api/Ideas/Tasks/TaskProgress/${props.task.id}/${userData.resercherId}`,
@@ -1717,7 +1747,7 @@ className="descriptionContainer custom-scrollbar"
           body: JSON.stringify(progressObj),
         }
       )
-        // .then(res=>res.ok?alert('Task progress updated successfully'):alert('failed to update progress'))
+        
         .then((res) => {
           if (res.ok) {
             toastr.success("Task progress updated successfully", "Success");
@@ -1739,9 +1769,10 @@ className="descriptionContainer custom-scrollbar"
             </div>
           </div>
           <h1 className="headContact2">Update Task Progress</h1>
-          <div className="FormModal2">
+          <form className="FormModal2" onSubmit={updateProgress}>
             <label className="AllLabeles">Choose State </label>
             <select
+            required
               className="InputModalHallDetails"
               onChange={(e) => setProgress(e.target.value * 1)}
             >
@@ -1752,10 +1783,10 @@ className="descriptionContainer custom-scrollbar"
               <option value={2}>Completed</option>
             </select>
             <div className="buttonsOnModal">
-              <button onClick={updateProgress}>Update</button>
+              <button type="submit">Update</button>
               <button onClick={props.onClose}>Cancel</button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     );

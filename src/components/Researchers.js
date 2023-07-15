@@ -169,6 +169,10 @@ let counter=1;
 
     const sendMessage = async (e) => {
       e.preventDefault();
+      if(messageToSend.content===''){
+        toastr.error('Please Enter A Valid Message');
+        return;
+      }
       const chatMessage = {
         content: messageToSend.content,
         date: new Date().toISOString(),
@@ -366,11 +370,6 @@ if(userData.userId===''){
 }
 
 
-
-
-
-
-
   return (
     <>
       <Header userData={userData} />
@@ -416,8 +415,8 @@ if(userData.userId===''){
             <option value={""} selected>
               Level
             </option>
-            {[0, 1, 2, 3]?.map((level) => {
-              return <option value={level}>{level}</option>;
+            {[{num:0,level:'Beginner'}, {num:1,level:'Intermediate'}, {num:2,level:'Professional'}, {num:3,level:'Expert'}]?.map((arr) => {
+              return <option value={arr.num}>{arr.level}</option>;
             })}
           </select>
 
