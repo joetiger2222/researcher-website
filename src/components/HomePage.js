@@ -291,7 +291,7 @@ export default function HomePage() {
       <div className="ContainerLandingAndBadges">
         <div className="landingPage">
           <div className="sidebarCloseIcon">
-            <img style={{ width: "100%" }} src={SearchIconLogo} />
+            <img className="movingSearchIcon" style={{ width: "100%" }} src={SearchIconLogo} />
           </div>
           {renderSideBar()}
           <div

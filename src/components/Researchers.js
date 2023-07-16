@@ -376,7 +376,7 @@ if(userData.userId===''){
       <div className="AllResearchersPage">
         <h1 className="">Seacrch For Researchers</h1>
         {/* <Header userData={userData}/> */}
-        <div className="AllIdeas ">
+        <div className="AllIdeas searchPanel">
           <input
             className="search-input"
             placeholder="Search By Name"

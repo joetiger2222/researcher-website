@@ -30,3 +30,12 @@
     /* border-radius: 10px; */
     
 }
+
+@media only screen and (max-width:700px) {
+    .videosFixed{
+        width: 20% !important;
+    }
+    .courseForStudentVideoDiv{
+        width: 80%;
+    }
+    }

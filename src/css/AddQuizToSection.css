@@ -478,3 +478,18 @@ svg path{
   border-bottom-left-radius: var(--radius);
   border-bottom-right-radius: var(--radius);
 }
+
+@media only screen and (max-width:800px) {
+  
+  .ContQuestionTempAndAddQ{
+    width: 100%;
+  }
+  .ContQuestionScore{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .quizHeaderData>h2{
+    font-size: 1em;
+  }
+  
+  }

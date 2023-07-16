@@ -85,6 +85,7 @@ export default function CourseForStudent() {
         </div>
 
         <div
+        className="videosFixed"
           style={{
             position: "fixed",
             top: "90px",

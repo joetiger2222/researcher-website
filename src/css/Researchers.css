@@ -1,56 +1,66 @@
-
-.AllResearchersPage{
-    display: flex;
-    flex-direction: column;
-    margin: 150px 0;
-    gap: 50px;
-    align-items: center;
+.AllResearchersPage {
+  display: flex;
+  flex-direction: column;
+  margin: 150px 0;
+  gap: 50px;
+  align-items: center;
 }
 
-.ContCarduserInfo{
-           /* justify-content: space-around; */
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    height: 540px;
-    width: 20%;
-    /* border-radius: 10px; */
-    transition: transform 0.3s ease;
-    border: 1px solid var(--button-color);
-    border-radius: 20px 20px 0px 0px;
-    background-color: var(--button-color);
+.ContCarduserInfo {
+  /* justify-content: space-around; */
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  height: 540px;
+  width: 20%;
+  /* border-radius: 10px; */
+  transition: transform 0.3s ease;
+  border: 1px solid var(--button-color);
+  border-radius: 20px 20px 0px 0px;
+  background-color: var(--button-color);
 }
 
-.photoUserCard{
-    width: 100%;
-    height: 40%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--button-color);
-    /* border-radius: 37px 20px 25px 0px; */
-    border-radius: 20px 20px 20px 20px;
+.photoUserCard {
+  width: 100%;
+  height: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--button-color);
+  /* border-radius: 37px 20px 25px 0px; */
+  border-radius: 20px 20px 20px 20px;
 }
-.photoUserCard img{
-    width: 120px;
-    height: 120px;
-    /* border-radius: 100%; */
-    clip-path: circle(50% at 50% 50%);
+.photoUserCard img {
+  width: 120px;
+  height: 120px;
+  /* border-radius: 100%; */
+  clip-path: circle(50% at 50% 50%);
 }
-.padding20px{
-    padding: 20px;
+.padding20px {
+  padding: 20px;
 }
-.containerSpansData  span{
-    border-bottom: 1px solid black;
-    padding: 5px;
+.containerSpansData span {
+  border-bottom: 1px solid black;
+  padding: 5px;
 }
 
+.ContainerImgRes {
+  /* clip-path: circle(50% at 50% 50%); */
+  width: 120px;
+  height: 120px;
+  border-radius: 100%;
+  border: 3px solid white;
+  padding: 3px;
+}
 
-.ContainerImgRes{
-        /* clip-path: circle(50% at 50% 50%); */
-        width: 120px;
-        height: 120px;
-        border-radius: 100%;
-        border: 3px solid white;
-        padding: 3px;
+@media only screen and (max-width: 1300px) {
+  .ContCarduserInfo {
+    width: 40%;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .ContCarduserInfo {
+    width: 70%;
+  }
 }

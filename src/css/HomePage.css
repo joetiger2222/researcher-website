@@ -376,7 +376,7 @@ p {
 }
 
 
-@media only screen and (max-width: 850px) {
+/* @media only screen and (max-width: 850px) {
   .earnPointsContainer > h1 {
     font-size: 1.5em;
   }
@@ -386,9 +386,9 @@ p {
   .courseCard {
     width: 70%;
   }
-}
+} */
 
-@media only screen and (max-width: 705px) {
+/* @media only screen and (max-width: 705px) {
   .badgesDivContainer {
     flex-direction: column;
     justify-content: center;
@@ -421,7 +421,7 @@ p {
   .btnsFooter button{
     font-size: 13px;
   }
-}
+} */
 
 
 .ContNum{
@@ -777,3 +777,137 @@ p.active2 {
   justify-content: center;
   width: 70%;
 }
+
+
+@media only screen and (max-width:1080px) {
+  .badgesDivContainer{
+    flex-direction: column;
+    align-items: center;
+  }
+  .badgeDiv{
+    width: 50%;
+  }
+  .movingSearchIcon{
+    display: none;
+  }
+  .ShapeInCourses1{
+    display: none;
+  }
+ }
+
+
+ @media only screen and (max-width:950px) {
+    .ContSkillAndAchievePrize{
+      flex-direction: column;
+      row-gap: 50px;
+    }
+    .videoContainer{
+      width: 70% !important;
+        }
+  
+ }
+
+
+
+ @media only screen and (max-width:910px) {
+  .courseBtnAndPriceDiv{
+    column-gap: 10px;
+    flex-wrap: wrap;
+    row-gap: 10px;
+    justify-content: center;
+  }
+  .courseCard{
+    row-gap: 20px;
+  }
+ .landingPage{
+  width: 100%;
+ }
+
+ }
+
+ 
+ @media only screen and (max-width:810px) {
+  .ContainerWhy{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .cardWhyChooseRes{
+    width: 70%;
+  }
+.ContainerCoursesShape{
+  width: 90%;
+}
+.courseBtnAndPriceDiv{
+  justify-content: space-between;
+}
+.badgeDiv{
+  width: 70%;
+}
+.AllLeftRightAboutUs{
+  flex-direction: column;
+}
+.AllAboutUsContainer{
+  padding-top: 80px;
+}
+.RightContainer{
+  width: 70%;
+}
+ }
+
+  
+ @media only screen and (max-width:750px) {
+  .landingData{
+    margin: 80px auto 0 auto;
+  }
+  .AllUsers{
+    column-gap: 50px;
+    row-gap: 30px;
+  }
+  .OurGradingSys{
+    width: 90%;
+  }
+  .landingData>h1{
+    font-size: 24px;
+  }
+  .landingData>p{
+    font-size: 16px;
+  }
+  .coursesContainer{
+    flex-direction: column;
+  }
+  .courseCard{
+    width: 70%;
+  }
+ }
+
+
+ @media only screen and (max-width:550px) {
+  
+  .landingData>h1{
+    font-size: 20px;
+  }
+  .landingData>p{
+    font-size: 14px;
+  }
+  .AllAboutUsContainer{
+    row-gap: 50px;
+  }
+ }
+
+
+ @media only screen and (max-width:450px) {
+  .landingData{
+    margin: 40px auto 0 auto;
+  }
+  .AllWhyChoose>h1{
+    font-size: 2rem !important;
+  }
+  .AllWhyChoose>h1>span{
+    font-size: 1.3rem !important;
+  }
+  .AllUsers{
+    flex-direction: column;
+    
+  }
+ }

@@ -720,11 +720,13 @@ const val = yearRangeRegex.test(ideaData.deadline);
     <div>
       <Header userData={userData} />
       <div
+      className="marketPlaceContainer"
         style={{
           margin: "130px 0",
           gap: "30px",
           display: "flex",
           flexDirection: "column",
+          alignItems:'center',
         }}
       >
         <h1 style={{ textAlign: "center" }}>Your Ideas</h1>
@@ -866,7 +868,7 @@ const val = yearRangeRegex.test(ideaData.deadline);
         <div className="ContainerAllIdeas">
           <h1>All Ideas</h1>
 
-          <div className="AllIdeas">
+          <div className="AllIdeas searchPanel">
             <input
               name="SearchTerm"
               onChange={(e) =>
@@ -1082,7 +1084,7 @@ const val = yearRangeRegex.test(ideaData.deadline);
         <div className="ContainerAllIdeas">
           <h1>Completed Ideas</h1>
 
-          <div className="AllIdeas">
+          <div className="AllIdeas searchPanel">
             <input
               name="SearchTerm"
               onChange={(e) =>

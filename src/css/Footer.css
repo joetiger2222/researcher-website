@@ -74,3 +74,10 @@
     font-size: 18px;
     color: white;
 }
+
+@media only screen and (max-width:910px) {
+    .Footer{
+        background-size: 100% auto;
+    }
+   
+   }

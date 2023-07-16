@@ -344,3 +344,51 @@ column-gap: 3px;
   width: 100%;
   text-align: center;
 }
+
+@media only screen and (max-width:1260px) {
+ .AllIdeas{
+  
+  width: 98%;
+ }
+ .CardInAllIdeas{
+  width: 40%;
+ }
+ 
+ }
+
+ @media only screen and (max-width:1000px) {
+  .ContainerbtnData{
+    flex-wrap: wrap;
+    
+  }
+  .searchPanel{
+    justify-content: flex-start;
+    width: 80%;
+  }
+  .allSkillsDiv{
+    width: 50%;
+  }
+  .ContainerAllIdeas{
+    width: 80%;
+  }
+  }
+
+
+  @media only screen and (max-width:700px) {
+    .CardInAllIdeas{
+      width: 70%;
+    }
+    
+    }
+
+    @media only screen and (max-width:500px) {
+      .allSkillsDiv{
+        width: 70%;
+      }
+      .coursesParent{
+        width: 70%;
+      }
+      .ContainerAllIdeas>h1{
+        text-align: center;
+      }
+      }
