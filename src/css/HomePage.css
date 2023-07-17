@@ -778,6 +778,75 @@ p.active2 {
   width: 70%;
 }
 
+.AllContainerDetailsdata{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+.BigParentContainer{
+  width: 16%;
+  height: 400px;
+  /* clip-path: polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%); */
+  background-color: aliceblue;
+  /* clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); */
+  border-radius: 125px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  border: 5px solid antiquewhite;
+}
+.smallParentContainerBottom{
+  height: 70%;
+}
+.smallParentContainerBottom p{
+  height: 100%;
+  text-align: center;
+  padding: 10px;
+  max-height: 175px;
+}
+.ContainerTopBottom{
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 350px;
+  align-items: center;
+  gap: 20px;
+}
+.smallParentContainerTop{
+  height: 30%;
+  width: 100%;
+  border-radius: 125px 125px 0px 0px;
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  background-color: antiquewhite;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.smallParentContainer{
+
+}
+.smallParentContainer svg{
+
+}
+.smallParentContainer h2{}
+.ContainerTopBottom p{
+  padding: 3px;
+  text-align: center;
+}
+
+
+
+
+
+
+
+
 
 @media only screen and (max-width:1080px) {
   .badgesDivContainer{
@@ -911,3 +980,10 @@ p.active2 {
     
   }
  }
+
+
+
+
+
+
+

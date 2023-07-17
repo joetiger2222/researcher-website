@@ -365,7 +365,7 @@ const Profile = () => {
             </div>
           </div>
           <h1 className="headContact2">Choose Speciality</h1>
-          <div className="FormModal2">
+          <div className="FormModal2" style={{justifyContent:"space-between",height:"100%"}}>
             <select
               className="InputModalHallDetails"
               onChange={(e) => setNewSpec(e.target.value * 1)}

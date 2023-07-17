@@ -24,9 +24,9 @@ import mentors from "../images/mentors.png";
 import enroll from "../images/enroll.png";
 import international from "../images/international.png";
 
-import Beginner  from "../images/Beginner.png";
+import Beginner from "../images/Beginner.png";
 import Expert from "../images/Expert.png";
-import intermediate  from "../images/intermediate.png";
+import intermediate from "../images/intermediate.png";
 import Professional from "../images/Professional.png";
 
 import "toastr/build/toastr.min.css";
@@ -291,7 +291,11 @@ export default function HomePage() {
       <div className="ContainerLandingAndBadges">
         <div className="landingPage">
           <div className="sidebarCloseIcon">
-            <img className="movingSearchIcon" style={{ width: "100%" }} src={SearchIconLogo} />
+            <img
+              className="movingSearchIcon"
+              style={{ width: "100%" }}
+              src={SearchIconLogo}
+            />
           </div>
           {renderSideBar()}
           <div
@@ -545,6 +549,10 @@ export default function HomePage() {
         </div>
       </div>
 
+    
+
+      {/* <div class="hexagon"></div> */}
+
       <div className="ContSkillAndAchievePrize">
         <div className="ContShape2Skill">
           <div className="Shape3 "></div>
@@ -605,6 +613,203 @@ export default function HomePage() {
           </video>
         </div>
       </div>
+      <div className="AllContainerDetailsdata">
+        <div style={{ borderColor: "#018C91" }} className="BigParentContainer">
+          <div
+            style={{ backgroundColor: "#018C91" }}
+            className="smallParentContainerTop"
+          >
+            <p style={{fontWeight:"500",color:"white",fontSize:"40px"}}>01</p>
+            <p style={{color:"white",fontWeight:"bold",fontSize:"18px"}}>Learn Research</p>
+          </div>
+          <div className="smallParentContainerBottom">
+            <p className="custom-scrollbar">
+              At <span style={{ fontWeight: "bold" }}>ResWeb</span> Platform, we
+              offer a diverse range of high-quality courses designed to equip
+              aspiring researchers with essential skills and knowledge. Our
+              comprehensive curriculum covers various research methodologies,
+              data analysis techniques, academic writing, and more.{" "}
+              <span style={{ fontWeight: "bold" }}>
+                Whether you are a beginner or looking to enhance your research
+                expertise, our low-priced courses ensure accessibility for all
+                students, empowering them to embark on a successful research
+                journey.
+              </span>
+            </p>
+          </div>
+        </div>
+        <div style={{ borderColor: "#BF2424" }} className="BigParentContainer">
+          <div
+            style={{ backgroundColor: "#BF2424" }}
+            className="smallParentContainerTop"
+          >
+            <p style={{color:"white",fontWeight:"500",fontSize:"40px"}}>02</p>
+            <p style={{color:"white",fontWeight:"bold",fontSize:"18px"}}>Gain Experience</p>
+          </div>
+          <div className="smallParentContainerBottom">
+            <p className="custom-scrollbar">
+              We believe that experience is invaluable in the world of research.
+              Through our platform,{" "}
+              <span style={{ fontWeight: "bold" }}>
+                researchers have the opportunity to engage in practical projects
+                and gain hands-on experience in their chosen fields.
+              </span>{" "}
+              By collaborating with professionals and established research
+              projects, individuals can boost their practical skills,
+              contributing to personal growth and enhancing their credibility as
+              researchers.
+            </p>
+          </div>
+        </div>
+        <div style={{ borderColor: "#7A9C27" }} className="BigParentContainer">
+          <div
+            style={{ backgroundColor: "#7A9C27" }}
+            className="smallParentContainerTop"
+          >
+            <p style={{fontWeight:"500",color:"white",fontSize:"40px"}}>03</p>
+            <p style={{color:"white",fontWeight:"bold",fontSize:"18px",textAlign:"center"}}>Join Big Research Community</p>
+          </div>
+          <div className="smallParentContainerBottom">
+            <p className="custom-scrollbar">
+              Joining <span style={{ fontWeight: "bold" }}>ResWeb</span> opens
+              the door to a thriving research community, where researchers from
+              diverse backgrounds converge to share ideas, insights, and
+              collaborate on innovative projects.{" "}
+              <span style={{ fontWeight: "bold" }}>
+                Our user-friendly interface allows easy interaction, direct
+                chatting, fostering meaningful connections between researchers
+                worldwide.
+              </span>
+              Engage in discussions, seek advice, and explore collaborative
+              opportunities within our dynamic research community.
+            </p>
+          </div>
+        </div>
+        <div style={{ borderColor: "#B37B10" }} className="BigParentContainer">
+          <div
+            style={{ backgroundColor: "#B37B10" }}
+            className="smallParentContainerTop"
+          >
+            <p style={{fontWeight:"500",color:"white",fontSize:"40px"}}>04</p>
+            <p style={{color:"white",fontWeight:"bold",fontSize:"18px"}}> Participate in Real Projects</p>
+          </div>
+          <div className="smallParentContainerBottom">
+            <p className="custom-scrollbar">
+              At <span style={{ fontWeight: "bold" }}>ResWeb</span>, we take
+              learning beyond theoretical concepts. Researchers can actively
+              participate in real-world projects, allowing them to tackle
+              challenges, apply their knowledge, and make a tangible impact.{" "}
+              <span style={{ fontWeight: "bold" }}>
+                Our platform connects individuals with ongoing research
+                initiatives, enabling them to contribute meaningfully and
+                broaden their perspectives in their respective fields.
+              </span>
+            </p>
+          </div>
+        </div>
+        <div style={{ borderColor: "#934584" }} className="BigParentContainer">
+          <div
+            style={{ backgroundColor: "#934584" }}
+            className="smallParentContainerTop"
+          >
+            <p style={{fontWeight:"500",color:"white",fontSize:"40px"}}>05</p>
+            <p style={{color:"white",fontWeight:"bold",fontSize:"18px"}}>Publish a New Paper</p>
+          </div>
+          <div className="smallParentContainerBottom">
+            <p className="custom-scrollbar">
+              Publishing research findings is a significant milestone for any
+              researcher, and at ResWeb, we strive to make this achievement
+              attainable. <span style={{ fontWeight: "bold" }}>Our platform provides opportunities for researchers to
+              submit their papers for publication consideration. </span> With a
+              streamlined and organized research system, we ensure that the
+              publication process is accessible and efficient, helping
+              researchers share their discoveries with the broader academic
+              community.
+            </p>
+          </div>
+        </div>
+        {/* <div className="ContainerTopBottom">
+  <div className="BigParentContainer"> 
+    <div className="smallParentContainer">
+      <FaAccusoft/>
+      <h2>sample</h2>
+
+    </div>
+    
+  </div>
+  <p className="custom-scrollbar">Lorem ipsum dolor,
+       sit amet consectetur
+        adipisicing elit.
+         Soluta eveniet doloribus
+          consequuntur consequatur
+           maiores voluptatum quos repellendus dolorem error doloremque praesentium provident a sequi perspiciatis, beatae esse quasi! Expedita, et?</p>
+  </div>
+  
+  <div className="ContainerTopBottom">
+  <div className="BigParentContainer"> 
+    <div className="smallParentContainer">
+      <FaAccusoft/>
+      <h2>sample</h2>
+
+    </div>
+    
+  </div>
+  <p className="custom-scrollbar">Lorem ipsum dolor,
+       sit amet consectetur
+        adipisicing elit.
+         Soluta eveniet doloribus
+          consequuntur consequatur
+           maiores voluptatum quos repellendus dolorem error doloremque praesentium provident a sequi perspiciatis, beatae esse quasi! Expedita, et?</p>
+  </div>
+  <div className="ContainerTopBottom">
+  <div className="BigParentContainer"> 
+    <div className="smallParentContainer">
+      <FaAccusoft/>
+      <h2>sample</h2>
+
+    </div>
+    
+  </div>
+  <p className="custom-scrollbar">Lorem ipsum dolor,
+       sit amet consectetur
+        adipisicing elit.
+         Soluta eveniet doloribus
+          consequuntur consequatur
+           maiores voluptatum quos repellendus dolorem error doloremque praesentium provident a sequi perspiciatis, beatae esse quasi! Expedita, et?</p>
+  </div>
+  <div className="ContainerTopBottom">
+  <div className="BigParentContainer"> 
+    <div className="smallParentContainer">
+      <FaAccusoft/>
+      <h2>sample</h2>
+
+    </div>
+    
+  </div>
+  <p className="custom-scrollbar">Lorem ipsum dolor,
+       sit amet consectetur
+        adipisicing elit.
+         Soluta eveniet doloribus
+          consequuntur consequatur
+           maiores voluptatum quos repellendus dolorem error doloremque praesentium provident a sequi perspiciatis, beatae esse quasi! Expedita, et?</p>
+  </div>
+  <div className="ContainerTopBottom">
+  <div className="BigParentContainer"> 
+    <div className="smallParentContainer">
+      <FaAccusoft/>
+      <h2>sample</h2>
+
+    </div>
+    
+  </div>
+  <p className="custom-scrollbar">Lorem ipsum dolor,
+       sit amet consectetur
+        adipisicing elit.
+         Soluta eveniet doloribus
+          consequuntur consequatur
+           maiores voluptatum quos repellendus dolorem error doloremque praesentium provident a sequi perspiciatis, beatae esse quasi! Expedita, et?</p>
+  </div> */}
+      </div>
 
       <div className="ContainerCoursesShape fadinAnimation">
         <div className="coursesBigDiv">
@@ -660,7 +865,10 @@ export default function HomePage() {
       </div>
     </div> */}
 
-      <div className="AllAboutUsContainer fadinAnimation" style={{ height: "600px" }}>
+      <div
+        className="AllAboutUsContainer fadinAnimation"
+        style={{ height: "600px" }}
+      >
         <h1 style={{ zIndex: 10 }}>About Us</h1>
         <div className="AllLeftRightAboutUs">
           <div className="LeftContainer">
@@ -670,13 +878,24 @@ export default function HomePage() {
             <div>
               <p
                 className="custom-scrollbar"
-                style={{fontSize:"18px",lineHeight:"1.5", display: content === "p1" ? "block" : "none" }}
+                style={{
+                  fontSize: "18px",
+                  lineHeight: "1.5",
+                  display: content === "p1" ? "block" : "none",
+                }}
               >
-                Join us at ResWeb and unlock a world of research opportunities. Whether you are a student starting your journey or a seasoned researcher seeking new avenues for collaboration, we are here to support you every step of the way.
+                Join us at ResWeb and unlock a world of research opportunities.
+                Whether you are a student starting your journey or a seasoned
+                researcher seeking new avenues for collaboration, we are here to
+                support you every step of the way.
               </p>
               <p
                 className="custom-scrollbar"
-                style={{fontSize:"18px",lineHeight:"1.5", display: content === "p2" ? "block" : "none" }}
+                style={{
+                  fontSize: "18px",
+                  lineHeight: "1.5",
+                  display: content === "p2" ? "block" : "none",
+                }}
               >
                 Second paragraph content Second paragraph content Second
                 paragraph content Second paragraph content Second paragraph
@@ -787,35 +1006,46 @@ export default function HomePage() {
       <div className="OurGradingSys">
         <h1>Our Grading System</h1>
         <div className="ContainerAlGrade">
-        <p>1 Quiz = 1 point</p>
-        <p>
-          {" "}
-          2 participations in research papers (in or out our platform) = 1 point
-        </p>
-        <div className="AllUsers">
-          <div>
-            <img src={Beginner}/>
-            <p>Beginner 1-3 points</p>
+          <p>1 Quiz = 1 point</p>
+          <p>
+            {" "}
+            2 participations in research papers (in or out our platform) = 1
+            point
+          </p>
+          <div className="AllUsers">
+            <div>
+              <img src={Beginner} />
+              <p>Beginner 1-3 points</p>
+            </div>
+            <div>
+              <img src={intermediate} />
+              <p>intermediate 4-6 points</p>
+            </div>
+            <div>
+              <img src={Professional} />
+              <p>Professional 7-8 points</p>
+            </div>
+            <div>
+              <img src={Expert} />
+              <p>Expert 9-10 points</p>
+            </div>
           </div>
-          <div>
-            <img src={intermediate}/>
-            <p>intermediate  4-6 points</p>
+          <div className="TextDownUsers">
+            <p>
+              • You must pass at least one quiz to be able to join the
+              opportunities dashboard (just to ensure that the joining members
+              are true researchers and at least have the basics of research)
+            </p>
+            <p>
+              • You will be able to lead idea by having total 3 points or more
+              according to the study design of your research paper.
+            </p>
+            <p>
+              • If you have a research idea but you still are not able to lead a
+              team, send it to us and we will assign a leader to your idea and
+              your ownership will be preserved.
+            </p>
           </div>
-          <div>
-            <img src={Professional}/>
-            <p>Professional 7-8 points</p>
-          </div>
-          <div>
-            <img src={Expert}/>
-            <p>Expert 9-10 points</p>
-          </div>
-        </div>
-        <div className="TextDownUsers" >
-          <p>•	You must pass at least one quiz to be able to join the opportunities dashboard (just to ensure that the joining members are true researchers and at least have the basics of research)</p>
-          <p>•	You will be able to lead idea by having total 3 points or more according to the study design of your research paper.</p>
-          <p>•	If you have a research idea but you still are not able to lead a team, send it to us and we will assign a leader to your idea and your ownership will be preserved.</p>
-
-        </div>
         </div>
       </div>
       {/* <div className="researchContainer">
