@@ -13,9 +13,11 @@ import { MdOutlineFileUpload } from "react-icons/md";
 import Footer from "./Footer";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
+import SideBar from "./SideBar";
 export default function Idea() {
   // const userData = useLocation()?.state.data;
   const userData = useContext(MyContext);
+  const [sideBarVisible, setSideBarVisible] = useState(false);
   const { ideaId } = useParams();
   const [idea, setIdea] = useState(null);
   const [ideaReqs, setIdeaReqs] = useState(null);
@@ -90,6 +92,69 @@ export default function Idea() {
       positionClass: "toast-top-center",
     };
   }, [userData]);
+
+
+
+
+
+function renderSideBar() {
+    if (sideBarVisible) {
+      return <SideBar />;
+    }
+  }
+
+  function renderSideBarIcon() {
+    if (sideBarVisible) {
+      return (
+        <svg
+          className="closeSvg"
+          stroke="currentColor"
+          fill="black"
+          stroke-width="0"
+          viewBox="0 0 24 24"
+          height="1em"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g>
+            <path fill="none" d="M0 0h24v24H0z"></path>
+            <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+          </g>
+        </svg>
+      );
+    } else {
+      return (
+        <svg
+        style={{zIndex:'300'}}
+          className="closeSvg"
+          stroke="currentColor"
+          fill="black"
+          stroke-width="0"
+          viewBox="0 0 24 24"
+          height="1em"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          ></path>
+        </svg>
+      );
+    }
+  }
+
+
+
+
+
+
+
+
+
+
 
   function getResearcherData(resId) {
     fetch(`https://localhost:7187/api/Researchers/${resId}`, {
@@ -1813,6 +1878,20 @@ className="descriptionContainer custom-scrollbar"
   return (
     <div>
       <Header userData={userData} />
+      {renderSideBar()}
+          <div
+            style={{
+              display: "none",
+              position: "fixed",
+              top: "20px",
+              right: "50px",
+              zIndex: "200",
+            }}
+            onClick={() => setSideBarVisible(!sideBarVisible)}
+            class="sidebarClodeIcon"
+          >
+            {renderSideBarIcon()}
+          </div>
       <h1 style={{ margin: "120px 0 30px", textAlign: "center" }}>
         Data For Idea
       </h1>

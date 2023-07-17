@@ -37,7 +37,7 @@ const userData = useContext(MyContext);
             alignItems:'center',
           }}
         >
-          <img src={LOGO} style={{width:'70%'}} />
+          <img onClick={()=>userData.roles==='Admin'?navigate('/AdminPanel'):navigate(`/HomePage`)} src={LOGO} style={{width:'70%'}} />
           
           <div
             className=""
@@ -54,7 +54,10 @@ const userData = useContext(MyContext);
             <div onClick={()=>navigate(`/MarketPlace`)} style={{display:'flex',alignItems:'center',columnGap:'10px'}}>             
               <span className="sideBarName" style={{fontWeight:'bold',fontSize:'20px',color:'black'}}>MarketPlace</span>
             </div>
-            <div onClick={()=> window.scrollTo(0, 4500)} style={{display:'flex',alignItems:'center',columnGap:'10px'}}> 
+            <div onClick={()=>{ 
+              navigate('/HomePage');
+              window.scrollTo(0, 4500)
+              }} style={{display:'flex',alignItems:'center',columnGap:'10px'}}> 
             <FaGraduationCap style={{width:'30px',height:'30px'}} />            
               <span className="sideBarName" style={{fontWeight:'bold',fontSize:'20px',color:'black'}}>Courses</span>
             </div>
@@ -62,7 +65,10 @@ const userData = useContext(MyContext);
             <BiUserCircle  style={{width:'30px',height:'30px'}}/>           
               <span className="sideBarName" style={{fontWeight:'bold',fontSize:'20px',color:'black'}}>Researchers</span>
             </div>
-            <div onClick={()=>window.scrollTo(0, 5800)} style={{display:'flex',alignItems:'center',columnGap:'10px'}}> 
+            <div onClick={()=>{
+              navigate('/HomePage')
+              window.scrollTo(0, 5800)
+            }} style={{display:'flex',alignItems:'center',columnGap:'10px'}}> 
             <IoInformationCircleSharp  style={{width:'30px',height:'30px'}}/>            
               <span className="sideBarName" style={{fontWeight:'bold',fontSize:'20px',color:'black'}}>About Us</span>
             </div >

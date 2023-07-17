@@ -21,7 +21,7 @@ export default function AdminPanel() {
   const [expertIdea, setExpertIdea] = useState(null);
   const [showExpertReqsModal, setShowExpertReqsModal] = useState(false);
   const [problemCategories, setProblemCategories] = useState(null);
-  const [problemCategoryId, setProblemCategoryId] = useState(1);
+  const [problemCategoryId, setProblemCategoryId] = useState(null);
   const [studentProblems, setStudentProblems] = useState(null);
   const [showResponseModal, setShowResponseModal] = useState(false);
   const [showEditSkillName, setShowEditSkillName] = useState(false);
@@ -29,7 +29,7 @@ export default function AdminPanel() {
   const [adminReponse, setAdminResponse] = useState(null);
   const [allExpertReqs, setAllExpertReqs] = useState(null);
   const [searchIdea, setSearchIdea] = useState("");
-
+  const [choosenCat,setChoosenCat]=useState(1);
   const [skillsWithQuizes, setSkillsWithQuizes] = useState(null);
   const [finalQuizSkillId, setFinalQuizSkillId] = useState(null);
   // const userData = useLocation().state?.data;
@@ -115,7 +115,7 @@ export default function AdminPanel() {
       {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${userData.token}`,
+          "Authorization": `Bearer ${userData.token}`,
         },
       }
     )
@@ -138,7 +138,7 @@ export default function AdminPanel() {
   }
 
   function getAdminResponse() {
-    fetch(`https://localhost:7187/api/Students/Responses`, {
+    fetch(`https://localhost:7187/api/Admin/Responses/ProbelmCategory/${choosenCat}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData.token}`,
@@ -182,6 +182,31 @@ export default function AdminPanel() {
       .catch((error) => console.error(error));
   }
 
+  function deleteRes(resId){
+    Swal.fire({
+      title: "Are You Sure To Delete The Response",
+      showCancelButton: true,
+    }).then(data=>{
+      if(data.isConfirmed){
+        fetch(`https://localhost:7187/api/Students/responseId?responseId=${resId}`,{
+          method:"DELETE",
+          headers:{
+            "Authorization":`Bearer ${userData.token}`
+          }
+        })
+        .then(res=>{
+          if(res.ok){
+            toastr.success('Response Deleted Successfully');
+            getAdminResponse();
+          }else{
+            toastr.error('Failed To Delete Response Please Try Again Later')
+          }
+        })
+      }
+    })
+    
+  }
+
   useEffect(() => {
     getCourses();
     getAllSkills();
@@ -189,10 +214,12 @@ export default function AdminPanel() {
     getAllTopics();
     getAllIdeas();
     getProblemCategories();
-    getAdminResponse();
     getAllExpertReqs();
     getAllSkillsWithQuizes();
   }, [userData]);
+  useEffect(()=>{
+    getAdminResponse();
+  },[userData,choosenCat])
   useEffect(() => {
     getAllIdeas();
   }, [searchIdea,userData]);
@@ -1060,6 +1087,7 @@ export default function AdminPanel() {
           }}
           className="SelectSkillForProblems"
         >
+          <option selected disabled>Choose Category</option>
           {problemCategories?.map((cat) => {
             return <option value={cat.id}>{cat.name}</option>;
           })}
@@ -1080,10 +1108,21 @@ export default function AdminPanel() {
       </div>
       <div className="ContainerAllIdeas">
         <h1 style={{ color: "white" }}>All Responses</h1>
+        <select
+        className="SelectSkillForProblems"
+          onChange={(e)=>setChoosenCat(e.target.value*1)}
+          >
+            {problemCategories?.map(cat=>{
+              return(
+                <option value={cat.id}>{cat.name}</option>
+              )
+            })}
+          </select>
         <div
           style={{ width: "90%", maxHeight: "430px", overflow: "auto" }}
           className="AllIdeas custom-scrollbar"
         >
+          
           {adminReponse?.map((res) => {
             return (
               <div
@@ -1104,6 +1143,7 @@ export default function AdminPanel() {
                   <span style={{ fontWeight: "bold" }}>Problem Category :</span>{" "}
                   {res.problem?.problemCategory?.name}
                 </span>
+                <button className="buttonExit2" onClick={()=>deleteRes(res.id)}>Delete</button>
               </div>
             );
           })}

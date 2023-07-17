@@ -5,10 +5,73 @@ import vod from '../images/photoPayment.png'
 import Footer from "./Footer";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
+import SideBar from "./SideBar";
+import { useState } from "react";
 export default function BuyCourse() {
   // const userData = useLocation().state.data;
   const userData = useContext(MyContext);
   const navigate=useNavigate();
+  const [sideBarVisible, setSideBarVisible] = useState(false);
+
+
+
+
+  function renderSideBar() {
+    if (sideBarVisible) {
+      return <SideBar />;
+    }
+  }
+
+  function renderSideBarIcon() {
+    if (sideBarVisible) {
+      return (
+        <svg
+          className="closeSvg"
+          stroke="currentColor"
+          fill="black"
+          stroke-width="0"
+          viewBox="0 0 24 24"
+          height="1em"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g>
+            <path fill="none" d="M0 0h24v24H0z"></path>
+            <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+          </g>
+        </svg>
+      );
+    } else {
+      return (
+        <svg
+        style={{zIndex:'300'}}
+          className="closeSvg"
+          stroke="currentColor"
+          fill="black"
+          stroke-width="0"
+          viewBox="0 0 24 24"
+          height="1em"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          ></path>
+        </svg>
+      );
+    }
+  }
+
+
+
+
+
+
+
+
   const VodafoneCashCard = () => {
 
 
@@ -77,6 +140,20 @@ export default function BuyCourse() {
       }}
     >
       <Header  />
+      {renderSideBar()}
+          <div
+            style={{
+              display: "none",
+              position: "fixed",
+              top: "20px",
+              right: "50px",
+              zIndex: "200",
+            }}
+            onClick={() => setSideBarVisible(!sideBarVisible)}
+            class="sidebarClodeIcon"
+          >
+            {renderSideBarIcon()}
+          </div>
       <div style={{margin:"40px",display:'flex',flexDirection:'column',width:'100%',alignItems:'center',marginTop:'120px'}}>
       
       <div  style={{alignItems:"center", display:"flex",flexDirection:"column",gap:"20px"}}>
