@@ -1350,7 +1350,7 @@ console.log('studentd data',studentData)
             {adminReponse?.map((res) => {
               return (
                 <div
-                   style={{height:"200px",justifyContent:"center"}}
+                   style={{height:"200px",justifyContent:"center",width:"280px"}}
                   className="CardInAllIdeas"
                 >
                   <span className="custom-scrollbar">

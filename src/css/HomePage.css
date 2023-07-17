@@ -802,6 +802,14 @@ p.active2 {
 .smallParentContainerBottom{
   height: 70%;
 }
+.closeSvg{
+  font-size: 38px;
+
+}
+.closeSvg:hover{
+  color: var(--bluesky-color) !important;
+cursor: pointer;
+}
 .smallParentContainerBottom p{
   height: 100%;
   text-align: center;
