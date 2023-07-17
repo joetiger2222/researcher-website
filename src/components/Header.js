@@ -78,7 +78,7 @@ function getStudentImage(){
             {userData.roles!=='Admin'&&<li class="dropdown">
               <a onClick={()=>{
                 navigate('/HomePage');
-                window.scrollTo(0, 1300)
+                window.scrollTo(0, 1600)
               }}>
                 Courses
               </a>

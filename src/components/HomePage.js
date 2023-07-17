@@ -101,7 +101,7 @@ export default function HomePage() {
         <svg
           className="closeSvg"
           stroke="currentColor"
-          fill="white"
+          fill="black"
           stroke-width="0"
           viewBox="0 0 24 24"
           height="1em"
@@ -117,9 +117,10 @@ export default function HomePage() {
     } else {
       return (
         <svg
+        style={{zIndex:'300'}}
           className="closeSvg"
           stroke="currentColor"
-          fill="none"
+          fill="black"
           stroke-width="0"
           viewBox="0 0 24 24"
           height="1em"
@@ -250,7 +251,7 @@ export default function HomePage() {
     );
   };
 
-  console.log("courses", courses);
+  
 
   if (userData.userId === "") {
     return (
@@ -288,16 +289,7 @@ export default function HomePage() {
     <div className="homePageContainer">
       <Header userData={userData} />
 
-      <div className="ContainerLandingAndBadges">
-        <div className="landingPage">
-          <div className="sidebarCloseIcon">
-            <img
-              className="movingSearchIcon"
-              style={{ width: "100%" }}
-              src={SearchIconLogo}
-            />
-          </div>
-          {renderSideBar()}
+      {renderSideBar()}
           <div
             style={{
               display: "none",
@@ -311,6 +303,17 @@ export default function HomePage() {
           >
             {renderSideBarIcon()}
           </div>
+
+      <div className="ContainerLandingAndBadges">
+        <div className="landingPage">
+          <div className="sidebarCloseIcon">
+            <img
+              className="movingSearchIcon"
+              style={{ width: "100%" }}
+              src={SearchIconLogo}
+            />
+          </div>
+          
           <div className="landingData">
             {/* <h3>Hello Students, Researchers</h3> */}
             <h1 style={{ width: "65%", textAlign: "center" }}>

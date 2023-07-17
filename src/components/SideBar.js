@@ -1,10 +1,17 @@
 import React from "react";
 import "../css/HomePage.css";
 import '../css/SideBar.css';
-
+import LOGO from "../images/Logo - Text Only.png";
+import { FaGraduationCap } from 'react-icons/fa';
+import { BiUserCircle,BiLogOut } from 'react-icons/bi';
+import { IoInformationCircleSharp } from 'react-icons/io5';
+import { FiUser } from 'react-icons/fi';
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { MyContext } from '../Users/Redux';
 export default function SideBar() {
-
-
+const navigate=useNavigate();
+const userData = useContext(MyContext);
 
     return (
       <div
@@ -25,40 +32,53 @@ export default function SideBar() {
             display: "flex",
             flexDirection: "column",
             width: "100%",
-            
+            rowGap:'40px',
+            justifyContent:'center',
+            alignItems:'center',
           }}
         >
+          <img src={LOGO} style={{width:'70%'}} />
           
           <div
             className=""
             style={{
               display: "flex",
               flexDirection: "column",
-             
               width: "100%",
+              rowGap:'20px',
+              alignItems:'flex-start',
+              padding:'20px'
+
             }}
           >
-            <div>test</div>
-            <div>test</div>
-            <div>test</div>
-
-            <div>test</div>
-            <div>test</div>
-            <div>test</div>
-            <div>test</div>
-            <div>test</div>
-            <div>test</div>
-            <div>test</div>
-            <div>test</div>
-            <div>test</div>
-            <div>test</div>
-            <div>test</div>
-            <div>test</div>
-            <div>test</div>
-
-      
-
-      
+            <div onClick={()=>navigate(`/MarketPlace`)} style={{display:'flex',alignItems:'center',columnGap:'10px'}}>             
+              <span className="sideBarName" style={{fontWeight:'bold',fontSize:'20px',color:'black'}}>MarketPlace</span>
+            </div>
+            <div onClick={()=> window.scrollTo(0, 4500)} style={{display:'flex',alignItems:'center',columnGap:'10px'}}> 
+            <FaGraduationCap style={{width:'30px',height:'30px'}} />            
+              <span className="sideBarName" style={{fontWeight:'bold',fontSize:'20px',color:'black'}}>Courses</span>
+            </div>
+            <div onClick={()=>navigate(`/Researchers`)} style={{display:'flex',alignItems:'center',columnGap:'10px'}}>  
+            <BiUserCircle  style={{width:'30px',height:'30px'}}/>           
+              <span className="sideBarName" style={{fontWeight:'bold',fontSize:'20px',color:'black'}}>Researchers</span>
+            </div>
+            <div onClick={()=>window.scrollTo(0, 5800)} style={{display:'flex',alignItems:'center',columnGap:'10px'}}> 
+            <IoInformationCircleSharp  style={{width:'30px',height:'30px'}}/>            
+              <span className="sideBarName" style={{fontWeight:'bold',fontSize:'20px',color:'black'}}>About Us</span>
+            </div >
+            <div onClick={()=>navigate(`/Profile/${userData.userId}`)} style={{display:'flex',alignItems:'center',columnGap:'10px'}}> 
+            <FiUser  style={{width:'30px',height:'30px'}}/>            
+              <span className="sideBarName" style={{fontWeight:'bold',fontSize:'20px',color:'black'}}>Profile</span>
+            </div>
+            <div onClick={()=>{ userData.setUserId('');
+               userData.setToken('');
+               userData.setRoles('');
+               navigate('/')}} style={{display:'flex',alignItems:'center',columnGap:'10px'}}>             
+            <BiLogOut  style={{width:'30px',height:'30px'}}/>
+              <span className="sideBarName" style={{fontWeight:'bold',fontSize:'20px',color:'black'}}>Logout</span>
+            </div>
+            
+            
           </div>
         </div>
       </div>

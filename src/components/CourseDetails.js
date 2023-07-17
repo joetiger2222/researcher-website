@@ -15,7 +15,7 @@ import toastr from "toastr";
 import "toastr/build/toastr.min.css";
 import { MdOutlineFileUpload } from "react-icons/md";
 import { useContext } from "react";
-import { MyContext } from '../Users/Redux';
+import { MyContext } from "../Users/Redux";
 const CourseDetails = () => {
   const userData = useContext(MyContext);
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ const CourseDetails = () => {
   const [showDeleteCourseModal, setShowDeleteCourseModal] = useState(false);
   const [showEditCourseDataModal, setShowEditCourseDataModal] = useState(false);
   const [isStudentEnrolled, setIsStudentEnrolled] = useState(false);
-  const [introVideo,setIntroVideo]=useState(null);
+  const [introVideo, setIntroVideo] = useState(null);
   // const userData = useLocation()?.state?.data;
 
   let { id } = useParams();
@@ -70,43 +70,35 @@ const CourseDetails = () => {
         },
       }
     )
-      .then((res) =>
-        res.ok
-          ? res.json()
-          : null
-      )
+      .then((res) => (res.ok ? res.json() : null))
       .then((data) => (data ? setIsStudentEnrolled(data.isEnrolled) : null));
   }
 
   function getIntroVideo() {
-    const sectionId=courseSections[0].id;
-    console.log('section id',sectionId)
-    fetch(
-      `https://localhost:7187/api/Courses/Sections/Videos/${sectionId}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${userData.token}`,
-        },
-      }
-    )
+    const sectionId = courseSections[0].id;
+    console.log("section id", sectionId);
+    fetch(`https://localhost:7187/api/Courses/Sections/Videos/${sectionId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    })
       .then((res) => res.json())
       // .then((data) => console.log('from function',data));
-      .then(data=>{
-        if(data.length>0){
+      .then((data) => {
+        if (data.length > 0) {
           getVideo(data[0].id);
-          console.log('second check in if condition ')
+          console.log("second check in if condition ");
         }
-      })
-
+      });
   }
 
   function getVideo(videoId) {
-    fetch(`https://localhost:7187/api/courses/Videos/${videoId}`,{
-      method:"GET",
-      headers:{
-        "authorization":`Bearer ${userData.token}`
-      }
+    fetch(`https://localhost:7187/api/courses/Videos/${videoId}`, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${userData.token}`,
+      },
     })
       .then((response) => {
         if (!response.ok) {
@@ -117,7 +109,7 @@ const CourseDetails = () => {
       })
       .then((blob) => {
         const videoItself = URL.createObjectURL(blob);
-        
+
         setIntroVideo(videoItself);
       })
       .catch((error) => {
@@ -125,13 +117,13 @@ const CourseDetails = () => {
       });
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     if (courseSections.length > 0) {
       getIntroVideo();
     }
-  },[courseSections,userData])
+  }, [courseSections, userData]);
 
-// console.log(introVideo)
+  // console.log(introVideo)
   useEffect(() => {
     getCourseDetatils();
     getCourseSections();
@@ -171,28 +163,62 @@ const CourseDetails = () => {
         .then((data) => setSectionQuiz(data));
     }
 
+
+    function deleteSection() {
+      Swal.fire({
+        title: `Are You Sure You Want To Delete This Section ?`,
+        showCancelButton: true,
+      }).then((data) => {
+        if (data.isConfirmed) {
+          fetch(`https://localhost:7187/api/Courses/Sections/${section.id}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${userData.token}`,
+            },
+          }).then((res) => {
+            if (res.ok) {
+              toastr.success('Section Deleted Successfully')
+              getCourseSections();
+            } else
+              toastr.error('Failed To Delete Section Please Try Again Later');
+          });
+        }
+      });
+    }
+
+
+
+    function deleteVideo(videoId) {
+      Swal.fire({
+        title: `Are You Sure You Want To Delete This Video ?`,
+        showCancelButton: true,
+      }).then((data) => {
+        if (data.isConfirmed) {
+          fetch(`https://localhost:7187/api/Courses/Videos/${videoId}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${userData.token}`,
+            },
+          }).then((res) => {
+            if (res.ok) {
+              toastr.success('Video Deleted Successfully')
+              getVideosIds();
+            } else
+              toastr.error('Failed To Delete Video Please Try Again Later');
+          });
+        }
+      });
+    }
+
+
+
+
+
+
     useEffect(() => {
       getVideosIds();
       getSectionQuiz();
     }, [userData]);
-
-
-
-
-
-
-
-
-
-    if(userData.userId===''){
-      return (
-        <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>
-          <h1>Please Login First</h1>
-          <button style={{width:'120px',height:'50px',borderRadius:'10px',backgroundColor:'rgb(21, 46, 125)',color:'white',fontSize:'20px',fontWeight:'bold'}} onClick={()=>navigate('/')}>Login</button>
-        </div>
-      )
-    }
-
 
     return (
       <div className="courseDetailsSectionsContainerNew">
@@ -224,10 +250,15 @@ const CourseDetails = () => {
               />
               <FaRegEdit
                 onClick={() =>
-                  userData.roles==='Admin'
+                  userData.roles === "Admin"
                     ? navigate(`/AddQuizToSection/${section.id}`)
                     : null
                 }
+                className="plusIcon"
+              />
+
+              <FaTrash
+                onClick={deleteSection}
                 className="plusIcon"
               />
             </div>
@@ -240,20 +271,24 @@ const CourseDetails = () => {
         >
           {videosIds?.map((video, index) => (
             <span
-              onClick={() =>
-                isStudentEnrolled || userData.roles==='Admin'
-                  ? navigate(`/CourseForStudent/${section.id}/${video.id}`)
-                  : toastr.warning("Buy The Course First", "Alert")
-              }
+              style={{display:'flex'}}
               className="LinkVideoSection"
             >
-              <span>
-                {isStudentEnrolled ||userData.roles==='Admin' ? video?.title : `video ${index + 1}`}
+              <span onClick={() =>
+                isStudentEnrolled || userData.roles === "Admin"
+                  ? navigate(`/CourseForStudent/${section.id}/${video.id}`)
+                  : toastr.warning("Buy The Course First", "Alert")
+              }>
+                {isStudentEnrolled || userData.roles === "Admin"
+                  ? video?.title
+                  : `video ${index + 1}`}
               </span>
+              {userData.roles==='Admin'&&<FaTrash style={{marginLeft:'auto',cursor:'pointer'}} onClick={()=>deleteVideo(video.id)}  />}
+              
             </span>
           ))}
 
-          {sectionQuiz && isStudentEnrolled && userData.roles!=='Admin'&& (
+          {sectionQuiz && isStudentEnrolled && userData.roles !== "Admin" && (
             <span
               className="QuizTitle"
               onClick={() => {
@@ -661,11 +696,41 @@ const CourseDetails = () => {
     );
   };
 
-  console.log(userData)
+  if (userData.userId === "") {
+    return (
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          minHeight: "100vh",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          rowGap: "20px",
+        }}
+      >
+        <h1>Please Login First</h1>
+        <button
+          style={{
+            width: "120px",
+            height: "50px",
+            borderRadius: "10px",
+            backgroundColor: "rgb(21, 46, 125)",
+            color: "white",
+            fontSize: "20px",
+            fontWeight: "bold",
+          }}
+          onClick={() => navigate("/")}
+        >
+          Login
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="courseParent">
-      <Header  />
+      <Header />
 
       <div className="AllContentContainer">
         <div className="LeftCourseData custom-scrollbar">
@@ -674,12 +739,7 @@ const CourseDetails = () => {
             <p className="briefCourseNew">{courseDetails?.brief}</p>
             <h2>Price: {courseDetails?.price} EGP</h2>
             {userData.roles !== "Admin" && !isStudentEnrolled && (
-              <button
-                className="btnBUY"
-                onClick={() =>
-                  navigate("/BuyCourse")
-                }
-              >
+              <button className="btnBUY" onClick={() => navigate("/BuyCourse")}>
                 Buy Now
               </button>
             )}
@@ -692,10 +752,12 @@ const CourseDetails = () => {
             <h2>Instructions :</h2>
             <h3>{courseDetails?.instructions}</h3>
           </div>
-          {isStudentEnrolled&&<div className="InstructionsNew">
-            <h2>Link :</h2>
-            <h3>{courseDetails?.driveLink}</h3>
-          </div>}
+          {isStudentEnrolled && (
+            <div className="InstructionsNew">
+              <h2>Link :</h2>
+              <h3>{courseDetails?.driveLink}</h3>
+            </div>
+          )}
         </div>
 
         <div className="CenterAndRighCourseData">
@@ -744,8 +806,13 @@ const CourseDetails = () => {
           <div className="contVideoAndQuiz">
             <div className="RightVideoIntro">
               <div className="VideoDv">
-                
-              <video className="Video" controls src={introVideo} type="video/mp4" controlsList="nodownload" />
+                <video
+                  className="Video"
+                  controls
+                  src={introVideo}
+                  type="video/mp4"
+                  controlsList="nodownload"
+                />
               </div>
 
               <div className="BottomRightData">
