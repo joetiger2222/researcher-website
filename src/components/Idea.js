@@ -1451,7 +1451,7 @@ className="descriptionContainer custom-scrollbar"
     if (!props.show) return null;
     return (
       <div className="modal-overlay2">
-        <div className="modal2">
+        <div className="modal2" style={{height:"300px"}}>
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
@@ -1644,7 +1644,7 @@ className="descriptionContainer custom-scrollbar"
     if (!props.show) return null;
     return (
       <div className="modal-overlay2">
-        <div className="modal2">
+        <div className="modal2" style={{height:"350px",alignItems:"center"}}>
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">

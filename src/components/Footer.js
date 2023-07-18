@@ -78,7 +78,7 @@ const Footer = () => {
     if (!props.show) return null;
     return (
       <div className="modal-overlay2">
-        <div className="modal2">
+        <div className="modal2"style={{height:"350px"}}>
           <div className="ContExitbtn">
             <div className="outer" onClick={props.onClose}>
               <div className="inner">

@@ -442,7 +442,7 @@ const Profile = () => {
 
     return (
       <div className="modal-overlay2">
-        <div className="modal2">
+        <div className="modal2" style={{height:"300px"}}>
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
@@ -586,7 +586,7 @@ const Profile = () => {
     if (!props.show) return null;
     return (
       <div className="modal-overlay2">
-        <div className="modal2">
+        <div className="modal2" style={{height:"200px"}}>
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">

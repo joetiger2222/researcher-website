@@ -12,6 +12,7 @@
   flex-direction: column;
   max-height: 400px;
   overflow: auto;
+  align-items: center;
 }
 .ContBTNSData{
   height: 230px;

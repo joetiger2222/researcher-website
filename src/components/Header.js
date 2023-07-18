@@ -73,7 +73,7 @@ function getStudentImage(){
 
         <div className="headerRight">
           <ul className="headerUl">
-           {userData?.roles==='Researcher'&&<li onClick={()=>navigate('/MarketPlace')}>MarketPlace</li>}
+           {userData?.roles==='Researcher'&&<li onClick={()=>navigate('/MarketPlace')}>Research opportunities</li>}
             
             {userData.roles!=='Admin'&&<li class="dropdown">
               <a onClick={()=>{

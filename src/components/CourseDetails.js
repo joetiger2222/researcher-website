@@ -626,7 +626,8 @@ console.log(userData)
           </div>
           <h1 className="headContact2">Add Section</h1>
 
-          <div className="FormModal2">
+          <div className="FormModal2" style={{justifyContent:"space-between",height:"100%"}}>
+            <div style={{display:"flex",flexDirection:"column",gap:"20px"}}>
             <label className="AllLabeles">Enter Section Name: </label>
             <input
               className="InputModalHallDetails"
@@ -634,6 +635,8 @@ console.log(userData)
               name="name"
               placeholder="Enter Section Name"
             ></input>
+            </div>
+           
             <div className="buttonsOnModal">
               {sectionData.name !== "" && (
                 <button onClick={addSection}>Finish</button>

@@ -312,7 +312,7 @@ export default function AdminPanel() {
     if (!props.show) return null;
     return (
       <div className="modal-overlay2">
-        <div className="modal2">
+        <div className="modal2" style={{height:"300px"}}>
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
@@ -368,7 +368,7 @@ export default function AdminPanel() {
     if (!props.show) return null;
     return (
       <div className=" modal-overlay2">
-        <div className="modal2">
+        <div className="modal2" style={{height:"400px"}}>
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
@@ -658,7 +658,7 @@ export default function AdminPanel() {
     if (!props.show) return null;
     return (
       <div className="modal-overlay2">
-        <div className="modal2">
+        <div className="modal2" style={{height:"300px"}}>
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
