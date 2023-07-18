@@ -13,7 +13,6 @@ import SectionQuiz from './components/SectionQuiz';
 import CourseForStudent from './components/CourseForStudent';
 import AddQuizToCourse from './components/AddQuizToCourse'
 import FinalQuiz from './components/FinalQuiz';
-import AddPaper from './components/AddPaper';
 import FailedFinalQuiz from './components/FailedFinalQuiz';
 import MarketPlace from './components/MarketPlace';
 import Idea from './components/Idea';
@@ -46,7 +45,6 @@ function App() {
         <Route path='/FinalQuiz/:skillId' element={<FinalQuiz/>}/>
         <Route path='/FailedFinalQuiz/:skillId' element={<FailedFinalQuiz/>}/>
         <Route path='/SuccededFianlQuiz' element={<SuccededFinalQuiz/>}/>
-        <Route path='/AddPaper' element={<AddPaper/>}/>
         <Route path='/MarketPlace' element={<MarketPlace/>}/>
         <Route path='/Idea/:ideaId' element={<Idea/>}/>
         <Route path='/Researchers' element={<Researchers/>}/>

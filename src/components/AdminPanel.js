@@ -7,12 +7,15 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
+import SideBar from "./SideBar";
+import { FiMenu } from 'react-icons/fi';
+import { FaTimes } from 'react-icons/fa';
 export default function AdminPanel() {
   const navigate = useNavigate();
   const [courses, setCourses] = useState(null);
   const [allSkills, setAllSkills] = useState(null);
   const [skillId, setSkillId] = useState(null);
-  
+  const [sideBarVisible, setSideBarVisible] = useState(false);
   const [showSpec, setShowSpec] = useState(false);
   const [allSpecs, setAllSpecs] = useState(null);
   const [showTopic, setShowTopic] = useState(false);
@@ -34,6 +37,37 @@ export default function AdminPanel() {
   const [finalQuizSkillId, setFinalQuizSkillId] = useState(null);
   // const userData = useLocation().state?.data;
   const userData = useContext(MyContext);
+
+
+
+
+
+  function renderSideBar() {
+    if (sideBarVisible) {
+      return <SideBar />;
+    }
+  }
+
+  function renderSideBarIcon() {
+    if (sideBarVisible) {
+      return (
+       <FaTimes style={{color:'white',width:'40px',height:'40px'}}/>
+      );
+    } else {
+      return (
+        <FiMenu style={{color:'white',width:'40px',height:'40px'}} />
+      );
+    }
+  }
+
+
+
+
+
+
+
+
+
 
   function getCourses() {
     fetch(`https://localhost:7187/api/Courses`, {
@@ -763,6 +797,20 @@ export default function AdminPanel() {
   return (
     <div className="adminPanelParent" style={{ rowGap: "50px" }}>
       <Header userData={userData} />
+      {renderSideBar()}
+          <div
+            style={{
+              display: "none",
+              position: "fixed",
+              top: "20px",
+              right: "50px",
+              zIndex: "200",
+            }}
+            onClick={() => setSideBarVisible(!sideBarVisible)}
+            class="sidebarClodeIcon"
+          >
+            {renderSideBarIcon()}
+          </div>
       <h1 style={{ fontWeight: "bold", color: "white", marginTop: "120px" }}>
         Admin Panel
       </h1>

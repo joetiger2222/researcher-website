@@ -45,7 +45,7 @@ export default function SideBar() {
               : navigate(`/HomePage`)
           }
           src={LOGO}
-          style={{ width: "70%" }}
+          style={{ width: "70%",cursor:'pointer' }}
         />
 
         <div
@@ -59,7 +59,7 @@ export default function SideBar() {
             padding: "20px",
           }}
         >
-          <div
+          {userData.roles!=='Admin'&&<div
             onClick={() => navigate(`/MarketPlace`)}
             style={{ display: "flex", alignItems: "center", columnGap: "10px" }}
           >
@@ -70,8 +70,8 @@ export default function SideBar() {
             >
               MarketPlace
             </span>
-          </div>
-          <div
+          </div>}
+          {userData.roles!=='Admin'&&<div
             onClick={() => {
               navigate("/HomePage");
               window.scrollTo(0, 4500);
@@ -85,8 +85,8 @@ export default function SideBar() {
             >
               Courses
             </span>
-          </div>
-          <div
+          </div>}
+          {userData.roles!=='Admin'&&<div
             onClick={() => navigate(`/Researchers`)}
             style={{ display: "flex", alignItems: "center", columnGap: "10px" }}
           >
@@ -97,8 +97,8 @@ export default function SideBar() {
             >
               Researchers
             </span>
-          </div>
-          <div
+          </div>}
+          {userData.roles!=='Admin'&&<div
             onClick={() => {
               navigate("/HomePage");
               window.scrollTo(0, 5800);
@@ -114,8 +114,8 @@ export default function SideBar() {
             >
               About Us
             </span>
-          </div>
-          <div
+          </div>}
+          {userData.roles!=='Admin'&&<div
             onClick={() => navigate(`/Profile/${userData.userId}`)}
             style={{ display: "flex", alignItems: "center", columnGap: "10px" }}
           >
@@ -126,7 +126,7 @@ export default function SideBar() {
             >
               Profile
             </span>
-          </div>
+          </div>}
           <div
             onClick={() => {
               userData.setUserId("");

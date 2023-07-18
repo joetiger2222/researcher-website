@@ -6,10 +6,14 @@ import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
+import SideBar from "./SideBar";
+import { FiMenu } from 'react-icons/fi';
+import { FaTimes } from 'react-icons/fa';
 export default function AssignStudentToCourse(){
     // const userData=useLocation().state.data;
     const userData = useContext(MyContext);
     const [allStudents,setAllStudents]=useState(null);
+    const [sideBarVisible, setSideBarVisible] = useState(false);
     const [searchTerm,setSearchTerm]=useState('');
     const [choosenStudent,setChoosenStudent]=useState(null);
     const [showCourseCard,setShowCourseCard]=useState(false);
@@ -30,6 +34,31 @@ export default function AssignStudentToCourse(){
     },[searchTerm,userData])
 
     // console.log(allStudents)
+
+
+
+
+
+
+
+    function renderSideBar() {
+      if (sideBarVisible) {
+        return <SideBar />;
+      }
+    }
+  
+    function renderSideBarIcon() {
+      if (sideBarVisible) {
+        return (
+         <FaTimes style={{color:'black',width:'40px',height:'40px'}}/>
+        );
+      } else {
+        return (
+          <FiMenu style={{color:'black',width:'40px',height:'40px'}} />
+        );
+      }
+    }
+
 
 
 const CoursesCard=(props)=>{
@@ -154,6 +183,20 @@ if(userData.userId===''){
     return(
         <div>
             <Header userData={userData} />
+            {renderSideBar()}
+          <div
+            style={{
+              display: "none",
+              position: "fixed",
+              top: "20px",
+              right: "50px",
+              zIndex: "200",
+            }}
+            onClick={() => setSideBarVisible(!sideBarVisible)}
+            class="sidebarClodeIcon"
+          >
+            {renderSideBarIcon()}
+          </div>
             <div className="AllDataInRatePage">
 <label style={{fontSize:"20px",fontWeight:"bold"}}>Search By Email</label>
             <input className="search-input" onChange={(e)=>setSearchTerm(e.target.value)} placeholder="Enter Email..."></input>

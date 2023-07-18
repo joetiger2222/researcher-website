@@ -40,7 +40,7 @@ const CourseDetails = () => {
 
 
 
-
+console.log(userData)
 
 
   function renderSideBar() {
@@ -91,13 +91,6 @@ const CourseDetails = () => {
       );
     }
   }
-
-
-
-
-
-
-
 
 
   function getCourseDetatils() {
@@ -378,33 +371,92 @@ const CourseDetails = () => {
       setVideo(file);
     };
 
+    // const handleVideoSubmit = (event) => {
+    //   event.preventDefault();
+    //   const titleInput = document.getElementById("title");
+    //   const titleValue = titleInput.value;
+    //   if(titleValue===''){
+    //     toastr.error('Please Enter A Valid Title');
+    //     return;
+    //   }
+    //   const formData = new FormData();
+    //   formData.append("file", video);
+    //   formData.append("Title", titleValue);
+
+    //   fetch(`https://localhost:7187/api/Courses/Videos/${sectionId}`, {
+    //     method: "POST",
+    //     headers: {
+    //       Authorization: `Bearer ${userData.token}`,
+    //     },
+    //     body: formData,
+    //   }).then((res) => {
+    //     if (res.ok) {
+    //       props.onClose();
+    //       getCourseSections();
+    //       toastr.success('Video Added Successfully')
+    //     } else
+    //       toastr.error("failed to add video please try again later", "Failed");
+    //   });
+    // };
+
+
+
     const handleVideoSubmit = (event) => {
       event.preventDefault();
       const titleInput = document.getElementById("title");
       const titleValue = titleInput.value;
+      if (titleValue === "") {
+        toastr.error("Please Enter A Valid Title");
+        return;
+      }
       const formData = new FormData();
       formData.append("file", video);
       formData.append("Title", titleValue);
-
-      fetch(`https://localhost:7187/api/Courses/Videos/${sectionId}`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${userData.token}`,
-        },
-        body: formData,
-      }).then((res) => {
-        if (res.ok) {
+    
+      const progressBar = document.getElementById("progress-bar");
+      const progressBarText = document.getElementById("progress-bar-text");
+    
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", `https://localhost:7187/api/Courses/Videos/${sectionId}`);
+      xhr.setRequestHeader("Authorization", `Bearer ${userData.token}`);
+      
+      xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable) {
+          const progress = (event.loaded / event.total) * 100;
+          progressBar.style.width = `${progress}%`;
+          progressBarText.textContent = `Uploading: ${progress.toFixed(2)}%`;
+        }
+      };
+    
+      xhr.onload = () => {
+        console.log(xhr.status)
+        if (xhr.status === 204) {
           props.onClose();
           getCourseSections();
-        } else
-          toastr.error("failed to add video please try again later", "Failed");
-      });
+          toastr.success("Video Added Successfully");
+        } else {
+          toastr.error("Failed to add video. Please try again later", "Failed");
+        }
+      };
+    
+      xhr.onerror = () => {
+        toastr.error("Failed to add video. Please try again later", "Failed");
+      };
+    
+      xhr.send(formData);
     };
+    
+
 
     if (!props.show) return null;
     return (
       <div className="modal-overlay2">
         <div className="modal2">
+        <div>
+  <div id="progress-bar" style={{width: "0%", backgroundColor: "#ddd", height: "20px"}}></div>
+  <div id="progress-bar-text"></div>
+</div>
+
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">

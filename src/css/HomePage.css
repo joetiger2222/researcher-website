@@ -870,6 +870,9 @@ cursor: pointer;
   .ShapeInCourses1{
     display: none;
   }
+  .BigParentContainer{
+    width: 40%;
+  }
  }
 
 
@@ -969,6 +972,9 @@ cursor: pointer;
   }
   .AllAboutUsContainer{
     row-gap: 50px;
+  }
+  .BigParentContainer{
+    width: 60%;
   }
  }
 

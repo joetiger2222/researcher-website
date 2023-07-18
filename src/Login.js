@@ -44,16 +44,11 @@ function loginAdmin(e){
   }).then(res=>{
     if(res.ok){
       return res.json();
+    }else{
+      authorizeLogin(e)
     }
   }).then(data=>{
     if (data) {
-         
-      // const admin = {
-      //   roles: "Admin",
-      //   token: data.token,
-      //   userId: data.userId,
-      // };
-      // console.log('login data',admin)
       setRoles('Admin');
       setUserId(data.userId);
       setToken(data.token)
@@ -86,17 +81,10 @@ function authorizeLogin(e){
     })
     .then(data=>{
       if(data){
-      // setLoginData(prev=>{
-      //   return{
-      //     roles:'Student',
-      //     userId:data.userId,
-      //     token:data.token
-          
-      //   }
-      // });
       setRoles('Student');
       setUserId(data.userId);
       setToken(data.token)
+      navigate(`/HomePage`,);
     }
     });
 }
@@ -105,11 +93,11 @@ function authorizeLogin(e){
 
 
 
-useEffect(()=>{
-  if(token){
-    navigate(`/HomePage`,);
-  }
-},[token])
+// useEffect(()=>{
+//   if(token){
+//     navigate(`/HomePage`,);
+//   }
+// },[token])
 
 
 if(load){
