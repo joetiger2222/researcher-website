@@ -32,16 +32,14 @@ const CourseDetails = () => {
   const [showDeleteCourseModal, setShowDeleteCourseModal] = useState(false);
   const [showEditCourseDataModal, setShowEditCourseDataModal] = useState(false);
   const [isStudentEnrolled, setIsStudentEnrolled] = useState(false);
+  const [showUpdateVideo, setShowUpdateVideo] = useState(false);
+  const [choosenUpdateVideo, setChoosenUpdateVideo] = useState(null);
   const [introVideo, setIntroVideo] = useState(null);
   // const userData = useLocation()?.state?.data;
 
   let { id } = useParams();
 
-
-
-
-// console.log(userData)
-
+  // console.log(userData)
 
   function renderSideBar() {
     if (sideBarVisible) {
@@ -71,7 +69,7 @@ const CourseDetails = () => {
     } else {
       return (
         <svg
-        style={{zIndex:'300'}}
+          style={{ zIndex: "300" }}
           className="closeSvg"
           stroke="currentColor"
           fill="black"
@@ -91,7 +89,6 @@ const CourseDetails = () => {
       );
     }
   }
-
 
   function getCourseDetatils() {
     fetch(`https://localhost:7187/api/Courses/${id}`, {
@@ -221,7 +218,6 @@ const CourseDetails = () => {
         .then((data) => setSectionQuiz(data));
     }
 
-
     function deleteSection() {
       Swal.fire({
         title: `Are You Sure You Want To Delete This Section ?`,
@@ -235,16 +231,14 @@ const CourseDetails = () => {
             },
           }).then((res) => {
             if (res.ok) {
-              toastr.success('Section Deleted Successfully')
+              toastr.success("Section Deleted Successfully");
               getCourseSections();
             } else
-              toastr.error('Failed To Delete Section Please Try Again Later');
+              toastr.error("Failed To Delete Section Please Try Again Later");
           });
         }
       });
     }
-
-
 
     function deleteVideo(videoId) {
       Swal.fire({
@@ -259,19 +253,14 @@ const CourseDetails = () => {
             },
           }).then((res) => {
             if (res.ok) {
-              toastr.success('Video Deleted Successfully')
+              toastr.success("Video Deleted Successfully");
               getVideosIds();
             } else
-              toastr.error('Failed To Delete Video Please Try Again Later');
+              toastr.error("Failed To Delete Video Please Try Again Later");
           });
         }
       });
     }
-
-
-
-
-
 
     useEffect(() => {
       getVideosIds();
@@ -315,10 +304,7 @@ const CourseDetails = () => {
                 className="plusIcon"
               />
 
-              <FaTrash
-                onClick={deleteSection}
-                className="plusIcon"
-              />
+              <FaTrash onClick={deleteSection} className="plusIcon" />
             </div>
           )}
         </div>
@@ -329,20 +315,44 @@ const CourseDetails = () => {
         >
           {videosIds?.map((video, index) => (
             <span
-              style={{display:'flex'}}
+              style={{ display: "flex", justifyContent: "space-between" }}
               className="LinkVideoSection"
             >
-              <span onClick={() =>
-                isStudentEnrolled || userData.roles === "Admin"
-                  ? navigate(`/CourseForStudent/${section.id}/${video.id}`)
-                  : toastr.warning("Buy The Course First", "Alert")
-              }>
+              <span
+                onClick={() =>
+                  isStudentEnrolled || userData.roles === "Admin"
+                    ? navigate(`/CourseForStudent/${section.id}/${video.id}`)
+                    : toastr.warning("Buy The Course First", "Alert")
+                }
+              >
                 {isStudentEnrolled || userData.roles === "Admin"
                   ? video?.title
                   : `video ${index + 1}`}
               </span>
-              {userData.roles==='Admin'&&<FaTrash style={{marginLeft:'auto',cursor:'pointer'}} onClick={()=>deleteVideo(video.id)}  />}
-              
+              <div
+                style={{
+                  alignSelf: "flex-end",
+                  display: "flex",
+                  alignItems: "center",
+                  columnGap: "10px",
+                }}
+              >
+                {userData.roles === "Admin" && (
+                  <FaTrash
+                    style={{ marginLeft: "auto", cursor: "pointer" }}
+                    onClick={() => deleteVideo(video.id)}
+                  />
+                )}
+                {userData.roles === "Admin" && (
+                  <FaRegEdit
+                    style={{ marginLeft: "auto", cursor: "pointer" }}
+                    onClick={() => {
+                      setChoosenUpdateVideo(video.id);
+                      setShowUpdateVideo(true);
+                    }}
+                  />
+                )}
+              </div>
             </span>
           ))}
 
@@ -399,8 +409,6 @@ const CourseDetails = () => {
     //   });
     // };
 
-
-
     const handleVideoSubmit = (event) => {
       event.preventDefault();
       const titleInput = document.getElementById("title");
@@ -412,14 +420,17 @@ const CourseDetails = () => {
       const formData = new FormData();
       formData.append("file", video);
       formData.append("Title", titleValue);
-    
+
       const progressBar = document.getElementById("progress-bar");
       const progressBarText = document.getElementById("progress-bar-text");
-    
+
       const xhr = new XMLHttpRequest();
-      xhr.open("POST", `https://localhost:7187/api/Courses/Videos/${sectionId}`);
+      xhr.open(
+        "POST",
+        `https://localhost:7187/api/Courses/Videos/${sectionId}`
+      );
       xhr.setRequestHeader("Authorization", `Bearer ${userData.token}`);
-      
+
       xhr.upload.onprogress = (event) => {
         if (event.lengthComputable) {
           const progress = (event.loaded / event.total) * 100;
@@ -427,9 +438,9 @@ const CourseDetails = () => {
           progressBarText.textContent = `Uploading: ${progress.toFixed(2)}%`;
         }
       };
-    
+
       xhr.onload = () => {
-        console.log(xhr.status)
+        console.log(xhr.status);
         if (xhr.status === 204) {
           props.onClose();
           getCourseSections();
@@ -438,24 +449,28 @@ const CourseDetails = () => {
           toastr.error("Failed to add video. Please try again later", "Failed");
         }
       };
-    
+
       xhr.onerror = () => {
         toastr.error("Failed to add video. Please try again later", "Failed");
       };
-    
+
       xhr.send(formData);
     };
-    
-
 
     if (!props.show) return null;
     return (
       <div className="modal-overlay2">
-        <div className="modal2" style={{height:'350px',alignItems:'center'}}>
-        <div>
-  <div id="progress-bar" style={{width: "0%", backgroundColor: "#ddd", height: "20px"}}></div>
-  <div id="progress-bar-text"></div>
-</div>
+        <div
+          className="modal2"
+          style={{ height: "500px", alignItems: "center" }}
+        >
+          <div>
+            <div
+              id="progress-bar"
+              style={{ width: "0%", backgroundColor: "#ddd", height: "20px" }}
+            ></div>
+            <div id="progress-bar-text"></div>
+          </div>
 
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
@@ -466,7 +481,149 @@ const CourseDetails = () => {
           </div>
           <h1 className="headContact2">Upload Video</h1>
 
-          <div className="FormModal2 custom-scrollbar">
+          <div className="FormModal2 custom-scrollbar" style={{maxWidth:'600px'}}>
+            {video && (
+              <div className="contVideoInfo">
+                <video
+                  className="videoW"
+                  src={URL.createObjectURL(video)}
+                  controls
+                />
+                <div
+                  style={{
+                    alignItems: "center",
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "20px",
+                  }}
+                >
+                  <label style={{ marginBottom: "0" }} className="AllLabeles">
+                    Video Title:{" "}
+                  </label>
+                  <input
+                    style={{ marginBottom: "0" }}
+                    id="title"
+                    className="InputModalHallDetails"
+                    type="text"
+                    placeholder="Video's Title"
+                    required
+                    name="Title"
+                  ></input>
+                  <button className="detailsbtn" onClick={handleVideoSubmit}>
+                    Upload Video
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <label className="LableForinputTypeFile" htmlFor="upload">
+              <input
+                className="InputFile"
+                id="upload"
+                type="file"
+                onChange={handleVideoUpload}
+              />
+              <span className="SpanUpload">
+                {" "}
+                <MdOutlineFileUpload />
+                <span>Choose a File</span>
+              </span>
+            </label>
+            <div className="ChooseAndCancel">
+              {/* <input type="file" id="video-upload" onChange={handleVideoUpload} /> */}
+
+              <button className="deletebtn" onClick={props.onClose}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const UpdateVideoCard = (props) => {
+    const [video, setVideo] = useState(null);
+
+    const handleVideoUpload = (event) => {
+      const file = event.target.files[0];
+      setVideo(file);
+    };
+
+    const handleVideoSubmit = (event) => {
+      event.preventDefault();
+      const titleInput = document.getElementById("title");
+      const titleValue = titleInput.value;
+      if (titleValue === "") {
+        toastr.error("Please Enter A Valid Title");
+        return;
+      }
+      const formData = new FormData();
+      formData.append("NewVideoFile", video);
+      formData.append("NewTitle", titleValue);
+
+      const progressBar = document.getElementById("progress-bar");
+      const progressBarText = document.getElementById("progress-bar-text");
+
+      const xhr = new XMLHttpRequest();
+      xhr.open(
+        "PUT",
+        `https://localhost:7187/api/Courses/Videos/${props.videoId}`
+      );
+      xhr.setRequestHeader("Authorization", `Bearer ${userData.token}`);
+
+      xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable) {
+          const progress = (event.loaded / event.total) * 100;
+          progressBar.style.width = `${progress}%`;
+          progressBarText.textContent = `Uploading: ${progress.toFixed(2)}%`;
+        }
+      };
+
+      xhr.onload = () => {
+        console.log(xhr.status);
+        if (xhr.status === 204) {
+          props.onClose();
+          getCourseSections();
+          toastr.success("Video Updated Successfully");
+        } else {
+          toastr.error("Failed to Update video. Please try again later", "Failed");
+        }
+      };
+
+      xhr.onerror = () => {
+        toastr.error("Failed to Update video. Please try again later", "Failed");
+      };
+
+      xhr.send(formData);
+    };
+    
+
+    if (!props.show) return null;
+    return (
+      <div className="modal-overlay2">
+        <div
+          className="modal2"
+          style={{ height: "500px", alignItems: "center" }}
+        >
+          <div>
+            <div
+              id="progress-bar"
+              style={{ width: "0%", backgroundColor: "#ddd", height: "20px" }}
+            ></div>
+            <div id="progress-bar-text"></div>
+          </div>
+
+          <div className="ContExitbtn" onClick={props.onClose}>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <h1 className="headContact2">Upload Video</h1>
+
+          <div className="FormModal2 custom-scrollbar" style={{maxWidth:'600px'}}>
             {video && (
               <div className="contVideoInfo">
                 <video
@@ -626,17 +783,22 @@ const CourseDetails = () => {
           </div>
           <h1 className="headContact2">Add Section</h1>
 
-          <div className="FormModal2" style={{justifyContent:"space-between",height:"100%"}}>
-            <div style={{display:"flex",flexDirection:"column",gap:"20px"}}>
-            <label className="AllLabeles">Enter Section Name: </label>
-            <input
-              className="InputModalHallDetails"
-              onChange={getSectionName}
-              name="name"
-              placeholder="Enter Section Name"
-            ></input>
+          <div
+            className="FormModal2"
+            style={{ justifyContent: "space-between", height: "100%" }}
+          >
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+            >
+              <label className="AllLabeles">Enter Section Name: </label>
+              <input
+                className="InputModalHallDetails"
+                onChange={getSectionName}
+                name="name"
+                placeholder="Enter Section Name"
+              ></input>
             </div>
-           
+
             <div className="buttonsOnModal">
               {sectionData.name !== "" && (
                 <button onClick={addSection}>Finish</button>
@@ -808,7 +970,7 @@ const CourseDetails = () => {
                 name="driveLink"
               ></input>
               <div className="buttonsOnModal">
-                <button type="submit" >Edit</button>
+                <button type="submit">Edit</button>
                 <button onClick={props.onClose}>Cancel</button>
               </div>
             </form>
@@ -854,24 +1016,24 @@ const CourseDetails = () => {
     <div className="courseParent">
       <Header />
       {renderSideBar()}
-          <div
-            style={{
-              display: "none",
-              position: "fixed",
-              top: "20px",
-              right: "50px",
-              zIndex: "200",
-            }}
-            onClick={() => setSideBarVisible(!sideBarVisible)}
-            class="sidebarClodeIcon"
-          >
-            {renderSideBarIcon()}
-          </div>
+      <div
+        style={{
+          display: "none",
+          position: "fixed",
+          top: "20px",
+          right: "50px",
+          zIndex: "200",
+        }}
+        onClick={() => setSideBarVisible(!sideBarVisible)}
+        class="sidebarClodeIcon"
+      >
+        {renderSideBarIcon()}
+      </div>
       <div className="AllContentContainer">
         <div className="LeftCourseData custom-scrollbar">
           <div className="LeftIntroData">
             <h1 className="NameCourse">{courseDetails?.name}</h1>
-            <h3 className="briefCourseNew">{courseDetails?.brief}</h3>
+            <h3 className="briefCourseNew custom-scrollbar">{courseDetails?.brief}</h3>
             <h2>Price: {courseDetails?.price} EGP</h2>
             {userData.roles !== "Admin" && !isStudentEnrolled && (
               <button className="btnBUY" onClick={() => navigate("/BuyCourse")}>
@@ -881,16 +1043,16 @@ const CourseDetails = () => {
           </div>
           <div className="ObjectivesNew">
             <h2>Objectives :</h2>
-            <h3>{courseDetails?.objectives}</h3>
+            <h3 className="custom-scrollbar">{courseDetails?.objectives}</h3>
           </div>
           <div className="InstructionsNew">
             <h2>Instructions :</h2>
-            <h3>{courseDetails?.instructions}</h3>
+            <h3 className="custom-scrollbar">{courseDetails?.instructions}</h3>
           </div>
           {isStudentEnrolled && (
             <div className="InstructionsNew">
               <h2>Link :</h2>
-              <h3>{courseDetails?.driveLink}</h3>
+              <h3 className="custom-scrollbar">{courseDetails?.driveLink}</h3>
             </div>
           )}
         </div>
@@ -1063,6 +1225,14 @@ const CourseDetails = () => {
         show={showUploadVideo}
         onClose={() => setShowUploadVideo(false)}
       />
+
+      {showUpdateVideo && choosenUpdateVideo && (
+        <UpdateVideoCard
+          show={showUpdateVideo}
+          onClose={() => setShowUpdateVideo(false)}
+          videoId={choosenUpdateVideo}
+        />
+      )}
       <DeleteCourseCard
         show={showDeleteCourseModal}
         onClose={() => setShowDeleteCourseModal(false)}
