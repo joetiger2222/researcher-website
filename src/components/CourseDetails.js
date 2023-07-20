@@ -40,7 +40,7 @@ const CourseDetails = () => {
 
 
 
-console.log(userData)
+// console.log(userData)
 
 
   function renderSideBar() {
@@ -529,7 +529,7 @@ console.log(userData)
 
   const VideoCard = ({ videoId, show, onClose }) => {
     const [video, setVideo] = useState(null);
-
+    console.log(videoId);
     useEffect(() => {
       fetch(`https://localhost:7187/api/courses/Videos/${videoId}`, {
         method: "GET",
