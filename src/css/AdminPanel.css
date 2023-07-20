@@ -213,7 +213,8 @@ column-gap: 3px;
     gap: 20px;
   }
   .SelectSkillForProblems{
-    width: 20%;
+    width: 80%;
+    max-width: 200px;
     /* text-align: center; */
     padding: 10px;
     border: none;
@@ -310,13 +311,13 @@ column-gap: 3px;
   width: 20%;
   border-radius: 10px;
   transition: transform 0.3s ease;
-  gap: 30px;
+  gap: 5px;
   justify-content: space-between;
   border-top: 15px solid var(--darkgreen-color) !important;
   border: 1px solid var(--darkgreen-color);
 } 
 .CardInAllIdeas .spanForScroll{
-  max-height: 43px;
+  max-height: 90px;
   overflow: auto;
   word-break: break-word;
 
@@ -370,7 +371,7 @@ column-gap: 3px;
     width: 50%;
   }
   .ContainerAllIdeas{
-    width: 80%;
+    width: 100%;
   }
   }
 

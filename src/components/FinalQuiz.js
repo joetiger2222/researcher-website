@@ -4,11 +4,13 @@ import "../css/SectionQuiz.css";
 import Header from "./Header";
 import QuestionCard from "./QuestionCard";
 import toastr from "toastr";
-import 'toastr/build/toastr.min.css';
+import "toastr/build/toastr.min.css";
 import { useContext } from "react";
-import { MyContext } from '../Users/Redux';
+import { MyContext } from "../Users/Redux";
+import loader from "../loader.gif";
 export default function FinalQuiz() {
   const userData = useContext(MyContext);
+  const [load, setLoad] = useState(false);
   const [finalQuizData, setFinalQuizData] = useState(null);
   const questions = finalQuizData?.questions;
   const [renderQ, setRenderQ] = useState(false);
@@ -18,11 +20,8 @@ export default function FinalQuiz() {
   });
   const [answers, setAnswers] = useState([]);
   const { skillId } = useParams();
-  // const userData = useLocation().state?.data;
   const [researcherId, setResearcherId] = useState("");
   const navigate = useNavigate();
-
-  // console.log(finalQuizData)
 
   const handleUpdate = (update) => {
     const index = answers.findIndex(
@@ -49,10 +48,10 @@ export default function FinalQuiz() {
       ]);
     }
   };
-  console.log('time limit',timeLimit)
 
   let counter = 1;
   function getFinalQuizData() {
+    setLoad(true);
     if (counter === 1)
       fetch(
         `https://localhost:7187/api/Quizes/FinalQuiz/${skillId}?studentId=${userData.userId}`,
@@ -63,35 +62,37 @@ export default function FinalQuiz() {
           },
         }
       )
-        .then((res) => (res.ok ? res.json() : null))
+        // .then((res) => (res.ok ? res.json() : null))
+        .then((res) => {
+          setLoad(false)
+          if (res.ok) {
+            
+            return res.json();
+
+          }else return null
+        })
         .then((data) => {
           if (data) {
             setTimeLimit((prevData) => {
-              if(data?.timeLimit.slice(1,2)*1!==0){
-                let hours=data?.timeLimit.slice(1,2)*1;
-                let hoursToMins=hours*60
-                let allMins=hoursToMins+(data?.timeLimit.slice(3,5)*1);
-                console.log('all mins',allMins)
-                return{
+              if (data?.timeLimit.slice(1, 2) * 1 !== 0) {
+                let hours = data?.timeLimit.slice(1, 2) * 1;
+                let hoursToMins = hours * 60;
+                let allMins = hoursToMins + data?.timeLimit.slice(3, 5) * 1;
+
+                return {
                   ...prevData,
-                  mins:allMins
-                }
-                // return allMins;
-
-                // console.log('mins',hoursToMins)
+                  mins: allMins,
+                };
               }
-
 
               if (data?.timeLimit.slice(3, 4) * 1 === 0) {
                 return {
                   ...prevData,
-                  // hours: data.timeLimit.slice(1, 2),
                   mins: data.timeLimit.slice(4, 5),
                 };
               }
               return {
                 ...prevData,
-                // hours: data.timeLimit.slice(0, 2),
                 mins: data.timeLimit.slice(3, 5),
               };
             });
@@ -101,13 +102,10 @@ export default function FinalQuiz() {
         });
     counter = counter - 1;
   }
-  
 
   useEffect(() => {
     getFinalQuizData();
   }, [userData]);
-
- 
 
   function getResearcherIdByStudentId() {
     return fetch(
@@ -148,16 +146,18 @@ export default function FinalQuiz() {
         body: JSON.stringify(arr),
       }
     )
-      .then((res) => (res.ok ? res.json() : toastr.error("failed to submit quiz","Failed")))
+      .then((res) =>
+        res.ok ? res.json() : toastr.error("failed to submit quiz", "Failed")
+      )
       .then((data) => {
         if (data) {
           if (data.isSuccessed) {
             getResearcherIdByStudentId().then(() => {
               userData.roles = "Researcher";
-              navigate(`/SuccededFianlQuiz`, {replace:true });
+              navigate(`/SuccededFianlQuiz`, { replace: true });
             });
           } else {
-            navigate(`/FailedFinalQuiz/${skillId}`, {replace:true});
+            navigate(`/FailedFinalQuiz/${skillId}`, { replace: true });
             // toastr.error('You Failed Final Quiz');
             // navigate(-1,{replace:true})
           }
@@ -165,33 +165,23 @@ export default function FinalQuiz() {
       });
   }
 
-
-
-
-useEffect(() => {
+  useEffect(() => {
     const handleNavigation = (event) => {
       // Prevent going back to the current page
       event.preventDefault();
-      
+
       // Replace the current page with the previous page
       navigate(-1, { replace: true });
     };
 
     // Listen for the 'popstate' event when the user navigates back
-    window.addEventListener('popstate', handleNavigation);
+    window.addEventListener("popstate", handleNavigation);
 
     // Clean up the event listener when the component is unmounted
     return () => {
-      window.removeEventListener('popstate', handleNavigation);
+      window.removeEventListener("popstate", handleNavigation);
     };
   }, [navigate]);
-
-
-
-
-
-
-
 
   const [timer, setTimer] = useState(null);
 
@@ -234,8 +224,6 @@ useEffect(() => {
     };
   }, [timer]);
 
-  
-
   useEffect(() => {
     if (parseInt(timeLimit.mins) === 0 && parseInt(timeLimit.secs) === 0) {
       toastr.warning("Your Timer Has Finished !");
@@ -243,10 +231,32 @@ useEffect(() => {
     }
   }, [timer, timeLimit.mins, timeLimit.secs]);
 
+  if(load){
+    return(
+      <div style={{width:'100%',minHeight:'100vh',display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'white'}}>
+        <img src={loader} />
+      </div>
+    )
+  }
+
   if (!finalQuizData) {
     return (
-      <div style={{height:"100vh",display:"flex",alignItems:"center",width:"60%",margin:"auto"}}>
-        <h1 style={{textAlign:"center",backgroundColor:"aliceblue",padding:"20px"}}>
+      <div
+        style={{
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          width: "60%",
+          margin: "auto",
+        }}
+      >
+        <h1
+          style={{
+            textAlign: "center",
+            backgroundColor: "aliceblue",
+            padding: "20px",
+          }}
+        >
           You Have Exceeded The Free Trials Limit You Need To Buy The Course In
           Order To Retake The Final Quiz
         </h1>
@@ -254,14 +264,36 @@ useEffect(() => {
     );
   }
 
-
-  if(userData.userId===''){
+  if (userData.userId === "") {
     return (
-      <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          minHeight: "100vh",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          rowGap: "20px",
+        }}
+      >
         <h1>Please Login First</h1>
-        <button style={{width:'120px',height:'50px',borderRadius:'10px',backgroundColor:'rgb(21, 46, 125)',color:'white',fontSize:'20px',fontWeight:'bold'}} onClick={()=>navigate('/')}>Login</button>
+        <button
+          style={{
+            width: "120px",
+            height: "50px",
+            borderRadius: "10px",
+            backgroundColor: "rgb(21, 46, 125)",
+            color: "white",
+            fontSize: "20px",
+            fontWeight: "bold",
+          }}
+          onClick={() => navigate("/")}
+        >
+          Login
+        </button>
       </div>
-    )
+    );
   }
 
   return (
@@ -283,7 +315,6 @@ useEffect(() => {
             Start
           </button>
         </div>
-        
       </div>
 
       {renderQ && (

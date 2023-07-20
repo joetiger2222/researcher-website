@@ -126,7 +126,9 @@ export default function Researchers(){
     getAllResearchers();
   }, [searchData,userData]);
 
-
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+  },[])
 
 
   const PrivateChatCard = (props) => {

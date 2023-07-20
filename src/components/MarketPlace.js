@@ -194,6 +194,10 @@ function renderSideBar() {
     getCompletedIdeas();
   }, [completeIdeaSearch, userData]);
 
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+  },[])
+
   function sendReq(ideaId) {
     fetch(
       `https://localhost:7187/api/Ideas/Requests/SendRequest/${userData?.resercherId}/${ideaId}`,
@@ -448,7 +452,7 @@ const val = yearRangeRegex.test(ideaData.deadline);
     if (!props.show) return null;
     return (
       <div className="modal-overlay2">
-        <div className="modal2" style={{ width: "50%" }}>
+        <div className="modal2" >
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
@@ -601,7 +605,7 @@ const val = yearRangeRegex.test(ideaData.deadline);
     if (!props.show) return null;
     return (
       <div className="modal-overlay2">
-        <div className="modal2" style={{ width: "50%" }}>
+        <div className="modal2" >
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
@@ -1151,7 +1155,7 @@ const val = yearRangeRegex.test(ideaData.deadline);
               />
             )}
           </div>
-          {allIdeas?.length>5&&<button className="plusBtn" onClick={()=>setIdeaSearch(prev=>{return{...prev,counter:ideaSearch.counter+5}})}>View More</button>}
+          <button className="plusBtn" onClick={()=>setIdeaSearch(prev=>{return{...prev,counter:ideaSearch.counter+5}})}>View More</button>
         </div>
 
         <div className="ContainerAllIdeas">

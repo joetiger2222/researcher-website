@@ -1324,7 +1324,7 @@ className="descriptionContainer custom-scrollbar"
               View Task Chat
             </button>
           )}
-          {isTaskPart && !idea.isCompleted &&!task.isCompleted && (
+          {isTaskPart && !idea?.isCompleted &&!task?.isCompleted && (
             <button
               style={{ width: "141px" }}
               className="hoverBtn"
@@ -1364,7 +1364,7 @@ className="descriptionContainer custom-scrollbar"
             
           )}
 
-          {isTaskPart &&!idea.isCompleted&& !task.isCompleted &&(
+          {isTaskPart &&!idea?.isCompleted&& !task?.isCompleted &&(
             <button
               style={{ width: "141px" }}
               className="hoverBtn"
@@ -1377,7 +1377,7 @@ className="descriptionContainer custom-scrollbar"
             </button>
           )}
 
-          {creator && !idea?.isCompleted && userData.roles==='Researcher' &&!task.isCompleted &&(
+          {creator && !idea?.isCompleted && userData.roles==='Researcher' &&!task?.isCompleted &&(
             <button
               style={{ width: "141px" }}
               className="hoverBtn"
@@ -1391,7 +1391,7 @@ className="descriptionContainer custom-scrollbar"
             
           )}
 
-{isTaskPart && !idea?.isCompleted && !task.isCompleted &&(
+{isTaskPart && !idea?.isCompleted && !task?.isCompleted &&(
             <button
               style={{ width: "141px" }}
               className="hoverBtn"
@@ -2046,7 +2046,7 @@ className="descriptionContainer custom-scrollbar"
                 onClose={() => setShowTaskCard(false)}
               />
             )}
-            {isPart && !idea.isCompleted && (
+            {isPart && !idea?.isCompleted && (
               <button
                 className="buttonn"
                 onClick={() => setShowExpertReqModal(true)}
@@ -2054,7 +2054,7 @@ className="descriptionContainer custom-scrollbar"
                 Send Expert Request
               </button>
             )}
-            {ideaChatPart && !idea.isCompleted && (
+            {ideaChatPart && !idea?.isCompleted && (
               <button
                 className="buttonn"
                 onClick={() => setShowUploadFile(true)}

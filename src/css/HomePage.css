@@ -78,7 +78,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-blend-mode: darken;
-  width: 80%;
+  width: 100%;
   clip-path: circle(50% at 50% 9%);
   display: flex;
   flex-direction: column;
@@ -558,13 +558,20 @@ p {
   0% {
     transform: translateX(0);
   }
+  25% {
+    transform: translateX(15px); /* Move halfway to the right */
+  }
   50% {
-    transform: translateX(50px);
+    transform: translateX(0); /* Back to the original position */
+  }
+  75% {
+    transform: translateX(-15px); /* Move halfway to the left */
   }
   100% {
-    transform: translateX(0);
+    transform: translateX(0); /* Back to the original position */
   }
 }
+
 
 .videoContainer {
   position: relative;
@@ -909,6 +916,7 @@ cursor: pointer;
  .landingPage{
   width: 100%;
  }
+ 
 
  }
 
@@ -940,6 +948,9 @@ cursor: pointer;
 .RightContainer{
   width: 70%;
 }
+.landingPage{
+  height: 80vh;
+}
  }
 
   
@@ -966,6 +977,9 @@ cursor: pointer;
   .courseCard{
     width: 70%;
   }
+  .landingPage{
+    height: 60vh;
+  }
  }
 
 
@@ -983,6 +997,12 @@ cursor: pointer;
   .BigParentContainer{
     width: 60%;
   }
+  .landingPage{
+    height: 50vh;
+  }
+  .congrats{
+    font-size: 1.5em !important;
+  }
  }
 
 
@@ -999,6 +1019,10 @@ cursor: pointer;
   .AllUsers{
     flex-direction: column;
     
+  }
+  .quizContainer{
+    width: 340px;
+    height: 340px;
   }
  }
 

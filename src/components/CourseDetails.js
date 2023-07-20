@@ -451,7 +451,7 @@ console.log(userData)
     if (!props.show) return null;
     return (
       <div className="modal-overlay2">
-        <div className="modal2">
+        <div className="modal2" style={{height:'350px',alignItems:'center'}}>
         <div>
   <div id="progress-bar" style={{width: "0%", backgroundColor: "#ddd", height: "20px"}}></div>
   <div id="progress-bar-text"></div>
@@ -707,7 +707,8 @@ console.log(userData)
     });
     console.log(editData);
 
-    function editCourseData() {
+    function editCourseData(e) {
+      e.preventDefault();
       fetch(`https://localhost:7187/api/Courses/${id}`, {
         method: "PUT",
         headers: {
@@ -749,7 +750,7 @@ console.log(userData)
             className="custom-scrollbar"
             style={{ overflow: "auto", maxHeight: "420px" }}
           >
-            <div className="FormModal2">
+            <form className="FormModal2" onSubmit={editCourseData}>
               <label className="AllLabeles">Name</label>
               <input
                 className="InputModalHallDetails"
@@ -774,6 +775,7 @@ console.log(userData)
               <label className="AllLabeles">price</label>
               <input
                 className="InputModalHallDetails"
+                min={1}
                 placeholder={courseDetails.price}
                 onChange={(e) =>
                   setEditData((prev) => {
@@ -806,10 +808,10 @@ console.log(userData)
                 name="driveLink"
               ></input>
               <div className="buttonsOnModal">
-                <button onClick={editCourseData}>Edit</button>
+                <button type="submit" >Edit</button>
                 <button onClick={props.onClose}>Cancel</button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -869,7 +871,7 @@ console.log(userData)
         <div className="LeftCourseData custom-scrollbar">
           <div className="LeftIntroData">
             <h1 className="NameCourse">{courseDetails?.name}</h1>
-            <p className="briefCourseNew">{courseDetails?.brief}</p>
+            <h3 className="briefCourseNew">{courseDetails?.brief}</h3>
             <h2>Price: {courseDetails?.price} EGP</h2>
             {userData.roles !== "Admin" && !isStudentEnrolled && (
               <button className="btnBUY" onClick={() => navigate("/BuyCourse")}>

@@ -5,6 +5,8 @@ import "../css/CourseForStudent.css";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
 import SideBar from "./SideBar";
+import { FiMenu } from 'react-icons/fi';
+import { FaTimes } from 'react-icons/fa';
 export default function CourseForStudent() {
   const [sideBarVisible, setSideBarVisible] = useState(false);
   const { videoId } = useParams();
@@ -30,42 +32,11 @@ export default function CourseForStudent() {
   function renderSideBarIcon() {
     if (sideBarVisible) {
       return (
-        <svg
-          className="closeSvg"
-          stroke="currentColor"
-          fill="white"
-          stroke-width="0"
-          viewBox="0 0 24 24"
-          height="1em"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g>
-            <path fill="none" d="M0 0h24v24H0z"></path>
-            <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
-          </g>
-        </svg>
+        <FaTimes style={{color:'#3e8dff',width:'40px',height:'40px'}}/>
       );
     } else {
       return (
-        <svg
-        style={{zIndex:'300'}}
-          className="closeSvg"
-          stroke="currentColor"
-          fill="white"
-          stroke-width="0"
-          viewBox="0 0 24 24"
-          height="1em"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h16"
-          ></path>
-        </svg>
+        <FiMenu style={{color:'#3e8dff',width:'40px',height:'40px'}} />
       );
     }
   }
@@ -165,10 +136,8 @@ export default function CourseForStudent() {
         <div
         className="videosFixed"
           style={{
-            position: "fixed",
-            top: "90px",
-            right: "0",
-            minHeight: "100%",
+            
+            minHeight: "100vh",
             backgroundColor: "white",
             width: "30%",
           }}

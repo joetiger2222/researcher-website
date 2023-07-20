@@ -1350,9 +1350,10 @@ console.log('studentd data',studentData)
             {adminReponse?.map((res) => {
               return (
                 <div
-                   style={{height:"200px",justifyContent:"center",width:"280px"}}
+                   style={{height:"200px",justifyContent:"space-between",width:"280px"}}
                   className="CardInAllIdeas"
                 >
+                  <div style={{display:'flex',flexDirection:'column'}}>
                   <span className="custom-scrollbar">
                     <span style={{ fontWeight: "bold" }}>
                       Problem Description :
@@ -1369,6 +1370,7 @@ console.log('studentd data',studentData)
                     </span>{" "}
                     {res.problem.problemCategory.name}
                   </span>
+                  </div>
                   <button className="buttonExit2" onClick={()=>deleteRes(res.id)}>Delete</button>
                 </div>
               );

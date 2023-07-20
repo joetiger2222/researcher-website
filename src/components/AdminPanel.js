@@ -51,11 +51,11 @@ export default function AdminPanel() {
   function renderSideBarIcon() {
     if (sideBarVisible) {
       return (
-       <FaTimes style={{color:'white',width:'40px',height:'40px'}}/>
+       <FaTimes style={{color:'#3e8dff',width:'40px',height:'40px'}}/>
       );
     } else {
       return (
-        <FiMenu style={{color:'white',width:'40px',height:'40px'}} />
+        <FiMenu style={{color:'#3e8dff',width:'40px',height:'40px'}} />
       );
     }
   }
@@ -600,7 +600,7 @@ export default function AdminPanel() {
     if (!props.show) return null;
     return (
       <div className="modal-overlay2">
-        <div className="modal2">
+        <div className="modal2" style={{height:'300px',alignItems:'center'}}>
           <div className="ContExitbtn" onClick={props.onClose}>
             <div class="outer">
               <div class="inner">
@@ -608,7 +608,7 @@ export default function AdminPanel() {
               </div>
             </div>
           </div>
-          <h1 className="headContact2">Create New Idea</h1>
+          <h1 className="headContact2">Send Response To Student</h1>
           <div className="FormModal2">
             <label className="AllLabeles">Message: </label>
             <input

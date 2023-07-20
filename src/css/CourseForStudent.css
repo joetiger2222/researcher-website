@@ -8,7 +8,7 @@
 }
 
 .courseForStudentContent{
-      display: flex;
+    display: flex;
     width: 100%;
     margin-top: 88px;
 
@@ -17,6 +17,9 @@
 .courseForStudentVideoDiv{
     width: 70%;
     height: 600px;
+}
+.videosFixed{
+
 }
 
 .videosNames{
@@ -32,11 +35,28 @@
     
 }
 
+
+
+
+@media only screen and (max-width:1300px) {
+
+    .courseForStudentContent{
+        margin-top: 30px;
+    }
+    }
+
+
+
+
 @media only screen and (max-width:700px) {
+
+    .courseForStudentContent{
+        flex-direction: column;
+    }
     .videosFixed{
-        width: 20% !important;
+        width: 70% !important;
     }
     .courseForStudentVideoDiv{
-        width: 80%;
+        width: 100%;
     }
     }

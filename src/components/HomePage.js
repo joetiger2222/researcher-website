@@ -628,7 +628,7 @@ Publishing research findings is a significant milestone for any
         </div>
       </div>
       <div className="AllWhyChoose">
-        <h1 style={{ fontSize: "3rem" }}>
+        <h1 style={{ fontSize: "3rem",textAlign:'center' }}>
           Why To Choose{" "}
           <span style={{ fontWeight: "bold", fontSize: "3.5rem" }}>ResWeb</span>
         </h1>
@@ -871,7 +871,7 @@ Publishing research findings is a significant milestone for any
           </div>
         </div>
         <div className="OurGradingSys">
-        <h1 style={{ fontSize: "3rem" }}>Our Grading System</h1>
+        <h1 style={{ fontSize: "3rem",textAlign:'center' }}>Our Grading System</h1>
         <div className="ContainerAlGrade">
           <div
             style={{

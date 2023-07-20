@@ -101,7 +101,7 @@ export default function SideBar() {
           {userData.roles!=='Admin'&&<div
             onClick={() => {
               navigate("/HomePage");
-              window.scrollTo(0, 5800);
+              window.scrollTo(0, 9500);
             }}
             style={{ display: "flex", alignItems: "center", columnGap: "10px" }}
           >

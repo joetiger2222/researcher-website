@@ -161,3 +161,14 @@
         overflow: auto;
       }
       }
+
+      @media only screen and (max-width:550px) {
+        .InputChat{
+          width: 83%;
+        }
+        }
+        @media only screen and (max-width:450px) {
+          .InputChat{
+            width: 80%;
+          }
+          }
