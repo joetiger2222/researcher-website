@@ -25,6 +25,7 @@ import BuyCourse from './components/BuyCourse';
 import AllFinalQuizes from './components/AllFinalQuizes';
 import UploadFinalTask from './components/UploadFinalTask';
 import { MyProvider } from './Users/Redux';
+import ForgotPassword from './components/ForgotPassword';
 function App() {
   return (
     <MyProvider>
@@ -54,6 +55,7 @@ function App() {
         <Route path='/BuyCourse' element={<BuyCourse/>}/>
         <Route path='/AllFinalQuizes/:skillId' element={<AllFinalQuizes/>}/>
         <Route path='/UploadFinalTask/:taskId' element={<UploadFinalTask/>}/>
+        <Route path='/ForgotPassword' element={<ForgotPassword/>} />
       
 
       </Routes>

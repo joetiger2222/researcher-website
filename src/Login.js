@@ -16,6 +16,7 @@ export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loginData,setLoginData]=useState(null);
   const [load,setLoad]=useState(false)
+  const [showForgotCard,setShowForgotCard]=useState(false);
   const { userId, setUserId, token, setToken, roles, setRoles } = useContext(MyContext);
 
   function getLoginData(event) {
@@ -26,16 +27,13 @@ export default function Login() {
         }
     })
   }
-console.log(formData)
-
-
 
 
 
 function loginAdmin(e){
   setLoad(true)
   e.preventDefault();
-  fetch(`https://localhost:7187/api/Authentication/AdminLogin`,{
+  fetch(`https://localhost:7187/api/Admin/AdminLogin`,{
     method:"POST",
     headers:{
       "Content-Type":"application/json",
@@ -47,7 +45,8 @@ function loginAdmin(e){
     }else{
       authorizeLogin(e)
     }
-  }).then(data=>{
+  })
+  .then(data=>{
     if (data) {
       setRoles('Admin');
       setUserId(data.userId);
@@ -98,6 +97,63 @@ function authorizeLogin(e){
 //     navigate(`/HomePage`,);
 //   }
 // },[token])
+
+
+
+
+const ForgotPasswordCard=(props)=>{
+  const [email,setEmail]=useState('');
+
+
+  function sendEmail(e){
+    e.preventDefault();
+    fetch(`https://localhost:7187/api/Authentication/forgotpassword/${email}`,{
+      method:"POST",
+      headers:{
+        "Content-Type":'application/json'
+      },
+      
+    })
+    .then(res=>{
+      if(res.ok){
+        toastr.success('Please Go Check Your Email Address');
+        props.onClose();
+      }else {
+        toastr.error('Email Not Found')
+      }
+    })
+
+  }
+  
+
+  if (!props.show) return null;
+    return (
+      <div className="modal-overlay2">
+        <div className="modal2" style={{height:'300px',rowGap:'50px'}}>
+          <h1>Please Enter You Email Address</h1>
+          <input value={email} onChange={(e)=>setEmail(e.target.value)} className="search-input" placeholder="Email..." type="email" style={{width:'80%',maxWidth:'300px'}}></input>
+          <div className="buttonsOnModal" style={{width:'80%',maxWidth:'300px'}}>
+              <button
+                
+                onClick={sendEmail}
+              >
+                Submit
+              </button>
+              <button  onClick={props.onClose}>
+                Decline
+              </button>
+            </div>
+        </div>
+        </div>
+    )
+}
+
+
+
+
+
+
+
 
 
 if(load){
@@ -213,7 +269,7 @@ if(load){
                 cursor:'pointer',
                 gap:"5px"
               }}
-              onClick={(e)=>{loginAdmin(e);authorizeLogin(e)}}
+              onClick={(e)=>{loginAdmin(e);}}
             >
               <img style={{width:"20px",height:"20px",color:"white"}} src={loginPhoto}/>
               <span>Login</span>
@@ -265,6 +321,8 @@ if(load){
               
               Signup
             </button>
+            <p style={{color:'blue',borderBottom:'1px solid blue',width:'130px',alignSelf:'flex-end',cursor:'pointer'}} onClick={()=>setShowForgotCard(true)}>Forgot Password?</p>
+            {showForgotCard&&<ForgotPasswordCard show={showForgotCard} onClose={()=>setShowForgotCard(false)} />}
           </form>
         </div>
       </div>

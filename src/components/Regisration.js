@@ -26,7 +26,7 @@ const Registration = () => {
  
   const [allNationalities, setAllNationalities] = useState([]);
   const navigate = useNavigate();
-  console.log(allNationalities);
+  
   function getRegisterData(event) {
     setFormData((prevFormData) => {
       return {
@@ -42,7 +42,7 @@ const Registration = () => {
     setFormData(data);
   }, [formData.gender]);
 
-  console.log(formData)
+  
 
   function sendRegisterData(e) {
     e.preventDefault();
@@ -57,6 +57,13 @@ const Registration = () => {
       toastr.error('Please Choose A Valid Nationality');
       return;
     }
+    const isGmail = formData.email.split('@')[1] === 'gmail.com';
+    if(!isGmail){
+      toastr.error('Email Must Be A Gmail');
+      return;
+    }
+
+
     if (formData.password === passwordMatch) {
       fetch("https://localhost:7187/api/Authentication", {
         method: "POST",
@@ -65,11 +72,7 @@ const Registration = () => {
         },
         body: JSON.stringify(formData),
       })
-        // .then((res) =>
-        //   res.ok
-        //     ? authorizeLogin(e)
-        //     : toastr.error("failed to register please try again later","Failed")
-        // );
+        
         .then((response) => {
           const reader = response.body.getReader();
           let chunks = [];
@@ -100,7 +103,7 @@ const Registration = () => {
                 toastr.error(duplicateUserName[0], "Duplicate UserName");
               if(response.PasswordTooShort)
                 toastr.error(passwordTooShort,'Short Password')
-              console.log(body)
+              
             });
           } else {
             authorizeLogin(e);
@@ -110,7 +113,7 @@ const Registration = () => {
             const body = new TextDecoder().decode(
               new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
             );
-            console.log(body);
+            
           });
         })
         .catch((error) => console.error(error));
@@ -148,11 +151,7 @@ const Registration = () => {
       })
       .then((data) => {
         if (data) {
-          // const login = {
-          //   roles: "Student",
-          //   userId: data.userId,
-          //   token: data.token,
-          // };
+      
           setRoles("Student");
           setUserId(data.userId);
           setToken(data.token);
@@ -244,10 +243,13 @@ const Registration = () => {
                 {" "}
                 <label htmlFor="">Age</label>
                 <input
+                min={18}
+                max={70}
+                
                   required
                   onChange={getRegisterData}
                   name="age"
-                  type="text"
+                  type="number"
                   placeholder="Enter Your Age"
                 />
               </div>
