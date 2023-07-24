@@ -224,7 +224,7 @@
     overflow: auto;
     padding: 10px;
     width: 80%;
-    max-width: 300px;
+    /* max-width: 300px; */
   }
 
 /* Modal Form Label */

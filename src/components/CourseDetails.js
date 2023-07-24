@@ -910,7 +910,7 @@ const CourseDetails = () => {
           <h1 className="headContact2">Edit Course Data</h1>
           <div
             className="custom-scrollbar"
-            style={{ overflow: "auto", maxHeight: "420px" }}
+            style={{ overflow: "auto", maxHeight: "420px",display:"flex",justifyContent:"center",width:"100%" }}
           >
             <form className="FormModal2" onSubmit={editCourseData}>
               <label className="AllLabeles">Name</label>

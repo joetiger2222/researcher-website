@@ -89,8 +89,8 @@ export default function UploadFinalTask(){
         <div style={{width:'100%',minHeight:'100vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
             
             <h1 className="headContact2">Upload Document</h1>
-          <div className="FormModal2">
-            <label className="LableForinputTypeFile" htmlFor="img">
+          <div className="FormModal2" style={{width:"500px"}}>
+            <label className="LableForinputTypeFile"style={{justifyContent:"center"}} htmlFor="img">
               <input
                 className="InputFile"
                 id="img"

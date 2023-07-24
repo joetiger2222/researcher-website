@@ -302,6 +302,7 @@ function renderSideBar() {
             </div>
           </div>
           <h1 className="headContact2">All Researchers</h1>
+          <div className="FormModal2" style={{justifyContent:"space-around",height:"100%"}}>
           <div style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <input
           placeholder="Search Name"
@@ -346,6 +347,9 @@ function renderSideBar() {
               Cancel
             </button>
           </div>
+          </div>
+         
+         
         </div>
       </div>
     );
@@ -1464,14 +1468,14 @@ className="descriptionContainer custom-scrollbar"
             {/* <input className="InputModalHallDetails"
            type="file"
             onChange={handleDocumentUpload} /> */}
-            <label className="LableForinputTypeFile" htmlFor="img">
+            <label className="LableForinputTypeFile" style={{justifyContent:"center"}} htmlFor="img">
               <input
                 className="InputFile"
                 id="img"
                 type="file"
                 onChange={handleDocumentUpload}
               />
-              <span className="SpanUpload">
+              <span className="SpanUpload" style={{padding:"5px",gap:"5px"}}>
                 {" "}
                 <MdOutlineFileUpload />
                 <span style={{ borderBottom: "none", padding: "3px" }}>
@@ -1575,7 +1579,7 @@ className="descriptionContainer custom-scrollbar"
             </div>
           </div>
           <h1 className="headContact2">All Files</h1>
-          <div style={{height:"100%",maxHeight:"290px"}} className="ContInviteResearchers custom-scrollbar">
+          <div style={{height:"100%",maxHeight:"290px",width:"85%"}} className="ContInviteResearchers custom-scrollbar">
             {documents?.map((doc) => {
               return (
                 <div className="DivContResearchers1">
@@ -1658,14 +1662,14 @@ className="descriptionContainer custom-scrollbar"
            type="file"
             onChange={handleDocumentUpload} /> */}
 
-            <label className="LableForinputTypeFile" htmlFor="img">
+            <label className="LableForinputTypeFile"style={{justifyContent:"center"}} htmlFor="img">
               <input
                 className="InputFile"
                 id="img"
                 type="file"
                 onChange={handleDocumentUpload}
               />
-              <span className="SpanUpload">
+              <span className="SpanUpload"style={{gap:"8px",padding:"8px"}}>
                 {" "}
                 <MdOutlineFileUpload />
                 <span>Choose a File</span>
