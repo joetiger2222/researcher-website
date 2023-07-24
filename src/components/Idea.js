@@ -1468,7 +1468,7 @@ className="descriptionContainer custom-scrollbar"
             {/* <input className="InputModalHallDetails"
            type="file"
             onChange={handleDocumentUpload} /> */}
-            <label className="LableForinputTypeFile" style={{justifyContent:"center"}} htmlFor="img">
+            <label className="LableForinputTypeFile"htmlFor="img">
               <input
                 className="InputFile"
                 id="img"
@@ -1662,7 +1662,7 @@ className="descriptionContainer custom-scrollbar"
            type="file"
             onChange={handleDocumentUpload} /> */}
 
-            <label className="LableForinputTypeFile"style={{justifyContent:"center"}} htmlFor="img">
+            <label className="LableForinputTypeFile" htmlFor="img">
               <input
                 className="InputFile"
                 id="img"
