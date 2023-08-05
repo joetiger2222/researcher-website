@@ -16,7 +16,6 @@ export default function Header() {
   const userData = useContext(MyContext);
   
 function getStudentImage(){
-  console.log('invoked')
     fetch(`https://resweb-001-site1.htempurl.com/api/Students/Image/${userData?.userId}`,{
       method:"GET",
       headers:{
