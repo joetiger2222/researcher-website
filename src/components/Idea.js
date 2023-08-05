@@ -1483,7 +1483,7 @@ setLoad(true)
             {/* <input className="InputModalHallDetails"
            type="file"
             onChange={handleDocumentUpload} /> */}
-            <label className="LableForinputTypeFile" style={{justifyContent:"center"}} htmlFor="img">
+            <label className="LableForinputTypeFile"htmlFor="img">
               <input
                 className="InputFile"
                 id="img"
@@ -1678,7 +1678,7 @@ setLoad(true)
            type="file"
             onChange={handleDocumentUpload} /> */}
 
-            <label className="LableForinputTypeFile"style={{justifyContent:"center"}} htmlFor="img">
+            <label className="LableForinputTypeFile" htmlFor="img">
               <input
                 className="InputFile"
                 id="img"
