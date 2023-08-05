@@ -59,4 +59,7 @@
     .courseForStudentVideoDiv{
         width: 100%;
     }
+    .loadVideo{
+        width: 100% !important;
+    }
     }

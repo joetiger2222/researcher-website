@@ -1,26 +1,34 @@
 import React, { useEffect ,useState} from "react";
-import { useLocation, useNavigate, useParams} from "react-router-dom";
+import {  useNavigate, useParams} from "react-router-dom";
 import "../css/AllFinalQuizes.css"
 import Swal from "sweetalert2";
 import toastr from "toastr";
 import "toastr/build/toastr.min.css";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
+import loader from '../loader.gif';
 export default function AllFinalQuizes(){
     const userData = useContext(MyContext);
-    // const userData = useLocation().state?.data;
+    const [load,setLoad]=useState(false);
     const {skillId}=useParams();
     const[allFinalQuizes,setAllFinalQuizes]=useState(null);
     const navigate=useNavigate();
 
     function getAllFinalQuizes(){
-        fetch(`https://localhost:7187/api/Admin/Quizzes/${skillId}`,{
+      setLoad(true)
+        fetch(`https://resweb-001-site1.htempurl.com/api/Admin/Quizzes/${skillId}`,{
           method:"GET",
           headers:{
             "Authorization":`Bearer ${userData.token}`
           }
         })
-        .then(res=>res.ok?res.json():null)
+        // .then(res=>res.ok?res.json():null)
+        .then(res=>{
+          setLoad(false)
+          if(res.ok){
+            return res.json();
+          }
+        })
         .then(data=>data?setAllFinalQuizes(data):null)
       }
 
@@ -36,13 +44,15 @@ function deleteFinalQuiz(quizId){
         showCancelButton: true,
     }).then((data) => {
         if(data.isConfirmed){
-           fetch(`https://localhost:7187/api/Admin/Quizzes/${quizId}`,{
+          setLoad(true)
+           fetch(`https://resweb-001-site1.htempurl.com/api/Admin/Quizzes/${quizId}`,{
       method:"DELETE",
       headers:{
         "Authorization":`Bearer ${userData.token}`
       }
     })
     .then(res=>{
+      setLoad(false)
         if(res.ok){
             toastr.success('Quiz Successfully Deleted',"Success")
             getAllFinalQuizes();
@@ -62,6 +72,19 @@ function deleteFinalQuiz(quizId){
       </div>
     )
   }
+
+
+  if(load){
+    return(
+      <div style={{width:'100%',minHeight:'100vh',display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'white'}}>
+        <img src={loader} />
+      </div>
+    )
+  }
+
+
+
+
 
     return (
         <div className="ContainerAllQuizes">

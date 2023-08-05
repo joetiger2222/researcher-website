@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import registartionImg from "../images/registerImage.png";
-import google from "../google.png";
 import "../css/Registration.css";
 import toastr from "toastr";
 import "toastr/build/toastr.min.css";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { MyContext } from "../Users/Redux";
+import loader from '../loader.gif';
 const Registration = () => {
   const { userId, setUserId, token, setToken, roles, setRoles } =
     useContext(MyContext);
+    const [load,setLoad]=useState(false);
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -31,7 +32,7 @@ const Registration = () => {
     setFormData((prevFormData) => {
       return {
         ...prevFormData,
-        [event.target.name]: event.target.value,
+        [event.target.name]: event.target.value.trim(),
       };
     });
   }
@@ -45,27 +46,41 @@ const Registration = () => {
   
 
   function sendRegisterData(e) {
+    setLoad(true)
     e.preventDefault();
+
+    const containsSpaces = formData.userName.includes(' ');
+
+    if(containsSpaces){
+      toastr.error('Username Can\'t Contain Spaces')
+      setLoad(false)
+      return;
+    }
+
+
     if (formData.gender*1 !== 0) {
       if (formData.gender*1 !== 1) {
       toastr.error('Please Choose A Valid Gender');
+      setLoad(false)
       return;
       }
     }
     
     if(formData.nationalityId===0){
       toastr.error('Please Choose A Valid Nationality');
+      setLoad(false)
       return;
     }
     const isGmail = formData.email.split('@')[1] === 'gmail.com';
     if(!isGmail){
       toastr.error('Email Must Be A Gmail');
+      setLoad(false)
       return;
     }
 
 
     if (formData.password === passwordMatch) {
-      fetch("https://localhost:7187/api/Authentication", {
+      fetch("https://resweb-001-site1.htempurl.com/api/Authentication", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -74,6 +89,7 @@ const Registration = () => {
       })
         
         .then((response) => {
+          setLoad(false)
           const reader = response.body.getReader();
           let chunks = [];
 
@@ -88,6 +104,7 @@ const Registration = () => {
           }
 
           if (!response.ok) {
+            setLoad(false)
             return readStream().then((chunks) => {
               const body = new TextDecoder().decode(
                 new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
@@ -106,6 +123,7 @@ const Registration = () => {
               
             });
           } else {
+            setLoad(false)
             authorizeLogin(e);
           }
 
@@ -118,12 +136,13 @@ const Registration = () => {
         })
         .catch((error) => console.error(error));
     } else {
+      setLoad(false)
       toastr.error("Password and Confirm Password Does not Match", "Error");
     }
   }
 
   function getAllNationalities() {
-    fetch(`https://localhost:7187/api/Students/Nationalites`)
+    fetch(`https://resweb-001-site1.htempurl.com/api/Students/Nationalites`)
       .then((res) =>
         res.ok
           ? res.json()
@@ -137,8 +156,9 @@ const Registration = () => {
   }, []);
 
   function authorizeLogin(e) {
+    setLoad(true)
     e.preventDefault();
-    fetch("https://localhost:7187/api/Authentication/login", {
+    fetch("https://resweb-001-site1.htempurl.com/api/Authentication/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -146,6 +166,7 @@ const Registration = () => {
       body: JSON.stringify(formData),
     })
       .then((response) => {
+        setLoad(false)
         if (response.ok) return response.json();
         else toastr.error("Failed to login in try again later", "Failed");
       })
@@ -159,6 +180,19 @@ const Registration = () => {
         }
       });
   }
+
+
+
+  if(load){
+    return(
+      <div style={{width:'100%',minHeight:'100vh',display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'white'}}>
+        <img src={loader} />
+      </div>
+    )
+  }
+
+
+
 
   return (
     <div className="parentRegistration">

@@ -1,13 +1,13 @@
 import React from "react";
 import Header from "./Header";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
 export default function SuccededFinalQuiz(){
-    // const userData=useLocation().state.data;
+   
     const userData = useContext(MyContext);
     const navigate=useNavigate();
-    // console.log('user data from succeded final quiz',userData)
+   
     if(userData.userId===''){
         return (
           <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>

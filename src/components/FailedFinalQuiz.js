@@ -1,11 +1,11 @@
 import React from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import Header from "./Header";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
 export default function FinalQuizResult(){
     const {skillId}=useParams();
-    // const userData=useLocation().state?.data
+    
     const userData = useContext(MyContext);
     const navigate=useNavigate();
     if(userData.userId===''){

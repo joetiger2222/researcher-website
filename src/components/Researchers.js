@@ -1,24 +1,20 @@
 import React, { useEffect, useState ,useRef} from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import Header from "./Header";
 import "../css/Researchers.css";
 import { BiChat } from 'react-icons/bi';
 import { FaPaperPlane } from "react-icons/fa";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import kariem from "../images/userImg.png";
-import user from "../images/imageUser.png"
-import ToastrComponent from "./Cards/ToastrComponent";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
-
-import Footer from "./Footer";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
 import SideBar from "./SideBar";
 export default function Researchers(){
   const [sideBarVisible, setSideBarVisible] = useState(false);
   const userData = useContext(MyContext);
-    // const userData=useLocation().state.data
+    
     const [researchers,setResearchers]=useState(null);
     const [searchData,setSearchData]=useState({SearchTerm:'',Level:'',Specality:0,PageSize:10})
     const [allSpecs, setAllSpecs] = useState(null);
@@ -89,7 +85,7 @@ export default function Researchers(){
 
   function getAllResearchers() {
     fetch(
-      `https://localhost:7187/api/Researchers?SearchTerm=${searchData.SearchTerm}&Level=${searchData.Level}&Specality=${searchData.Specality}&PageSize=${searchData.PageSize}`,
+      `https://resweb-001-site1.htempurl.com/api/Researchers?SearchTerm=${searchData.SearchTerm}&Level=${searchData.Level}&Specality=${searchData.Specality}&PageSize=${searchData.PageSize}`,
       {
         method: "GET",
         headers: {
@@ -104,7 +100,7 @@ export default function Researchers(){
   }
 
   function getAllSpecs() {
-    fetch(`https://localhost:7187/api/Researchers/Specialties`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/Specialties`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData.token}`,
@@ -140,7 +136,7 @@ export default function Researchers(){
     });
     const [AllMessages, setAllMessages] = useState([]);
     const otherPersonData=researchers.filter(res=>res.studentObj.id===props.otherPersonId)
-    console.log('other person data',otherPersonData);
+    
     
     const latestChat = useRef(null);
 
@@ -150,7 +146,7 @@ export default function Researchers(){
 let counter=1;
     function getMyMessages() {
       if(counter===1){
-      fetch(`https://localhost:7187/api/Chat/Private?senderId=${userData.userId}&reciverId=${props.otherPersonId}`, {
+      fetch(`https://resweb-001-site1.htempurl.com/api/Chat/Private?senderId=${userData.userId}&reciverId=${props.otherPersonId}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${userData.token}`,
@@ -171,7 +167,7 @@ let counter=1;
     let otherCounter=1;
     function getOtherMessages() {
       if(otherCounter===1){
-      fetch(`https://localhost:7187/api/Chat/Private?senderId=${props.otherPersonId}&reciverId=${userData.userId}`, {
+      fetch(`https://resweb-001-site1.htempurl.com/api/Chat/Private?senderId=${props.otherPersonId}&reciverId=${userData.userId}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${userData.token}`,
@@ -194,7 +190,7 @@ let counter=1;
 
     useEffect(() => {
       const connection = new HubConnectionBuilder()
-        .withUrl("https://localhost:7187/hubs/Privatechat")
+        .withUrl("https://resweb-001-site1.htempurl.com/hubs/Privatechat")
         .withAutomaticReconnect()
         .build();
 
@@ -246,7 +242,7 @@ let counter=1;
 
       try {
         await fetch(
-          `https://localhost:7187/api/Chat/Private`,
+          `https://resweb-001-site1.htempurl.com/api/Chat/Private`,
           {
             method: "POST",
             body: JSON.stringify(chatMessage),
@@ -361,7 +357,7 @@ const ResCard=(props)=>{
 
 
   function getStudentImage(){
-    fetch(`https://localhost:7187/api/Students/Image/${props.res?.studentObj?.id}`,{
+    fetch(`https://resweb-001-site1.htempurl.com/api/Students/Image/${props.res?.studentObj?.id}`,{
       method:"GET",
       headers:{
         "Authorization":`Bearer ${userData.token}`

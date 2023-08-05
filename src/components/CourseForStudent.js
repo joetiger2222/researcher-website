@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import React, { useState, useEffect,useRef } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Header from "./Header";
 import "../css/CourseForStudent.css";
 import { useContext } from "react";
@@ -7,20 +7,21 @@ import { MyContext } from '../Users/Redux';
 import SideBar from "./SideBar";
 import { FiMenu } from 'react-icons/fi';
 import { FaTimes } from 'react-icons/fa';
+import loaderPng from '../loaderpng.gif'
+import toastr from "toastr";
 export default function CourseForStudent() {
   const [sideBarVisible, setSideBarVisible] = useState(false);
   const { videoId } = useParams();
-  const { sectionId } = useParams();
+  const {index}=useParams();
   const [video, setVideo] = useState(null);
-  const [videosIds, setVideosIds] = useState(null);
-  const [sectionVideo, setSectionVideo] = useState(videoId);
-  // const userData=useLocation().state?.data;
+  const [videoLoading,setVideoLoading]=useState(false);
+  const [otherVideos,setOtherVideos]=useState([]);
+  console.log(`CourseForStudent ~ otherVideos:`, otherVideos)
+  const [choosenVideo,setChoosenVideo]=useState(videoId*1);
   const userData = useContext(MyContext);
   const navigate=useNavigate();
-
-
-
-
+  const videosIds=useLocation().state?.data;
+  const abortController = new AbortController();
 
 
   function renderSideBar() {
@@ -40,60 +41,111 @@ export default function CourseForStudent() {
       );
     }
   }
+  
 
 
-
-
-
-
-
-
-
-
-  function getVideo() {
-    fetch(`https://localhost:7187/api/courses/Videos/${sectionVideo}`,{
-      method:"GET",
-      headers:{
-        "authorization":`Bearer ${userData.token}`
+  function getVideo(videoId,index) {
+    const filterVideo=otherVideos.filter(video=>video.index===index);
+    if(filterVideo.length>0){
+      setVideo(filterVideo[0].url);
+      getNextVideo(index+1);
+      return ;
+    }
+    
+    setVideoLoading(true)
+    fetch(`https://resweb-001-site1.htempurl.com/api/courses/Videos/${videoId}`, {
+      method: "GET",
+      headers: {
+        "authorization": `Bearer ${userData.token}`
+      },
+      signal: abortController.signal
+    })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch video.");
+      }
+      return response.blob();
+    })
+    .then((blob) => {
+      const videoItself = URL.createObjectURL(blob);
+      setVideo(videoItself);
+      setOtherVideos(prev=>[...prev,{index:index,url:videoItself,id:videoId}])
+      if(videosIds.length-1>index){
+        getNextVideo(index+1);
+      }
+      const videoElement = document.querySelector(".Video");
+      if (videoElement) {
+        setVideoLoading(false)
       }
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch video.");
-        }
-
-        return response.blob();
-      })
-      .then((blob) => {
-        const videoItself = URL.createObjectURL(blob);
-        
-        setVideo(videoItself);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    .catch((error) => {
+      setVideoLoading(false)
+      const filterVideo=otherVideos.filter(video=>video.index===index);
+    if(filterVideo.length>0){
+      setVideo(filterVideo[0].url);
+      getNextVideo(index+1);
+      return ;
+    }
+      if(userData.userId!==''){
+        getVideo(videoId,index*1);
+      }
+      console.error("Error fetching video:", error);
+    });
   }
 
+  
 
-  function getVideosIds() {
-    fetch(`https://localhost:7187/api/Courses/Sections/Videos/${sectionId}`,{
-      method:"GET",
-      headers:{
-        "authorization":`Bearer ${userData.token}`
-      }
+
+  function getNextVideo(index){
+    const videoId=videosIds[index]?.id;
+    const filterVideo=otherVideos.filter(video=>video.index===index);
+    if(filterVideo.length>0){
+      return ;
+    }else{
+      fetch(`https://resweb-001-site1.htempurl.com/api/courses/Videos/${videoId}`, {
+      method: "GET",
+      headers: {
+        "authorization": `Bearer ${userData.token}`
+      },
+      signal: abortController.signal
     })
-      .then((res) => res.json())
-      .then((data) => setVideosIds(data));
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch video.");
+      }
+      return response.blob();
+    })
+    .then((blob) => {
+      const videoItself = URL.createObjectURL(blob);
+      setOtherVideos(prev=>[...prev,{index:index,url:videoItself,id:videoId}])
+     
+    })
+    .catch((error) => {
+      console.error("Error fetching video: from next video", error);
+    });
+    }
   }
 
   useEffect(() => {
-    getVideo();
-    getVideosIds();
+    return () => {
+      console.log('abort invoked')
+      abortController.abort();
+    };
+  }, []);
+  
+
+  useEffect(() => {
+    if(userData.userId!==''){
+    getVideo(videoId,index*1);
+    }
   }, [userData]);
 
-  useEffect(() => {
-    getVideo();
-  }, [sectionVideo]);
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+  },[])
+
+
+
 
 
 
@@ -106,9 +158,7 @@ export default function CourseForStudent() {
     )
   }
 
-
-
-
+ 
 
 
   return (
@@ -129,10 +179,16 @@ export default function CourseForStudent() {
             {renderSideBarIcon()}
           </div>
       <div className="courseForStudentContent">
-        <div className="courseForStudentVideoDiv">
-          <video className="Video" controls src={video} type="video/mp4" controlsList="nodownload"/>
-        </div>
 
+      <div className="courseForStudentVideoDiv">
+     
+     {videoLoading&&<div className="modal-overlay2" style={{width:'70%'}}>
+            <img src={loaderPng} />
+     </div>}
+     <video className="Video" controls src={video} type="video/mp4" preload="auto" controlsList="nodownload" autoPlay />
+
+        </div>
+        
         <div
         className="videosFixed"
           style={{
@@ -144,12 +200,18 @@ export default function CourseForStudent() {
         >
           <h2 style={{padding:"20px"}}>Section Content</h2>
             <div className="videosNames">
+              {/* {<img src={loader} style={{maxWidth:'200px',width:'70%'}} className="loadVideo" />} */}
             {videosIds?.map((video,index) => (
           <span
-                style={{backgroundColor:video.id===sectionVideo*1?'gray':'transparent',borderBottom:"1px solid black",}}
+                style={{backgroundColor:video.id===choosenVideo*1?'gray':'transparent',borderBottom:"1px solid black",}}
             onClick={() => {
-              setSectionVideo(video.id);
-             
+              // setChoosenVideo(video.id)
+              if(!videoLoading){
+              getVideo(video.id*1,index);
+              setChoosenVideo(video.id*1);
+              }else {
+                toastr.info('Please wait, the video is loading!')
+              }       
             }}
             
             className="LinkVideoSection"

@@ -1,12 +1,12 @@
 import React from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import { useState,useRef } from "react";
 import toastr from "toastr";
 import { MdOutlineFileUpload } from "react-icons/md";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
 export default function UploadFinalTask(){
-    // const userData=useLocation().state.data;
+    
     const userData = useContext(MyContext);
     const {taskId}=useParams();
     const navigate=useNavigate();
@@ -30,7 +30,7 @@ export default function UploadFinalTask(){
           formData.append("Name", titleValue);
     
           fetch(
-            `https://localhost:7187/api/Ideas/Tasks/Submit?taskId=${taskId}&participantId=${userData.resercherId}`,
+            `https://resweb-001-site1.htempurl.com/api/Ideas/Tasks/Submit?taskId=${taskId}&participantId=${userData.resercherId}`,
             {
               method: "POST",
               headers: {
@@ -70,7 +70,7 @@ export default function UploadFinalTask(){
               const body = new TextDecoder().decode(
                 new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
               );
-              console.log(body);
+              
             });
           })
           .catch((error) => console.error(error));
@@ -130,94 +130,3 @@ export default function UploadFinalTask(){
 
 
 
-// const UploadFinalTaskFile=(props)=>{
-//     console.log('renders')
-//     const titleRef = useRef(null);
-//     const [document, setDocument] = useState(null);
-
-
-//     const handleDocumentUpload = (event) => {
-//       const file = event.target.files[0];
-//       setDocument(file);
-//     };
-
-//     const handleDocumentSubmit = (event) => {
-//       event.preventDefault();
-//       const titleValue = titleRef.current.value;
-//       const formData = new FormData();
-//       formData.append("file", document);
-//       formData.append("Name", titleValue);
-
-//       fetch(
-//         `https://localhost:7187/api/Ideas/Tasks/Submit?taskId=${props.task.id}&participantId=${userData.resercherId}`,
-//         {
-//           method: "POST",
-//           headers: {
-//             Authorization: `Bearer ${userData.token}`,
-//           },
-//           body: formData,
-//         }
-//       ).then((res) => {
-//         if (res.ok) {
-//           toastr.success("File Uploaded Successfully", "Success");
-//           props.onClose();
-//         } else
-//           toastr.error("failed to add video please try again later", "Failed");
-//       });
-//     };
-
-// console.log('from modal',props);
-
-//     if (!props.show) return null;
-//     return (
-//       <div className="modal-overlay2">
-//         <div className="modal2">
-//           <div className="ContExitbtn" onClick={props.onClose}>
-//             <div class="outer">
-//               <div class="inner">
-//                 <label className="label2">Exit</label>
-//               </div>
-//             </div>
-//           </div>
-//           <h1 className="headContact2">Upload Document</h1>
-//           <div className="FormModal2">
-//             <label className="LableForinputTypeFile" htmlFor="img">
-//               <input
-//                 className="InputFile"
-//                 id="img"
-//                 type="file"
-//                 onChange={handleDocumentUpload}
-//               />
-//               <span className="SpanUpload">
-//                 {" "}
-//                 <MdOutlineFileUpload />
-//                 <span>Choose a File</span>
-//               </span>
-//             </label>
-
-//             {document && (
-//               <input
-//                 id="title"
-//                 className="InputModalHallDetails"
-//                 type="text"
-//                 placeholder="file name"
-//                 required
-//                 name="Title"
-//                 ref={titleRef}
-//               ></input>
-//             )}
-//             <div className="buttonsOnModal">
-//               {document && (
-//                 <button className="" onClick={handleDocumentSubmit}>
-//                   Upload Document
-//                 </button>
-//               )}
-//               <button className="" onClick={props.onClose}>
-//                 Cancel
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   }

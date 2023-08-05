@@ -59,7 +59,7 @@ export default function SideBar() {
             padding: "20px",
           }}
         >
-          {userData.roles!=='Admin'&&<div
+          {userData.roles==='Researcher'&&<div
             onClick={() => navigate(`/MarketPlace`)}
             style={{ display: "flex", alignItems: "center", columnGap: "10px" }}
           >
@@ -68,7 +68,7 @@ export default function SideBar() {
               className="sideBarName"
               style={{ fontWeight: "bold", fontSize: "20px", color: "black" }}
             >
-              MarketPlace
+              Research opportunities
             </span>
           </div>}
           {userData.roles!=='Admin'&&<div
@@ -86,7 +86,7 @@ export default function SideBar() {
               Courses
             </span>
           </div>}
-          {userData.roles!=='Admin'&&<div
+          {userData.roles==='Researcher'&&<div
             onClick={() => navigate(`/Researchers`)}
             style={{ display: "flex", alignItems: "center", columnGap: "10px" }}
           >

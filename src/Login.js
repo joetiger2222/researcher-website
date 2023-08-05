@@ -31,9 +31,32 @@ export default function Login() {
 
 
 function loginAdmin(e){
-  setLoad(true)
   e.preventDefault();
-  fetch(`https://localhost:7187/api/Admin/AdminLogin`,{
+
+  const containsSpaces = formData.email.includes(' ');
+
+  if(containsSpaces){
+    toastr.error('Email Can\'t Contain Spaces')
+    setLoad(false)
+    return;
+  }
+const isGmail = formData.email.split('@')[1] === 'gmail.com';
+  if(!isGmail){
+    toastr.error('Email Must Be A Gmail');
+    setLoad(false)
+    return;
+  }
+
+  if(formData.password===''){
+    toastr.error('Password Can\'t Be Empty');
+        setLoad(false)
+        return;
+  }
+
+
+  setLoad(true)
+  
+  fetch(`https://resweb-001-site1.htempurl.com/api/Admin/AdminLogin`,{
     method:"POST",
     headers:{
       "Content-Type":"application/json",
@@ -53,6 +76,9 @@ function loginAdmin(e){
       setToken(data.token)
       navigate(`/adminPanel`);
     }
+  }).catch(e=>{
+    setLoad(false)
+    toastr.error('Server Is Down Please Try Again Later')
   })
 }
 
@@ -61,7 +87,7 @@ function loginAdmin(e){
 function authorizeLogin(e){
   e.preventDefault();
   
-  fetch("https://localhost:7187/api/Authentication/login", {
+  fetch("https://resweb-001-site1.htempurl.com/api/Authentication/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -76,7 +102,7 @@ function authorizeLogin(e){
     .then((response) => {
       setLoad(false)
       if(response.ok)return response.json();
-      else toastr.error('wrong username or password',"Error")
+      else toastr.error('wrong Email or password',"Error")
     })
     .then(data=>{
       if(data){
@@ -85,7 +111,11 @@ function authorizeLogin(e){
       setToken(data.token)
       navigate(`/HomePage`,);
     }
-    });
+    }).catch(e=>{
+      setLoad(false);
+      toastr.error('Internal Server Error Please Try Again Later')
+    })
+    ;
 }
 
 
@@ -103,16 +133,13 @@ function authorizeLogin(e){
 
 const ForgotPasswordCard=(props)=>{
   const [email,setEmail]=useState('');
-
-
   function sendEmail(e){
     e.preventDefault();
-    fetch(`https://localhost:7187/api/Authentication/forgotpassword/${email}`,{
+    fetch(`https://resweb-001-site1.htempurl.com/api/Authentication/forgotpassword/${email}`,{
       method:"POST",
       headers:{
         "Content-Type":'application/json'
       },
-      
     })
     .then(res=>{
       if(res.ok){
@@ -121,6 +148,9 @@ const ForgotPasswordCard=(props)=>{
       }else {
         toastr.error('Email Not Found')
       }
+    }).catch(e=>{
+      toastr.error('Server Error Please Try Again Later');
+      console.log(e);
     })
 
   }
@@ -147,12 +177,6 @@ const ForgotPasswordCard=(props)=>{
         </div>
     )
 }
-
-
-
-
-
-
 
 
 
@@ -275,29 +299,6 @@ if(load){
               <span>Login</span>
               
             </button>
-
-            {/* <button
-            className="loginGoogleBtn"
-              style={{
-                width: "100%",
-                color: "##5a5959",
-                backgroundColor: "white",
-                display: "flex",
-                justifyContent: "center",
-                gap: "7px",
-                padding: "15px 10px",
-                borderRadius: "4px",
-                margin: "10px 0 20px 0",
-                border: "0.01em solid #cbc7c7",
-                fontSize:'1.1em',
-                fontWeight:'bold',
-                cursor:'pointer',
-                
-              }}
-            >
-              <img style={{ width: "20px" }} src={google} />
-              Login With Google
-            </button> */}
             <button
             onClick={()=>navigate('/Registration')}
             className="loginGoogleBtn"
@@ -318,7 +319,6 @@ if(load){
                 
               }}
             >
-              
               Signup
             </button>
             <p style={{color:'blue',borderBottom:'1px solid blue',width:'130px',alignSelf:'flex-end',cursor:'pointer'}} onClick={()=>setShowForgotCard(true)}>Forgot Password?</p>

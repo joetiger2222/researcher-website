@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import registartionImg from "../images/registerImage.png";
-import google from "../google.png";
 import "../css/Registration.css";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
+import loader from '../loader.gif';
 export default function RegisterationSpecialAccount() {
-  // const userData = useLocation().state.data;
+  
   const userData = useContext(MyContext);
+  const [load,setLoad]=useState(false);
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -36,7 +37,7 @@ export default function RegisterationSpecialAccount() {
     setFormData((prevFormData) => {
       return {
         ...prevFormData,
-        [event.target.name]: event.target.value,
+        [event.target.name]: event.target.value.trim(),
       };
     });
   }
@@ -49,11 +50,12 @@ export default function RegisterationSpecialAccount() {
     setFormData(data);
   }, [formData.gender]);
 
-  console.log(formData);
+ 
 
   function sendResData(resId) {
+    setLoad(true)
     fetch(
-      `https://localhost:7187/api/Admin/Researchers/SpecialAccount/${resId}`,
+      `https://resweb-001-site1.htempurl.com/api/Admin/Researchers/SpecialAccount/${resId}`,
       {
         method: "POST",
         headers: {
@@ -66,6 +68,7 @@ export default function RegisterationSpecialAccount() {
       
       .then((res) => {
         if (res.ok) {
+          setLoad(false)
           toastr.success("user successfully created","Success");
           navigate("/AdminPanel");
         } else toastr.error("failed to send points and speciality","Failed");
@@ -75,9 +78,18 @@ export default function RegisterationSpecialAccount() {
   function sendRegisterData(e) {
     e.preventDefault();
 
+    const containsSpaces = formData.userName.includes(' ');
+
+    if(containsSpaces){
+      toastr.error('Username Can\'t Contain Spaces')
+      setLoad(false)
+      return;
+    }
+
     if (formData.gender*1 !== 0) {
       if (formData.gender*1 !== 1) {
       toastr.error('Please Choose A Valid Gender');
+      setLoad(false)
       return;
       }
     }
@@ -85,6 +97,7 @@ export default function RegisterationSpecialAccount() {
       if (formData.type*1 !== 1) {
         if (formData.type*1 !== 2) {
       toastr.error('Please Choose A Valid Type');
+      setLoad(false)
       return;
       }
     }
@@ -92,17 +105,20 @@ export default function RegisterationSpecialAccount() {
     
     if(formData.nationalityId===0){
       toastr.error('Please Choose A Valid Nationality');
+      setLoad(false)
       return;
     }
     if(formData.specalityId===0){
       toastr.error('Please Choose A Valid Speciality');
+      setLoad(false)
       return;
     }
 
 
     if (formData.password === passwordMatch) {
+      setLoad(true)
       fetch(
-        "https://localhost:7187/api/Authentication/Student/SpecialAccount",
+        "https://resweb-001-site1.htempurl.com/api/Authentication/Student/SpecialAccount",
         {
           method: "POST",
           headers: {
@@ -124,6 +140,7 @@ export default function RegisterationSpecialAccount() {
         //   }
         // });
         .then((response) => {
+          setLoad(false)
           const reader = response.body.getReader();
           let chunks = [];
 
@@ -138,6 +155,7 @@ export default function RegisterationSpecialAccount() {
           }
 
           if (!response.ok) {
+            setLoad(false)
             return readStream().then((chunks) => {
               const body = new TextDecoder().decode(
                 new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
@@ -163,24 +181,34 @@ export default function RegisterationSpecialAccount() {
             );
             const response = JSON.parse(body);
           if(response.userId){
+            setLoad(false)
               const userId = response.userId;
               setStuId(userId);
             sendResData(userId);
-              // console.log(userId);
+           
           }
           });
         })
         .catch((error) => console.error(error));
     } else {
+      setLoad(false)
       toastr.error("Password and Confirm Password Does not Match","Error");
     }
   }
 
   function getAllNationalities() {
-    fetch(`https://localhost:7187/api/Students/Nationalites`)
-      .then((res) =>
-        res.ok ? res.json() : toastr.error("failed to load nationalities","Failed")
-      )
+    setLoad(true)
+    fetch(`https://resweb-001-site1.htempurl.com/api/Students/Nationalites`)
+      // .then((res) =>
+      //   res.ok ? res.json() : toastr.error("failed to load nationalities","Failed")
+      // )
+      .then(res=>{
+        setLoad(false)
+        if(res.ok){
+
+          return res.json();
+        }else toastr.error("failed to load nationalities","Failed")
+      })
       .then((data) => (data ? setAllNationalities(data) : null));
   }
 
@@ -188,11 +216,10 @@ export default function RegisterationSpecialAccount() {
     getAllNationalities();
     getAllSpecs();
   }, [userData]);
-  // console.log('stuId',stuId);
-  // console.log('show res moda',showResModal);
+
 
   function getAllSpecs() {
-    fetch(`https://localhost:7187/api/Researchers/Specialties`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/Specialties`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData.token}`,
@@ -207,6 +234,18 @@ export default function RegisterationSpecialAccount() {
   }
 
  
+
+  if(load){
+    return(
+      <div style={{width:'100%',minHeight:'100vh',display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'white'}}>
+        <img src={loader} />
+      </div>
+    )
+  }
+
+
+
+
 
   if (userData.roles === "Admin") {
     return (

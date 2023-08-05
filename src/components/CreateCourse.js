@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "../css/CreateCourse.css";
-import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
+import loader from '../loader.gif';
 export default function CreateCourse() {
   const navigate = useNavigate();
+  const [load,setLoad]=useState(false);
   const [courseId, setCourseId] = useState(null);
-  // const userData=useLocation().state?.data
   const userData = useContext(MyContext);
   const [courseData, setCourseData] = useState({
     name: "",
@@ -50,13 +50,20 @@ export default function CreateCourse() {
 
 
   function getAllSkillsWithQuizes() {
-    fetch(`https://localhost:7187/api/Researchers/Skills`, {
+    setLoad(true)
+    fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/Skills`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData.token}`,
       },
     })
-      .then((res) => (res.ok ? res.json() : null))
+      // .then((res) => (res.ok ? res.json() : null))
+      .then(res=>{
+        setLoad(false)
+        if(res.ok){
+          return res.json();
+        }
+      })
       .then((data) => {
         const uniqueArray = Array.from(new Set(data.map((obj) => obj.id))).map(
           (id) => {
@@ -65,17 +72,22 @@ export default function CreateCourse() {
         );
         setAllSkills(uniqueArray);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {console.error(error);setLoad(false)});
   }
+
+
+
 
   useEffect(()=>{
     getAllSkillsWithQuizes();
 },[userData])
 
+
+
   function sendCourseData(e) {
     e.preventDefault();
-
-    fetch("https://localhost:7187/api/Courses", {
+    setLoad(true);
+    fetch("https://resweb-001-site1.htempurl.com/api/Courses", {
       method: "POST",
       headers: {
         "Authorization":`Bearer ${userData.token}`,
@@ -84,12 +96,17 @@ export default function CreateCourse() {
       body: JSON.stringify(courseData),
     })
       .then((response) => {
+        setLoad(false)
         if (!response.ok)
           toastr.error("failed to create course please try again Later","Failed");
         return response.json();
       })
       .then((data) => setCourseId(data.courseId));
   }
+
+
+
+
   useEffect(() => {
     if (courseId) navigate(`/CourseDetails/${courseId}`,{state:{data:userData}});
   }, [courseId]);
@@ -105,6 +122,14 @@ export default function CreateCourse() {
     )
   }
 
+
+  if(load){
+    return(
+      <div style={{width:'100%',minHeight:'100vh',display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'white'}}>
+        <img src={loader} />
+      </div>
+    )
+  }
 
 
 

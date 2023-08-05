@@ -1,9 +1,9 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import {
   FaTrash
 } from "react-icons/fa";
 const AnswersCard = (props) => {
-//   const [text, setText] = useState("");
+
   const MemoizedAnswersCard = useMemo(() => {
     return (
       <div className="ContAnswerCard">

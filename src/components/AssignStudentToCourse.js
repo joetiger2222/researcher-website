@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import "../css/RatePage.css"
 import toastr from "toastr";
@@ -9,35 +9,47 @@ import { MyContext } from '../Users/Redux';
 import SideBar from "./SideBar";
 import { FiMenu } from 'react-icons/fi';
 import { FaTimes } from 'react-icons/fa';
+import loader from '../loader.gif';
 export default function AssignStudentToCourse(){
-    // const userData=useLocation().state.data;
+  const [load,setLoad]=useState(false);
     const userData = useContext(MyContext);
     const [allStudents,setAllStudents]=useState(null);
     const [sideBarVisible, setSideBarVisible] = useState(false);
-    const [searchTerm,setSearchTerm]=useState('');
+    const [search,setSearch]=useState({SearchTerm:'',PageSize:10});
     const [choosenStudent,setChoosenStudent]=useState(null);
     const [showCourseCard,setShowCourseCard]=useState(false);
     const navigate=useNavigate();
+
+
+
+
     function getAllStudents(){
-        fetch(`https://localhost:7187/api/Students?SearchTerm=${searchTerm}`,{
+      
+        fetch(`https://resweb-001-site1.htempurl.com/api/Students?SearchTerm=${search.SearchTerm}&PageSize=${search.PageSize}`,{
             method:"GET",
             headers:{
                 "Authorization":`Bearer ${userData.token}`
             }
         })
-        .then(res=>res.ok?res.json():null)
+        // .then(res=>res.ok?res.json():null)
+        .then(res=>{
+          
+          if(res.ok){
+            return res.json();
+          }
+        })
         .then(data=>data?setAllStudents(data):null)
     }
 
     useEffect(()=>{
         getAllStudents();
-    },[searchTerm,userData])
+    },[search,userData])
 
-    // console.log(allStudents)
-
-
+   
 
 
+
+console.log('search',search)
 
 
 
@@ -66,7 +78,7 @@ const CoursesCard=(props)=>{
     const [courses,setCourses]=useState(null);
 
     function getAllCourses() {
-        fetch(`https://localhost:7187/api/Courses`, {
+        fetch(`https://resweb-001-site1.htempurl.com/api/Courses`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${userData.token}`,
@@ -83,10 +95,9 @@ const CoursesCard=(props)=>{
       
 
       function assignToCourse(courseId,studentId){
-        console.log('course id',courseId)
-        console.log('studen id',studentId);
+        
         const temp={studentId:studentId}
-        fetch(`https://localhost:7187/api/Courses/Enrollment?courseId=${courseId}`,{
+        fetch(`https://resweb-001-site1.htempurl.com/api/Courses/Enrollment?courseId=${courseId}`,{
             method:"PUT",
             headers:{
                 "Content-Type":"application/json",
@@ -99,7 +110,7 @@ const CoursesCard=(props)=>{
 
 
       function checkCourseEnrollment(courseId,studentId){
-        fetch(`https://localhost:7187/api/Courses/CheckEnrollment?courseId=${courseId}&studentId=${studentId}`,{
+        fetch(`https://resweb-001-site1.htempurl.com/api/Courses/CheckEnrollment?courseId=${courseId}&studentId=${studentId}`,{
       method:"GET",
       headers:{
         "Authorization":`Bearer ${userData.token}`
@@ -179,6 +190,19 @@ if(userData.userId===''){
   )
 }
 
+
+
+if(load){
+  return(
+    <div style={{width:'100%',minHeight:'100vh',display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'white'}}>
+      <img src={loader} />
+    </div>
+  )
+}
+
+
+
+
     if(userData.roles==='Admin'){
     return(
         <div>
@@ -199,7 +223,8 @@ if(userData.userId===''){
           </div>
             <div className="AllDataInRatePage">
 <label style={{fontSize:"20px",fontWeight:"bold"}}>Search By Email</label>
-            <input className="search-input" onChange={(e)=>setSearchTerm(e.target.value)} placeholder="Enter Email..."></input>
+            <input className="search-input" name="SearchTerm" onChange={(e)=>setSearch(prev=>{return{...prev,[e.target.name]:e.target.value}})} placeholder="Enter Email..."></input>
+            
             <div className="ContainerForCardsRate1">
             {allStudents?.map(student=>{
                 return(
@@ -215,7 +240,9 @@ if(userData.userId===''){
                     </div>
                 )
             })}
+            
             </div>
+            <button className="plusBtn" onClick={(e)=>setSearch(prev=>{return{...prev,PageSize:search.PageSize+10}})}>View More</button>
           
             <CoursesCard show={showCourseCard} onClose={()=>setShowCourseCard(false)} student={choosenStudent} />
        

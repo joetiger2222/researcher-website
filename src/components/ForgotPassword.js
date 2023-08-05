@@ -2,23 +2,29 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import toastr from "toastr";
 import LOGOJPG from "../images/LogoJPG.jpg";
+import loader from '../loader.gif';
 export default function ForgotPassword (){
     const location = useLocation();
     const navigate=useNavigate();
+    const [load,setLoad]=useState(false);
   const searchParams = new URLSearchParams(location.search);
   const email = searchParams.get('email');
   const token = searchParams.get('token');
   const [confirmPass,setConfirmPass]=useState('')
     const [formData,setFormData]=useState({email:email,token:token,newPassword:''})
 
+    
+
+
     function changePass(){
-        console.log('form data',formData)
+       
         if(formData.newPassword===''||confirmPass===''){
             toastr.error('Please Enter A Valid Password');
             return;
         }
         if(formData.newPassword===confirmPass){
-            fetch(`https://localhost:7187/api/Authentication/resetpassword`,{
+            setLoad(true)
+            fetch(`https://resweb-001-site1.htempurl.com/api/Authentication/resetpassword`,{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"
@@ -26,6 +32,7 @@ export default function ForgotPassword (){
                 body:JSON.stringify(formData)
             })
             .then(res=>{
+                setLoad(false)
                 if(res.ok){
                     toastr.success('Password Reset Successfully')
                     navigate('/')
@@ -37,6 +44,26 @@ export default function ForgotPassword (){
             toastr.error('Password Does Not Match The Confirm Password')
         }
     }
+
+
+
+
+    if(!email||!token){
+        return (
+            <div style={{width:'100%',minHeight:'100vh',backgroundColor:'rgb(9, 14, 52)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                <h1 style={{color:'white'}}>You Need To Enter This Page Through Your Gmail</h1>
+            </div>
+        )
+    }
+
+    if(load){
+        return(
+          <div style={{width:'100%',minHeight:'100vh',display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'white'}}>
+            <img src={loader} />
+          </div>
+        )
+      }
+
 
 
     return (

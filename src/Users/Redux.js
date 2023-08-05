@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-
+import kariem from "../images/userImg.png";
 export const MyContext = createContext();
 
 export const MyProvider = ({ children }) => {
@@ -7,6 +7,7 @@ export const MyProvider = ({ children }) => {
   const [token, setToken] = useState('');
   const [roles, setRoles] = useState('');
   const [resercherId,setResercherId] = useState('');
+  const [studentImage, setStudentImage]=useState('');
 
   // Load data from sessionStorage on component mount
   useEffect(() => {
@@ -14,6 +15,7 @@ export const MyProvider = ({ children }) => {
     const storedToken = sessionStorage.getItem('token');
     const storedRoles = sessionStorage.getItem('roles');
     const storedResercherId = sessionStorage.getItem('resercherId');
+    const storedStudentImage = sessionStorage.getItem('studentImage');
     // const storedRoles = JSON.parse(sessionStorage.getItem('roles'));
 
     if (storedUserId) {
@@ -30,6 +32,9 @@ export const MyProvider = ({ children }) => {
     if(storedResercherId){
         setResercherId(storedResercherId);
     }
+    if(storedStudentImage){
+        setStudentImage(storedStudentImage);
+    }
   }, []);
 
   // Update sessionStorage when data changes
@@ -38,6 +43,7 @@ export const MyProvider = ({ children }) => {
     sessionStorage.setItem('token', token);
     sessionStorage.setItem('roles', roles);
     sessionStorage.setItem('resercherId',resercherId);
+    sessionStorage.setItem('studentImage',studentImage);
   }, [userId, token, roles,resercherId]);
 
   const contextValue = {
@@ -49,6 +55,8 @@ export const MyProvider = ({ children }) => {
     setRoles,
     resercherId,
     setResercherId,
+    studentImage,
+    setStudentImage
   };
 
   return <MyContext.Provider value={contextValue}>{children}</MyContext.Provider>;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import Header from "./Header";
 import "../css/Marketplace.css";
 import "../css/Modal.css";
@@ -10,8 +10,9 @@ import Footer from "./Footer";
 import { useContext } from "react";
 import { MyContext } from "../Users/Redux";
 import SideBar from "./SideBar";
+import loader from '../loader.gif';
 export default function MarketPalce() {
-  // const userData = useLocation().state.data;
+  const [load,setLoad]=useState(false);
   const [sideBarVisible, setSideBarVisible] = useState(false);
   const [researcherIdeas, setResearcherIdeas] = useState([]);
   const [allIdeas, setAllIdeas] = useState(null);
@@ -93,12 +94,9 @@ function renderSideBar() {
 
 
 
-
-
-
   function getResearcherIdeas() {
     fetch(
-      `https://localhost:7187/api/Researchers/Ideas/${userData?.resercherId}`,
+      `https://resweb-001-site1.htempurl.com/api/Researchers/Ideas/${userData?.resercherId}`,
       {
         method: "GET",
         headers: {
@@ -116,7 +114,7 @@ function renderSideBar() {
 
   function getAllIdeas() {
     fetch(
-      `https://localhost:7187/api/Ideas?SearchTerm=${ideaSearch.SearchTerm}&Topic=${ideaSearch.Topic}&Specality=${ideaSearch.Specality}&Month=${ideaSearch.Month}&PageSize=${ideaSearch.counter}`,
+      `https://resweb-001-site1.htempurl.com/api/Ideas?SearchTerm=${ideaSearch.SearchTerm}&Topic=${ideaSearch.Topic}&Specality=${ideaSearch.Specality}&Month=${ideaSearch.Month}&PageSize=${ideaSearch.counter}`,
       {
         method: "GET",
         headers: {
@@ -124,7 +122,13 @@ function renderSideBar() {
         },
       }
     )
-      .then((res) => (res.ok ? res.json() : null))
+      
+      .then(res=>{
+        
+        if(res.ok){
+          return res.json();
+        }
+      })
       .then((data) => {
         if (data) {
           setAllIdeas(data);
@@ -133,7 +137,7 @@ function renderSideBar() {
   }
 
   function getAllSpecs() {
-    fetch(`https://localhost:7187/api/Researchers/Specialties`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/Specialties`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData.token}`,
@@ -148,7 +152,7 @@ function renderSideBar() {
   }
 
   function getAllTopics() {
-    fetch(`https://localhost:7187/api/Researchers/Topics`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/Topics`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData.token}`,
@@ -164,7 +168,7 @@ function renderSideBar() {
 
   function getCompletedIdeas() {
     fetch(
-      `https://localhost:7187/api/Ideas/CompletedIdeas?SearchTerm=${completeIdeaSearch.SearchTerm}&Specality=${completeIdeaSearch.Specality}&Month=${completeIdeaSearch.Month}`,
+      `https://resweb-001-site1.htempurl.com/api/Ideas/CompletedIdeas?SearchTerm=${completeIdeaSearch.SearchTerm}&Specality=${completeIdeaSearch.Specality}&Month=${completeIdeaSearch.Month}`,
       {
         method: "GET",
         headers: {
@@ -199,8 +203,9 @@ function renderSideBar() {
   },[])
 
   function sendReq(ideaId) {
+    setLoad(true)
     fetch(
-      `https://localhost:7187/api/Ideas/Requests/SendRequest/${userData?.resercherId}/${ideaId}`,
+      `https://resweb-001-site1.htempurl.com/api/Ideas/Requests/SendRequest/${userData?.resercherId}/${ideaId}`,
       {
         method: "POST",
         headers: {
@@ -209,6 +214,7 @@ function renderSideBar() {
       }
     )
       .then((response) => {
+        setLoad(false)
         const reader = response.body.getReader();
         let chunks = [];
 
@@ -246,7 +252,7 @@ function renderSideBar() {
       specalityId: 0,
       deadline: "",
     });
-    console.log(ideaData);
+    
 
     function getIdeaData(e) {
       setIdeaData((prev) => {
@@ -258,7 +264,7 @@ function renderSideBar() {
     }
 
     function getAllSpecs() {
-      fetch(`https://localhost:7187/api/Researchers/Specialties`, {
+      fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/Specialties`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${userData.token}`,
@@ -275,7 +281,7 @@ function renderSideBar() {
     }
 
     function getAllTopics() {
-      fetch(`https://localhost:7187/api/Researchers/Topics`, {
+      fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/Topics`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${userData.token}`,
@@ -298,11 +304,7 @@ function renderSideBar() {
 
     function createNewIdea(e) {
       e.preventDefault();
-      // const val = /^\d{4}-\d{2}-\d{2}$/.test(ideaData.deadline);
-
-      // const val = /^\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$/.test(
-      //   ideaData.deadline
-      // );
+     
       const currentYear = new Date().getFullYear();
 const futureYearLimit = currentYear + 10; // You can adjust the limit as needed
 
@@ -312,10 +314,11 @@ const yearRangeRegex = new RegExp(
 
 const val = yearRangeRegex.test(ideaData.deadline);
 
-      console.log(val);
+     
       if (val) {
+        setLoad(true)
         fetch(
-          `https://localhost:7187/api/Ideas/InitiateIdea/${userData.resercherId}`,
+          `https://resweb-001-site1.htempurl.com/api/Ideas/InitiateIdea/${userData.resercherId}`,
           {
             method: "POST",
             headers: {
@@ -326,6 +329,7 @@ const val = yearRangeRegex.test(ideaData.deadline);
           }
         )
           .then((response) => {
+            setLoad(false)
             const reader = response.body.getReader();
             let chunks = [];
 
@@ -352,7 +356,7 @@ const val = yearRangeRegex.test(ideaData.deadline);
               const body = new TextDecoder().decode(
                 new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
               );
-              console.log(body);
+              
             });
           })
           .catch((error) => console.error(error));
@@ -419,7 +423,7 @@ const val = yearRangeRegex.test(ideaData.deadline);
               }
             >
               <option selected disabled value="">
-                Choose a Topic
+                Study Design
               </option>
               {allTopics?.map((spec) => {
                 return <option value={spec.id}>{spec.name}</option>;
@@ -779,6 +783,19 @@ const val = yearRangeRegex.test(ideaData.deadline);
     );
   }
 
+
+
+  if(load){
+    return(
+      <div style={{width:'100%',minHeight:'100vh',display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'white'}}>
+        <img src={loader} />
+      </div>
+    )
+  }
+
+
+
+
   return (
     <div>
       <Header userData={userData} />
@@ -827,7 +844,7 @@ const val = yearRangeRegex.test(ideaData.deadline);
                     {idea.creatorId === userData.resercherId.toLowerCase() && (
                       <FaCrown />
                     )}{" "}
-                    Idea: {index + 1}
+                    
                   </h2>
                   <div className="containerSpansData">
                     <span
@@ -1031,7 +1048,7 @@ const val = yearRangeRegex.test(ideaData.deadline);
                 .map((idea, index) => {
                   return (
                     <div className="CardInAllIdeas">
-                      <h2>Idea: {index + 1}</h2>
+                      
                       <div className="containerSpansData">
                         <span
                           style={{
@@ -1231,7 +1248,7 @@ const val = yearRangeRegex.test(ideaData.deadline);
                 .map((idea, index) => {
                   return (
                     <div className="CardInAllIdeas">
-                      <h2>Idea: {index + 1}</h2>
+                      
                       <div className="containerSpansData">
                         <span
                           style={{

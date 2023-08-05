@@ -1,30 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
-
 import { FaLinkedin } from "react-icons/fa";
-import Logo from "../images/Logo - Text Only.png"
-import { FaTwitterSquare } from "react-icons/fa";
-import { AiOutlineWhatsApp } from "react-icons/ai";
-
 import { FaWhatsapp } from "react-icons/fa";
 import toastr from "toastr";
 import "toastr/build/toastr.min.css";
 import "../css/Footer.css";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
+import loader from '../loader.gif';
 const Footer = () => {
   const [showProblemCard, setShowProblemCard] = useState(false);
   const userData = useContext(MyContext);
-  // console.log('from footer',userData)
+  const [load,setLoad]=useState(false);
+ 
   const [whatsappUrl, setWhatsappUrl] = useState("");
   const urlWhatSap = () => {
      
-    let phoneNumber = "201064394735"; // replace with the phone number you want to chat with
-    let message = "Hello!"; // replace with the message you want to send
+    let phoneNumber = "201064394735"; 
+    let message = "Hello!"; 
     setWhatsappUrl(
       `https://api.whatsapp.com/send/?phone=${phoneNumber}&text&type=phone_number&app_absent=0`
 
-      //`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
+     
     );
   };
   const ProblemCard = (props) => {
@@ -45,7 +42,7 @@ const Footer = () => {
     }
 
     function getProblemCategories() {
-      fetch(`https://localhost:7187/api/Admin/ProblemCategories`)
+      fetch(`https://resweb-001-site1.htempurl.com/api/Admin/ProblemCategories`)
         .then((res) =>
           res.ok
             ? res.json()
@@ -55,7 +52,8 @@ const Footer = () => {
     }
 
     function sendProblem() {
-      fetch(`https://localhost:7187/api/Students/Problems`, {
+      setLoad(true)
+      fetch(`https://resweb-001-site1.htempurl.com/api/Students/Problems`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,6 +61,7 @@ const Footer = () => {
         },
         body: JSON.stringify(problem),
       }).then((res) => {
+        setLoad(false)
         if (res.ok) {
           toastr.success("Problem Sent Successfully", "Success");
           props.onClose();
@@ -123,6 +122,22 @@ const Footer = () => {
     );
   };
 
+
+
+
+
+
+
+  if(load){
+    return(
+      <div style={{width:'100%',minHeight:'100vh',display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'white'}}>
+        <img src={loader} />
+      </div>
+    )
+  }
+
+
+
   return (
     <div className="Footer" style={{color:"#ffffffa8"}}>
       {!userData && (
@@ -166,7 +181,7 @@ const Footer = () => {
       </div>
       <div>
         <button style={{backgroundColor:"#ffffffa8"}}  className="bn54" onClick={() => setShowProblemCard(true)}>
-          Send You Problem To Admin
+         Talk To Us
         </button>
         {showProblemCard && (
           <ProblemCard

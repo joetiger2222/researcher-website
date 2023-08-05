@@ -1,11 +1,10 @@
 import React from "react";
 import { useState ,useEffect,useRef} from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "./Header";
 import "../css/RatePage.css";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
-import { MdOutlineFileUpload } from "react-icons/md";
 import { FaFileUpload } from "react-icons/fa";
 import Footer from "./Footer";
 import step1 from "../images/step1.png"
@@ -15,7 +14,6 @@ import step3 from "../images/step3.png"
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
 export default function RateIdeaResearchers(){
-    // const userData=useLocation().state.data;
     const userData = useContext(MyContext);
     const {ideaId}=useParams();
     const [idea, setIdea] = useState(null);
@@ -27,7 +25,7 @@ export default function RateIdeaResearchers(){
 
 
     function getIdeaData() {
-        fetch(`https://localhost:7187/api/Ideas/SingleIdea/${ideaId}`, {
+        fetch(`https://resweb-001-site1.htempurl.com/api/Ideas/SingleIdea/${ideaId}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${userData?.token}`,
@@ -41,7 +39,7 @@ export default function RateIdeaResearchers(){
 
 
       function getParticaptns() {
-        fetch(`https://localhost:7187/api/Ideas/Participants/${ideaId}`, {
+        fetch(`https://resweb-001-site1.htempurl.com/api/Ideas/Participants/${ideaId}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${userData?.token}`,
@@ -88,7 +86,7 @@ const updateRate = (researcherId, rate) => {
 
 
 function sendRate(){
-  fetch(`https://localhost:7187/api/Ideas/AddRateToParticipants/${ideaId}/${idea.creatorId}`,{
+  fetch(`https://resweb-001-site1.htempurl.com/api/Ideas/AddRateToParticipants/${ideaId}/${idea.creatorId}`,{
     method:"POST",
     headers:{
       "Content-Type":"application/json",
@@ -125,7 +123,7 @@ const UploadFileCard = (props) => {
     formData.append("Name", titleValue);
 
     fetch(
-      `https://localhost:7187/api/Ideas/Submit?ideaId=${ideaId}&creatorId=${idea?.creatorId}`,
+      `https://resweb-001-site1.htempurl.com/api/Ideas/Submit?ideaId=${ideaId}&creatorId=${idea?.creatorId}`,
       {
         method: "POST",
         headers: {
@@ -171,7 +169,7 @@ const UploadFileCard = (props) => {
         const body = new TextDecoder().decode(
           new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
         );
-        console.log(body);
+        
       });
     })
     .catch((error) => console.error(error));

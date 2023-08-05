@@ -1,7 +1,7 @@
 import React from "react";
 import "../css/AddQuizToSection.css";
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {useNavigate, useParams } from "react-router-dom";
 import Header from "./Header";
 import AnswersCard from "./AnswerCard";
 import toastr from "toastr";
@@ -36,7 +36,8 @@ export default function AddQuizToSection() {
   //   setIsActive(true);
   // };
   function getSectionData() {
-    fetch(`https://localhost:7187/api/Courses/Sections/${sectionId}`,{
+    fetch(`https://resweb-001-site1.htempurl.com/api/Courses/Sections/${sectionId}`,{
+      
       method:"GET",
       headers:{
         "Authorization":`Bearer ${userData.token}`
@@ -50,7 +51,7 @@ export default function AddQuizToSection() {
   }
 
   function getCourseDetatils() {
-    fetch(`https://localhost:7187/api/Courses/${sectionData?.courseId}`,{
+    fetch(`https://resweb-001-site1.htempurl.com/api/Courses/${sectionData?.courseId}`,{
       method:"GET",
       headers:{
         "Authorization":`Bearer ${userData.token}`
@@ -85,7 +86,7 @@ export default function AddQuizToSection() {
 
   function deleteAns(id) {
     setAnswerCards((prevCards) => prevCards.filter((card) => card.id !== id));
-    console.log("delete id:", id);
+    
   }
 
   const handleCorrect = (id) => {
@@ -189,7 +190,7 @@ export default function AddQuizToSection() {
       return;
     }
 
-    fetch(`https://localhost:7187/api/Quizes/SectionQuiz`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Quizes/SectionQuiz`, {
       method: "POST",
       headers: {
         "Authorization":`Bearer ${userData.token}`,
@@ -201,7 +202,7 @@ export default function AddQuizToSection() {
       
     
   }
-  console.log(quizData);
+ 
 
 
 
@@ -348,32 +349,6 @@ export default function AddQuizToSection() {
             Submit{" "}
           </button>}
           </div>
-
-        {/* <button onClick={sendQuizData}>Submit</button> */}
-        
-        {/* <div>
-        <button
-        id="btn"
-        onClick={sendQuizData}
-        className={isActive ? "btnSubmitted active" : "btnSubmitted"}
-      >
-        <p id="btnText">{isActive ? "Submitted" : "Submit"}</p>
-        <div className="check-box">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
-            <path fill="transparent" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
-          </svg>
-        </div>
-      </button>
-        </div> */}
-
-          {/* <button id="btn">
-              <p id="btnText">Submit</p>
-              <div class="check-box">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
-                      <path fill="transparent" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
-                  </svg>
-              </div>
-          </button> */}
         </div>
 
     </div>

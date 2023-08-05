@@ -1,40 +1,48 @@
 import React, { useEffect } from "react";
 import "../css/Header.css";
-import userImg from "../images/userImg.png";
 import { useState } from "react";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import kariem from "../images/userImg.png";
 import LOGO from "../images/Logo - Text Only.png";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
-import Swal from "sweetalert2";
-import toastr from "toastr";
+import loader from '../loader.gif';
 import "toastr/build/toastr.min.css";
-// import LOGO from "../images/Logo - With Text.png";
+import toastr from "toastr";
 
 
 export default function Header() {
-
-  const[studentImage,setStudentImage]=useState({url:kariem});
-
   const navigate=useNavigate();
   const userData = useContext(MyContext);
-
+  
 function getStudentImage(){
-    fetch(`https://localhost:7187/api/Students/Image/${userData?.userId}`,{
+  console.log('invoked')
+    fetch(`https://resweb-001-site1.htempurl.com/api/Students/Image/${userData?.userId}`,{
       method:"GET",
       headers:{
         "Authorization":`Bearer ${userData.token}`
       }
     })
-    .then(res=>res.ok?setStudentImage(res):null)
+    .then(res=>{
+      if(res.ok){
+        return res.blob();
+      }else {
+        userData.setStudentImage(kariem);
+      }
+    }).then(blob=>{
+      const image = URL.createObjectURL(blob);
+      userData.setStudentImage(image);
+    }).catch(e=>{
+      userData.setStudentImage(kariem);
+    })
     
   }
-
+  
 
   function getResearcherIdByStudentId() {
+     
     fetch(
-      `https://localhost:7187/api/Researchers/ResearcherId/${userData.userId}`,
+      `https://resweb-001-site1.htempurl.com/api/Researchers/ResearcherId/${userData.userId}`,
       {
         method: "GET",
         headers: {
@@ -42,7 +50,7 @@ function getStudentImage(){
         },
       }
     )
-      .then((res) => (res.ok ? res.json() : null))
+      .then((res) => (res.ok ? res.json() : userData.setResercherId('not found')))
       .then((data) => {
         if (data) {
           userData.setRoles("Researcher")
@@ -54,10 +62,20 @@ function getStudentImage(){
   }
 
   useEffect(()=>{
-    getStudentImage();
+    if(userData.userId!=null && userData.userId!==''){
+     if(userData.studentImage===''&&userData.roles!=='Admin'){
+      getStudentImage();
+        }
+    if(userData.resercherId===''){
     getResearcherIdByStudentId();
+    }
+    }
   },[userData])
 
+
+  useEffect(()=>{
+    
+  },[userData.studentImage])
 
   return (
     <div className="headerParent">
@@ -73,7 +91,7 @@ function getStudentImage(){
 
         <div className="headerRight">
           <ul className="headerUl">
-           {userData?.roles==='Researcher'&&<li onClick={()=>navigate('/MarketPlace')}>Research opportunities</li>}
+           <li onClick={()=>userData?.roles==='Researcher'?navigate('/MarketPlace'):toastr.info('You Nedd To Have At Least One Point Before Unlocking This Page')}>Research opportunities</li>
             
             {userData.roles!=='Admin'&&<li class="dropdown">
               <a onClick={()=>{
@@ -87,7 +105,7 @@ function getStudentImage(){
             </li>}
             
 
-            {userData?.roles==='Researcher'&&<li onClick={()=>navigate(`/Researchers`)}>Researchers</li>}
+            <li onClick={()=>userData?.roles==='Researcher'?navigate(`/Researchers`):toastr.info('You Nedd To Have At Least One Point Before Unlocking This Page')}>Researchers</li>
             {userData.roles!=='Admin'&&<li class="dropdown">
               <a onClick={()=>{
                 navigate('/HomePage');
@@ -100,32 +118,14 @@ function getStudentImage(){
             </li>}
           </ul>
           <div className="headerBtnsContainer">
-            {!userData&&<button className="headerSignBtn">Login</button>}
-            {!userData&&<button className="headerSignBtn">Signup</button>}
+            
             {userData&&<button onClick={()=>{
-              // Swal.fire({
-              //   title: 'Are you sure?',
-              //   text: 'Do you want to proceed?',
-              //   icon: 'question',
-              //   showCancelButton: true,
-              //   confirmButtonColor: '#3085d6',
-              //   cancelButtonColor: '#d33',
-              //   confirmButtonText: 'Yes',
-              //   cancelButtonText: 'No',
-              // }).then((result) => {
-              //   if (result.isConfirmed) {
-              //     // User clicked "Yes"
-              //     // Perform desired action here
-              //     toastr.info('User clicked "Yes"');
-              //   } else {
-              //     // User clicked "No" or closed the dialog
-              //     // Perform desired action here
-              //     toastr.error('User clicked "No" or closed the dialog');
-              //   }
-              // });
+              
                userData.setUserId('');
                userData.setToken('');
                userData.setRoles('');
+               userData.setResercherId('');
+               userData.setStudentImage('');
                navigate('/')
             }} className="headerSignBtn">Logout</button>}
           </div>
@@ -133,11 +133,11 @@ function getStudentImage(){
           
 
          {userData.roles!=='Admin'&&<li class="dropdown">
-              <img src={studentImage.url} class="dropbtn userImgHeader"/>
+          {userData.studentImage===''&&<img src={loader} class="dropbtn userImgHeader"/>}
+              {userData.studentImage!==''&&<img src={userData.studentImage} class="dropbtn userImgHeader"/>}
               <div class="dropdown-content">
                 <a onClick={()=>userData.roles==='Admin'?navigate('/AdminPanel'):navigate(`/Profile/${userData.userId}`)}>Profile</a>
-                {/* <a href="#">Link 2</a>
-                <a href="#">Link 3</a> */}
+               
               </div>
             </li>
             }

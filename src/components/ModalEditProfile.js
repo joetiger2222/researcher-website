@@ -1,6 +1,5 @@
 // import axios from "axios";
 import React from "react";
-import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../css/Modal.css"
@@ -18,8 +17,7 @@ const ModalEditProfile = (props) => {
   let navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
-    // do something with form data here, e.g. send it to a server
-    console.log({ name, email, phone, address, gender });
+    
     setName("");
     setEmail("");
     setAddress("");
@@ -37,7 +35,7 @@ const ModalEditProfile = (props) => {
 
       reader.onload = (e) => {
         images.push(e.target.result);
-        // Update state or perform any other operation with the image data
+        
       };
 
       reader.readAsDataURL(file);
@@ -76,8 +74,7 @@ console.log(formData)
     //   })
     //   .then((response) => {});
       console.log(formData)
-    //   props.onClose()
-    // navigate("/products");
+    
   };
 
   return (

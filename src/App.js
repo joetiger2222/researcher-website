@@ -6,8 +6,8 @@ import Registration from './components/Regisration';
 import HomePage from './components/HomePage';
 import Profile from './components/Profile';
 import CreateCourse from './components/CreateCourse';
-import CourseDetails from './components/CourseDetails';
-import AdminPanel from './components/AdminPanel';
+import CourseDetails from './components/CourseDetails/CourseDetails';
+import AdminPanel from './components/AdminPanel/AdminPanel';
 import AddQuizToSection from './components/AddQuizToSection';
 import SectionQuiz from './components/SectionQuiz';
 import CourseForStudent from './components/CourseForStudent';
@@ -41,7 +41,7 @@ function App() {
         <Route path='/AdminPanel' element={<AdminPanel/>}/>
         <Route path='/AddQuizToSection/:sectionId' element={<AddQuizToSection/>}/>
         <Route path='/SectionQuiz/:sectionId' element={<SectionQuiz/>}/>
-        <Route path='/CourseForStudent/:sectionId/:videoId' element={<CourseForStudent/>}/>
+        <Route path='/CourseForStudent/:sectionId/:videoId/:index' element={<CourseForStudent/>}/>
         <Route path='/AddQuizToCourse/:skillId' element={<AddQuizToCourse/>}/>
         <Route path='/FinalQuiz/:skillId' element={<FinalQuiz/>}/>
         <Route path='/FailedFinalQuiz/:skillId' element={<FailedFinalQuiz/>}/>

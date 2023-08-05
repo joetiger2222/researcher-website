@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {useLocation, useNavigate, useParams } from "react-router-dom";
+import {useNavigate, useParams } from "react-router-dom";
 import "../css/SectionQuiz.css";
 import Header from "./Header";
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
-
+import loader from '../loader.gif';
 import QuestionCard from "./QuestionCard";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
@@ -13,6 +13,7 @@ export default function SectionQuiz() {
   const { sectionId } = useParams();
   const navigate = useNavigate();
   const [sectionData, setSectionData] = useState(null);
+  const [load,setLoad]=useState(false);
   const [courseData, setCourseData] = useState(null);
   const [sectionQuizData, setSectionQuizData] = useState(null);
   const questions = sectionQuizData?.questions;
@@ -22,10 +23,6 @@ export default function SectionQuiz() {
     secs: "00",
   });
   const [answers, setAnswers] = useState([]);
-  // const userData=useLocation().state?.data
-
-
-
 
   const handleUpdate = (update) => {
     const index = answers.findIndex(
@@ -56,26 +53,33 @@ export default function SectionQuiz() {
   
 
   function getSectionData() {
-    fetch(`https://localhost:7187/api/Courses/Sections/${sectionId}`)
+    fetch(`https://resweb-001-site1.htempurl.com/api/Courses/Sections/${sectionId}`)
       .then((res) => res.ok?res.json():null)
       .then((data) => setSectionData(data))
       .then(getCourseDetatils());
   }
 
   function getCourseDetatils() {
-    fetch(`https://localhost:7187/api/Courses/${sectionData?.courseId}`)
+    fetch(`https://resweb-001-site1.htempurl.com/api/Courses/${sectionData?.courseId}`)
       .then((res) => res.ok? res.json():null)
       .then((data) => setCourseData(data));
   }
 
   function getSectionQuiz() {
-    fetch(`https://localhost:7187/api/Quizes/SectionQuiz/${sectionId}`,{
+    setLoad(true)
+    fetch(`https://resweb-001-site1.htempurl.com/api/Quizes/SectionQuiz/${sectionId}`,{
       method:"GET",
       headers:{
         "Authorization":`Bearer ${userData.token}`
       }
     })
-      .then((res) => res.ok?res.json():null)
+      // .then((res) => res.ok?res.json():null)
+      .then(res=>{
+        setLoad(false)
+        if(res.ok){
+          return res.json();
+        }
+      })
       .then((data) => {
         if (data) {
           setTimeLimit((prevData) => {
@@ -83,27 +87,25 @@ export default function SectionQuiz() {
               let hours=data?.timeLimit.slice(1,2)*1;
               let hoursToMins=hours*60
               let allMins=hoursToMins+(data?.timeLimit.slice(3,5)*1);
-              console.log('all mins',allMins)
+              
               return{
                 ...prevData,
                 mins:allMins
               }
-              // return allMins;
-
-              // console.log('mins',hoursToMins)
+             
             }
 
 
             if (data?.timeLimit.slice(3, 4) * 1 === 0) {
               return {
                 ...prevData,
-                // hours: data.timeLimit.slice(1, 2),
+               
                 mins: data.timeLimit.slice(4, 5),
               };
             }
             return {
               ...prevData,
-              // hours: data.timeLimit.slice(0, 2),
+              
               mins: data.timeLimit.slice(3, 5),
             };
           });
@@ -126,13 +128,14 @@ export default function SectionQuiz() {
   
 
   function handleSubmit(){
+    setLoad(true);
     let arr=[];
 
     answers.map(ans=>{
       arr.push(ans.answerId)
     })
 
-    fetch(`https://localhost:7187/api/Quizes/SectionQuiz/Submit?QuizId=${sectionQuizData?.id}&StudentId=${userData.userId}`,{
+    fetch(`https://resweb-001-site1.htempurl.com/api/Quizes/SectionQuiz/Submit?QuizId=${sectionQuizData?.id}&StudentId=${userData.userId}`,{
       method:"POST",
       headers:{
         "Authorization":`Bearer ${userData.token}`,
@@ -140,7 +143,11 @@ export default function SectionQuiz() {
       },
       body:JSON.stringify(arr)
     })
-    .then(res=>res.json())
+    // .then(res=>res.json())
+    .then(res=>{
+      setLoad(false);
+      return res.json();
+    })
     
     .then(data=>{
       if(data.isSuccessed===true){
@@ -204,7 +211,7 @@ export default function SectionQuiz() {
   }, [timer, timeLimit.mins, timeLimit.secs]);
 
 
-console.log(courseData)
+
 
 
 
@@ -218,6 +225,15 @@ if(userData.userId===''){
     </div>
   )
 }
+
+if(load){
+  return(
+    <div style={{width:'100%',minHeight:'100vh',display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'white'}}>
+      <img src={loader} />
+    </div>
+  )
+}
+
 
   return (
     <div className="sectionQuizContainer">

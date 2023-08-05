@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../css/SectionQuiz.css";
 import Header from "./Header";
 import QuestionCard from "./QuestionCard";
@@ -54,7 +54,7 @@ export default function FinalQuiz() {
     setLoad(true);
     if (counter === 1)
       fetch(
-        `https://localhost:7187/api/Quizes/FinalQuiz/${skillId}?studentId=${userData.userId}`,
+        `https://resweb-001-site1.htempurl.com/api/Quizes/FinalQuiz/${skillId}?studentId=${userData.userId}`,
         {
           method: "GET",
           headers: {
@@ -109,7 +109,7 @@ export default function FinalQuiz() {
 
   function getResearcherIdByStudentId() {
     return fetch(
-      `https://localhost:7187/api/Researchers/ResearcherId/${userData.userId}`,
+      `https://resweb-001-site1.htempurl.com/api/Researchers/ResearcherId/${userData.userId}`,
       {
         method: "GET",
         headers: {
@@ -129,6 +129,7 @@ export default function FinalQuiz() {
   }
 
   function handleSubmit() {
+    setLoad(true);
     let arr = [];
 
     answers.map((ans) => {
@@ -136,7 +137,7 @@ export default function FinalQuiz() {
     });
 
     fetch(
-      `https://localhost:7187/api/Quizes/FinalQuiz/Submit?QuizId=${finalQuizData?.id}&StudentId=${userData.userId}&skillId=${skillId}`,
+      `https://resweb-001-site1.htempurl.com/api/Quizes/FinalQuiz/Submit?QuizId=${finalQuizData?.id}&StudentId=${userData.userId}&skillId=${skillId}`,
       {
         method: "POST",
         headers: {
@@ -146,9 +147,17 @@ export default function FinalQuiz() {
         body: JSON.stringify(arr),
       }
     )
-      .then((res) =>
-        res.ok ? res.json() : toastr.error("failed to submit quiz", "Failed")
-      )
+      // .then((res) =>
+      //   res.ok ? res.json() : toastr.error("failed to submit quiz", "Failed")
+      // )
+      .then(res=>{
+        setLoad(false)
+        if(res.ok){
+          return res.json();
+        }else {
+          toastr.error("failed to submit quiz", "Failed")
+        }
+      })
       .then((data) => {
         if (data) {
           if (data.isSuccessed) {

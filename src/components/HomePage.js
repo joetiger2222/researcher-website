@@ -1,56 +1,38 @@
 import React, { useEffect, useRef, useState } from "react";
 import Header from "./Header";
-import homePageImg from "../images/homePageImg.png";
 import "../css/HomePage.css";
 import "../css/Header.css";
 import "../../src/App.css";
-import learnResearch from "../images/learnResearch.png"
-import experience from "../images/experience.png"
 import Community from "../images/community.png";
-import real from "../images/real.png";
 import enroll from "../images/enroll.png";
-import participate from "../images/real.png";
 import publish from "../images/publish.png";
-
-
-import { BsFillCircleFill } from "react-icons/bs";
-import coin from "../images/coin.png";
-import quizCartoon from "../images/quizCartoon.png";
 import Footer from "./Footer";
 import LOGOJPG from "../images/LogoJPG.jpg";
 import SearchIconLogo from "../images/Logo.png";
 import loGo from "../images/Logo.png";
 import video from "../images/intro video in home.mp4";
-import research from "../images/research.png";
 import SideBar from "./SideBar";
 import toastr from "toastr";
 import coursesSvg from "../images/coursesSvg.png";
 import easyImg from "../images/easy.png";
-import community from "../images/community.png";
 import mentors from "../images/mentors.png";
 import international from "../images/international.png";
-
 import Beginner from "../images/Beginner.png";
 import Expert from "../images/Expert.png";
 import intermediate from "../images/intermediate.png";
 import Professional from "../images/Professional.png";
-
 import "toastr/build/toastr.min.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { MyContext } from "../Users/Redux";
-import { FaAccusoft, FaSearch } from "react-icons/fa";
 import PhotoAbout from "../images/Logo - With Text.png";
 export default function HomePage() {
   const [sideBarVisible, setSideBarVisible] = useState(false);
-  // const [resercherId, setResearcherId] = useState(null);
   const [courses, setAllCourses] = useState(null);
   const [allSkills, setAllSkills] = useState(null);
   const [skillId, setSkillId] = useState(null);
   const navigate = useNavigate();
-  // const userData = useLocation().state?.data;
   const userData = useContext(MyContext);
-
   const [showSecondParagraph, setShowSecondParagraph] = useState(false);
 
   const handleSwitch = () => {
@@ -80,20 +62,9 @@ export default function HomePage() {
       clearInterval(timer);
     };
   }, []);
-  //   const observer = new IntersectionObserver((entries) => {
-  //     entries.forEach((entry) =>{
-  //       if(entry.isIntersecting){
-  //         entry.target.classList.add("show")
-  //       }else{
-  //         entry.target.classList.remove("show")
-  //       }
-  //     })
-  //   })
-  // const hiddenElements = document.querySelectorAll(".hidden");
-  // hiddenElements.forEach((el)=>observer.observe(el));
+ 
 
-  const [isVisible, setIsVisible] = useState(false);
-  const elementRef = useRef(null);
+
 
   function renderSideBar() {
     if (sideBarVisible) {
@@ -145,7 +116,7 @@ export default function HomePage() {
   }
 
   function getAllCourses() {
-    fetch(`https://localhost:7187/api/Courses`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Courses`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData.token}`,
@@ -159,30 +130,10 @@ export default function HomePage() {
     getAllCourses();
   }, [userData]);
 
-  function getResearcherIdByStudentId() {
-    fetch(
-      `https://localhost:7187/api/Researchers/ResearcherId/${userData.userId}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${userData.token}`,
-        },
-      }
-    )
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (data) {
-          userData.roles = "Researcher";
-          userData.resercherId = data.researcherId;
-          userData.setResercherId(data.researcherId);
-        }
-      })
-      .catch((error) => console.error(error));
-  }
-  // console.log(userData)
+  
 
   function getAllSkills() {
-    fetch(`https://localhost:7187/api/Researchers/Skills`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/Skills`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData.token}`,
@@ -202,7 +153,7 @@ export default function HomePage() {
 
   function checkQuiz() {
     fetch(
-      `https://localhost:7187/api/Quizes/IsSuccessedFinalQuiz/${skillId}?studentId=${userData.userId}`,
+      `https://resweb-001-site1.htempurl.com/api/Quizes/IsSuccessedFinalQuiz/${skillId}?studentId=${userData.userId}`,
       {
         method: "GET",
         headers: {
@@ -221,7 +172,6 @@ export default function HomePage() {
   }
 
   useEffect(() => {
-    getResearcherIdByStudentId();
     getAllSkills();
   }, [userData]);
 
@@ -245,7 +195,7 @@ export default function HomePage() {
           <button
             style={{ gap: "5px" }}
             className="bn54"
-            onClick={() => navigate(`/CourseDetails/${course.id}`)}
+            onClick={() => navigate(`/CourseDetails/${course.id}`,{state:{data:course}})}
           >
             {" "}
             <img style={{ width: "20px", height: "20px" }} src={loGo} />
@@ -291,7 +241,7 @@ export default function HomePage() {
 
   return (
     <div className="homePageContainer">
-      <Header userData={userData} />
+      <Header />
 
       {renderSideBar()}
       <div
@@ -319,26 +269,18 @@ export default function HomePage() {
           </div>
 
           <div className="landingData">
-            {/* <h3>Hello Students, Researchers</h3> */}
+            
             <h1 style={{ width: "65%", textAlign: "center" }}>
             Unlocking The Research World
               
             </h1>
-            {/* <h1>           Our mission            </h1> */}
+           
 
             <p style={{ textAlign: "center", width: "60%",fontSize:"20px" }}>
             Start exploring, learning, and connecting with ResWeb today!
-              {/* Welcome to{" "}
-              <span style={{ fontWeight: "bold", fontSize: "18px" }}>
-                ResWeb
-              </span>
-              , the leading platform for researchers and students seeking
-              comprehensive courses, research opportunities, and a vibrant
-              research community. We are dedicated to empowering researchers by
-              providing a seamless and accessible environment for academic
-              growth and collaboration. */}
+             
             </p>
-            {/* <button className="buttonn">Join Us Now!</button> */}
+            
           </div>
         </div>
         <div className="badgesDivContainer">
@@ -537,35 +479,11 @@ Publishing research findings is a significant milestone for any
             </div>
           </div>
 
-          {/* <div className="badgeDiv">
-          <img src={badge} />
-          <h1>Best Students</h1>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
-          </p>
-        </div>
-
-        <div className="badgeDiv">
-          <img src={badge} />
-          <h1>Best Students</h1>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
-          </p>
-        </div>
-        <div className="badgeDiv">
-          <img src={badge} />
-          <h1>Best Students</h1>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
-          </p>
-        </div> */}
+        
         </div>
       </div>
 
-      {/* <div class="hexagon"></div> */}
+    
 
       <div className="ContSkillAndAchievePrize">
         <div className="ContShape2Skill">
@@ -573,14 +491,7 @@ Publishing research findings is a significant milestone for any
           <div className="Shape4 "></div>
 
           <div className="quizContainer">
-            {/* <div>
-            <div>
-              <h1>Take A Quiz</h1>
-              <img src={quizCartoon} />
-            </div>
-
-            <img className="quizImg" src={quiz} />
-          </div> */}
+            
             <h1>Choose Skill Then Take a Quiz</h1>
             <select
               onChange={(e) => {
@@ -934,132 +845,10 @@ Publishing research findings is a significant milestone for any
           </div>
         </div>
       </div>
-        {/* <div className="ContainerTopBottom">
-  <div className="BigParentContainer"> 
-    <div className="smallParentContainer">
-      <FaAccusoft/>
-      <h2>sample</h2>
-
-    </div>
-    
-  </div>
-  <p className="custom-scrollbar">Lorem ipsum dolor,
-       sit amet consectetur
-        adipisicing elit.
-         Soluta eveniet doloribus
-          consequuntur consequatur
-           maiores voluptatum quos repellendus dolorem error doloremque praesentium provident a sequi perspiciatis, beatae esse quasi! Expedita, et?</p>
-  </div>
-  
-  <div className="ContainerTopBottom">
-  <div className="BigParentContainer"> 
-    <div className="smallParentContainer">
-      <FaAccusoft/>
-      <h2>sample</h2>
-
-    </div>
-    
-  </div>
-  <p className="custom-scrollbar">Lorem ipsum dolor,
-       sit amet consectetur
-        adipisicing elit.
-         Soluta eveniet doloribus
-          consequuntur consequatur
-           maiores voluptatum quos repellendus dolorem error doloremque praesentium provident a sequi perspiciatis, beatae esse quasi! Expedita, et?</p>
-  </div>
-  <div className="ContainerTopBottom">
-  <div className="BigParentContainer"> 
-    <div className="smallParentContainer">
-      <FaAccusoft/>
-      <h2>sample</h2>
-
-    </div>
-    
-  </div>
-  <p className="custom-scrollbar">Lorem ipsum dolor,
-       sit amet consectetur
-        adipisicing elit.
-         Soluta eveniet doloribus
-          consequuntur consequatur
-           maiores voluptatum quos repellendus dolorem error doloremque praesentium provident a sequi perspiciatis, beatae esse quasi! Expedita, et?</p>
-  </div>
-  <div className="ContainerTopBottom">
-  <div className="BigParentContainer"> 
-    <div className="smallParentContainer">
-      <FaAccusoft/>
-      <h2>sample</h2>
-
-    </div>
-    
-  </div>
-  <p className="custom-scrollbar">Lorem ipsum dolor,
-       sit amet consectetur
-        adipisicing elit.
-         Soluta eveniet doloribus
-          consequuntur consequatur
-           maiores voluptatum quos repellendus dolorem error doloremque praesentium provident a sequi perspiciatis, beatae esse quasi! Expedita, et?</p>
-  </div>
-  <div className="ContainerTopBottom">
-  <div className="BigParentContainer"> 
-    <div className="smallParentContainer">
-      <FaAccusoft/>
-      <h2>sample</h2>
-
-    </div>
-    
-  </div>
-  <p className="custom-scrollbar">Lorem ipsum dolor,
-       sit amet consectetur
-        adipisicing elit.
-         Soluta eveniet doloribus
-          consequuntur consequatur
-           maiores voluptatum quos repellendus dolorem error doloremque praesentium provident a sequi perspiciatis, beatae esse quasi! Expedita, et?</p>
-  </div> */}
+        
       </div>
-      {/* <div className="AllAboutUsContainer">
-      <h1>About Us</h1>
-      <div className="AllLeftRightAboutUs">
-        <div className="LeftContainer">
-          <img src={PhotoAbout} alt="Company Logo" />
-        </div>
-        <div className="RightContainer">
-          <p>
-            This is the first paragraph. It's always visible.
-          </p>
-          {showSecondParagraph && (
-            <p>
-              This is the second paragraph. It's displayed when the switch is toggled.
-            </p>
-          )}
-        </div>
-      </div>
-      <div className="SwitchContainer">
-        <label className="SwitchLabel">
-          <input
-            type="checkbox"
-            checked={showSecondParagraph}
-            onChange={handleSwitch}
-          />
-          Switch
-        </label>
-      </div>
-    </div> */}
-      {/* <div className="AllAboutUsContainer" style={{ height: '500px' }}>
-      <h1 style={{ zIndex: 10 }}>About Us</h1>
-      <div className="AllLeftRightAboutUs">
-        <div className="LeftContainer">
-          <img src={PhotoAbout} alt="About Us" />
-        </div>
-        <div className="RightContainer">
-          <p>First paragraph content</p>
-          <p>Second paragraph content</p>
-        </div>
-      </div>
-    </div> */}
-
-
      
-      
+
       <div
         className="AllAboutUsContainer fadinAnimation"
         style={{ height: "600px" }}
@@ -1124,17 +913,6 @@ Publishing research findings is a significant milestone for any
           </div>
         </div>
       </div>
-
-      {/* <div className="researchContainer">
-        <div>
-          <div>
-            <h1>Take A Quiz</h1>
-            <img src={research} />
-          </div>
-
-          <img className="quizImg" src={quiz} />
-        </div>
-      </div> */}
 
       <Footer />
     </div>

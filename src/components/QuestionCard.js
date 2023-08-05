@@ -1,6 +1,5 @@
 import React from "react";
 import { useMemo } from "react";
-
 const QuestionCard = ({ question, id,handleAnsQ }) => {
 
     function handleQ(a){

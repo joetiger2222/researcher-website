@@ -1,7 +1,7 @@
 import React from "react";
 import "../css/AddQuizToSection.css";
-import { useState, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useState, } from "react";
+import {  useNavigate, useParams } from "react-router-dom";
 import Header from "./Header";
 import AnswersCard from "./AnswerCard";
 import toastr from "toastr";
@@ -23,10 +23,10 @@ export default function AddQuizToCourse (){
       maxScore: 0,
       questions: [],
     });
-    // const userData=useLocation().state?.data
+    
     const userData = useContext(MyContext);
     const navigate=useNavigate();
-console.log(quizData)
+
 
     function addNewAnswer() {
       if(answerCards[answerCards.length-1].answerText===''){
@@ -47,7 +47,7 @@ console.log(quizData)
 
       function deleteAns(id) {
         setAnswerCards((prevCards) => prevCards.filter((card) => card.id !== id));
-        console.log("delete id:", id);
+        
       }
 
     
@@ -102,7 +102,7 @@ console.log(quizData)
  function saveQuest() {
   
   const updatedQuestion = { ...question, answers: answerCards };
-  console.log(updatedQuestion)
+  
   if(updatedQuestion.name===''){
     toastr.error('Invalid Question Name');
     return;
@@ -157,7 +157,7 @@ console.log(quizData)
       return;
     }
 
-    fetch(`https://localhost:7187/api/Quizes/FinalQuiz`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Quizes/FinalQuiz`, {
       method: "POST",
       headers: {
         "Authorization":`Bearer ${userData.token}`,
@@ -170,7 +170,7 @@ console.log(quizData)
       
   }
 
-console.log(allQuestions)
+
 
 if(userData){
 
@@ -199,25 +199,25 @@ if(userData){
                 <input
                   name="timeLimit"
                   type="number"
-                  // onChange={(e)=>setQuizData(prev=>{return{...prev,[e.target.name]:'00:'+e.target.value+':00'}})}
+                 
                   onChange={(e)=>{
                     if(e.target.value*1>=60){
                       let time=(e.target.value*1)/60;
                       let hours = Math.floor(time);
                       let minutes = Math.round((time - hours) * 60);
                       setQuizData(prev=>{return{...prev,[e.target.name]:`0${hours}:${minutes}:00`}})
-                      // console.log(hours + " hours " + minutes + " minutes");
+                     
                       
                     }else{
                       setQuizData(prev=>{return{...prev,[e.target.name]:'00:'+e.target.value+':00'}})
                     }
                   }}
-                  // onChange={getQuizData}
+                  
                   placeholder="Ex: 20"
                 />
               </div>
             </div>
-          {/* </div> */}
+          
         </div>
         {allQuestions.length> 0 && (
           <h2>Questions</h2>

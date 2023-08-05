@@ -78,6 +78,8 @@ p, h1 ,h2 ,h3 ,h4{
   color: var(--darkgreen-color);
 }
 .LableForinputTypeFile{
+  width: 80%;
+  
   padding: 10px;
   border-radius: 5px;
   margin: 16px;

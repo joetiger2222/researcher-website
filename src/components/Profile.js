@@ -1,13 +1,10 @@
 import React, { useEffect } from "react";
-import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import kariem from "../images/userImg.png";
 import { useState } from "react";
 import "../css/Modal.css";
 import "../css/Profile.css";
-import { useLocation } from "react-router-dom";
 import Header from "./Header";
-import paperPhoto from "../images/paper.jpg";
 import ModalEditProfile from "./ModalEditProfile";
 import { FaCheckCircle } from "react-icons/fa";
 import request from "../images/request.png";
@@ -16,13 +13,14 @@ import toastr from "toastr";
 import "toastr/build/toastr.min.css";
 import { MdOutlineFileUpload } from "react-icons/md";
 import { MdCameraAlt } from "react-icons/md";
-
 import user from "../images/useer.png";
 import Footer from "./Footer";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
 import SideBar from "./SideBar";
+import loader from '../loader.gif';
 const Profile = () => {
+  const [load,setLoad]=useState(false);
   const [sideBarVisible, setSideBarVisible] = useState(false);
   const userData = useContext(MyContext);
   const [show, setShow] = useState(false);
@@ -42,13 +40,10 @@ const Profile = () => {
   const [adminReponse, setAdminResponse] = useState(null);
   const [researcherIdeas, setResearcherIdeas] = useState([]);
   const [studentCourses,setStudentCourses]=useState([]);
-  const [studentImage, setStudentImage] = useState({ url: kariem });
   const { studentId } = useParams();
+  const [studentImage,setStuddentImage]=useState('');
   const navigate = useNavigate();
-  console.log('from profile',userData)
-
-
-
+  
 
 
   function renderSideBar() {
@@ -102,11 +97,8 @@ const Profile = () => {
 
 
 
-
-
-
   function getStudentData() {
-    fetch(`https://localhost:7187/api/Students/${studentId}`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Students/${studentId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData?.token}`,
@@ -123,8 +115,39 @@ const Profile = () => {
       });
   }
 
+
+
+
+  function getStudentImage(){
+    fetch(`https://resweb-001-site1.htempurl.com/api/Students/Image/${studentId}`,{
+      method:"GET",
+      headers:{
+        "Authorization":`Bearer ${userData.token}`
+      }
+    })
+    .then(res=>{
+      if(res.ok){
+        return res.blob();
+      }else {
+        setStuddentImage(kariem);
+      }
+    }).then(blob=>{
+      const image = URL.createObjectURL(blob);
+      setStuddentImage(image);
+    }).catch(e=>{
+      setStuddentImage(kariem);
+    })
+    
+  }
+
+
+
+
+
+
+
   function getResearcherId(studentId) {
-    fetch(`https://localhost:7187/api/Researchers/ResearcherId/${studentId}`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/ResearcherId/${studentId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData?.token}`,
@@ -141,10 +164,10 @@ const Profile = () => {
         }
       });
   }
-  // console.log('res data',resInvits)
+ 
 
   function getResearcherData(resId) {
-    fetch(`https://localhost:7187/api/Researchers/${resId}`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/${resId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData?.token}`,
@@ -155,7 +178,7 @@ const Profile = () => {
   }
 
   function getResInvitations(resId) {
-    fetch(`https://localhost:7187/api/Researchers/Invitations/${resId}`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/Invitations/${resId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData?.token}`,
@@ -166,7 +189,7 @@ const Profile = () => {
   }
 
   function getResReqs(resId) {
-    fetch(`https://localhost:7187/api/Researchers/Requests/${resId}`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/Requests/${resId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData?.token}`,
@@ -178,7 +201,7 @@ const Profile = () => {
 
   function getExpertReqs(resId) {
     fetch(
-      `https://localhost:7187/api/Researchers/Ideas/ExpertRequests/${resId}`,
+      `https://resweb-001-site1.htempurl.com/api/Researchers/Ideas/ExpertRequests/${resId}`,
       {
         method: "GET",
         headers: {
@@ -191,7 +214,7 @@ const Profile = () => {
   }
 
   function getAdminResponse() {
-    fetch(`https://localhost:7187/api/Students/Responses/${studentId}`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Students/Responses/${studentId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData.token}`,
@@ -202,7 +225,7 @@ const Profile = () => {
   }
 
   function getResearcherIdeas(resId) {
-    fetch(`https://localhost:7187/api/Researchers/Ideas/${resId}`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/Ideas/${resId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData?.token}`,
@@ -216,17 +239,10 @@ const Profile = () => {
       });
   }
 
-  function getStudentImage() {
-    fetch(`https://localhost:7187/api/Students/Image/${studentId}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${userData.token}`,
-      },
-    }).then((res) => (res.ok ? setStudentImage(res) : null));
-  }
+  
 
   function getStudentCourses(){
-    fetch(`https://localhost:7187/api/Students/Courses?studentId=${studentId}`,{
+    fetch(`https://resweb-001-site1.htempurl.com/api/Students/Courses?studentId=${studentId}`,{
       method:"GET",
       headers:{
         "Authorization":`Bearer ${userData.token}`,
@@ -243,7 +259,7 @@ const Profile = () => {
       showCancelButton: true,
     }).then(data=>{
       if(data.isConfirmed){
-        fetch(`https://localhost:7187/api/Students/responseId?responseId=${resId}`,{
+        fetch(`https://resweb-001-site1.htempurl.com/api/Students/responseId?responseId=${resId}`,{
           method:"DELETE",
           headers:{
             "Authorization":`Bearer ${userData.token}`
@@ -264,17 +280,19 @@ const Profile = () => {
 
 
   useEffect(() => {
-    if(userData){
+    if(userData.userId!==''){
     getStudentData();
-    getStudentImage();
     getStudentCourses();
     }
     if (userData?.userId === studentId) getAdminResponse();
+    if(userData?.userId!==studentId){
+      getStudentImage();
+    }
   }, [studentId,userData]);
 
   function rejectInvite(i) {
     fetch(
-      `https://localhost:7187/api/Ideas/RejectInvitation/${i.id}/${i.researcherId}`,
+      `https://resweb-001-site1.htempurl.com/api/Ideas/RejectInvitation/${i.id}/${i.researcherId}`,
       {
         method: "DELETE",
         headers: {
@@ -291,7 +309,7 @@ const Profile = () => {
 
   function acceptInvitation(i) {
     fetch(
-      `https://localhost:7187/api/Ideas/AcceptInvitations/${i.id}/${i.researcherId}`,
+      `https://resweb-001-site1.htempurl.com/api/Ideas/AcceptInvitations/${i.id}/${i.researcherId}`,
       {
         method: "POST",
         headers: {
@@ -327,7 +345,7 @@ const Profile = () => {
       let peperArr = [];
       peperArr.push(paperData);
       fetch(
-        `https://localhost:7187/api/Researchers/Papers/${researcherData?.id}`,
+        `https://resweb-001-site1.htempurl.com/api/Researchers/Papers/${researcherData?.id}`,
         {
           method: "POST",
           headers: {
@@ -400,7 +418,7 @@ const Profile = () => {
     const [newSpec, setNewSpec] = useState(researcherData?.specality?.id);
 
     function getAllSpecs() {
-      fetch(`https://localhost:7187/api/Researchers/Specialties`, {
+      fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/Specialties`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${userData.token}`,
@@ -418,7 +436,7 @@ const Profile = () => {
 
     function editSpec() {
       fetch(
-        `https://localhost:7187/api/Researchers/Speciality/${userData.resercherId}/${newSpec}`,
+        `https://resweb-001-site1.htempurl.com/api/Researchers/Speciality/${userData.resercherId}/${newSpec}`,
         {
           method: "PUT",
           headers: {
@@ -474,13 +492,13 @@ const Profile = () => {
   };
 
   const EditPaper = (props) => {
-    console.log("edit paper", paperData.id);
+   
     const [paperToEdit, setPaperToEdit] = useState({
       name: paperData.name,
       citation: paperData.citation,
       url: paperData.url,
     });
-    //  console.log(paperToEdit)
+
 
     function getPaperDataToEdit(e) {
       setPaperToEdit((prev) => {
@@ -492,7 +510,7 @@ const Profile = () => {
     }
 
     function editPaper() {
-      fetch(`https://localhost:7187/api/Researchers/Papers/${paperData.id}`, {
+      fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/Papers/${paperData.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -564,7 +582,7 @@ const Profile = () => {
       }).then((data) => {
         if (data.isConfirmed) {
           fetch(
-            `https://localhost:7187/api/Researchers/Papers/${props.paper.id}`,
+            `https://resweb-001-site1.htempurl.com/api/Researchers/Papers/${props.paper.id}`,
             {
               method: "DELETE",
               headers: {
@@ -620,9 +638,10 @@ const Profile = () => {
       googleSchoolerLink: "",
     });
 
+
     const [allNationalities, setAllNationalities] = useState([]);
 
-    console.log(editData);
+    
 
     function getEditData(e) {
       setEditData((prev) => {
@@ -631,7 +650,7 @@ const Profile = () => {
     }
 
     function getAllNationalities() {
-      fetch(`https://localhost:7187/api/Students/Nationalites`)
+      fetch(`https://resweb-001-site1.htempurl.com/api/Students/Nationalites`)
         .then((res) =>
           res.ok
             ? res.json()
@@ -645,8 +664,9 @@ const Profile = () => {
     }, []);
 
     function sendEditData() {
+      setLoad(true)
       fetch(
-        `https://localhost:7187/api/Students/studentId?studentId=${studentId}`,
+        `https://resweb-001-site1.htempurl.com/api/Students/studentId?studentId=${studentId}`,
         {
           method: "PUT",
           headers: {
@@ -659,11 +679,13 @@ const Profile = () => {
         if (res.ok) {
           toastr.success("Data Successfully Updated", "Success");
           window.location.reload();
-        } else
+        } else{
           toastr.error(
             "Failed To Update Data Please Try Again Later",
             "Failed"
           );
+          setLoad(false)
+        }
       });
     }
 
@@ -763,15 +785,19 @@ const Profile = () => {
     );
   };
 
+  // console.log(userData.studentImage)
+
   const EditImageCard = (props) => {
     const [photo, setPhoto] = useState(null);
+  
 
     function editPhoto() {
+      setLoad(true)
       const formData = new FormData();
       formData.append("file", photo, photo.name);
 
       fetch(
-        `https://localhost:7187/api/Students/UploadImage?userId=${userData.userId}`,
+        `https://resweb-001-site1.htempurl.com/api/Students/UploadImage?userId=${userData.userId}`,
         {
           method: "POST",
           headers: {
@@ -781,8 +807,15 @@ const Profile = () => {
         }
       ).then((res) => {
         if (res.ok) {
-          window.location.reload();
-        } else toastr.error("failed to update photo", "Failed");
+          userData.setStudentImage('');
+          setLoad(false)
+          props.onClose();
+         
+
+        } else {
+        toastr.error("failed to update photo", "Failed");
+        setLoad(false)
+        }
       });
     }
 
@@ -849,8 +882,16 @@ const Profile = () => {
     )
   }
 
+  if(load){
+    return(
+      <div style={{width:'100%',minHeight:'100vh',display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'white'}}>
+        <img src={loader} />
+      </div>
+    )
+  }
 
-console.log('studentd data',studentData)
+
+
 
   return (
     <div className="ParentHeadData">
@@ -873,11 +914,13 @@ console.log('studentd data',studentData)
       <div className="profile-header" style={{ marginTop: "130px" }}>
         <div className="imageProfDiv">
           <div className="image-container">
-            <img
-              src={studentImage?.url}
+            {userData.studentImage===''&&<img src={loader} />}
+            {userData.studentImage!==''&&<img
+              src={userData.userId===studentId?userData.studentImage:studentImage}
               alt="Profile"
               className="profile-image"
-            />
+              style={{boxShadow:'0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}}
+            />}
 
             <div className="button-container">
               {userData?.userId === studentId && (
@@ -903,7 +946,7 @@ console.log('studentd data',studentData)
                 onClick={() => setShowEditAllData(true)}
                 className="detailsbtn"
               >
-                Edit Student Data
+                Edit Profile Data
               </p>
             )}
             {userData.roles === "Researcher" &&
@@ -934,14 +977,14 @@ console.log('studentd data',studentData)
         </div>
         <div className="profile-details">
           <h1 className="profile-name">
-            {studentData?.firstName + " " + studentData?.lastName}
+            {studentData? studentData?.firstName + " " + studentData?.lastName:'Loading...'}
             {studentData?.isMentor && <FaCheckCircle />}
           </h1>
           <p className="profile-bio">
-            {studentData?.bio?"Bio : "+studentData?.bio:'Bio : '}
+            {studentData?studentData?.bio?"Bio : "+studentData?.bio:'Bio : ':'Loading...'}
           </p>
           <p className="profile-bio">
-            {studentData?.googleSchoolerLink?"Google Schooler Link : "+studentData?.googleSchoolerLink:'Google Schooler Link :'}
+            {studentData?studentData?.googleSchoolerLink?"Google Schooler Link : "+studentData?.googleSchoolerLink:'Google Schooler Link :':'Loading...'}
           </p>
           
           {userData.roles === "Researcher" && (
@@ -988,7 +1031,7 @@ console.log('studentd data',studentData)
   <h1 style={{color:"black",margin:"10px"}}>Achievements</h1>
   <div className="badgesAndPoints">
         <div className="badgesContainer">
-          <h1>Badges</h1>
+          <h1>Badges Of Passed Skills</h1>
           <div className="badgesDiv custom-scrollbar">
             {studentData?.badges.map(badge=>{
               return (
@@ -1190,14 +1233,14 @@ console.log('studentd data',studentData)
                       <img src={paperPhoto} alt="paper" />
                     </div> */}
                     <div className="ContDataInCardPaper">
-                      <p style={{display:"flex",flexDirection:"row",gap:"10px"}} className="custom-scrollbar">
+                      <p style={{display:"flex",flexDirection:"column",gap:"10px"}} className="custom-scrollbar">
                         <span style={{fontWeight:"bold"}}>Paper Name :</span> <span>{paper?.name}</span>
                       </p>
-                      <p style={{display:"flex",flexDirection:"row",gap:"10px"}} className="custom-scrollbar">
+                      <p style={{display:"flex",flexDirection:"column",gap:"10px"}} className="custom-scrollbar">
                         <span style={{fontWeight:"bold"}}>Paper citation :</span><span>{paper?.citation}</span>
                       </p>
                       <p style={{display:"flex",flexDirection:"column",gap:"10px"}} className="custom-scrollbar">
-                        <span style={{fontWeight:"bold"}}>Paper url :</span><span>{paper?.url}</span>
+                        <span style={{fontWeight:"bold"}}>Paper url :</span><a target="_blank" href={paper?.url}>{paper?.url}</a>
                         
                       </p>
                     </div>

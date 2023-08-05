@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "./Header";
 import "../css/Paper.css";
 import "../css/Idea.css";
@@ -14,8 +14,9 @@ import Footer from "./Footer";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
 import SideBar from "./SideBar";
+import loader from '../loader.gif';
 export default function Idea() {
-  // const userData = useLocation()?.state.data;
+  const [load,setLoad]=useState(false);
   const userData = useContext(MyContext);
   const [sideBarVisible, setSideBarVisible] = useState(false);
   const { ideaId } = useParams();
@@ -47,22 +48,29 @@ export default function Idea() {
       : userData?.resercherId.toLowerCase() === idea?.creatorId;
 
   function getIdeaData() {
-    fetch(`https://localhost:7187/api/Ideas/SingleIdea/${ideaId}`, {
+    setLoad(true)
+    fetch(`https://resweb-001-site1.htempurl.com/api/Ideas/SingleIdea/${ideaId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData?.token}`,
       },
     })
-      .then((res) =>
-        res.ok ? res.json() : null
-      )
+      // .then((res) =>
+      //   res.ok ? res.json() : null
+      // )
+      .then(res=>{
+        setLoad(false)
+        if(res.ok){
+          return res.json();
+        }
+      })
       .then((data) => (data ? setIdea(data) : null));
   }
 
   let counter = 1;
   function getIdeaReqs() {
     if (counter === 1) {
-      fetch(`https://localhost:7187/api/Ideas/Requests/${ideaId}`, {
+      fetch(`https://resweb-001-site1.htempurl.com/api/Ideas/Requests/${ideaId}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${userData?.token}`,
@@ -157,7 +165,7 @@ function renderSideBar() {
 
 
   function getResearcherData(resId) {
-    fetch(`https://localhost:7187/api/Researchers/${resId}`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/${resId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData?.token}`,
@@ -177,7 +185,7 @@ function renderSideBar() {
     const filterData = ideaReqs.find((req) => req.researcherId === resId);
 
     fetch(
-      `https://localhost:7187/api/Ideas/Requests/AcceptRequest/${filterData.id}/${filterData.researcherId}`,
+      `https://resweb-001-site1.htempurl.com/api/Ideas/Requests/AcceptRequest/${filterData.id}/${filterData.researcherId}`,
       {
         method: "POST",
         headers: {
@@ -191,12 +199,12 @@ function renderSideBar() {
           ? setResReqsData(resReqsData.filter((res) => res.id !== resId))
           : null
       )
-      .then((data) => (data ? console.log(data) : null));
+      
   }
 
   function rejectReq(resId) {
     const filterData = ideaReqs.find((req) => req.researcherId === resId);
-    fetch(`https://localhost:7187/api/Ideas/Requests/${filterData.id}`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Ideas/Requests/${filterData.id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${userData.token}`,
@@ -207,11 +215,11 @@ function renderSideBar() {
           ? setResReqsData(resReqsData.filter((res) => res.id !== resId))
           : null
       )
-      .then((data) => (data ? console.log(data) : null));
+      
   }
 
   function getParticaptns() {
-    fetch(`https://localhost:7187/api/Ideas/Participants/${ideaId}`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Ideas/Participants/${ideaId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData?.token}`,
@@ -234,7 +242,7 @@ function renderSideBar() {
   }
 
   function getTasks() {
-    fetch(`https://localhost:7187/api/Ideas/Tasks/AllTasks/${ideaId}`, {
+    fetch(`https://resweb-001-site1.htempurl.com/api/Ideas/Tasks/AllTasks/${ideaId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userData?.token}`,
@@ -253,7 +261,7 @@ function renderSideBar() {
     const [search, setSearch] = useState("");
 
     function getAllRess() {
-      fetch(`https://localhost:7187/api/Researchers?SearchTerm=${search}`, {
+      fetch(`https://resweb-001-site1.htempurl.com/api/Researchers?SearchTerm=${search}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${userData.token}`,
@@ -274,7 +282,7 @@ function renderSideBar() {
       let invits = [];
       invits.push(resId);
       fetch(
-        `https://localhost:7187/api/Ideas/Invitations/SendInvitations/${ideaId}`,
+        `https://resweb-001-site1.htempurl.com/api/Ideas/Invitations/SendInvitations/${ideaId}`,
         {
           method: "POST",
           headers: {
@@ -383,8 +391,9 @@ const yearRangeRegex = new RegExp(
 
 const val = yearRangeRegex.test(taskData.deadline);
       if (val) {
+        setLoad(true)
         fetch(
-          `https://localhost:7187/api/Ideas/Tasks/InitiateTask/${ideaId}/${userData.resercherId}`,
+          `https://resweb-001-site1.htempurl.com/api/Ideas/Tasks/InitiateTask/${ideaId}/${userData.resercherId}`,
           {
             method: "POST",
             headers: {
@@ -395,6 +404,7 @@ const val = yearRangeRegex.test(taskData.deadline);
           }
         )
           .then((response) => {
+            setLoad(false)
             const reader = response.body.getReader();
             let chunks = [];
 
@@ -501,7 +511,8 @@ const val = yearRangeRegex.test(taskData.deadline);
     }
 
     function sendExpertReq() {
-      fetch(`https://localhost:7187/api/Researchers/Ideas/ExpertRequest`, {
+      setLoad(true)
+      fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/Ideas/ExpertRequest`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -511,6 +522,7 @@ const val = yearRangeRegex.test(taskData.deadline);
       })
         // .then(res=>res.ok?alert('Expert Request Sent Successfully'):alert('Failed To Send Please Try Again Later'))
         .then((res) => {
+          setLoad(false)
           if (res.ok) {
             toastr.success("Expert Request Sent Successfully", "Success");
             props.onClose();
@@ -559,11 +571,12 @@ const val = yearRangeRegex.test(taskData.deadline);
 
   const AssignParticpantToTask = (props) => {
     function assignToTask(id) {
-      console.log(id);
+      
       let data = [];
       data.push(id);
+      setLoad(true)
       fetch(
-        `https://localhost:7187/api/Ideas/Tasks/Participants/${props.task.id}`,
+        `https://resweb-001-site1.htempurl.com/api/Ideas/Tasks/Participants/${props.task.id}`,
         {
           method: "POST",
           headers: {
@@ -574,6 +587,7 @@ const val = yearRangeRegex.test(taskData.deadline);
         }
       )
         .then((response) => {
+          setLoad(false)
           const reader = response.body.getReader();
           let chunks = [];
 
@@ -600,7 +614,7 @@ const val = yearRangeRegex.test(taskData.deadline);
             const body = new TextDecoder().decode(
               new Uint8Array(chunks.flatMap((chunk) => Array.from(chunk)))
             );
-            console.log(body);
+            
           });
         })
         .catch((error) => console.error(error));
@@ -662,7 +676,7 @@ const val = yearRangeRegex.test(taskData.deadline);
 
     function getTaskParticpants() {
       fetch(
-        `https://localhost:7187/api/Ideas/Tasks/Participants/${props.task.id}`,
+        `https://resweb-001-site1.htempurl.com/api/Ideas/Tasks/Participants/${props.task.id}`,
         {
           method: "GET",
           headers: {
@@ -739,7 +753,7 @@ const val = yearRangeRegex.test(taskData.deadline);
     let counter = 1;
     function getMessages() {
       if (counter === 1) {
-        fetch(`https://localhost:7187/api/Chat/Discussion/${ideaId}`, {
+        fetch(`https://resweb-001-site1.htempurl.com/api/Chat/Discussion/${ideaId}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${userData.token}`,
@@ -755,7 +769,7 @@ const val = yearRangeRegex.test(taskData.deadline);
 
     useEffect(() => {
       const connection = new HubConnectionBuilder()
-        .withUrl("https://localhost:7187/hubs/discussion")
+        .withUrl("https://resweb-001-site1.htempurl.com/hubs/discussion")
         .withAutomaticReconnect()
         .build();
 
@@ -800,7 +814,7 @@ const val = yearRangeRegex.test(taskData.deadline);
 
       try {
         await fetch(
-          `https://localhost:7187/api/Chat/Discussion/${ideaId}?researcherId=${userData.resercherId}`,
+          `https://resweb-001-site1.htempurl.com/api/Chat/Discussion/${ideaId}?researcherId=${userData.resercherId}`,
           {
             method: "POST",
             body: JSON.stringify(chatMessage),
@@ -908,7 +922,7 @@ const val = yearRangeRegex.test(taskData.deadline);
   const IdeaMessageCard = (props) => {
     const resData = ideaPar.filter((res) => res.id === props.message.researcherId)
         
-    console.log("resData", resData);
+    
     return (
       <div
         className={
@@ -979,7 +993,7 @@ const val = yearRangeRegex.test(taskData.deadline);
     function getMessages() {
       if (counter === 1) {
         fetch(
-          `https://localhost:7187/api/Chat/Task/${ideaId})?taskId=${props.task.id}`,
+          `https://resweb-001-site1.htempurl.com/api/Chat/Task/${ideaId})?taskId=${props.task.id}`,
           {
             method: "GET",
             headers: {
@@ -997,7 +1011,7 @@ const val = yearRangeRegex.test(taskData.deadline);
 
     useEffect(() => {
       const connection = new HubConnectionBuilder()
-        .withUrl("https://localhost:7187/hubs/chat")
+        .withUrl("https://resweb-001-site1.htempurl.com/hubs/chat")
         .withAutomaticReconnect()
         .build();
 
@@ -1042,7 +1056,7 @@ const val = yearRangeRegex.test(taskData.deadline);
 
       try {
         await fetch(
-          `https://localhost:7187/api/Chat/Task?taskId=${props.task.id}&researcherId=${userData.resercherId}`,
+          `https://resweb-001-site1.htempurl.com/api/Chat/Task?taskId=${props.task.id}&researcherId=${userData.resercherId}`,
           {
             method: "POST",
             body: JSON.stringify(chatMessage),
@@ -1142,7 +1156,7 @@ const val = yearRangeRegex.test(taskData.deadline);
                 </div>
               </form>
             </div>
-            {/* <button onClick={props.onClose}>Close</button> */}
+          
           </div>
         </div>
       </div>
@@ -1151,13 +1165,13 @@ const val = yearRangeRegex.test(taskData.deadline);
 
   const TaskMessageCard = (props) => {
     const [resData, setResData] = useState(null);
-    // console.log('task message',props.message);
+    
 
     function getResearcherData() {
      
       if (userData.roles==='Admin'||(userData.roles==='Researcher' &&props.message.researcherId !== userData.resercherId.toLowerCase())) {
         fetch(
-          `https://localhost:7187/api/Researchers/${props.message.researcherId}`,
+          `https://resweb-001-site1.htempurl.com/api/Researchers/${props.message.researcherId}`,
           {
             method: "GET",
             headers: {
@@ -1174,7 +1188,7 @@ const val = yearRangeRegex.test(taskData.deadline);
       getResearcherData();
     }, []);
 
-    console.log("res task data", resData);
+   
 
     return (
       <div
@@ -1223,7 +1237,7 @@ const val = yearRangeRegex.test(taskData.deadline);
     const [taskParticpants, setTaskParticpants] = useState(null);
 
     function getTaskParticpants() {
-      fetch(`https://localhost:7187/api/Ideas/Tasks/Participants/${task.id}`, {
+      fetch(`https://resweb-001-site1.htempurl.com/api/Ideas/Tasks/Participants/${task.id}`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${userData.token}`,
@@ -1248,7 +1262,7 @@ const val = yearRangeRegex.test(taskData.deadline);
       if (arr?.length > 0) setIsTaskPart(true);
     }, [taskParticpants]);
 
-  //  console.log(task)
+  
 
     return (
       <div
@@ -1433,9 +1447,9 @@ className="descriptionContainer custom-scrollbar"
       const formData = new FormData();
       formData.append("file", document);
       formData.append("Name", titleValue);
-
+setLoad(true)
       fetch(
-        `https://localhost:7187/api/Ideas/IdeaFile?ideaId=${ideaId}&researcherId=${userData.resercherId}`,
+        `https://resweb-001-site1.htempurl.com/api/Ideas/IdeaFile?ideaId=${ideaId}&researcherId=${userData.resercherId}`,
         {
           method: "POST",
           headers: {
@@ -1444,6 +1458,7 @@ className="descriptionContainer custom-scrollbar"
           body: formData,
         }
       ).then((res) => {
+        setLoad(false)
         if (res.ok) {
           toastr.success("File Uploaded Successfully", "Success");
           props.onClose();
@@ -1515,7 +1530,7 @@ className="descriptionContainer custom-scrollbar"
     const [documents, setDocuments] = useState(null);
 
     function getIdeaFiles() {
-      fetch(`https://localhost:7187/api/Ideas/IdeaFile/${ideaId}`, {
+      fetch(`https://resweb-001-site1.htempurl.com/api/Ideas/IdeaFile/${ideaId}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${userData.token}`,
@@ -1534,7 +1549,7 @@ className="descriptionContainer custom-scrollbar"
     }, []);
 
     function downloadDoc(fileId) {
-      fetch(`https://localhost:7187/api/Ideas/IdeaFileStream/${fileId}`, {
+      fetch(`https://resweb-001-site1.htempurl.com/api/Ideas/IdeaFileStream/${fileId}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${userData.token}`,
@@ -1626,9 +1641,9 @@ className="descriptionContainer custom-scrollbar"
       const formData = new FormData();
       formData.append("file", document);
       formData.append("Name", titleValue);
-
+setLoad(true)
       fetch(
-        `https://localhost:7187/api/Ideas/TaskFile?taskId=${props.task.id}&researcherId=${userData.resercherId}`,
+        `https://resweb-001-site1.htempurl.com/api/Ideas/TaskFile?taskId=${props.task.id}&researcherId=${userData.resercherId}`,
         {
           method: "POST",
           headers: {
@@ -1637,6 +1652,7 @@ className="descriptionContainer custom-scrollbar"
           body: formData,
         }
       ).then((res) => {
+        setLoad(false)
         if (res.ok) {
           toastr.success("File Uploaded Successfully", "Success");
           props.onClose();
@@ -1707,7 +1723,7 @@ className="descriptionContainer custom-scrollbar"
     const [documents, setDocuments] = useState(null);
 
     function getIdeaFiles() {
-      fetch(`https://localhost:7187/api/Ideas/TaskFile/${props.task.id}`, {
+      fetch(`https://resweb-001-site1.htempurl.com/api/Ideas/TaskFile/${props.task.id}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${userData.token}`,
@@ -1726,7 +1742,7 @@ className="descriptionContainer custom-scrollbar"
     }, []);
 
     function downloadDoc(fileId) {
-      fetch(`https://localhost:7187/api/Ideas/TaskFileStream/${fileId}`, {
+      fetch(`https://resweb-001-site1.htempurl.com/api/Ideas/TaskFileStream/${fileId}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${userData.token}`,
@@ -1734,24 +1750,23 @@ className="descriptionContainer custom-scrollbar"
       })
         .then((res) => {
           if (res.ok) {
-            return res.blob(); // Convert the response to a Blob object
+            return res.blob(); 
           } else {
             throw new Error("Failed to load documents");
           }
         })
         .then((blob) => {
-          // Create a temporary URL for the blob object
+          
           const url = URL.createObjectURL(blob);
 
-          // Create an anchor element
           const link = document.createElement("a");
           link.href = url;
-          link.download = `document.pdf`; // Specify the desired file name
+          link.download = `document.pdf`; 
 
-          // Programmatically trigger the download
+         
           link.click();
 
-          // Clean up by revoking the temporary URL
+          
           URL.revokeObjectURL(url);
         })
         .catch((error) => {
@@ -1813,8 +1828,9 @@ className="descriptionContainer custom-scrollbar"
         }
       }
       const progressObj = { progress: progress };
+      setLoad(true)
       fetch(
-        `https://localhost:7187/api/Ideas/Tasks/TaskProgress/${props.task.id}/${userData.resercherId}`,
+        `https://resweb-001-site1.htempurl.com/api/Ideas/Tasks/TaskProgress/${props.task.id}/${userData.resercherId}`,
         {
           method: "PUT",
           headers: {
@@ -1826,6 +1842,7 @@ className="descriptionContainer custom-scrollbar"
       )
         
         .then((res) => {
+          setLoad(false)
           if (res.ok) {
             toastr.success("Task progress updated successfully", "Success");
             props.onClose();
@@ -1878,6 +1895,22 @@ className="descriptionContainer custom-scrollbar"
       </div>
     )
   }
+
+
+
+
+  if(load){
+    return(
+      <div style={{width:'100%',minHeight:'100vh',display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'white'}}>
+        <img src={loader} />
+      </div>
+    )
+  }
+
+
+
+
+
 
   return (
     <div>
