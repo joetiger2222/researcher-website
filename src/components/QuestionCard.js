@@ -9,7 +9,7 @@ const QuestionCard = ({ question, id,handleAnsQ }) => {
     const MemoizedAnswersCard = useMemo(() => {
     return (
       <div style={{padding:"20px",display:"flex",flexDirection:"column",gap:"10px"}}>
-        <h3 style={{textAlign:"justify"}}>{id + ". " + question?.name}</h3>
+        <h3 style={{textAlign:"justify",whiteSpace: "pre-line"}}>{id + ". " + question?.name}</h3>
         <div style={{ paddingLeft: "40px",display: "flex",flexDirection: "column",gap: "10px"}}>
           {question.answers?.map((a) => {
             return <Answers a={a} id={id} chooseAns={()=>handleQ(a)}

@@ -22,7 +22,7 @@ export default function SuccededFinalQuiz(){
             <div style={{padding:"20px",backgroundColor:'aliceblue',borderRadius:'10px',width:'50%',display:'flex',flexDirection:'column',textAlign:"center"}}>
                 <h1 className="congrats">Congratulations You Succeded</h1>
                 <h5>You Can Now Edit You Speciality in Your Profile</h5>
-                <h5>The Marketplace Have Opened For You</h5>
+                <h5>The Research Opportunities Have Opened For You</h5>
             </div>
         </div>
         )

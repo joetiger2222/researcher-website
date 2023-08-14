@@ -235,13 +235,6 @@ export default function RegisterationSpecialAccount() {
 
  
 
-  if(load){
-    return(
-      <div style={{width:'100%',minHeight:'100vh',display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'white'}}>
-        <img src={loader} />
-      </div>
-    )
-  }
 
 
 
@@ -258,7 +251,7 @@ export default function RegisterationSpecialAccount() {
               <div className="NameAndUserName">
                 <div>
                   {" "}
-                  <label htmlFor="">First Name</label>
+                  <label htmlFor="">First Name <label style={{color:'rgb(150 147 147)'}}>(No Spaces)</label></label>
                   <input
                   required
                     onChange={getRegisterData}
@@ -269,7 +262,7 @@ export default function RegisterationSpecialAccount() {
                 </div>
                 <div>
                   {" "}
-                  <label htmlFor="">Last Name</label>
+                  <label htmlFor="">Last Name <label style={{color:'rgb(150 147 147)'}}>(No Spaces)</label></label>
                   <input
                   required
                     onChange={getRegisterData}
@@ -281,7 +274,7 @@ export default function RegisterationSpecialAccount() {
               </div>
               <div className="username">
                 {" "}
-                <label htmlFor="">Username</label>
+                <label htmlFor="">Username <label style={{color:'rgb(150 147 147)'}}>(No Spaces)</label></label>
                 <input
                 required
                   onChange={getRegisterData}
@@ -291,7 +284,7 @@ export default function RegisterationSpecialAccount() {
                 />
               </div>
               <div className="emailForm">
-                <label htmlFor="">Email</label>
+                <label htmlFor="">Email <label style={{color:'rgb(150 147 147)'}}>(Must Be Gmail)</label></label>
                 <input
                 required
                   onChange={getRegisterData}
@@ -302,7 +295,7 @@ export default function RegisterationSpecialAccount() {
               </div>
               <div className="passwordAndConfirm">
                 <div>
-                  <label htmlFor="">Password</label>
+                  <label htmlFor="">Password <label style={{color:'rgb(150 147 147)'}}>(Greater Than 10 Characters)</label></label>
                   <input
                   required
                     onChange={getRegisterData}
@@ -326,7 +319,7 @@ export default function RegisterationSpecialAccount() {
               <div className="NameAndUserName">
                 <div>
                   {" "}
-                  <label htmlFor="">Age</label>
+                  <label htmlFor="">Age <label style={{color:'rgb(150 147 147)'}}>(Greater Than 18)</label></label>
                   <input
                   required
                     onChange={getRegisterData}
@@ -485,6 +478,9 @@ export default function RegisterationSpecialAccount() {
             />
           </div>
         </div>
+        {load&&<div className="modal-overlay" style={{backgroundColor:'white'}}>
+        <img src={loader} />
+      </div>}
       </div>
     );
   } else {

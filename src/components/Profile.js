@@ -892,7 +892,6 @@ const Profile = () => {
 
 
 
-
   return (
     <div className="ParentHeadData">
       <Header userData={userData} />
@@ -914,21 +913,28 @@ const Profile = () => {
       <div className="profile-header" style={{ marginTop: "130px" }}>
         <div className="imageProfDiv">
           <div className="image-container">
-            {userData.studentImage===''&&<img src={loader} />}
-            {userData.studentImage!==''&&<img
+            {userData.studentImage===''&&userData.userId===studentId&&<img src={loader} />}
+            {studentImage===''&&userData.userId!==studentId&&<img src={loader} />}
+            {userData.studentImage!==''&&userData.userId===studentId&&<img
+              src={userData.userId===studentId?userData.studentImage:studentImage}
+              alt="Profile"
+              className="profile-image"
+              style={{boxShadow:'0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}}
+            />}
+            {studentImage!==''&&userData.userId!==studentId&&<img
               src={userData.userId===studentId?userData.studentImage:studentImage}
               alt="Profile"
               className="profile-image"
               style={{boxShadow:'0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}}
             />}
 
-            <div className="button-container">
+            {userData.userId===studentId&&<div className="button-container">
               {userData?.userId === studentId && (
                 <p onClick={() => setShowImageCard(true)} className="">
                   <MdCameraAlt /> <span>Change Picture</span>
                 </p>
               )}
-            </div>
+            </div>}
             {showImageCard && (
               <EditImageCard
                 show={showImageCard}
@@ -983,9 +989,10 @@ const Profile = () => {
           <p className="profile-bio">
             {studentData?studentData?.bio?"Bio : "+studentData?.bio:'Bio : ':'Loading...'}
           </p>
-          <p className="profile-bio">
+          {/* <p className="profile-bio">
             {studentData?studentData?.googleSchoolerLink?"Google Schooler Link : "+studentData?.googleSchoolerLink:'Google Schooler Link :':'Loading...'}
-          </p>
+          </p> */}
+          <a style={{textDecoration:'none'}} className="profile-bio" href={studentData?.googleSchoolerLink!==''?studentData?.googleSchoolerLink:null} target="_blank">{studentData?studentData?.googleSchoolerLink?"Google Schooler Link : "+studentData?.googleSchoolerLink:'Google Schooler Link :':'Loading...'}</a>
           
           {userData.roles === "Researcher" && (
             <span
@@ -1095,7 +1102,7 @@ const Profile = () => {
 
             {studentCourses?.map(course=>{
               return(
-                <div className="watchedCourse" onClick={()=>navigate(`/CourseDetails/${course.id}`)}>
+                <div className="watchedCourse" onClick={()=>navigate(`/CourseDetails/${course.id}`,{state:{data:course}})}>
               <h4>{course.name}</h4>
               
             </div>

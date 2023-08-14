@@ -16,6 +16,8 @@ export const MyProvider = ({ children }) => {
     const storedRoles = sessionStorage.getItem('roles');
     const storedResercherId = sessionStorage.getItem('resercherId');
     const storedStudentImage = sessionStorage.getItem('studentImage');
+    console.log(`useEffect ~ storedStudentImage:`, storedStudentImage)
+    
     // const storedRoles = JSON.parse(sessionStorage.getItem('roles'));
 
     if (storedUserId) {
@@ -32,8 +34,16 @@ export const MyProvider = ({ children }) => {
     if(storedResercherId){
         setResercherId(storedResercherId);
     }
-    if(storedStudentImage){
-        setStudentImage(storedStudentImage);
+    if (storedStudentImage) {
+      const byteCharacters = atob(storedStudentImage);
+    const byteArrays = [];
+    
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteArrays.push(byteCharacters.charCodeAt(i));
+    }
+    
+    const blob = new Blob([new Uint8Array(byteArrays)], { type: "image/jpeg" }); // Adjust the MIME type if needed
+    setStudentImage(URL.createObjectURL(blob));
     }
   }, []);
 
@@ -43,7 +53,7 @@ export const MyProvider = ({ children }) => {
     sessionStorage.setItem('token', token);
     sessionStorage.setItem('roles', roles);
     sessionStorage.setItem('resercherId',resercherId);
-    sessionStorage.setItem('studentImage',studentImage);
+    // sessionStorage.setItem('studentImage',studentImage);
   }, [userId, token, roles,resercherId]);
 
   const contextValue = {

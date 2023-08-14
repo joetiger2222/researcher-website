@@ -238,6 +238,15 @@ export default function AllIdeas({userData}) {
                       Name:{" "}
                       <span style={{ fontWeight: "bold" }}>{idea.name}</span>
                     </span>
+                    <span
+                      style={{
+                        borderBottom: "1px solid black",
+                        padding: "5px",
+                      }}
+                    >
+                      Status:{" "}
+                      <span style={{ fontWeight: "bold" }}>{idea?.isCompleted?'Closed':'In Progress'}</span>
+                    </span>
 
                     <span
                       style={{

@@ -19,6 +19,10 @@
   z-index: 999;
   display: flex;
   background-color: rgb(0 0 0 / 51%);
+  /* background-image: url('../images/Logo\ -\ Text\ Only.png');
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: contain; */
   /* background-color: black; */
 }
 
@@ -138,10 +142,10 @@
     
   }
 
-  .dropdown-content:hover a{
+  /* .dropdown-content:hover a{
     background: linear-gradient(#3030bf, #59aeff);
 
-  }
+  } */
   .dropdown-content a {
     color: black;
     padding: 12px 16px;
@@ -154,17 +158,35 @@
 
   }
   
-  .dropdown-content a:hover {
-    /* background-color: #f1f1f1; */
-    /* background: linear-gradient(#3030bf, #59aeff); */
-  }
+ 
   
   .dropdown:hover .dropdown-content {
     display: block;
     transition: 0.5s;
 
   }
+ 
 
   @media only screen and (max-width: 1300px) {
     .headerParent{display: none;}
+  }
+.singleNotification{
+  display: flex;
+  align-items: flex-start;
+  color: black;
+  justify-content: center;
+  column-gap: 5px;
+  padding: 20px;
+  border-bottom: 1px solid rgb(97, 97, 97);
+}
+  
+.singleNotification>span{
+  font-size: 16px;
+  /* border-right: 2px solid black; */
+  padding-right: 5px;
+  
+}
+  .singleNotification:hover{
+    background: linear-gradient(#3030bf, #59aeff);
+    color: white;
   }

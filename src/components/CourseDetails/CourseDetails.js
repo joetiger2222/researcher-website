@@ -10,29 +10,25 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import toastr from "toastr";
 import "toastr/build/toastr.min.css";
-import { MdOutlineFileUpload } from "react-icons/md";
 import { useContext } from "react";
 import { MyContext } from "../../Users/Redux";
 import SideBar from "../SideBar";
-import loader from '../../loader.gif';
+import loader from "../../loader.gif";
 import AllSectionsCard from "./AllSectionsCard";
 import IntroVideoCard from "./IntroVideoCard";
 import { useLocation } from "react-router-dom";
 const CourseDetails = () => {
   const userData = useContext(MyContext);
-  const [load,setLoad]=useState(false);
+  const [load, setLoad] = useState(false);
   const [sideBarVisible, setSideBarVisible] = useState(false);
   const navigate = useNavigate();
   const [showAddSection, setShowAddSection] = useState(false);
   const [showEditCourseDataModal, setShowEditCourseDataModal] = useState(false);
   const [isStudentEnrolled, setIsStudentEnrolled] = useState(false);
   const [firstVideoId, setFirstVideoId] = useState(null);
-  const courseDetails=useLocation().state?.data
- 
-  
+  const courseDetails = useLocation().state?.data;
 
   let { id } = useParams();
- 
 
   function renderSideBar() {
     if (sideBarVisible) {
@@ -83,12 +79,10 @@ const CourseDetails = () => {
     }
   }
 
-
   function checkStudentEnrollment() {
-    
     fetch(
       `https://resweb-001-site1.htempurl.com/api/Courses/CheckEnrollment?courseId=${id}&studentId=${userData.userId}`,
-      
+
       {
         method: "GET",
         headers: {
@@ -98,12 +92,10 @@ const CourseDetails = () => {
     )
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => (data ? setIsStudentEnrolled(data.isEnrolled) : null))
-      .catch(e=>{
-        if(!isStudentEnrolled&&userData.userId !=='')
-        checkStudentEnrollment();
-      })
-
-      ;
+      .catch((e) => {
+        if (!isStudentEnrolled && userData.userId !== "")
+          checkStudentEnrollment();
+      });
   }
 
   function deleteCourse() {
@@ -112,14 +104,14 @@ const CourseDetails = () => {
       showCancelButton: true,
     }).then((data) => {
       if (data.isConfirmed) {
-        setLoad(true)
+        setLoad(true);
         fetch(`https://resweb-001-site1.htempurl.com/api/Courses/${id}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${userData.token}`,
           },
         }).then((res) => {
-          setLoad(false)
+          setLoad(false);
           if (res.ok) {
             navigate("/AdminPanel");
           } else
@@ -129,24 +121,18 @@ const CourseDetails = () => {
     });
   }
 
-
- 
   useEffect(() => {
-    if(userData.userId!==''){
-    if (userData.roles === "Admin") setIsStudentEnrolled(true);
-    else {
-      checkStudentEnrollment();
+    if (userData.userId !== "") {
+      if (userData.roles === "Admin") setIsStudentEnrolled(true);
+      else {
+        checkStudentEnrollment();
+      }
     }
-  }
     // if (userData.roles !== "Admin") {
     //   checkStudentEnrollment();
     // }
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [userData]);
-
-  
-  
-
 
   const AddSectionCard = ({ show, onClose }) => {
     const [sectionData, setSectionData] = useState({ courseId: id, name: "" });
@@ -163,26 +149,27 @@ const CourseDetails = () => {
     function addSection() {
       let data = [];
       data.push(sectionData);
-      setLoad(true)
-      fetch(`https://resweb-001-site1.htempurl.com/api/Courses/Sections?courseId=${id}`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${userData.token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => {
-          setLoad(false)
-          if (response.ok) {
-            onClose();
-          } else
-            toastr.error(
-              "Failed To Add new Section Please Try Again Later",
-              "Failed"
-            );
-        })
-        
+      setLoad(true);
+      fetch(
+        `https://resweb-001-site1.htempurl.com/api/Courses/Sections?courseId=${id}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      ).then((response) => {
+        setLoad(false);
+        if (response.ok) {
+          onClose();
+        } else
+          toastr.error(
+            "Failed To Add new Section Please Try Again Later",
+            "Failed"
+          );
+      });
     }
 
     if (!show) return null;
@@ -226,8 +213,6 @@ const CourseDetails = () => {
     );
   };
 
-  
-
   const EditCourseDataCard = (props) => {
     const [editData, setEditData] = useState({
       name: courseDetails.name,
@@ -239,11 +224,10 @@ const CourseDetails = () => {
       driveLink: courseDetails.driveLink,
       // skillId: courseDetails.skillObj.id,
     });
-  
 
     function editCourseData(e) {
       e.preventDefault();
-      setLoad(true)
+      setLoad(true);
       fetch(`https://resweb-001-site1.htempurl.com/api/Courses/${id}`, {
         method: "PUT",
         headers: {
@@ -252,7 +236,7 @@ const CourseDetails = () => {
         },
         body: JSON.stringify(editData),
       }).then((res) => {
-        setLoad(false)
+        setLoad(false);
         if (res.ok) {
           toastr.success("data updated successfuly", "Success");
           props.onClose();
@@ -283,7 +267,13 @@ const CourseDetails = () => {
           <h1 className="headContact2">Edit Course Data</h1>
           <div
             className="custom-scrollbar"
-            style={{ overflow: "auto", maxHeight: "420px",display:"flex",justifyContent:"center",width:"100%" }}
+            style={{
+              overflow: "auto",
+              maxHeight: "420px",
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+            }}
           >
             <form className="FormModal2" onSubmit={editCourseData}>
               <label className="AllLabeles">Name</label>
@@ -385,17 +375,22 @@ const CourseDetails = () => {
     );
   }
 
-
-
-  if(load){
-    return(
-      <div style={{width:'100%',minHeight:'100vh',display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'white'}}>
+  if (load) {
+    return (
+      <div
+        style={{
+          width: "100%",
+          minHeight: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "white",
+        }}
+      >
         <img src={loader} />
       </div>
-    )
+    );
   }
-
-
 
   return (
     <div className="courseParent">
@@ -417,8 +412,15 @@ const CourseDetails = () => {
       <div className="AllContentContainer">
         <div className="LeftCourseData custom-scrollbar">
           <div className="LeftIntroData">
-            <h1 className="NameCourse" style={{whiteSpace:'pre-line'}}>{courseDetails?.name}</h1>
-            <h3 className="briefCourseNew custom-scrollbar" style={{whiteSpace:'pre-line'}}>{courseDetails?.brief}</h3>
+            <h1 className="NameCourse" style={{ whiteSpace: "pre-line" }}>
+              {courseDetails?.name}
+            </h1>
+            <h3
+              className="briefCourseNew custom-scrollbar"
+              style={{ whiteSpace: "pre-line" }}
+            >
+              {courseDetails?.brief}
+            </h3>
             <h2>Price: {courseDetails?.price} EGP</h2>
             {userData.roles !== "Admin" && !isStudentEnrolled && (
               <button className="btnBUY" onClick={() => navigate("/BuyCourse")}>
@@ -428,16 +430,27 @@ const CourseDetails = () => {
           </div>
           <div className="ObjectivesNew">
             <h2>Objectives :</h2>
-            <h3 className="custom-scrollbar" style={{whiteSpace:'pre-line'}}>{courseDetails?.objectives}</h3>
+            <h3 className="custom-scrollbar" style={{ whiteSpace: "pre-line" }}>
+              {courseDetails?.objectives}
+            </h3>
           </div>
           <div className="InstructionsNew">
             <h2>Instructions :</h2>
-            <h3 className="custom-scrollbar" style={{whiteSpace:'pre-line'}}>{courseDetails?.instructions}</h3>
+            <h3 className="custom-scrollbar" style={{ whiteSpace: "pre-line" }}>
+              {courseDetails?.instructions}
+            </h3>
           </div>
           {isStudentEnrolled && (
             <div className="InstructionsNew">
               <h2>Link :</h2>
-              <a href={courseDetails?.driveLink} target="_blank" className="custom-scrollbar" style={{ wordBreak: "break-all" }}>{courseDetails?.driveLink}</a>
+              <a
+                href={courseDetails?.driveLink}
+                target="_blank"
+                className="custom-scrollbar"
+                style={{ wordBreak: "break-all" }}
+              >
+                {courseDetails?.driveLink}
+              </a>
             </div>
           )}
         </div>
@@ -456,10 +469,7 @@ const CourseDetails = () => {
                     onClick={() => setShowEditCourseDataModal(true)}
                     className="delBtn"
                   />
-                  <FaTrash
-                    onClick={deleteCourse}
-                    className="delBtn"
-                  />
+                  <FaTrash onClick={deleteCourse} className="delBtn" />
                 </div>
               )}
               {showEditCourseDataModal && (
@@ -469,7 +479,12 @@ const CourseDetails = () => {
                 />
               )}
             </div>
-            <AllSectionsCard userData={userData} courseId={id} isStudentEnrolled={isStudentEnrolled} getFirstVideoId={(id)=>setFirstVideoId(id)} />
+            <AllSectionsCard
+              userData={userData}
+              courseId={id}
+              isStudentEnrolled={isStudentEnrolled}
+              getFirstVideoId={(id) => setFirstVideoId(id)}
+            />
           </div>
           <div className="contVideoAndQuiz">
             <div className="RightVideoIntro">
@@ -477,23 +492,31 @@ const CourseDetails = () => {
 
               <div className="BottomRightData">
                 <h3 className="headInfo">This Course Includes:</h3>
-                <p style={{display:'flex',alignItems:'center',columnGap:'5px'}}>
+                <p
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    columnGap: "5px",
+                  }}
+                >
                   <AiOutlineHourglass />
-                  {courseDetails?.hours+' Hours'}
+                  {courseDetails?.hours + " Hours"}
                 </p>
-                <p style={{display:'flex',alignItems:'center',columnGap:'5px'}}>
+                <p
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    columnGap: "5px",
+                  }}
+                >
                   <HiAcademicCap />
                   Certificate Of Completion
                 </p>
               </div>
             </div>
-            
           </div>
         </div>
       </div>
-
-      
-      
 
       <AddSectionCard
         show={showAddSection}

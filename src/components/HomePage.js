@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import "../css/HomePage.css";
 import "../css/Header.css";
@@ -26,6 +26,7 @@ import {  useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { MyContext } from "../Users/Redux";
 import PhotoAbout from "../images/Logo - With Text.png";
+import loader from '../loader.gif';
 export default function HomePage() {
   const [sideBarVisible, setSideBarVisible] = useState(false);
   const [courses, setAllCourses] = useState(null);
@@ -33,36 +34,10 @@ export default function HomePage() {
   const [skillId, setSkillId] = useState(null);
   const navigate = useNavigate();
   const userData = useContext(MyContext);
-  const [showSecondParagraph, setShowSecondParagraph] = useState(false);
-
-  const handleSwitch = () => {
-    setShowSecondParagraph(!showSecondParagraph);
-  };
-  const [content, setContent] = useState("p1");
-
-  const [activeParagraph, setActiveParagraph] = useState(0);
-
-  useEffect(() => {
-    // Auto slide to next paragraph every 3 seconds
-    const timer = setInterval(() => {
-      setActiveParagraph((prev) => (prev === 0 ? 1 : 0));
-    }, 3000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
-  useEffect(() => {
-    // Auto slide to next paragraph every 3 seconds
-    const timer = setInterval(() => {
-      setActiveParagraph((prev) => (prev === 0 ? 1 : 0));
-    }, 3000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
  
+
+ 
+  const [content, setContent] = useState("p1");
 
 
 
@@ -127,7 +102,12 @@ export default function HomePage() {
   }
 
   useEffect(() => {
-    getAllCourses();
+    if(userData.userId!==''&&courses===null){
+      getAllCourses();
+    }
+    if(userData.userId!==''&&allSkills===null){
+      getAllSkills();
+    }
   }, [userData]);
 
   
@@ -171,10 +151,6 @@ export default function HomePage() {
       });
   }
 
-  useEffect(() => {
-    getAllSkills();
-  }, [userData]);
-
   const CourseCard = ({ course }) => {
     return (
       <div className="courseCard ">
@@ -206,6 +182,8 @@ export default function HomePage() {
       </div>
     );
   };
+
+
 
   if (userData.userId === "") {
     return (
@@ -614,7 +592,8 @@ Publishing research findings is a significant milestone for any
           <h3>Couldn't Solve it?, No Problem. Take A Look On Our Courses</h3>
           <h1 style={{ fontSize: "3rem" }}>Our Courses</h1>
           <div className="coursesContainer">
-            {courses?.map((course) => {
+            {!courses&&<img src={loader} />}
+            {courses&&courses?.map((course) => {
               return <CourseCard course={course} />;
             })}
           </div>

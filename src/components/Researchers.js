@@ -128,6 +128,7 @@ export default function Researchers(){
 
 
   const PrivateChatCard = (props) => {
+    console.log(props)
     const [messageToSend, setMessageToSend] = useState({
       content: "",
       date: new Date().toISOString(),
