@@ -10,14 +10,13 @@ import "toastr/build/toastr.min.css";
 import toastr from "toastr";
 import { FaPaperPlane } from "react-icons/fa";
 import { HubConnectionBuilder } from "@microsoft/signalr";
-import { FaBell } from 'react-icons/fa'
+import { FaBell } from "react-icons/fa";
 export default function Header() {
   const navigate = useNavigate();
   const userData = useContext(MyContext);
   const [choosenRes, setChoosenRes] = useState(null);
   const [showChatModal, setShowChatModal] = useState(false);
   const [resNotifications, setResNotifications] = useState(null);
-  
 
   function getStudentImage() {
     fetch(
@@ -73,39 +72,46 @@ export default function Header() {
       .catch((error) => console.error(error));
   }
 
-
-  function getResNotifications(){
-    fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/Notifications/${userData.resercherId}`,{
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${userData.token}`,
-      },
-    }).then(res=>{
-      if(res.ok){
-        return res.json();
-      }else toastr.error('Failed TO Load Notifications', 'Failed')
-    }).then(data=>{
-      if(data){
-        setResNotifications(data);
+  function getResNotifications() {
+    fetch(
+      `https://resweb-001-site1.htempurl.com/api/Researchers/Notifications/${userData.resercherId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
       }
+    )
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else toastr.error("Failed TO Load Notifications", "Failed");
+      })
+      .then((data) => {
+        if (data) {
+          setResNotifications(data);
+        }
+      });
+  }
+
+  function deleteNotification(id) {
+    fetch(
+      `https://resweb-001-site1.htempurl.com/api/Researchers/Notifications/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      }
+    ).then((res) => {
+      if (res.ok) {
+        setResNotifications(
+          resNotifications.filter((notification) => notification.id !== id)
+        );
+      } else
+        toastr.error("Failed To Delete Notification Please Try Again Later");
     });
   }
-
-  function deleteNotification(id){
-    fetch(`https://resweb-001-site1.htempurl.com/api/Researchers/Notifications/${id}`,{
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${userData.token}`,
-      },
-    })
-    .then((res) => {
-          if (res.ok) {
-            setResNotifications(resNotifications.filter(notification => notification.id!== id));
-          } else
-            toastr.error("Failed To Delete Notification Please Try Again Later");
-        });
-  }
-
 
   useEffect(() => {
     if (userData.userId != null && userData.userId !== "") {
@@ -115,12 +121,11 @@ export default function Header() {
       if (userData.resercherId === "") {
         getResearcherIdByStudentId();
       }
-      if(userData.roles==='Researcher'){
+      if (userData.roles === "Researcher") {
         getResNotifications();
       }
     }
   }, [userData]);
-
 
   const PrivateChatCard = (props) => {
     console.log(props);
@@ -264,7 +269,9 @@ export default function Header() {
             }}
             onClick={props.onClose}
           >
-            <span style={{fontWeight:"bold"}}>{choosenRes.firstName+" "+ choosenRes.lastName}</span>
+            <span style={{ fontWeight: "bold" }}>
+              {choosenRes.firstName + " " + choosenRes.lastName}
+            </span>
             <div class="outer">
               <div class="inner">
                 <label className="label2">Exit</label>
@@ -377,7 +384,7 @@ export default function Header() {
             onClick={() =>
               userData.roles === "Admin"
                 ? navigate("/AdminPanel")
-                : navigate("/HomePage")
+                : navigate("/")
             }
           />
         </div>
@@ -388,8 +395,12 @@ export default function Header() {
               onClick={() =>
                 userData?.roles === "Researcher"
                   ? navigate("/MarketPlace")
+                  : userData.userId !== ""
+                  ? toastr.info(
+                      "You Need To Have At Least One Point Before Unlocking This Page"
+                    )
                   : toastr.info(
-                      "You Nedd To Have At Least One Point Before Unlocking This Page"
+                      "You Need To Login First Before Unlocking This Page"
                     )
               }
             >
@@ -400,8 +411,24 @@ export default function Header() {
               <li class="dropdown">
                 <a
                   onClick={() => {
-                    navigate("/HomePage");
-                    window.scrollTo(0, 1600);
+                    if (userData.userId !== "") {
+                      navigate("/");
+
+                      setTimeout(() => {
+                        const el = document.getElementById("couresesContainer");
+                        if (el) {
+                          window.scrollTo({
+                            top: el.offsetTop,
+                            behavior: "smooth",
+                          });
+                        }
+                      }, 100);
+                      // window.scrollTo(0, 1600);
+                    } else {
+                      toastr.info(
+                        "You Need To Login First Before Unlocking This Page"
+                      );
+                    }
                   }}
                 >
                   Courses
@@ -413,8 +440,12 @@ export default function Header() {
               onClick={() =>
                 userData?.roles === "Researcher"
                   ? navigate(`/Researchers`)
+                  : userData.userId !== ""
+                  ? toastr.info(
+                      "You Need To Have At Least One Point Before Unlocking This Page"
+                    )
                   : toastr.info(
-                      "You Nedd To Have At Least One Point Before Unlocking This Page"
+                      "You Need To Login First Before Unlocking This Page"
                     )
               }
             >
@@ -422,40 +453,64 @@ export default function Header() {
             </li>
             {userData.roles !== "Admin" && (
               <li class="dropdown">
+                {/* <a
+                  onClick={() => {
+                    navigate("/");
+                    window.scrollTo(0, 2000);
+                  }}
+                >
+                  About Us
+                </a> */}
                 <a
                   onClick={() => {
-                    navigate("/HomePage");
-                    window.scrollTo(0, 2000);
+                    
+                      navigate("/");
+
+                      setTimeout(() => {
+                        const el = document.getElementById("aboutUsContainer");
+                        console.log(`setTimeout ~ el:`, el)
+                        if (el) {
+                          window.scrollTo({
+                            top: el.offsetTop,
+                            behavior: "smooth",
+                          });
+                        }
+                      }, 100);
+                      // window.scrollTo(0, 1600);
+                    
                   }}
                 >
                   About Us
                 </a>
               </li>
             )}
-            {userData.roles==='Researcher'&&<li class="dropdown">
-             
-              <FaBell style={{width:'30px',height:'30px'}}/>
-              
-              <div class="dropdown-content">
-                {resNotifications?.map((notification) => {
-                return(
-                  <div className="singleNotification" onClick={()=>{setChoosenRes(notification);setShowChatModal(true);deleteNotification(notification.id)}}>
-                  <span >{notification.content}</span>
-                  {/* <FaTrash onClick={()=>deleteNotification(notification.id)} style={{color:'red',width:'20px',height:'20px'}} /> */}
+            {userData.roles === "Researcher" && (
+              <li class="dropdown">
+                <FaBell style={{ width: "30px", height: "30px" }} />
+
+                <div class="dropdown-content">
+                  {resNotifications?.map((notification) => {
+                    return (
+                      <div
+                        className="singleNotification"
+                        onClick={() => {
+                          setChoosenRes(notification);
+                          setShowChatModal(true);
+                          deleteNotification(notification.id);
+                        }}
+                      >
+                        <span>{notification.content}</span>
+                        {/* <FaTrash onClick={()=>deleteNotification(notification.id)} style={{color:'red',width:'20px',height:'20px'}} /> */}
+                      </div>
+                    );
+                  })}
                 </div>
-                )
-              })}
-                
-                
-                
-              </div>
-            </li>}
-            
+              </li>
+            )}
           </ul>
-          
-             
+
           <div className="headerBtnsContainer">
-            {userData && (
+            {userData.userId !== "" && (
               <button
                 onClick={() => {
                   userData.setUserId("");
@@ -463,28 +518,53 @@ export default function Header() {
                   userData.setRoles("");
                   userData.setResercherId("");
                   userData.setStudentImage("");
-                  navigate("/");
+                  sessionStorage.setItem('userId', '');
+                  sessionStorage.setItem('token', '');
+                  sessionStorage.setItem('roles', '');
+                  sessionStorage.setItem('resercherId','');
+                      navigate("/");
                 }}
                 className="headerSignBtn"
               >
                 Logout
               </button>
             )}
+            {userData.userId === "" && (
+              <button
+                onClick={() => {
+                  navigate("/Login");
+                }}
+                className="headerSignBtn"
+              >
+                Login
+              </button>
+            )}
+            {userData.userId === "" && (
+              <button
+                onClick={() => {
+                  navigate("/Registration");
+                }}
+                className="headerSignBtn"
+              >
+                Signup
+              </button>
+            )}
           </div>
 
           {userData.roles !== "Admin" && (
             <li class="dropdown">
-              {userData.studentImage === "" && (
+              {userData.studentImage === "" && userData.userId !== "" && (
                 <img src={loader} class="dropbtn userImgHeader" />
               )}
-              {userData.studentImage !== "" && (
+              {userData.studentImage !== "" && userData.userId !== "" && (
                 <img
                   src={userData.studentImage}
                   class="dropbtn userImgHeader"
                 />
               )}
               <div class="dropdown-content">
-                <a className="singleNotification"
+                <a
+                  className="singleNotification"
                   onClick={() =>
                     userData.roles === "Admin"
                       ? navigate("/AdminPanel")

@@ -775,7 +775,7 @@ const val = yearRangeRegex.test(ideaData.deadline);
             fontSize: "20px",
             fontWeight: "bold",
           }}
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/Login")}
         >
           Login
         </button>

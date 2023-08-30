@@ -109,7 +109,7 @@ function authorizeLogin(e){
       setRoles('Student');
       setUserId(data.userId);
       setToken(data.token)
-      navigate(`/HomePage`,);
+      navigate(`/`,);
     }
     }).catch(e=>{
       setLoad(false);

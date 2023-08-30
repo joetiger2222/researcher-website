@@ -367,7 +367,7 @@ const CourseDetails = () => {
             fontSize: "20px",
             fontWeight: "bold",
           }}
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/Login")}
         >
           Login
         </button>

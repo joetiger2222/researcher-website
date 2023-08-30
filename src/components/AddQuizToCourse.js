@@ -172,7 +172,7 @@ export default function AddQuizToCourse (){
 
 
 
-if(userData){
+if(userData.roles==='Admin'){
 
   return (
     <div className="AddQuizToSectionContainer">
@@ -325,7 +325,7 @@ if(userData){
                 return (
                   <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column'}}>
                     <h1>Please Login First</h1>
-                    <button onClick={()=>navigate('/')}>Login</button>
+                    <button onClick={()=>navigate('/Login')}>Login</button>
                   </div>
                 )
               }

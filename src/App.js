@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import {Route,Routes} from 'react-router-dom';
 import Login from './Login';
@@ -32,8 +31,8 @@ function App() {
     <div >
       <Routes>
         
-        <Route path='/' element={<Login/>} />
-        <Route path='/HomePage' element={<HomePage/>} />
+        <Route path='/Login' element={<Login/>} />
+        <Route path='/' element={<HomePage/>} />
         <Route path='/registration' element={<Registration/>} />
         <Route path='/profile/:studentId' element={<Profile/>} />
         <Route path='/CreateCourse' element={<CreateCourse/>}/>

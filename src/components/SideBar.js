@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "../css/HomePage.css";
 import "../css/SideBar.css";
 import LOGO from "../images/Logo - Text Only.png";
-import { FaGraduationCap } from "react-icons/fa";
+import { FaGraduationCap, FaUser } from "react-icons/fa";
 import { BiUserCircle, BiLogOut } from "react-icons/bi";
 import { IoInformationCircleSharp } from "react-icons/io5";
 import marketplace from "../images/marketplace.png";
@@ -381,7 +381,7 @@ export default function SideBar() {
           onClick={() =>
             userData.roles === "Admin"
               ? navigate("/AdminPanel")
-              : navigate(`/HomePage`)
+              : navigate(`/`)
           }
           src={LOGO}
           style={{ width: "70%", cursor: "pointer" }}
@@ -398,32 +398,54 @@ export default function SideBar() {
             padding: "20px",
           }}
         >
-          {userData.roles === "Researcher" && (
+          
             <div
-              onClick={() => navigate(`/MarketPlace`)}
+              onClick={() =>{ 
+                if(userData.roles==='Researcher'){
+                  navigate(`/MarketPlace`)
+                }else if(userData.userId!==''){
+                  toastr.info('You Need To Have At Least One Point To Access This Page');
+                }else {
+                  toastr.info('You Need To Login To Access This Page');
+                }
+                
+            }}
               style={{
                 display: "flex",
                 alignItems: "center",
                 columnGap: "10px",
+
               }}
             >
-              <img
-                style={{ width: "30px", height: "30px" }}
-                src={marketplace}
-              />
+             
               <span
                 className="sideBarName"
-                style={{ fontWeight: "bold", fontSize: "20px", color: "black" }}
+                style={{ fontWeight: "bold", fontSize: "16px", color: "black",textAlign:'center' }}
               >
                 Research opportunities
               </span>
             </div>
-          )}
+          
           {userData.roles !== "Admin" && (
             <div
               onClick={() => {
-                navigate("/HomePage");
-                window.scrollTo(0, 4500);
+                if(userData.userId!==''){
+                  navigate("/");
+                  setTimeout(()=>{
+                    const el = document.getElementById("couresesContainer");
+                    if(el){
+                      window.scrollTo({
+                        top: el.offsetTop,
+                        behavior: "smooth",
+                      });
+                    }
+                     
+                   
+                  },100)
+                }else {
+                  toastr.info('You Need To Login To Access This Page');
+                }
+                
               }}
               style={{
                 display: "flex",
@@ -440,9 +462,17 @@ export default function SideBar() {
               </span>
             </div>
           )}
-          {userData.roles === "Researcher" && (
+          
             <div
-              onClick={() => navigate(`/Researchers`)}
+              onClick={() => {
+                if(userData.roles==='Researcher'){
+                navigate(`/Researchers`)
+                }else if(userData.userId!==''){
+                  toastr.info('You Need To Have At Least One Point To Access This Page');
+                }else{
+                  toastr.info('You Need To Login To Access This Page');
+                }
+              }}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -457,13 +487,26 @@ export default function SideBar() {
                 Researchers
               </span>
             </div>
-          )}
+          
           {userData.roles !== "Admin" && (
             <div
-              onClick={() => {
-                navigate("/HomePage");
-                window.scrollTo(0, 9500);
-              }}
+            onClick={() => {
+              
+                navigate("/");
+                setTimeout(()=>{
+                  const el = document.getElementById("aboutUsContainer");
+                  if(el){
+                    window.scrollTo({
+                      top: el.offsetTop,
+                      behavior: "smooth",
+                    });
+                  }
+                   
+                 
+                },100)
+              
+              
+            }}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -481,7 +524,7 @@ export default function SideBar() {
               </span>
             </div>
           )}
-          {userData.roles !== "Admin" && (
+          {userData.roles !== "Admin" && userData.userId!==''&& (
             <div
               onClick={() => navigate(`/Profile/${userData.userId}`)}
               style={{
@@ -499,7 +542,7 @@ export default function SideBar() {
               </span>
             </div>
           )}
-          <div
+          {userData.roles==='Researcher'&&userData.userId!==''&&<div
             onClick={() => setshowNotification(true)}
             style={{ display: "flex", alignItems: "center", columnGap: "10px" }}
           >
@@ -510,8 +553,8 @@ export default function SideBar() {
             >
               Notifications
             </span>
-          </div>
-          <div
+          </div>}
+          {userData.userId!==''&&<div
             onClick={() => {
               userData.setUserId("");
               userData.setToken("");
@@ -527,7 +570,37 @@ export default function SideBar() {
             >
               Logout
             </span>
-          </div>
+          </div>}
+          {userData.userId===''&&<div
+            onClick={() => {
+             
+              navigate("/Login");
+            }}
+            style={{ display: "flex", alignItems: "center", columnGap: "10px" }}
+          >
+            <FaUser style={{ width: "30px", height: "30px" }} />
+            <span
+              className="sideBarName"
+              style={{ fontWeight: "bold", fontSize: "20px", color: "black" }}
+            >
+              Login
+            </span>
+          </div>}
+          {userData.userId===''&&<div
+            onClick={() => {
+              
+              navigate("/Registration");
+            }}
+            style={{ display: "flex", alignItems: "center", columnGap: "10px" }}
+          >
+            <FaUser style={{ width: "30px", height: "30px" }} />
+            <span
+              className="sideBarName"
+              style={{ fontWeight: "bold", fontSize: "20px", color: "black" }}
+            >
+              SignUp
+            </span>
+          </div>}
         </div>
       </div>
       {choosenRes && showChatModal && (

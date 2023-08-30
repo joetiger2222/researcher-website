@@ -179,7 +179,7 @@ const Registration = () => {
           setRoles("Student");
           setUserId(data.userId);
           setToken(data.token);
-          navigate(`/HomePage`);
+          navigate(`/`);
         }
       });
   }

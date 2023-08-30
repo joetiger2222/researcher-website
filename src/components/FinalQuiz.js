@@ -297,7 +297,7 @@ export default function FinalQuiz() {
             fontSize: "20px",
             fontWeight: "bold",
           }}
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/Login")}
         >
           Login
         </button>

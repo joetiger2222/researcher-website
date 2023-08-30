@@ -8,11 +8,12 @@ import "../css/Footer.css";
 import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
 import loader from '../loader.gif';
+import { useNavigate } from "react-router-dom";
 const Footer = () => {
   const [showProblemCard, setShowProblemCard] = useState(false);
   const userData = useContext(MyContext);
   const [load,setLoad]=useState(false);
- 
+ const navigate = useNavigate()
   const [whatsappUrl, setWhatsappUrl] = useState("");
   const urlWhatSap = () => {
      
@@ -146,6 +147,7 @@ const Footer = () => {
           <button>Sign Up</button>
         </div>
       )}
+      
       <div className="IconsFooter">
         <a href="https://www.facebook.com/resweb.go">
           <FaFacebook className="icon-footer " />
@@ -173,14 +175,35 @@ const Footer = () => {
         </a>
       </div>
       <div className="aboutUsAndContact">
-        <a href="#">About Us</a>
+        <a  onClick={() => {
+                    if (userData.userId !== "") {
+                      navigate("/");
+                     
+                      
+                      setTimeout(()=>{
+                        const el = document.getElementById("aboutUsContainer");
+                        if(el){
+                          window.scrollTo({
+                            top: el.offsetTop,
+                            behavior: "smooth",
+                          });
+                        }
+                       
+                      },100)
+                      // window.scrollTo(0, 1600);
+                    } else {
+                      toastr.info(
+                        "You Nedd To Login First Before Unlocking This Page"
+                      );
+                    }
+                  }}>About Us</a>
         <a href="#">Contact Us </a>
       </div>
       <div className="AllRightReserved">
         <p><span>&#169; All Rights Are Reserved For Teamwork</span> </p>
       </div>
-      <div>
-        <button style={{backgroundColor:"#ffffffa8"}}  className="bn54" onClick={() => setShowProblemCard(true)}>
+      {userData.userId!==''&&<div style={{width:'100%',display:'flex',justifyContent:'center',alignItems:'center'}}>
+        <button style={{backgroundColor:"#ffffffa8",width:'80%',maxWidth:'200px'}}  className="bn54" onClick={() => setShowProblemCard(true)}>
          Talk To Us
         </button>
         {showProblemCard && (
@@ -189,7 +212,8 @@ const Footer = () => {
             onClose={() => setShowProblemCard(false)}
           />
         )}
-      </div>
+      </div>}
+      
     </div>
   );
 };

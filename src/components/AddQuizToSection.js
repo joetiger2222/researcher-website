@@ -204,7 +204,14 @@ export default function AddQuizToSection() {
   }
  
 
-
+if(userData.roles!=='Admin'){
+  return (
+    <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column'}}>
+      <h1>Please Login First</h1>
+      <button onClick={()=>navigate('/Login')}>Login</button>
+    </div>
+  )
+}
 
   return (
     <div className="AddQuizToSectionContainer">
