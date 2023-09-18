@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import kariem from "../images/userImg.png";
 import { useState } from "react";
@@ -19,6 +19,8 @@ import { useContext } from "react";
 import { MyContext } from '../Users/Redux';
 import SideBar from "./SideBar";
 import loader from '../loader.gif';
+import { FaPaperPlane } from "react-icons/fa";
+import { HubConnectionBuilder } from "@microsoft/signalr";
 const Profile = () => {
   const [load,setLoad]=useState(false);
   const [sideBarVisible, setSideBarVisible] = useState(false);
@@ -42,6 +44,7 @@ const Profile = () => {
   const [studentCourses,setStudentCourses]=useState([]);
   const { studentId } = useParams();
   const [studentImage,setStuddentImage]=useState('');
+  const [showChatModal,setShowChatModal]=useState(false);
   const navigate = useNavigate();
   
 
@@ -873,6 +876,239 @@ const Profile = () => {
   };
   
 
+
+
+  const PrivateChatCard = (props) => {
+    console.log(props)
+    const [messageToSend, setMessageToSend] = useState({
+      content: "",
+      date: new Date().toISOString(),
+      senderId:userData.userId,
+      reciverId:props.otherPersonId,
+    });
+    const [AllMessages, setAllMessages] = useState([]);
+    // const otherPersonData=researchers.filter(res=>res.studentObj.id===props.otherPersonId)
+    
+    
+    const latestChat = useRef(null);
+
+    latestChat.current = AllMessages;
+
+
+let counter=1;
+    function getMyMessages() {
+      if(counter===1){
+      fetch(`https://resweb-001-site1.htempurl.com/api/Chat/Private?senderId=${userData.userId}&reciverId=${props.otherPersonId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      })
+        .then((res) => res.ok?res.json():toastr.error('failed to load your messages',"Failed"))
+
+        .then(data=>{
+          
+          setAllMessages(prev => [...prev, ...data]);
+        })
+        
+    }
+    counter=0;
+    }
+
+
+    let otherCounter=1;
+    function getOtherMessages() {
+      if(otherCounter===1){
+      fetch(`https://resweb-001-site1.htempurl.com/api/Chat/Private?senderId=${props.otherPersonId}&reciverId=${userData.userId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      })
+        .then((res) => res.ok?res.json():toastr.error('failed to load your messages',"Failed"))
+
+        .then(data=>{
+
+          setAllMessages(prev => [...prev, ...data]);
+        })
+        
+    }
+    otherCounter=0;
+    }
+
+
+
+    AllMessages.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    useEffect(() => {
+      const connection = new HubConnectionBuilder()
+        .withUrl("https://resweb-001-site1.htempurl.com/hubs/Privatechat")
+        .withAutomaticReconnect()
+        .build();
+
+      connection
+        .start()
+        .then((result) => {
+          connection.on("ReceivePrivate", (message) => {
+            
+            const updatedChat = [...latestChat.current];
+            updatedChat.push(message);
+            setAllMessages(updatedChat);
+          });
+        })
+        .catch((e) => console.log("Connection failed: ", e));
+    }, []);
+
+    useEffect(() => {
+      getMyMessages();
+      getOtherMessages();
+    }, []);
+
+
+
+    const chatWindowRef = useRef(null);
+
+    function scrollToBottom() {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+    }
+
+    useEffect(() => {
+      scrollToBottom();
+    }, [AllMessages]);
+
+
+
+    const sendMessage = async (e) => {
+      e.preventDefault();
+      if(messageToSend.content===''){
+        toastr.error('Please Enter A Valid Message');
+        return;
+      }
+      const chatMessage = {
+        content: messageToSend.content,
+        date: new Date().toISOString(),
+        senderId:userData.userId,
+        reciverId:props.otherPersonId,
+      };
+      
+
+      try {
+        await fetch(
+          `https://resweb-001-site1.htempurl.com/api/Chat/Private`,
+          {
+            method: "POST",
+            body: JSON.stringify(chatMessage),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userData.token}`,
+            },
+          }
+        ).then((response) => setMessageToSend(prev=>{return {...prev,content:''}}));
+      } catch (e) {}
+    };
+
+
+
+
+    if (!props.show) return null;
+    return (
+      <div className="modal-overlay2">
+        <div className="modal2">
+          <div style={{display: "flex",justifyContent: "space-between",width: "100%",margin: "0 0 10px"}} onClick={props.onClose}>
+           
+            <span style={{fontWeight:"bold"}}>{studentData?.firstName + " " + studentData?.lastName}</span>
+            <div class="outer">
+              <div class="inner">
+                <label className="label2">Exit</label>
+              </div>
+            </div>
+          </div>
+          <div className="ContAllDataWithInput">
+            <div
+            ref={chatWindowRef}
+              className="custom-scrollbar"
+              style={{
+                alignItems: "flex-start",
+                width: "80%",
+                padding: "20px",
+                gap: "20px",
+                height: "240px",
+                overflow: "auto",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              {AllMessages?.map((message) => {
+                return (
+                  <div style={{ gap:"5px",display:"flex",flexDirection:"column",alignSelf:message.senderId===userData.userId?'flex-end':null }}>
+                    <p style={{padding:"8px",backgroundColor:"rgb(213,213,213)"}} className="borderR spanChat">{message.content}</p>
+                  </div>
+                );
+              })}
+            </div>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+
+              <form
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: "80%",
+                  border: "2px solid var(--darkgreen-color)",
+                  alignSelf: "center",
+                  // margin: " 1px 0 20px 0",
+                  columnGap: "7px",
+                  borderRadius: "20px",
+                }}
+                onSubmit={sendMessage}
+              >                
+                <input
+                  className="InputChat"
+                  name="content"
+                  placeholder="Enter Your Message"
+                  value={messageToSend.content}
+                  onChange={(e) =>
+                    setMessageToSend((prev) => {
+                      return { ...prev, [e.target.name]: e.target.value };
+                    })
+                  }
+                ></input>
+                <div className="DivContChatIcon">
+                  <button
+                    style={{ backgroundColor: "transparent", border: "none" }}
+                  >
+                    <FaPaperPlane
+                      className="sendIcon"
+                      style={{
+                        width: "20px",
+                        height: "20px",
+                        color: "var(--darkgreen-color)",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+
+
+
+
+
+
+
   if(userData.userId===''){
     return (
       <div style={{display:'flex',width:'100%',minHeight:'100vh',justifyContent:'center',alignItems:'center',flexDirection:'column',rowGap:'20px'}}>
@@ -962,6 +1198,15 @@ const Profile = () => {
                   className="detailsbtn"
                 >
                   Edit Speciality
+                </p>
+              )}
+              {userData.roles === "Researcher" &&
+              userData?.userId !== studentId && (
+                <p
+                  onClick={() => setShowChatModal(true)}
+                  className="detailsbtn"
+                >
+                  CHAT
                 </p>
               )}
             </div>
@@ -1430,6 +1675,7 @@ const Profile = () => {
       )}
       </div>
       <Footer userData={userData}/>
+      {showChatModal&&<PrivateChatCard otherPersonId={studentId} show={showChatModal} onClose={()=>setShowChatModal(false)} />}
     </div>
   );
           
