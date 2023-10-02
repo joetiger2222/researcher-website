@@ -60,6 +60,7 @@
 .headerRight {
   display: flex;
   width: 70%;
+  /* width: 86%; */
   align-items: center;
   justify-content: space-evenly;
 

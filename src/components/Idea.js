@@ -1528,6 +1528,7 @@ setLoad(true)
 
   const IdeaFilesCard = (props) => {
     const [documents, setDocuments] = useState(null);
+    console.log(`IdeaFilesCard ~ documents:`, documents)
 
     function getIdeaFiles() {
       fetch(`https://resweb-001-site1.htempurl.com/api/Ideas/IdeaFile/${ideaId}`, {
@@ -1721,7 +1722,8 @@ setLoad(true)
 
   const TaskFilesCard = (props) => {
     const [documents, setDocuments] = useState(null);
-
+    
+    
     function getIdeaFiles() {
       fetch(`https://resweb-001-site1.htempurl.com/api/Ideas/TaskFile/${props.task.id}`, {
         method: "GET",
